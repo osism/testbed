@@ -1,0 +1,9 @@
+[mysqld]
+userstat = 1
+expire_logs_days = 14
+
+# [xtrabackup]
+# host = {{ kolla_internal_fqdn }}
+# password = {{ database_password }}
+# port = {{ database_port }}
+# user = root

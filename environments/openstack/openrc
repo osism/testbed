@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+export OS_AUTH_URL=http://api.osism.local:5000/v3
+export OS_PROJECT_NAME="admin"
+export OS_TENANT_NAME=$OS_PROJECT_NAME
+export OS_USERNAME="admin"
+export OS_PASSWORD=pYV8bV749aDMXLPlYJwoJs4ouRPWezCIOXYAQP6v
+export OS_PROJECT_DOMAIN_NAME=default
+export OS_DOMAIN_NAME=default
+export OS_USER_DOMAIN_NAME=$OS_DOMAIN_NAME
+export OS_IDENTITY_API_VERSION=3

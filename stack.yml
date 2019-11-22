@@ -1,0 +1,930 @@
+---
+heat_template_version: 2018-08-31
+
+###########
+parameters:
+
+  image:
+    type: string
+    constraints:
+      - custom_constraint: glance.image
+    default: Ubuntu 18.04
+
+  volume_size_storage:
+    type: number
+    default: 10
+
+  flavor_node:
+    type: string
+    constraints:
+      - custom_constraint: nova.flavor
+    default: 4C-16GB-40GB
+
+  flavor_manager:
+    type: string
+    constraints:
+      - custom_constraint: nova.flavor
+    default: 2C-4GB-20GB
+
+  availability_zone:
+    type: string
+    default: south-1
+
+  public:
+    type: string
+    constraints:
+      - custom_constraint: neutron.network
+    default: public
+
+  deploy_infrastructure:
+    type: boolean
+    default: true
+
+  deploy_openstack:
+    type: boolean
+    default: true
+
+  deploy_ceph:
+    type: boolean
+    default: true
+
+##########
+resources:
+
+  #########
+  # Generic
+  #########
+
+  key:
+    type: OS::Nova::KeyPair
+    properties:
+      name: testbed
+      save_private_key: true
+
+  manager_wait_handle:
+    depends_on: node_wait_condition
+    type: OS::Heat::WaitConditionHandle
+
+  manager_wait_condition:
+    type: OS::Heat::WaitCondition
+    properties:
+      handle: {get_resource: manager_wait_handle}
+      count: 1
+      timeout: 7200
+
+  node_wait_handle:
+    type: OS::Heat::WaitConditionHandle
+
+  node_wait_condition:
+    type: OS::Heat::WaitCondition
+    properties:
+      handle: {get_resource: node_wait_handle}
+      count: 3
+      timeout: 1800
+
+  manager_boot_config:
+    type: OS::Heat::CloudConfig
+    properties:
+      cloud_config:
+        package_update: true
+        package_upgrade: true
+        packages:
+          - ifupdown
+        write_files:
+          - content: {get_attr: [key, public_key]}
+            path: /home/ubuntu/.ssh/id_rsa.pub
+            permissions: 0600
+          - content: {get_attr: [key, private_key]}
+            path: /home/ubuntu/.ssh/id_rsa
+            permissions: 0600
+          - content:
+              str_replace:
+                params:
+                  deploy_ceph: {get_param: deploy_ceph}
+                  deploy_infrastructure: {get_param: deploy_infrastructure}
+                  deploy_openstack: {get_param: deploy_openstack}
+                  wc_notify: {get_attr: ['manager_wait_handle', 'curl_cli']}
+                template: |
+                  #!/usr/bin/env bash
+
+                  chown -R ubuntu:ubuntu /home/ubuntu/.ssh
+
+                  add-apt-repository --yes ppa:ansible/ansible
+                  apt-get install --yes ansible
+
+                  ansible-galaxy install git+https://github.com/openstack/ansible-hardening
+                  ansible-galaxy install git+https://github.com/osism/ansible-chrony
+                  ansible-galaxy install git+https://github.com/osism/ansible-common
+                  ansible-galaxy install git+https://github.com/osism/ansible-docker
+                  ansible-galaxy install git+https://github.com/osism/ansible-operator
+                  ansible-galaxy install git+https://github.com/osism/ansible-repository
+                  ansible-galaxy install git+https://github.com/osism/ansible-resolvconf
+
+                  curl https://raw.githubusercontent.com/osism/testbed/master/playbooks/node.yml > /root/node.yml
+                  ansible-playbook -i localhost, /root/node.yml
+
+                  cp /home/ubuntu/.ssh/id_rsa /home/dragon/.ssh/id_rsa
+                  cp /home/ubuntu/.ssh/id_rsa.pub /home/dragon/.ssh/id_rsa.pub
+                  chown -R dragon:dragon /home/dragon/.ssh
+
+                  sudo -iu dragon ansible-galaxy install git+https://github.com/osism/ansible-configuration
+                  sudo -iu dragon ansible-galaxy install git+https://github.com/osism/ansible-manager
+
+                  curl https://raw.githubusercontent.com/osism/testbed/master/playbooks/manager.yml | sudo -iu dragon tee /home/dragon/manager.yml
+                  sudo -iu dragon ansible-playbook -i localhost, /home/dragon/manager.yml
+
+                  sudo -iu dragon docker cp /home/dragon/.ssh/id_rsa.pub manager_osism-ansible_1:/share/id_rsa.pub
+
+                  rm /home/ubuntu/.ssh/id_rsa*
+
+                  # NOTE(berendt): sometimes ARA doesn't really get up after the bootstrap
+                  sleep 15
+                  sudo -iu dragon docker restart manager_ara-server_1
+
+                  # NOTE(berendt): sudo -E does not work here because sudo -i is needed
+
+                  # prepare all systems
+                  if [[  -gt 0 ]]; then
+                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic facts'
+                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic timezone'
+                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic hostname'
+                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic network'
+                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic hosts'
+                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic cockpit'
+                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic utilities'
+                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic grub'
+
+                      # deploy helper services
+                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-infrastructure helper --tags sshconfig'
+                  fi
+
+                  if [[ "deploy_infrastructure" == "True" ]]; then
+                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-infrastructure helper --tags phpmyadmin'
+                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-infrastructure helper --tags openstackclient'
+                  fi
+
+                  # deploy infrastructure services
+                  if [[ "deploy_infrastructure" == "True" ]]; then
+                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy common'
+                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy openvswitch'
+                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy memcached'
+                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy redis'
+                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy haproxy'
+                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy elasticsearch'
+                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy kibana'
+
+                      # NOTE: workaround "Index .kibana belongs to a version of Kibana that cannot be
+                      #       automatically migrated. Reset it or use the X-Pack upgrade assistant."
+                      curl -X DELETE http://192.168.50.200:9200/.kibana
+
+                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy rabbitmq'
+                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy mariadb'
+                  fi
+
+                  # deploy ceph services
+                  if [[ "deploy_ceph" == "True" ]]; then
+                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-ceph env-hci'
+                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-run custom fetch-ceph-keys'
+                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-infrastructure helper --tags cephclient'
+                  fi
+
+                  # deploy openstack services
+                  if [[ "deploy_openstack" == "True" ]]; then
+                      if [[ "deploy_infrastructure" != "True" ]]; then
+                          echo "infrastructure services are necessary for the deployment of OpenStack"
+                      else
+                          sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy keystone'
+                          sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy horizon'
+                          sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy glance'
+                          sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy cinder'
+                          sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy heat'
+                      fi
+                  fi
+
+                  wc_notify --data-binary '{"status": "SUCCESS"}'
+            path: /root/run.sh
+            permissions: 0700
+        runcmd:
+          - "echo 'network: {config: disabled}' > /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg"
+          - "rm -f /etc/network/interfaces.d/50-cloud-init.cfg"
+          - "mv /etc/netplan/50-cloud-init.yaml /etc/netplan/50-cloud-init.yaml.unused"
+          - "/root/run.sh"
+        final_message: "The system is finally up, after $UPTIME seconds"
+
+  node_boot_config:
+    type: OS::Heat::CloudConfig
+    depends_on: node_wait_handle
+    properties:
+      cloud_config:
+        package_update: true
+        package_upgrade: true
+        packages:
+          - ifupdown
+        write_files:
+          - content: {get_attr: [key, public_key]}
+            path: /home/ubuntu/.ssh/id_rsa.pub
+            permissions: 0600
+          - content: {get_attr: [key, private_key]}
+            path: /home/ubuntu/.ssh/id_rsa
+            permissions: 0600
+          - content:
+              str_replace:
+                params:
+                  wc_notify: {get_attr: ['node_wait_handle', 'curl_cli']}
+                template: |
+                  #!/usr/bin/env bash
+
+                  wc_notify --data-binary '{"status": "SUCCESS"}'
+
+                  chown -R ubuntu:ubuntu /home/ubuntu/.ssh
+
+                  add-apt-repository --yes ppa:ansible/ansible
+                  apt-get install --yes ansible
+
+                  ansible-galaxy install git+https://github.com/openstack/ansible-hardening
+                  ansible-galaxy install git+https://github.com/osism/ansible-chrony
+                  ansible-galaxy install git+https://github.com/osism/ansible-common
+                  ansible-galaxy install git+https://github.com/osism/ansible-docker
+                  ansible-galaxy install git+https://github.com/osism/ansible-operator
+                  ansible-galaxy install git+https://github.com/osism/ansible-repository
+                  ansible-galaxy install git+https://github.com/osism/ansible-resolvconf
+
+                  curl https://raw.githubusercontent.com/osism/testbed/master/playbooks/node.yml > /root/node.yml
+                  ansible-playbook -i localhost, /root/node.yml
+
+                  rm /home/ubuntu/.ssh/id_rsa*
+            path: /root/run.sh
+            permissions: 0700
+        runcmd:
+          - "echo 'network: {config: disabled}' > /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg"
+          - "rm -f /etc/network/interfaces.d/50-cloud-init.cfg"
+          - "mv /etc/netplan/50-cloud-init.yaml /etc/netplan/50-cloud-init.yaml.unused"
+          - "echo 'auto lo\niface lo inet loopback\n\nsource /etc/network/interfaces.d/*' > /etc/network/interfaces"
+          - "for iface in $(ip -o link | cut -d: -f2 | tr -d ' ' | grep ^ens); do echo 'auto '${iface}'\niface '${iface}' inet dhcp\n' > '/etc/network/interfaces.d/device-'$iface; done"
+          - "for iface in $(ip -o link | cut -d: -f2 | tr -d ' ' | grep ^ens | grep -v ens3); do echo '\n\npost-up ip route del default dev '${iface} || exit 0'\n' >> '/etc/network/interfaces.d/device-'$iface; done"
+          - "/root/run.sh"
+        final_message: "The system is finally up, after $UPTIME seconds"
+
+  #################
+  # Security groups
+  #################
+
+  security_group_management:
+    type: OS::Neutron::SecurityGroup
+    properties:
+      name: testbed-management
+      rules:
+        - remote_ip_prefix: 0.0.0.0/0
+          protocol: tcp
+          port_range_min: 22
+          port_range_max: 22
+        - remote_ip_prefix: 0.0.0.0/0
+          protocol: tcp
+          port_range_min: 9100
+          port_range_max: 9100
+        - remote_ip_prefix: 0.0.0.0/0
+          protocol: icmp
+
+  security_group_internal:
+    type: OS::Neutron::SecurityGroup
+    properties:
+      name: testbed-internal
+      rules:
+        - remote_ip_prefix: 0.0.0.0/0
+          protocol: tcp
+          port_range_min: 1
+          port_range_max: 65535
+        - remote_ip_prefix: 0.0.0.0/0
+          protocol: udp
+          port_range_min: 1
+          port_range_max: 65535
+        - remote_ip_prefix: 0.0.0.0/0
+          protocol: icmp
+
+  security_group_storage_frontend:
+    type: OS::Neutron::SecurityGroup
+    properties:
+      name: testbed-storage-frontend
+      rules:
+        - remote_ip_prefix: 0.0.0.0/0
+          protocol: tcp
+          port_range_min: 1
+          port_range_max: 65535
+        - remote_ip_prefix: 0.0.0.0/0
+          protocol: udp
+          port_range_min: 1
+          port_range_max: 65535
+        - remote_ip_prefix: 0.0.0.0/0
+          protocol: icmp
+
+  security_group_storage_backend:
+    type: OS::Neutron::SecurityGroup
+    properties:
+      name: testbed-storage-backend
+      rules:
+        - remote_ip_prefix: 0.0.0.0/0
+          protocol: tcp
+          port_range_min: 1
+          port_range_max: 65535
+        - remote_ip_prefix: 0.0.0.0/0
+          protocol: udp
+          port_range_min: 1
+          port_range_max: 65535
+        - remote_ip_prefix: 0.0.0.0/0
+          protocol: icmp
+
+  security_group_external:
+    type: OS::Neutron::SecurityGroup
+    properties:
+      name: testbed-external
+      rules:
+        - remote_ip_prefix: 0.0.0.0/0
+          protocol: tcp
+          port_range_min: 1
+          port_range_max: 65535
+        - remote_ip_prefix: 0.0.0.0/0
+          protocol: udp
+          port_range_min: 1
+          port_range_max: 65535
+        - remote_ip_prefix: 0.0.0.0/0
+          protocol: icmp
+
+  ############
+  # Networks #
+  ############
+
+  net_management:
+    type: OS::Neutron::Net
+    properties:
+      name: testbed-management
+
+  subnet_management:
+    type: OS::Neutron::Subnet
+    properties:
+      network: {get_resource: net_management}
+      cidr: 192.168.40.0/24
+      allocation_pools:
+        -
+          start: 192.168.40.100
+          end: 192.168.40.110
+
+  net_internal:
+    type: OS::Neutron::Net
+    properties:
+      name: testbed-internal
+
+  subnet_internal:
+    type: OS::Neutron::Subnet
+    properties:
+      network: {get_resource: net_internal}
+      cidr: 192.168.50.0/24
+      gateway_ip: null
+      enable_dhcp: false
+      allocation_pools:
+        -
+          start: 192.168.50.100
+          end: 192.168.50.110
+
+  net_provider:
+    type: OS::Neutron::Net
+    properties:
+      name: testbed-provider
+
+  subnet_provider:
+    type: OS::Neutron::Subnet
+    properties:
+      network: {get_resource: net_provider}
+      cidr: 192.168.100.0/24
+      gateway_ip: null
+      enable_dhcp: false
+      allocation_pools:
+        -
+          start: 192.168.100.100
+          end: 192.168.100.110
+
+  net_external:
+    type: OS::Neutron::Net
+    properties:
+      name: testbed-external
+
+  subnet_external:
+    type: OS::Neutron::Subnet
+    properties:
+      network: {get_resource: net_external}
+      cidr: 192.168.90.0/24
+      gateway_ip: null
+      enable_dhcp: false
+      allocation_pools:
+        -
+          start: 192.168.90.100
+          end: 192.168.90.110
+
+  vip_port_external:
+    type: OS::Neutron::Port
+    properties:
+      network_id: {get_resource: net_external}
+      fixed_ips:
+        - ip_address: 192.168.90.200
+
+  vip_port_internal:
+    type: OS::Neutron::Port
+    properties:
+      network_id: {get_resource: net_internal}
+      fixed_ips:
+        - ip_address: 192.168.50.200
+
+  net_storage_frontend:
+    type: OS::Neutron::Net
+    properties:
+      name: testbed-storage-frontend
+
+  subnet_storage_frontend:
+    type: OS::Neutron::Subnet
+    properties:
+      network: {get_resource: net_storage_frontend}
+      cidr: 192.168.70.0/24
+      gateway_ip: null
+      enable_dhcp: false
+      allocation_pools:
+        -
+          start: 192.168.70.100
+          end: 192.168.70.110
+
+  net_storage_backend:
+    type: OS::Neutron::Net
+    properties:
+      name: testbed-storage-backend
+
+  subnet_storage_backend:
+    type: OS::Neutron::Subnet
+    properties:
+      network: {get_resource: net_storage_backend}
+      cidr: 192.168.80.0/24
+      gateway_ip: null
+      enable_dhcp: false
+      allocation_pools:
+        -
+          start: 192.168.80.100
+          end: 192.168.80.110
+
+  ##########################
+  # Network infrastructure #
+  ##########################
+
+  router:
+    type: OS::Neutron::Router
+    properties:
+      external_gateway_info:
+        network: {get_param: public}
+
+  router_interface:
+    type: OS::Neutron::RouterInterface
+    properties:
+      router: {get_resource: router}
+      subnet: {get_resource: subnet_management}
+
+  ###########
+  # Manager #
+  ###########
+
+  manager_floating_ip:
+    type: OS::Neutron::FloatingIP
+    properties:
+      floating_network_id: {get_param: public}
+      port_id: {get_resource: manager_port_management}
+
+  manager_port_management:
+    type: OS::Neutron::Port
+    properties:
+      network_id: {get_resource: net_management}
+      fixed_ips:
+        - ip_address: 192.168.40.5
+      security_groups:
+        - {get_resource: security_group_management}
+
+  manager_port_internal:
+    type: OS::Neutron::Port
+    properties:
+      network_id: {get_resource: net_internal}
+      fixed_ips:
+        - ip_address: 192.168.50.5
+      security_groups:
+        - {get_resource: security_group_internal}
+
+  manager_port_external:
+    type: OS::Neutron::Port
+    properties:
+      network_id: {get_resource: net_external}
+      fixed_ips:
+        - ip_address: 192.168.90.5
+      security_groups:
+        - {get_resource: security_group_external}
+
+  manager_port_provider:
+    type: OS::Neutron::Port
+    properties:
+      network_id: {get_resource: net_provider}
+      port_security_enabled: false
+      fixed_ips:
+        - ip_address: 192.168.100.5
+
+  manager_port_storage_frontend:
+    type: OS::Neutron::Port
+    properties:
+      network_id: {get_resource: net_storage_frontend}
+      fixed_ips:
+        - ip_address: 192.168.70.5
+      security_groups:
+        - {get_resource: security_group_storage_frontend}
+
+  manager_server:
+    type: OS::Nova::Server
+    depends_on: node_wait_condition
+    properties:
+      name: testbed-manager
+      key_name: {get_resource: key}
+      image: {get_param: image}
+      flavor: {get_param: flavor_manager}
+      availability_zone: {get_param: availability_zone}
+      user_data_format: SOFTWARE_CONFIG
+      user_data: {get_resource: manager_boot_config}
+      metadata:
+        group: manager
+      config_drive: true
+      networks:
+        - port: {get_resource: manager_port_management}
+        - port: {get_resource: manager_port_internal}
+        - port: {get_resource: manager_port_external}
+        - port: {get_resource: manager_port_provider}
+        - port: {get_resource: manager_port_storage_frontend}
+
+  #########
+  # Nodes #
+  #########
+
+  # node 0
+
+  node_0_volume_0:
+    type: OS::Cinder::Volume
+    properties:
+      name: testbed-node-0-volume-0
+      size: {get_param: volume_size_storage}
+
+  node_0_volume_0_attachment:
+    type: OS::Cinder::VolumeAttachment
+    properties:
+      instance_uuid: {get_resource: node_0_server}
+      volume_id: {get_resource: node_0_volume_0}
+
+  node_0_volume_1:
+    type: OS::Cinder::Volume
+    properties:
+      name: testbed-node-0-volume-1
+      size: {get_param: volume_size_storage}
+
+  node_0_volume_1_attachment:
+    type: OS::Cinder::VolumeAttachment
+    properties:
+      instance_uuid: {get_resource: node_0_server}
+      volume_id: {get_resource: node_0_volume_1}
+
+  node_0_volume_2:
+    type: OS::Cinder::Volume
+    properties:
+      name: testbed-node-0-volume-2
+      size: {get_param: volume_size_storage}
+
+  node_0_volume_2_attachment:
+    type: OS::Cinder::VolumeAttachment
+    properties:
+      instance_uuid: {get_resource: node_0_server}
+      volume_id: {get_resource: node_0_volume_2}
+
+  node_0_port_management:
+    type: OS::Neutron::Port
+    properties:
+      network_id: {get_resource: net_management}
+      fixed_ips:
+        - ip_address: 192.168.40.10
+      security_groups:
+        - {get_resource: security_group_management}
+
+  node_0_port_internal:
+    type: OS::Neutron::Port
+    properties:
+      network_id: {get_resource: net_internal}
+      fixed_ips:
+        - ip_address: 192.168.50.10
+      allowed_address_pairs:
+        - ip_address: 192.168.50.200/24
+      security_groups:
+        - {get_resource: security_group_internal}
+
+  node_0_port_external:
+    type: OS::Neutron::Port
+    properties:
+      network_id: {get_resource: net_external}
+      fixed_ips:
+        - ip_address: 192.168.90.10
+      allowed_address_pairs:
+        - ip_address: 192.168.90.200/24
+      security_groups:
+        - {get_resource: security_group_external}
+
+  node_0_port_provider:
+    type: OS::Neutron::Port
+    properties:
+      network_id: {get_resource: net_provider}
+      port_security_enabled: false
+      fixed_ips:
+        - ip_address: 192.168.100.10
+
+  node_0_port_storage_frontend:
+    type: OS::Neutron::Port
+    properties:
+      network_id: {get_resource: net_storage_frontend}
+      fixed_ips:
+        - ip_address: 192.168.70.10
+      security_groups:
+        - {get_resource: security_group_storage_frontend}
+
+  node_0_port_storage_backend:
+    type: OS::Neutron::Port
+    properties:
+      network_id: {get_resource: net_storage_backend}
+      fixed_ips:
+        - ip_address: 192.168.80.10
+      security_groups:
+        - {get_resource: security_group_storage_backend}
+
+  node_0_server:
+    type: OS::Nova::Server
+    properties:
+      name: testbed-node-0
+      key_name: {get_resource: key}
+      image: {get_param: image}
+      flavor: {get_param: flavor_node}
+      availability_zone: {get_param: availability_zone}
+      user_data_format: SOFTWARE_CONFIG
+      user_data: {get_resource: node_boot_config}
+      metadata:
+        group: node
+      config_drive: true
+      networks:
+        - port: {get_resource: node_0_port_management}
+        - port: {get_resource: node_0_port_internal}
+        - port: {get_resource: node_0_port_external}
+        - port: {get_resource: node_0_port_provider}
+        - port: {get_resource: node_0_port_storage_frontend}
+        - port: {get_resource: node_0_port_storage_backend}
+
+  # node 1
+
+  node_1_volume_0:
+    type: OS::Cinder::Volume
+    properties:
+      name: testbed-node-1-volume-0
+      size: {get_param: volume_size_storage}
+
+  node_1_volume_0_attachment:
+    type: OS::Cinder::VolumeAttachment
+    properties:
+      instance_uuid: {get_resource: node_1_server}
+      volume_id: {get_resource: node_1_volume_0}
+
+  node_1_volume_1:
+    type: OS::Cinder::Volume
+    properties:
+      name: testbed-node-1-volume-1
+      size: {get_param: volume_size_storage}
+
+  node_1_volume_1_attachment:
+    type: OS::Cinder::VolumeAttachment
+    properties:
+      instance_uuid: {get_resource: node_1_server}
+      volume_id: {get_resource: node_1_volume_1}
+
+  node_1_volume_2:
+    type: OS::Cinder::Volume
+    properties:
+      name: testbed-node-1-volume-2
+      size: {get_param: volume_size_storage}
+
+  node_1_volume_2_attachment:
+    type: OS::Cinder::VolumeAttachment
+    properties:
+      instance_uuid: {get_resource: node_1_server}
+      volume_id: {get_resource: node_1_volume_2}
+
+  node_1_port_management:
+    type: OS::Neutron::Port
+    properties:
+      network_id: {get_resource: net_management}
+      fixed_ips:
+        - ip_address: 192.168.40.11
+      security_groups:
+        - {get_resource: security_group_management}
+
+  node_1_port_internal:
+    type: OS::Neutron::Port
+    properties:
+      network_id: {get_resource: net_internal}
+      fixed_ips:
+        - ip_address: 192.168.50.11
+      allowed_address_pairs:
+        - ip_address: 192.168.50.200/24
+      security_groups:
+        - {get_resource: security_group_internal}
+
+  node_1_port_external:
+    type: OS::Neutron::Port
+    properties:
+      network_id: {get_resource: net_external}
+      fixed_ips:
+        - ip_address: 192.168.90.11
+      allowed_address_pairs:
+        - ip_address: 192.168.90.200/24
+      security_groups:
+        - {get_resource: security_group_external}
+
+  node_1_port_provider:
+    type: OS::Neutron::Port
+    properties:
+      network_id: {get_resource: net_provider}
+      port_security_enabled: false
+      fixed_ips:
+        - ip_address: 192.168.100.11
+
+  node_1_port_storage_frontend:
+    type: OS::Neutron::Port
+    properties:
+      network_id: {get_resource: net_storage_frontend}
+      fixed_ips:
+        - ip_address: 192.168.70.11
+      security_groups:
+        - {get_resource: security_group_storage_frontend}
+
+  node_1_port_storage_backend:
+    type: OS::Neutron::Port
+    properties:
+      network_id: {get_resource: net_storage_backend}
+      fixed_ips:
+        - ip_address: 192.168.80.11
+      security_groups:
+        - {get_resource: security_group_storage_backend}
+
+  node_1_server:
+    type: OS::Nova::Server
+    properties:
+      name: testbed-node-1
+      key_name: {get_resource: key}
+      image: {get_param: image}
+      flavor: {get_param: flavor_node}
+      availability_zone: {get_param: availability_zone}
+      user_data_format: SOFTWARE_CONFIG
+      user_data: {get_resource: node_boot_config}
+      metadata:
+        group: node
+      config_drive: true
+      networks:
+        - port: {get_resource: node_1_port_management}
+        - port: {get_resource: node_1_port_internal}
+        - port: {get_resource: node_1_port_external}
+        - port: {get_resource: node_1_port_provider}
+        - port: {get_resource: node_1_port_storage_frontend}
+        - port: {get_resource: node_1_port_storage_backend}
+
+  # node 2
+
+  node_2_volume_0:
+    type: OS::Cinder::Volume
+    properties:
+      name: testbed-node-2-volume-0
+      size: {get_param: volume_size_storage}
+
+  node_2_volume_0_attachment:
+    type: OS::Cinder::VolumeAttachment
+    properties:
+      instance_uuid: {get_resource: node_2_server}
+      volume_id: {get_resource: node_2_volume_0}
+
+  node_2_volume_1:
+    type: OS::Cinder::Volume
+    properties:
+      name: testbed-node-2-volume-1
+      size: {get_param: volume_size_storage}
+
+  node_2_volume_1_attachment:
+    type: OS::Cinder::VolumeAttachment
+    properties:
+      instance_uuid: {get_resource: node_2_server}
+      volume_id: {get_resource: node_2_volume_1}
+
+  node_2_volume_2:
+    type: OS::Cinder::Volume
+    properties:
+      name: testbed-node-2-volume-2
+      size: {get_param: volume_size_storage}
+
+  node_2_volume_2_attachment:
+    type: OS::Cinder::VolumeAttachment
+    properties:
+      instance_uuid: {get_resource: node_2_server}
+      volume_id: {get_resource: node_2_volume_2}
+
+  node_2_port_management:
+    type: OS::Neutron::Port
+    properties:
+      network_id: {get_resource: net_management}
+      fixed_ips:
+        - ip_address: 192.168.40.12
+      security_groups:
+        - {get_resource: security_group_management}
+
+  node_2_port_internal:
+    type: OS::Neutron::Port
+    properties:
+      network_id: {get_resource: net_internal}
+      fixed_ips:
+        - ip_address: 192.168.50.12
+      allowed_address_pairs:
+        - ip_address: 192.168.50.200/24
+      security_groups:
+        - {get_resource: security_group_internal}
+
+  node_2_port_external:
+    type: OS::Neutron::Port
+    properties:
+      network_id: {get_resource: net_external}
+      fixed_ips:
+        - ip_address: 192.168.90.12
+      allowed_address_pairs:
+        - ip_address: 192.168.90.200/24
+      security_groups:
+        - {get_resource: security_group_external}
+
+  node_2_port_provider:
+    type: OS::Neutron::Port
+    properties:
+      network_id: {get_resource: net_provider}
+      port_security_enabled: false
+      fixed_ips:
+        - ip_address: 192.168.100.12
+
+  node_2_port_storage_frontend:
+    type: OS::Neutron::Port
+    properties:
+      network_id: {get_resource: net_storage_frontend}
+      fixed_ips:
+        - ip_address: 192.168.70.12
+      security_groups:
+        - {get_resource: security_group_storage_frontend}
+
+  node_2_port_storage_backend:
+    type: OS::Neutron::Port
+    properties:
+      network_id: {get_resource: net_storage_backend}
+      fixed_ips:
+        - ip_address: 192.168.80.12
+      security_groups:
+        - {get_resource: security_group_storage_backend}
+
+  node_2_server:
+    type: OS::Nova::Server
+    properties:
+      name: testbed-node-2
+      key_name: {get_resource: key}
+      image: {get_param: image}
+      flavor: {get_param: flavor_node}
+      availability_zone: {get_param: availability_zone}
+      user_data_format: SOFTWARE_CONFIG
+      user_data: {get_resource: node_boot_config}
+      metadata:
+        group: node
+      config_drive: true
+      networks:
+        - port: {get_resource: node_2_port_management}
+        - port: {get_resource: node_2_port_internal}
+        - port: {get_resource: node_2_port_external}
+        - port: {get_resource: node_2_port_provider}
+        - port: {get_resource: node_2_port_storage_frontend}
+        - port: {get_resource: node_2_port_storage_backend}
+
+
+########
+outputs:
+
+  manager_address:
+    value: {get_attr: [manager_floating_ip, floating_ip_address]}
+
+  manager_address_management:
+    value: {get_attr: [manager_port_management, fixed_ips, 0, ip_address]}
+
+  manager_address_internal:
+    value: {get_attr: [manager_port_internal, fixed_ips, 0, ip_address]}
+
+  public_key:
+    value: {get_attr: [key, public_key]}
+
+  private_key:
+    value: {get_attr: [key, private_key]}

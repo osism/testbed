@@ -1,0 +1,4 @@
+# customer specific configuration
+
+# SESSION_TIMEOUT = 7200
+# OPENSTACK_ENABLE_PASSWORD_RETRIEVE = True

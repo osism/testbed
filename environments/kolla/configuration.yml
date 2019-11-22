@@ -1,0 +1,128 @@
+---
+##########################################################
+# ansible
+
+ansible_become: true
+ansible_become_user: root
+
+##########################################################
+# images
+
+kolla_base_distro: ubuntu
+kolla_install_type: source
+openstack_release: rocky
+
+##########################################################
+# kolla
+
+config_strategy: COPY_ALWAYS
+node_custom_config: "{{ configuration_directory }}/environments/kolla/files/overlays"
+
+##########################################################
+# haproxy
+
+kolla_internal_fqdn: api-int.osism.local
+kolla_external_fqdn: api.osism.local
+
+kolla_enable_tls_external: "no"
+
+haproxy_client_timeout: 5m
+haproxy_server_timeout: 5m
+
+##########################################################
+# networking
+
+# NOTE: The configuration of the network interfaces to be used should be done via the inventory.
+
+##########################################################
+# docker
+
+docker_namespace: osism
+docker_restart_policy_retry: 0
+
+##########################################################
+# openstack
+
+# enable services
+enable_aodh: "no"
+enable_barbican: "no"
+enable_ceilometer: "no"
+enable_cinder: "yes"
+enable_cinder_backup: "yes"
+enable_cloudkitty: "no"
+enable_gnocchi: "no"
+enable_heat: "yes"
+enable_ocatvia: "no"
+enable_panko: "no"
+enable_watcher: "no"
+
+enable_grafana: "yes"
+enable_redis: "yes"
+enable_skydive: "no"
+
+# disable services
+enable_chrony: "no"
+
+# generic
+
+# NOTE: This has to be "False", not "false"!
+openstack_logging_debug: "False"
+openstack_service_workers: 5
+
+# profiling
+enable_osprofiler: "no"
+
+# logging
+enable_central_logging: "yes"
+
+# elasticsearch
+
+es_heap_size: "4g"
+
+# horizon
+horizon_backend_database: "yes"
+
+# keystone
+keystone_token_provider: "fernet"
+
+# neutron
+neutron_plugin_agent: "openvswitch"
+enable_neutron_agent_ha: "yes"
+enable_neutron_dvr: "no"
+enable_neutron_qos: "yes"
+
+# nova
+nova_console: novnc
+
+# octavia
+octavia_loadbalancer_topology: "ACTIVE_STANDBY"
+
+# octavia_amp_boot_network_list: FIXME
+# octavia_amp_secgroup_list: FIXME
+# octavia_amp_flavor_id: FIXME
+
+# ceilometer
+ceilometer_database_type: gnocchi
+ceilometer_event_type: panko
+
+##########################################################
+# external ceph
+
+enable_ceph: "no"
+
+cinder_backend_ceph: "yes"
+glance_backend_ceph: "yes"
+gnocchi_backend_storage: "ceph"
+nova_backend_ceph: "yes"
+
+cinder_backup_driver: "ceph"
+
+ceph_gnocchi_pool_name: "metrics"
+
+glance_backend_file: "no"
+
+# NOTE: public_network from environments/ceph/configuration.yml
+ceph_public_network: 192.168.70.0/24
+
+##########################################################
+# other

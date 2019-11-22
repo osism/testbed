@@ -1,0 +1,37 @@
+---
+- name: Fetch ceph keys
+  hosts: manager
+
+  vars:
+    ceph_keys:
+      - src: ceph.client.admin.keyring
+        dest: "{{ configuration_directory }}/environments/infrastructure/files/ceph/ceph.client.admin.keyring"
+
+      - src: ceph.client.cinder.keyring
+        dest: "{{ configuration_directory }}/environments/kolla/files/overlays/cinder/cinder-volume/ceph.client.cinder.keyring"
+
+      - src: ceph.client.cinder.keyring
+        dest: "{{ configuration_directory }}/environments/kolla/files/overlays/cinder/cinder-backup/ceph.client.cinder.keyring"
+
+      - src: ceph.client.cinder-backup.keyring
+        dest: "{{ configuration_directory }}/environments/kolla/files/overlays/cinder/cinder-backup/ceph.client.cinder-backup.keyring"
+
+      - src: ceph.client.cinder.keyring
+        dest: "{{ configuration_directory }}/environments/kolla/files/overlays/nova/ceph.client.cinder.keyring"
+
+      - src: ceph.client.nova.keyring
+        dest: "{{ configuration_directory }}/environments/kolla/files/overlays/nova/ceph.client.nova.keyring"
+
+      - src: ceph.client.glance.keyring
+        dest: "{{ configuration_directory }}/environments/kolla/files/overlays/glance/ceph.client.glance.keyring"
+
+      - src: ceph.client.glance.keyring
+        dest: "{{ configuration_directory }}/environments/kolla/files/overlays/glance-api/ceph.client.glance.keyring"
+
+      - src: ceph.client.gnocchi.keyring
+        dest: "{{ configuration_directory }}/environments/kolla/files/overlays/gnocchi/ceph.client.gnocchi.keyring"
+
+  tasks:
+    - name: Fetch ceph keys
+      command: "docker cp manager_ceph-ansible_1:/share/{{ ceph_cluster_fsid }}/etc/ceph/{{ item.src }} {{ item.dest }}"
+      with_items: "{{ ceph_keys }}"

@@ -1,0 +1,7 @@
+.venv
+Pipfile.lock
+clouds.yml
+id_rsa.*
+roles
+secrets
+secure.yml

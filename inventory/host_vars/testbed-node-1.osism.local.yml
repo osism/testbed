@@ -1,0 +1,109 @@
+---
+##########################################################
+# ansible
+
+ansible_host: 192.168.40.11
+
+##########################################################
+# generic
+
+console_interface: ens3
+management_interface: ens4
+
+internal_address: 192.168.50.11
+fluentd_host: 192.168.50.11
+
+##########################################################
+# cockpit
+
+configure_cockpit_server: yes
+cockpit_host: "{{ hostvars[inventory_hostname]['ansible_' + console_interface]['ipv4']['address'] }}"
+cockpit_ssh_interface: ens3
+
+##########################################################
+# netdata
+
+netdata_host_type: client
+
+##########################################################
+# network-interfaces
+
+network_allow_service_restart: no
+network_restart_method: nothing
+
+network_interfaces:
+  - device: ens3
+    auto: true
+    family: inet
+    method: static
+    address: 192.168.40.11
+    netmask: 255.255.255.0
+    gateway: 192.168.40.1
+    mtu: 1450
+
+  - device: ens4
+    auto: true
+    family: inet
+    method: static
+    address: 192.168.50.11
+    netmask: 255.255.255.0
+    mtu: 1450
+
+  - device: ens5
+    auto: true
+    family: inet
+    method: static
+    address: 192.168.90.11
+    netmask: 255.255.255.0
+    mtu: 1450
+
+  - device: ens6
+    auto: true
+    family: inet
+    method: static
+    address: 192.168.100.11
+    netmask: 255.255.255.0
+    mtu: 1450
+
+  - device: ens7
+    auto: true
+    family: inet
+    method: static
+    address: 192.168.70.11
+    netmask: 255.255.255.0
+    mtu: 1450
+
+  - device: ens8
+    auto: true
+    family: inet
+    method: static
+    address: 192.168.80.11
+    netmask: 255.255.255.0
+    mtu: 1450
+
+##########################################################
+# kolla
+
+network_interface: ens4
+
+# api_interface:
+# dns_interface:
+kolla_external_vip_interface: ens5
+# migration_interface:
+neutron_external_interface: ens6
+# octavia_network_interface:
+storage_interface: ens7
+# tunnel_interface:
+
+##########################################################
+# ceph
+
+monitor_interface: ens7
+# monitor_address:
+# radosgw_interface:
+# radosgw_address:
+
+devices:
+  - /dev/sdb
+  - /dev/sdc
+#  - /dev/sdd  # NOTE: the third volume is commented to be added later in tests
