@@ -145,6 +145,7 @@ resources:
                   # NOTE(berendt): sometimes ARA doesn't really get up after the bootstrap
                   sleep 15
                   sudo -iu dragon docker restart manager_ara-server_1
+                  sleep 15
 
                   # NOTE(berendt): sudo -E does not work here because sudo -i is needed
 
