@@ -1,19 +1,31 @@
 ---
-- hosts: localhost
+- name: Apply role osism.configuration
+  hosts: localhost
   connection: local
   gather_facts: true
 
   vars:
-    # ansible-configuration
     configuration_git_version: master
     configuration_git_host: github.com
     configuration_git_port: 443
     configuration_git_repository: osism/testbed.git
     configuration_git_protocol: https
 
-    # ansible-manager
-    operator_private_key: "{{lookup('file', '/home/dragon/.ssh/id_rsa')}}"
-
   roles:
     - ansible-configuration
+
+- name: Apply role osism.manager
+  hosts: localhost
+  connection: local
+  gather_facts: true
+
+  vars:
+    operator_private_key: "{{lookup('file', '/home/dragon/.ssh/id_rsa')}}"
+
+  vars_files:
+    - /opt/configuration/environments/manager/configuration.yml
+    - /opt/configuration/environments/manager/images.yml
+    - /opt/configuration/environments/manager/secrets.yml
+
+  roles:
     - ansible-manager
