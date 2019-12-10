@@ -19,7 +19,7 @@ testbed-nodes
 # environment: manager & infrastructure
 
 [netdata:children]
-testbed-all-nodes
+testbed-all
 
 [cobbler]
 
