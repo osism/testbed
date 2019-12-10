@@ -149,7 +149,7 @@ resources:
                   # NOTE(berendt): sudo -E does not work here because sudo -i is needed
 
                   # prepare all systems
-                  if [[ {{ number_of_nodes }} -gt 0 ]]; then
+                  if [[ {{ number_of_nodes|default(3)|int }} -gt 0 ]]; then
                       sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic facts'
                       sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic timezone'
                       sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic hostname'

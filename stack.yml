@@ -146,7 +146,7 @@ resources:
                   # NOTE(berendt): sudo -E does not work here because sudo -i is needed
 
                   # prepare all systems
-                  if [[  -gt 0 ]]; then
+                  if [[ 3 -gt 0 ]]; then
                       sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic facts'
                       sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic timezone'
                       sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic hostname'
