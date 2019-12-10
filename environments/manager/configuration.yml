@@ -1,0 +1,17 @@
+---
+##########################
+# versions
+
+ceph_version: luminous
+openstack_version: rocky
+
+ceph_manager_version: latest
+kolla_manager_version: latest
+osism_manager_version: latest
+
+##########################
+# manager
+
+configure_cockpit: yes
+cockpit_host: "{{ hostvars[inventory_hostname]['ansible_' + console_interface]['ipv4']['address'] }}"
+ara_server_host: "{{ hostvars[inventory_hostname]['ansible_' + console_interface]['ipv4']['address'] }}"

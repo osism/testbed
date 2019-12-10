@@ -19,13 +19,12 @@
   connection: local
   gather_facts: true
 
-  vars:
-    operator_private_key: "{{lookup('file', '/home/dragon/.ssh/id_rsa')}}"
-
   vars_files:
+    - /opt/configuration/inventory/host_vars/testbed-manager.osism.local.yml
     - /opt/configuration/environments/manager/configuration.yml
     - /opt/configuration/environments/manager/images.yml
     - /opt/configuration/environments/manager/secrets.yml
+    - /opt/configuration/environments/secrets.yml
 
   roles:
     - ansible-manager
