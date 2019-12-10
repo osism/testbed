@@ -1,19 +1,4 @@
 ---
-- name: Apply role osism.configuration
-  hosts: localhost
-  connection: local
-  gather_facts: true
-
-  vars:
-    configuration_git_version: master
-    configuration_git_host: github.com
-    configuration_git_port: 443
-    configuration_git_repository: osism/testbed.git
-    configuration_git_protocol: https
-
-  roles:
-    - ansible-configuration
-
 - name: Apply role osism.manager
   hosts: localhost
   connection: local

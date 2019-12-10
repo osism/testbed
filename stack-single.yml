@@ -109,8 +109,10 @@ resources:
                   sudo -iu dragon ansible-galaxy install git+https://github.com/osism/ansible-configuration
                   sudo -iu dragon ansible-galaxy install git+https://github.com/osism/ansible-manager
 
-                  curl https://raw.githubusercontent.com/osism/testbed/master/playbooks/manager.yml | sudo -iu dragon tee /home/dragon/manager.yml
-                  sudo -iu dragon ansible-playbook -i localhost, /home/dragon/manager.yml
+                  curl https://raw.githubusercontent.com/osism/testbed/master/playbooks/manager-part-1.yml | sudo -iu dragon tee /home/dragon/manager-part-1.yml
+                  curl https://raw.githubusercontent.com/osism/testbed/master/playbooks/manager-part-2.yml | sudo -iu dragon tee /home/dragon/manager-part-2.yml
+                  sudo -iu dragon ansible-playbook -i localhost, /home/dragon/manager-part-1.yml
+                  sudo -iu dragon ansible-playbook -i localhost, /home/dragon/manager-part-2.yml
 
                   sudo -iu dragon docker cp /home/dragon/.ssh/id_rsa.pub manager_osism-ansible_1:/share/id_rsa.pub
 
