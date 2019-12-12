@@ -97,15 +97,6 @@ elasticsearch
 kibana
 
 ##########################################################
-# environment: monitoring
-
-[monitoring:children]
-manager
-
-[prometheus:children]
-manager
-
-##########################################################
 # environment: kolla
 
 [control:children]
@@ -217,7 +208,7 @@ control
 control
 
 [skydive:children]
-monitoring
+manager
 
 [watcher:children]
 control
