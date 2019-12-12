@@ -31,11 +31,15 @@ testbed-manager
 
 [mirror]
 
+[openstackclient:children]
+testbed-manager
+
 [infrastructure:children]
 cobbler
 helper
 manager
 mirror
+openstackclient
 
 ##########################################################
 # environment: ceph

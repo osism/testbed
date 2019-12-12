@@ -31,6 +31,7 @@ cephclient_groupname: cephclient
 # openstackclient
 
 openstackclient_configuration_directory: "{{ configuration_directory }}/environments/openstack"
+openstackclient_groupname: openstackclient
 
 ##########################
 # phpmyadmin
