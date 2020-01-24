@@ -1,15 +1,13 @@
 ##########################################################
-# all nodes
+# custom host groups
 
+# testbed
+
+[testbed-all]
 testbed-manager.osism.local
 testbed-node-0.osism.local
 testbed-node-1.osism.local
 testbed-node-2.osism.local
-
-##########################################################
-# custom host groups
-
-# testbed
 
 [testbed-manager]
 testbed-manager.osism.local
@@ -25,7 +23,7 @@ testbed-node-1.osism.local
 # environment: manager & infrastructure
 
 [netdata:children]
-all
+testbed-all
 
 [cobbler]
 
