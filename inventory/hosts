@@ -1,4 +1,12 @@
 ##########################################################
+# all nodes
+
+testbed-manager.osism.local
+testbed-node-0.osism.local
+testbed-node-1.osism.local
+testbed-node-2.osism.local
+
+##########################################################
 # custom host groups
 
 # testbed
@@ -9,17 +17,15 @@ testbed-manager.osism.local
 [testbed-nodes]
 testbed-node-0.osism.local
 testbed-node-1.osism.local
-testbed-node-2.osism.local
-
-[testbed-all:children]
-testbed-manager
-testbed-nodes
+# NOTE: The node testbed-node-2 is commented to be able to test scaling
+#       in the testbed.
+# testbed-node-2.osism.local
 
 ##########################################################
 # environment: manager & infrastructure
 
 [netdata:children]
-testbed-all
+all
 
 [cobbler]
 
