@@ -11,6 +11,7 @@ Hyperconverged infrastructure (HCI) testbed based on OpenStack and Ceph, deploye
 - [Preparations](#preparations)
 - [Initialization](#initialization)
 - [Usage](#usage)
+- [Purge](#purge)
 - [Todo](#todo)
 
 ## Overview
@@ -210,6 +211,36 @@ openstack --os-cloud testbed \
     192.168.50.0/24 \
     192.168.90.0/24
   ```
+
+## Purge
+
+These commands completely remove parts of the environment. This makes reuse possible
+without having to create a completely new environment.
+
+### OpenStack & infrastructure services
+
+```
+osism-kolla _ purge
+Are you sure you want to purge the kolla environment? [no]: yes
+Are you really sure you want to purge the kolla environment? [no]: ireallyreallymeanit
+```
+
+### Ceph
+
+```
+osism-ceph purge-docker-cluster
+Are you sure you want to purge the cluster? Note that if with_pkg is not set docker packages and more will be uninstalled from non-atomic hosts. Do you want to continue?
+ [no]: yes
+```
+
+### Manager services
+
+```
+cd /opt/manager
+docker-compose down -v
+```
+
+Some services like phpMyAdmin or OpenStackClient will still run afterwards.
 
 ## Todo
 
