@@ -79,6 +79,10 @@ enable_central_logging: "yes"
 
 es_heap_size: "4g"
 
+# rabbitmq
+
+rabbitmq_cluster_version: 1
+
 # horizon
 horizon_backend_database: "yes"
 
