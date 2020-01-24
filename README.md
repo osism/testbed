@@ -185,19 +185,28 @@ openstack --os-cloud testbed \
   ```
   openstack --os-cloud testbed \
     stack output show \
-    -c output_value \
     testbed manager_address
-  +--------------+-----------------+
-  | Field        | Value           |
-  +--------------+-----------------+
-  | output_value | a.b.c.d         |
-  +--------------+-----------------+
+  +--------------+----------------------+
+  | Field        | Value                |
+  +--------------+----------------------+
+  | description  | No description given |
+  | output_key   | manager_address      |
+  | output_value | MANAGER_ADDRESS      |
+  +--------------+----------------------+
+  ```
+
+  ```
+  MANAGER_ADDRESS=$(openstack --os-cloud testbed \
+    stack output show \
+    -c output_value \
+    -f value \
+    testbed manager_address)
   ```
 
 * access the manager
 
   ```
-  ssh -i id_rsa.testbed dragon@a.b.c.d
+  ssh -i id_rsa.testbed dragon@$MANAGER_ADDRESS
   ```
 
 * use sshuttle (https://github.com/sshuttle/sshuttle) to access the individual
@@ -206,7 +215,7 @@ openstack --os-cloud testbed \
   ```
   sshuttle \
     --ssh-cmd 'ssh -i id_rsa.testbed' \
-    -r dragon@a.b.c.d \
+    -r dragon@$MANAGER_ADDRESS \
     192.168.40.0/24 \
     192.168.50.0/24 \
     192.168.90.0/24
