@@ -102,8 +102,8 @@ resolvconf_package: ""
 
 hosts_type: template
 hosts_additional_entries:
-  api.osism.local: 192.168.50.200
-  api-int.osism.local: 192.168.90.200
+  api-int.osism.local: 192.168.50.200
+  api.osism.local: 192.168.90.200
 
 ##########################
 # common
