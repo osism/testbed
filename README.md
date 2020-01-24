@@ -85,7 +85,7 @@ only has no connection to the storage backend.
 
 ### Nodes
 
-The nodes always have the same ending in the networks.
+The nodes always have the same postfix in the networks.
 
 | Name             | CIDR                 |
 |------------------|----------------------|
