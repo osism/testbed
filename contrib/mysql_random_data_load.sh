@@ -4,7 +4,7 @@
 #
 # For the generation of the test data https://github.com/Percona-Lab/mysql_random_data_load is used.
 
-NUMBER_OF_ROWS=${1:-10000}
+NUMBER_OF_ROWS=${1:-100000}
 
 export MYSQL_HOST=api-int.osism.local
 export MYSQL_PWD=qNpdZmkKuUKBK3D5nZ08KMZ5MnYrGEe2hzH6XC0i
