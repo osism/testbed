@@ -5,3 +5,4 @@ id_rsa.*
 roles
 secrets
 secure.yml
+contrib/mysql_random_data_load
