@@ -279,7 +279,3 @@ indices is set to 14.
 cd /opt/configuration/contrib
 ./elasticsearch_random_data_load.sh NUMBER_OF_DOCUMENTS
 ```
-
-## Todo
-
-* use Heat resource groups
