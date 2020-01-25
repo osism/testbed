@@ -265,6 +265,20 @@ cd /opt/configuration/contrib
 ./mysql_random_data_load.sh NUMBER_OF_ROWS
 ```
 
+### Random Elasticsearch data
+
+After deployment of Elasticsearch including HAProxy it is possible to create 14 test indices
+which are filled with randomly generated data. The script can be executed multiple times to
+generate more data.
+
+14 indices are generated because the default retention time for the number of retained
+indices is set to 14.
+
+```
+cd /opt/configuration/contrib
+./elasticsearch_random_data_load.sh NUMBER_OF_DOCUMENTS
+```
+
 ## Todo
 
 * set hostnames to node-0, node-1, node-2, manager (remove testbed prefix)
