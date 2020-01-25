@@ -77,6 +77,7 @@ only has no connection to the storage backend.
 
 | Name             | CIDR                 | Description |
 |------------------|----------------------|-------------|
+| out of band      | ``192.168.30.0/24``  |             |
 | management       | ``192.168.40.0/24``  |             |
 | internal         | ``192.168.50.0/24``  |             |
 | storage frontend | ``192.168.70.0/24``  |             |
