@@ -282,5 +282,4 @@ cd /opt/configuration/contrib
 
 ## Todo
 
-* set hostnames to node-0, node-1, node-2, manager (remove testbed prefix)
 * use Heat resource groups
