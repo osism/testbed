@@ -12,6 +12,7 @@ Hyperconverged infrastructure (HCI) testbed based on OpenStack and Ceph, deploye
 - [Initialization](#initialization)
 - [Usage](#usage)
 - [Purge](#purge)
+- [Tools](#tools)
 - [Todo](#todo)
 
 ## Overview
@@ -250,6 +251,19 @@ docker-compose down -v
 ```
 
 Some services like phpMyAdmin or OpenStackClient will still run afterwards.
+
+## Tools
+
+### Random MySQL data
+
+After deployment of MariaDB including HAProxy it is possible to create a test database with
+four tables which are filled with randomly generated data. The script can be executed multiple
+times to generate more data.
+
+```
+cd /opt/configuration/contrib
+./mysql_random_data_load.sh NUMBER_OF_ROWS
+```
 
 ## Todo
 
