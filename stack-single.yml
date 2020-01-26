@@ -179,6 +179,8 @@ resources:
                           sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy horizon'
                           sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy glance'
                           sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy cinder'
+                          sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy neutron'
+                          sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy nova'
                           sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy heat'
                       fi
                   fi
