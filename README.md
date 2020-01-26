@@ -182,7 +182,7 @@ openstack --os-cloud testbed \
 
 ## Usage
 
-* get private SSH key
+* Get private SSH key
 
   ```
   openstack --os-cloud testbed \
@@ -192,13 +192,13 @@ openstack --os-cloud testbed \
     testbed private_key > id_rsa.testbed
   ```
 
-* set permissions
+* Set permissions
 
   ```
   chmod 0600 id_rsa.testbed
   ```
 
-* get the manager's address
+* Get the manager's address
 
   ```
   openstack --os-cloud testbed \
@@ -221,13 +221,13 @@ openstack --os-cloud testbed \
     testbed manager_address)
   ```
 
-* access the manager
+* Access the manager
 
   ```
   ssh -i id_rsa.testbed dragon@$MANAGER_ADDRESS
   ```
 
-* use sshuttle (https://github.com/sshuttle/sshuttle) to access the individual
+* Use sshuttle (https://github.com/sshuttle/sshuttle) to access the individual
   services locally
 
   ```
@@ -301,7 +301,7 @@ times to generate more data.
 
 ```
 cd /opt/configuration/contrib
-./mysql_random_data_load.sh NUMBER_OF_ROWS
+./mysql_random_data_load.sh 100000
 ```
 
 ### Random Elasticsearch data
@@ -315,7 +315,7 @@ indices is set to 14.
 
 ```
 cd /opt/configuration/contrib
-./elasticsearch_random_data_load.sh NUMBER_OF_DOCUMENTS
+./elasticsearch_random_data_load.sh 100000
 ```
 
 ### Check infrastructure services
