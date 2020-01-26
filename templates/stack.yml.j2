@@ -206,6 +206,10 @@ resources:
                           sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy neutron'
                           sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy nova'
                           sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy heat'
+                          sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy gnocchi'
+                          sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy ceilometer'
+                          sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy aodh'
+                          sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy panko'
                       fi
                   fi
 
