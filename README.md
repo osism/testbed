@@ -27,6 +27,14 @@ The manager serves as a central entry point into the environment.
 * **WARNING** The secrets are unencrypted in the individual files. Therefore do not use the
   testbed publicly
 * The configuration is intentionally kept quite static
+* The third node (``testbed-node-2``) is not enabled for services by default. This is to
+  test the scaling of the services.
+
+  ```
+  # NOTE: The node testbed-node-2 is commented to be able to test scaling
+  #       in the testbed.
+  # testbed-node-2.osism.local
+  ```
 
 ## Heat stack
 
@@ -135,6 +143,8 @@ be able to carry out various preparatory steps after the manager has been made a
 
 ### Customisation
 
+By default, no services are deployed when the stack is created. This is customizable.
+
 The deployment of infrastructure services can be enabled via parameter ``deploy_infrastructure``.
 
 Without the deployment of the infrastructure services the deployment of OpenStack is not possible.
@@ -229,6 +239,26 @@ openstack --os-cloud testbed \
     192.168.90.0/24
   ```
 
+## Deploy
+
+* Infrastructure services
+
+  ```
+  /opt/configuration/scripts/deploy_infrastructure_services.sh
+  ```
+
+* Ceph services
+
+  ```
+  /opt/configuration/scripts/deploy_ceph_services.sh
+  ```
+
+* OpenStack services
+
+  ```
+  /opt/configuration/scripts/deploy_openstack_services.sh
+  ```
+
 ## Purge
 
 These commands completely remove parts of the environment. This makes reuse possible
@@ -245,8 +275,10 @@ Are you really sure you want to purge the kolla environment? [no]: ireallyreally
 ### Ceph
 
 ```
+find /opt/configuration -name 'ceph*keyring' -exec rm {} \;
 osism-ceph purge-docker-cluster
-Are you sure you want to purge the cluster? Note that if with_pkg is not set docker packages and more will be uninstalled from non-atomic hosts. Do you want to continue?
+Are you sure you want to purge the cluster? Note that if with_pkg is not set docker
+packages and more will be uninstalled from non-atomic hosts. Do you want to continue?
  [no]: yes
 ```
 
