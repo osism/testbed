@@ -13,7 +13,7 @@ Hyperconverged infrastructure (HCI) testbed based on OpenStack and Ceph, deploye
 - [Usage](#usage)
 - [Purge](#purge)
 - [Tools](#tools)
-- [Todo](#todo)
+- [Recipes](#recipes)
 
 ## Overview
 
@@ -331,3 +331,35 @@ RabbitMQ        RABBITMQ_CLUSTER OK - nb_running_node OK (2) nb_running_disc_nod
 
 Redis           TCP OK - 0.002 second response time on 192.168.50.10 port 6379|time=0.001901s;;;0.000000;10.000000
 ```
+
+## Recipes
+
+* Ceph
+
+  ```
+  osism-ceph env-hci; osism-run custom fetch-ceph-keys; osism-infrastructure helper --tags cephclient
+  ```
+
+* Clustered services
+
+  ```
+  osism-kolla deploy common,haproxy,elasticsearch,rabbitmq,mariadb,redis
+  ```
+
+* Infrastructure services (also deploy `Clustered services`)
+
+  ```
+  osism-kolla deploy openvswitch,memcached
+  ```
+
+* Basic OpenStack services (also deploy `Infrastructure services`, `Clustered services`, and `Ceph`)
+
+  ```
+  osism-kolla deploy keystone,horizon,glance,cinder,neutron,nova
+  ```
+
+* Additional OpenStack services (also deploy `Basic OpenStack services` and all requirements)
+
+  ```
+  osism-kolla deploy heat,gnocchi,ceilometer,aodh,panko
+  ```
