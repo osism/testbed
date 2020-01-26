@@ -38,15 +38,15 @@ parameters:
 
   deploy_infrastructure:
     type: boolean
-    default: true
+    default: false
 
   deploy_openstack:
     type: boolean
-    default: true
+    default: false
 
   deploy_ceph:
     type: boolean
-    default: true
+    default: false
 
 ##########
 resources:

@@ -135,32 +135,38 @@ be able to carry out various preparatory steps after the manager has been made a
 
 ### Customisation
 
-The deployment of OpenStack can be disabled via parameter ``deploy_openstack``.
+The deployment of infrastructure services can be enabled via parameter ``deploy_infrastructure``.
 
-```
-openstack --os-cloud testbed \
-  stack create \
-  --parameter deploy_openstack=false \
-  -t stack.yml testbed
-```
-
-The deployment of Ceph can be disabled via parameter ``deploy_ceph``. Without the deployment of
-Ceph the deployment of OpenStack is not possible.
-
-```
-openstack --os-cloud testbed \
-  stack create \
-  --parameter deploy_ceph=false \
-  -t stack.yml testbed
-```
-
-The deployment of infrastructure services can be disabled via parameter ``deploy_infrastructure``.
 Without the deployment of the infrastructure services the deployment of OpenStack is not possible.
 
 ```
 openstack --os-cloud testbed \
   stack create \
-  --parameter deploy_infrastructure=false \
+  --parameter deploy_infrastructure=true \
+  -t stack.yml testbed
+```
+
+The deployment of Ceph can be enabled via parameter ``deploy_ceph``.
+
+Without the deployment of Ceph the deployment of OpenStack is not possible.
+
+```
+openstack --os-cloud testbed \
+  stack create \
+  --parameter deploy_ceph=true \
+  -t stack.yml testbed
+```
+
+The deployment of OpenStack can be enabled via parameter ``deploy_openstack``.
+
+The deployment of OpenStack depends on the deployment of Ceph and the infrastructure services.
+
+```
+openstack --os-cloud testbed \
+  stack create \
+  --parameter deploy_ceph=true \
+  --parameter deploy_infrastructure=true \
+  --parameter deploy_openstack=true \
   -t stack.yml testbed
 ```
 

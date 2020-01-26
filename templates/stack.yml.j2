@@ -39,15 +39,15 @@ parameters:
 
   deploy_infrastructure:
     type: boolean
-    default: {{ (number_of_nodes|default(3)|int > 0)|lower }}
+    default: false
 
   deploy_openstack:
     type: boolean
-    default: {{ (number_of_nodes|default(3)|int > 0)|lower }}
+    default: false
 
   deploy_ceph:
     type: boolean
-    default: {{ (number_of_nodes|default(3)|int > 0)|lower }}
+    default: false
 
 ##########
 resources:
