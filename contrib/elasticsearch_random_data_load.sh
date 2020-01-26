@@ -27,6 +27,5 @@ for index in $(seq 1 $NUMBER_OF_INDICES); do
       --count=$NUMBER_OF_DOCUMENTS \
       --num_of_shards=5 \
       --num_of_replicas=1 \
-      --batch_size=10000 \
       --format=name:str,age:int,last_updated:ts,message:words:50:100
 done
