@@ -285,3 +285,17 @@ indices is set to 14.
 cd /opt/configuration/contrib
 ./elasticsearch_random_data_load.sh NUMBER_OF_DOCUMENTS
 ```
+
+### Check infrastructure services
+
+```
+cd /opt/configuration/contrib
+./check_infrastructure_services.sh
+Elasticsearch   OK - elasticsearch (kolla_logging) is running. status: green; timed_out: false; number_of_nodes: 2; ...
+
+MariaDB         OK: number of NODES = 2 (wsrep_cluster_size)
+
+RabbitMQ        RABBITMQ_CLUSTER OK - nb_running_node OK (2) nb_running_disc_node OK (2) nb_running_ram_node OK (0)
+
+Redis           TCP OK - 0.002 second response time on 192.168.50.10 port 6379|time=0.001901s;;;0.000000;10.000000
+```
