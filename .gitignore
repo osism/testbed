@@ -7,3 +7,4 @@ secrets
 secure.yml
 contrib/mysql_random_data_load
 contrib/es_test_data.py
+environments/**/ceph.client.*.keyring
