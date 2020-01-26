@@ -9,4 +9,4 @@ script:
   - yamllint -c .yamllint.yml stack.yml
   - jinja2 -o stack-manager.yml -D number_of_nodes=0 templates/stack.yml.j2
   - yamllint -c .yamllint.yml stack-manager.yml
-  - flake8 scripts/render-stack-template.py
+  - flake8 src/render-stack-template.py
