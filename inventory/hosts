@@ -232,6 +232,9 @@ control
 [manila:children]
 control
 
+[designate:children]
+control
+
 # glance
 
 [glance-api:children]
@@ -502,3 +505,26 @@ network
 
 [manila-data:children]
 manila
+
+# designate
+
+[designate-api:children]
+designate
+
+[designate-central:children]
+designate
+
+[designate-producer:children]
+designate
+
+[designate-mdns:children]
+network
+
+[designate-worker:children]
+designate
+
+[designate-sink:children]
+designate
+
+[designate-backend-bind9:children]
+designate
