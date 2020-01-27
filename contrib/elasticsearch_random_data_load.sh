@@ -12,10 +12,6 @@ if [[ ! -e /usr/lib/python3/dist-packages/tornado ]]; then
     sudo apt-get install -y python3-tornado
 fi
 
-if [[ ! -e /usr/lib/python3/dist-packages/numpy ]]; then
-    sudo apt-get install -y python3-numpy
-fi
-
 if [[ ! -e es_test_data.py ]]; then
     wget https://raw.githubusercontent.com/oliver006/elasticsearch-test-data/master/es_test_data.py
 fi
