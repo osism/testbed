@@ -1,0 +1,18 @@
+#!/bin/bash
+
+set -eu
+set -o pipefail
+
+ansible-galaxy install git+https://github.com/openstack/ansible-hardening
+ansible-galaxy install git+https://github.com/osism/ansible-chrony
+ansible-galaxy install git+https://github.com/osism/ansible-common
+ansible-galaxy install git+https://github.com/osism/ansible-docker
+ansible-galaxy install git+https://github.com/osism/ansible-operator
+ansible-galaxy install git+https://github.com/osism/ansible-repository
+ansible-galaxy install git+https://github.com/osism/ansible-resolvconf
+
+curl https://raw.githubusercontent.com/osism/testbed/master/playbooks/diskimage.yml > /root/diskimage.yml
+ansible-playbook -i localhost, /root/diskimage.yml
+
+sudo -iu dragon ansible-galaxy install git+https://github.com/osism/ansible-configuration
+sudo -iu dragon ansible-galaxy install git+https://github.com/osism/ansible-manager

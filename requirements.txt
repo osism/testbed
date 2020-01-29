@@ -1,3 +1,4 @@
+diskimage-builder
 Jinja2
 PyYAML
 python-gilt
