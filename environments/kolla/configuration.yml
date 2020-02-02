@@ -85,6 +85,10 @@ es_heap_size: "4g"
 
 rabbitmq_cluster_version: 1
 
+# mariadb
+
+enable_mariabackup: "yes"
+
 # horizon
 horizon_backend_database: "yes"
 
