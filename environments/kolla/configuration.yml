@@ -8,6 +8,7 @@ ansible_become_user: root
 ##########################################################
 # images
 
+docker_registry: quay.io
 kolla_base_distro: ubuntu
 kolla_install_type: source
 openstack_release: rocky
