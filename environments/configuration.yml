@@ -38,7 +38,7 @@ docker_registry: index.docker.io
 ##########################
 # versions
 
-docker_version: "5:18.09.5"
+docker_version: "5:19.03.4"
 repository_version: latest
 
 ##########################
