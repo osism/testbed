@@ -26,6 +26,7 @@ kolla_internal_fqdn: api-int.osism.local
 kolla_external_fqdn: api.osism.local
 
 kolla_enable_tls_external: "no"
+kolla_enable_tls_internal: "no"
 
 haproxy_client_timeout: 5m
 haproxy_server_timeout: 5m
