@@ -14,6 +14,7 @@ Hyperconverged infrastructure (HCI) testbed based on OpenStack and Ceph, deploye
 - [Purge](#purge)
 - [Tools](#tools)
 - [Recipes](#recipes)
+- [Webinterfaces](#webinterfaces)
 
 ## Overview
 
@@ -363,3 +364,13 @@ Redis           TCP OK - 0.002 second response time on 192.168.50.10 port 6379|t
   ```
   osism-kolla deploy heat,gnocchi,ceilometer,aodh,panko
   ```
+
+## Webinterfaces
+
+| Name             | URL                        | Username | Password                                 |
+|------------------|----------------------------|----------|------------------------------------------|
+| ARA              | http://192.168.40.5:8120   | ara      | S6JE2yJUwvraiX57                         |
+| Horizon          | http://192.168.50.200      | admin    | TTgPSOSmgdmQAJUKu627DuzutgnIoAzsSxFg2ntu |
+| Kibana           | http://192.168.50.200:5601 | kibana   | k2ReobFEsoxNm3DyZnkZmFPadSnCz6BjQhaLFoyB |
+| Netdata          | http://192.168.40.5:19999  | -        | -                                        |
+| phpMyAdmin       | http://192.168.40.5:8110   | root     | qNpdZmkKuUKBK3D5nZ08KMZ5MnYrGEe2hzH6XC0i |
