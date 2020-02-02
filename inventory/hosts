@@ -298,6 +298,9 @@ network
 [ironic-neutron-agent:children]
 network
 
+[neutron-metering-agent:children]
+neutron
+
 [openvswitch:children]
 network
 compute
