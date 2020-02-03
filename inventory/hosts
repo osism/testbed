@@ -69,6 +69,9 @@ ceph-control
 # [ceph-rgw:children]
 # ceph-control
 
+# [ceph-rbdmirror:children]
+# ceph-control
+
 [ceph-osd:children]
 testbed-nodes
 
@@ -85,6 +88,9 @@ ceph-mon
 
 # [rgws:children]
 # ceph-rgw
+
+# [rbdmirrors]
+# ceph-rbdmirror
 
 [osds:children]
 ceph-osd
