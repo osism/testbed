@@ -388,7 +388,8 @@ mistral
 
 # mongodb
 
-[mongodb]
+[mongodb:children]
+control
 
 # searchlight
 
