@@ -9,6 +9,7 @@ Hyperconverged infrastructure (HCI) testbed based on OpenStack and Ceph, deploye
 - [Heat stack](#heat-stack)
 - [Network topology](#network-topology)
 - [Preparations](#preparations)
+- [Configuration](#configuration)
 - [Initialization](#initialization)
 - [Usage](#usage)
 - [Purge](#purge)
@@ -117,6 +118,55 @@ The nodes always have the same postfix in the networks.
 * ``python-openstackclient`` must be installed
 * Heat, the OpenStack orchestration service,  must be usable on the cloud environment
 * a ``clouds.yml`` and ``secure.yml`` must be created (https://docs.openstack.org/python-openstackclient/latest/configuration/index.html#clouds-yaml)
+
+## Configuration
+
+The defaults for the stack parameters are intended for the Betacloud.
+
+<table>
+  <tr>
+    <th>Parameter</th>
+    <th>Default</th>
+  </tr>
+  <tr>
+    <td><code>availability_zone</code></td>
+    <td><code>south-1</code></td>
+  </tr>
+  <tr>
+    <td><code>flavor_controller</code></td>
+    <td><code>4C-16GB-40GB</code></td>
+  </tr>
+  <tr>
+    <td><code>flavor_manager</code></td>
+    <td><code>2C-4GB-20GB</code></td>
+  </tr>
+  <tr>
+    <td><code>image</code></td>
+    <td><code>Ubuntu 18.04</code></td>
+  </tr>
+  <tr>
+    <td><code>public</code></td>
+    <td><code>public</code></td>
+  </tr>
+  <tr>
+    <td><code>volume_size_storage</code></td>
+    <td><code>10</code></td>
+  </tr>
+</table>
+
+With the file ``environment.yml`` the parameters of the stack can be adjusted.
+Further details on environments on https://docs.openstack.org/heat/latest/template_guide/environment.html.
+
+```
+---
+parameters:
+  availability_zone: south-1
+  flavor_controller: 4C-16GB-40GB
+  flavor_manager: 2C-4GB-20GB
+  image: Ubuntu 18.04
+  public: public
+  volume_size_storage: 10
+```
 
 ## Initialization
 
