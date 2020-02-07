@@ -225,7 +225,7 @@ parameters:
 ## Initialization
 
 To start a testbed with one manager and three HCI nodes, ``stack.yml`` is used. To start
-only a manager ``stack-single`` is used.
+only a manager ``stack-single.yml`` is used.
 
 Before building the stack it should be checked if it is possible to build it.
 
