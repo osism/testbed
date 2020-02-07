@@ -43,6 +43,8 @@ The manager serves as a central entry point into the environment.
   #       in the testbed.
   # testbed-node-2.osism.local
   ```
+* The documentation of the OSISM can be found on https://docs.osism.de. There you will find
+  further details on deployment, operation etc.
 
 ## Heat stack
 
