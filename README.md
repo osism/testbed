@@ -92,6 +92,11 @@ jinja2 -o stack.yml -D number_of_volumes=4 templates/stack.yml.j2
 
 ![Network topology](https://raw.githubusercontent.com/osism/testbed/master/images/network-topology.png)
 
+The networks ``net-to-public-testbed`` and ``net-to-betacloud-public`` are not part of the testbed.
+They are standard networks on the Betacloud.
+
+``public`` and ``betacloud`` are external networks on the Betacloud. These are also not part of the testbed.
+
 ### Networks
 
 With the exception of the manager, all nodes have a connection to any network. The manager
