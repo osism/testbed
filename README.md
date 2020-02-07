@@ -90,7 +90,7 @@ only has no connection to the storage backend.
 | management       | ``192.168.40.0/24``  |             |
 | internal         | ``192.168.50.0/24``  |             |
 | storage frontend | ``192.168.70.0/24``  |             |
-| storage backend  | ``193.168.80.0/24``  |             |
+| storage backend  | ``192.168.80.0/24``  |             |
 | external         | ``192.168.90.0/24``  |             |
 | provider         | ``192.168.100.0/24`` |             |
 
