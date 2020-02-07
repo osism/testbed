@@ -46,11 +46,17 @@ The manager serves as a central entry point into the environment.
 
 ## Heat stack
 
-The testbed is based on a Heat stack. The stack is defined in the file ``stack.yml``.
+The testbed is based on a Heat stack.
+
+* ``stack.yml`` - stack with one manager node and three HCI nodes
+* ``stack-single.yml`` - stack with only one manager node
 
 ![Stack topology](https://raw.githubusercontent.com/osism/testbed/master/images/stack-topology.png)
 
 ### Template
+
+It is usually sufficient to use the prepared stacks. Changes to the template itself are normally
+not necessary.
 
 If you change the template of the Heat stack (``templates/stack.yml.j2``) you can update the
 ``stack.yml`` file with the ``jinja2-cli`` (https://github.com/mattrobenolt/jinja2-cli).
@@ -175,6 +181,9 @@ parameters:
 ```
 
 ## Initialization
+
+To start a testbed with one manager and three HCI nodes, ``stack.yml`` is used. To start
+only a manager ``stack-single`` is used.
 
 Before building the stack it should be checked if it is possible to build it.
 
