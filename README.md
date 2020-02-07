@@ -28,7 +28,8 @@ The manager serves as a central entry point into the environment.
 
 * **WARNING** The secrets are unencrypted in the individual files. **Therefore do not use the
   testbed publicly.**
-* The configuration is intentionally kept quite static.
+* The configuration is intentionally kept quite static. Please no PRs to make the configuration
+  more flexible/dynamic.
 * The OSISM documentation uses hostnames, examples, addresses etc. from this testbed.
 * Even if all components (storage, network, compute, control) are operated on the same nodes,
   there are separate networks. This is because in larger productive HCI environments, dedicated
