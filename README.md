@@ -26,9 +26,13 @@ The manager serves as a central entry point into the environment.
 
 ## Notes
 
-* **WARNING** The secrets are unencrypted in the individual files. Therefore do not use the
-  testbed publicly
-* The configuration is intentionally kept quite static
+* **WARNING** The secrets are unencrypted in the individual files. **Therefore do not use the
+  testbed publicly.**
+* The configuration is intentionally kept quite static.
+* Even if all components (storage, network, compute, control) are operated on the same nodes,
+  there are separate networks. This is because in larger productive HCI environments, dedicated
+  control nodes and network nodes are usually provided. It is also common to place storage
+  frontend and storage backend on an independent/additional network infrastructure.
 * The third node (``testbed-node-2``) is not enabled for services by default. This is to
   test the scaling of the services.
 
