@@ -417,7 +417,12 @@ Some services like phpMyAdmin or OpenStackClient will still run afterwards.
 
 ## Tools
 
-### Random MySQL data
+### Random data
+
+The contrib directory contains some scripts to fill the components of the environment with random data.
+This is intended to generate a realistic data load, e.g. for upgrades or scaling tests.
+
+#### MySQL
 
 After deployment of MariaDB including HAProxy it is possible to create a test database with
 four tables which are filled with randomly generated data. The script can be executed multiple
@@ -428,7 +433,7 @@ cd /opt/configuration/contrib
 ./mysql_random_data_load.sh 100000
 ```
 
-### Random Elasticsearch data
+#### Elasticsearch
 
 After deployment of Elasticsearch including HAProxy it is possible to create 14 test indices
 which are filled with randomly generated data. The script can be executed multiple times to
@@ -444,6 +449,9 @@ cd /opt/configuration/contrib
 
 ### Check infrastructure services
 
+The contrib directory contains a script to check the clustered infrastructure services. The
+configuration is so that two nodes are already sufficient.
+
 ```
 cd /opt/configuration/contrib
 ./check_infrastructure_services.sh
@@ -458,25 +466,27 @@ Redis           TCP OK - 0.002 second response time on 192.168.50.10 port 6379|t
 
 ## Recipes
 
+This section describes how individual parts of the testbed can be deployed.
+
 * Ceph
 
   ```
   osism-ceph env-hci; osism-run custom fetch-ceph-keys; osism-infrastructure helper --tags cephclient
   ```
 
-* Clustered services
+* Clustered infrastructure services
 
   ```
   osism-kolla deploy common,haproxy,elasticsearch,rabbitmq,mariadb,redis
   ```
 
-* Infrastructure services (also deploy `Clustered services`)
+* Infrastructure services (also deploy `Clustered infrastructure services`)
 
   ```
   osism-kolla deploy openvswitch,memcached
   ```
 
-* Basic OpenStack services (also deploy `Infrastructure services`, `Clustered services`, and `Ceph`)
+* Basic OpenStack services (also deploy `Infrastructure services`, `Clustered infrastructure services`, and `Ceph`)
 
   ```
   osism-kolla deploy keystone,horizon,glance,cinder,neutron,nova
