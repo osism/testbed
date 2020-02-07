@@ -8,6 +8,7 @@ Hyperconverged infrastructure (HCI) testbed based on OpenStack and Ceph, deploye
 - [Notes](#notes)
 - [Heat stack](#heat-stack)
 - [Network topology](#network-topology)
+- [Services](#services)
 - [Preparations](#preparations)
 - [Configuration](#configuration)
 - [Initialization](#initialization)
@@ -131,6 +132,40 @@ The nodes always have the same postfix in the networks.
 |------------------|--------------------------|-------------------------|
 | external         | ``192.168.90.200``       | ``api.osism.local``     |
 | internal         | ``192.168.50.200``       | ``api-int.osism.local`` |
+
+## Services
+
+The following services can currently be used with this testbed without further adjustments.
+Feel free to open an issue on Github (https://github.com/osism/testbed/issues)  if you want
+to use further services.
+
+### Infrastructure
+
+* Ceph
+* Elasticsearch
+* Gnocchi
+* Grafana
+* Haproxy
+* Kibana
+* Mariadb
+* Memcached
+* Openvswitch
+* Rabbitmq
+* Redis
+* Skydive
+
+### OpenStack
+
+* Aodh
+* Ceilometer
+* Cinder
+* Glance
+* Heat
+* Horizon
+* Keystone
+* Neutron
+* Nova
+* Panko
 
 ## Preparations
 
