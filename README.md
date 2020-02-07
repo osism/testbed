@@ -123,6 +123,7 @@ The nodes always have the same postfix in the networks.
 ```
 openstack --os-cloud testbed \
   stack create \
+  -e environment.yml \
   -t stack.yml testbed
 +---------------------+--------------------------------------+
 | Field               | Value                                |
@@ -153,6 +154,7 @@ Without the deployment of the infrastructure services the deployment of OpenStac
 ```
 openstack --os-cloud testbed \
   stack create \
+  -e environment.yml \
   --parameter deploy_infrastructure=true \
   -t stack.yml testbed
 ```
@@ -164,6 +166,7 @@ Without the deployment of Ceph the deployment of OpenStack is not possible.
 ```
 openstack --os-cloud testbed \
   stack create \
+  -e environment.yml \
   --parameter deploy_ceph=true \
   -t stack.yml testbed
 ```
@@ -175,6 +178,7 @@ The deployment of OpenStack depends on the deployment of Ceph and the infrastruc
 ```
 openstack --os-cloud testbed \
   stack create \
+  -e environment.yml \
   --parameter deploy_ceph=true \
   --parameter deploy_infrastructure=true \
   --parameter deploy_openstack=true \
