@@ -85,15 +85,15 @@ jinja2 -o stack.yml -D number_of_volumes=4 templates/stack.yml.j2
 With the exception of the manager, all nodes have a connection to any network. The manager
 only has no connection to the storage backend.
 
-| Name             | CIDR                 | Description |
-|------------------|----------------------|-------------|
-| out of band      | ``192.168.30.0/24``  |             |
-| management       | ``192.168.40.0/24``  |             |
-| internal         | ``192.168.50.0/24``  |             |
-| storage frontend | ``192.168.70.0/24``  |             |
-| storage backend  | ``192.168.80.0/24``  |             |
-| external         | ``192.168.90.0/24``  |             |
-| provider         | ``192.168.100.0/24`` |             |
+| Name             | CIDR                 | Description                                                                                              |
+|------------------|----------------------|----------------------------------------------------------------------------------------------------------|
+| out of band      | ``192.168.30.0/24``  | This network is not used in the testbed. It is available because there is usually always an OOB network. |
+| management       | ``192.168.40.0/24``  | SSH access via this network.                                                                             |
+| internal         | ``192.168.50.0/24``  | All internal communication, e.g. MariaDB and RabbitMQ, is done via this.                                 |
+| storage frontend | ``192.168.70.0/24``  | For access of the compute nodes to the storage nodes.                                                    |
+| storage backend  | ``192.168.80.0/24``  | For synchronization between storage nodes.                                                               |
+| external         | ``192.168.90.0/24``  | Is used to emulate an external network.                                                                  |
+| provider         | ``192.168.100.0/24`` | Is used to emulate an provider network.                                                                  |
 
 ### Nodes
 
