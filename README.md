@@ -170,6 +170,18 @@ parameters:
 
 ## Initialization
 
+Before building the stack it should be checked if it is possible to build it.
+
+```
+openstack --os-cloud testbed \
+  stack create \
+  --dry-run \
+  -e environment.yml \
+  -t stack.yml testbed
+```
+
+If the check is successful, the stack can be created.
+
 ```
 openstack --os-cloud testbed \
   stack create \
