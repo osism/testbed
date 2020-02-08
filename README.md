@@ -143,9 +143,11 @@ to use further services.
 
 * Ceph
 * Elasticsearch
+* Fluentd
 * Gnocchi
 * Grafana
 * Haproxy
+* Keepalived
 * Kibana
 * Mariadb
 * Memcached
