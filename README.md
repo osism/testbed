@@ -44,6 +44,15 @@ The manager serves as a central entry point into the environment.
   #       in the testbed.
   # testbed-node-2.osism.local
   ```
+* The third volume (``/dev/sdd``) is not enabled for Ceph by default. This is to test the
+  scaling of Ceph.
+
+  ```
+  devices:
+    - /dev/sdb
+    - /dev/sdc
+  #  - /dev/sdd  # NOTE: the third volume is commented to be added later in tests
+  ```
 * The documentation of the OSISM can be found on https://docs.osism.de. There you will find
   further details on deployment, operation etc.
 
