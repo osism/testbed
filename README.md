@@ -5,6 +5,7 @@
 Hyperconverged infrastructure (HCI) testbed based on OpenStack and Ceph, deployed by OSISM.
 
 - [Overview](#overview)
+- [Supported cloud providers](#supported-cloud-providers)
 - [Notes](#notes)
 - [Heat stack](#heat-stack)
 - [Network topology](#network-topology)
@@ -24,6 +25,11 @@ By default the testbed consists of a manager and three HCI nodes, each with thre
 The manager serves as a central entry point into the environment.
 
 ![Stack topology](https://raw.githubusercontent.com/osism/testbed/master/images/overview.png)
+
+## Supported cloud providers
+
+* Betacloud
+* Citycloud
 
 ## Notes
 
