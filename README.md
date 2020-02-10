@@ -441,7 +441,7 @@ This is intended to generate a realistic data load, e.g. for upgrades or scaling
 
 #### MySQL
 
-After deployment of MariaDB including HAProxy it is possible to create a test database with
+After deployment of MariaDB including HAProxy it is possible to create four test databases each with
 four tables which are filled with randomly generated data. The script can be executed multiple
 times to generate more data.
 
