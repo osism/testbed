@@ -164,6 +164,7 @@ resources:
                   if [[ "deploy_infrastructure" == "True" ]]; then
                       sudo -iu dragon sh -c 'INTERACTIVE=false osism-infrastructure helper --tags phpmyadmin'
                       sudo -iu dragon sh -c 'INTERACTIVE=false osism-infrastructure helper --tags openstackclient'
+                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-infrastructure netdata'
                   fi
 
                   # deploy infrastructure services

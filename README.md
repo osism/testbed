@@ -167,6 +167,7 @@ to use further services.
 * Kibana
 * Mariadb
 * Memcached
+* Netdata
 * Openvswitch
 * Rabbitmq
 * Redis
@@ -544,7 +545,7 @@ This section describes how individual parts of the testbed can be deployed.
   osism-kolla deploy heat,gnocchi,ceilometer,aodh,panko
   ```
 
-* Skydive (also deploy `Clustered infrastructure services` and `Infrastructure services`)
+* Network analyzer (also deploy `Clustered infrastructure services`, `Infrastructure services`, and `Basic OpenStack services`)
 
   ```
   osism-kolla deploy skydive
@@ -557,6 +558,12 @@ This section describes how individual parts of the testbed can be deployed.
   osism-generic manage-container -e container_action=stop -e container_name=skydive_agent -l skydive-agent
   ```
 
+* Realtime monitoring
+
+  ```
+  osism-infrastructure netdata
+  ```
+
 ## Webinterfaces
 
 | Name             | URL                        | Username | Password                                 |
@@ -564,7 +571,7 @@ This section describes how individual parts of the testbed can be deployed.
 | ARA              | http://192.168.40.5:8120   | ara      | S6JE2yJUwvraiX57                         |
 | Horizon          | http://192.168.50.200      | admin    | TTgPSOSmgdmQAJUKu627DuzutgnIoAzsSxFg2ntu |
 | Kibana           | http://192.168.50.200:5601 | kibana   | k2ReobFEsoxNm3DyZnkZmFPadSnCz6BjQhaLFoyB |
-| Netdata          | http://192.168.40.5:19999  | -        | -                                        |
+| Netdata          | http://192.168.50.5:19999  | -        | -                                        |
 | phpMyAdmin       | http://192.168.40.5:8110   | root     | qNpdZmkKuUKBK3D5nZ08KMZ5MnYrGEe2hzH6XC0i |
 | Skydive          | http://192.168.50.5:8085   | -        | -                                        |
 

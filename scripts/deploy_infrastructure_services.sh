@@ -4,6 +4,7 @@ export INTERACTIVE=false
 
 osism-infrastructure helper --tags phpmyadmin
 osism-infrastructure helper --tags openstackclient
+osism-infrastructure netdata
 
 osism-kolla deploy common
 osism-kolla deploy openvswitch
