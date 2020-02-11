@@ -564,6 +564,8 @@ This section describes how individual parts of the testbed can be deployed.
   osism-infrastructure netdata
   ```
 
+  ![Netdata webinterface](https://raw.githubusercontent.com/osism/testbed/master/images/netdata.png)
+
 ## Webinterfaces
 
 | Name             | URL                        | Username | Password                                 |
