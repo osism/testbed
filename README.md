@@ -182,6 +182,7 @@ to use further services.
 * Heat
 * Horizon
 * Keystone
+* Magnum
 * Neutron
 * Nova
 * Panko
@@ -542,7 +543,7 @@ This section describes how individual parts of the testbed can be deployed.
 * Additional OpenStack services (also deploy `Basic OpenStack services` and all requirements)
 
   ```
-  osism-kolla deploy heat,gnocchi,ceilometer,aodh,panko
+  osism-kolla deploy heat,gnocchi,ceilometer,aodh,panko,magnum
   ```
 
 * Network analyzer (also deploy `Clustered infrastructure services`, `Infrastructure services`, and `Basic OpenStack services`)

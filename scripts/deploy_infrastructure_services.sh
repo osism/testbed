@@ -14,7 +14,6 @@ osism-kolla deploy haproxy
 osism-kolla deploy elasticsearch
 osism-kolla deploy kibana
 osism-kolla deploy etcd
-osisk-kolla deploy skydive
 
 # NOTE: The Skydive agent creates a high load on the Open vSwitch services.
 #       Therefore the agent is only started manually when needed.

@@ -13,3 +13,5 @@ osism-kolla deploy gnocchi
 osism-kolla deploy ceilometer
 osism-kolla deploy aodh
 osism-kolla deploy panko
+osisk-kolla deploy skydive
+osism-kolla deploy magnum
