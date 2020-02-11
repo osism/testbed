@@ -1,39 +1,10 @@
 ---
 language: python
 
-addons:
-  apt:
-    update: true
-    packages:
-      - apt-transport-https
-      - bzip2
-      - curl
-      - debootstrap
-      - dosfstools
-      - gdisk
-      - git
-      - gnupg2
-      - inetutils-ping
-      - kpartx
-      - lsb-release
-      - procps
-      - python-lzma
-      - qemu-utils
-      - rpm
-      - squashfs-tools
-      - sudo
-      - util-linux
-      - uuid-runtime
-      - yum-utils
-
 install:
   - pip install -r test-requirements.txt
 
-jobs:
-  include:
-#    - script: jinja2 -o stack.yml templates/stack.yml.j2; yamllint -c .yamllint.yml stack.yml
-#    - script: jinja2 -o stack-manager.yml -D number_of_nodes=0 templates/stack.yml.j2; yamllint -c .yamllint.yml stack-manager.yml
-#    - script: flake8 src/render-stack-template.py
-    - stage: build
-      install: pip install -r requirements.txt
-      script: bash scripts/diskimage.sh
+script:
+ - jinja2 -o stack.yml templates/stack.yml.j2; yamllint -c .yamllint.yml stack.yml
+ - jinja2 -o stack-manager.yml -D number_of_nodes=0 templates/stack.yml.j2; yamllint -c .yamllint.yml stack-manager.yml
+ - flake8 src/render-stack-template.py
