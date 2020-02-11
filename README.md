@@ -501,7 +501,7 @@ This section describes how individual parts of the testbed can be deployed.
 * Infrastructure services (also deploy `Clustered infrastructure services`)
 
   ```
-  osism-kolla deploy openvswitch,memcached,etcd
+  osism-kolla deploy openvswitch,memcached,etcd,kibana
   ```
 
 * Basic OpenStack services (also deploy `Infrastructure services`, `Clustered infrastructure services`, and `Ceph`)
