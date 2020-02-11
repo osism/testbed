@@ -298,6 +298,7 @@ resources:
 
   manager_floating_ip:
     type: OS::Neutron::FloatingIP
+    depends_on: router_interface
     properties:
       floating_network_id: {get_param: public}
       port_id: {get_resource: manager_port_management}
