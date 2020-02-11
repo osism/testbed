@@ -241,6 +241,9 @@ control
 [designate:children]
 control
 
+[etcd:children]
+control
+
 # glance
 
 [glance-api:children]

@@ -158,6 +158,7 @@ to use further services.
 
 * Ceph
 * Elasticsearch
+* Etcd
 * Fluentd
 * Gnocchi
 * Grafana
@@ -500,7 +501,7 @@ This section describes how individual parts of the testbed can be deployed.
 * Infrastructure services (also deploy `Clustered infrastructure services`)
 
   ```
-  osism-kolla deploy openvswitch,memcached
+  osism-kolla deploy openvswitch,memcached,etcd
   ```
 
 * Basic OpenStack services (also deploy `Infrastructure services`, `Clustered infrastructure services`, and `Ceph`)

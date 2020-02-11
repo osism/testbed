@@ -12,6 +12,7 @@ osism-kolla deploy redis
 osism-kolla deploy haproxy
 osism-kolla deploy elasticsearch
 osism-kolla deploy kibana
+osism-kolla deploy etcd
 
 # NOTE: workaround "Index .kibana belongs to a version of Kibana that cannot be
 #       automatically migrated. Reset it or use the X-Pack upgrade assistant."
