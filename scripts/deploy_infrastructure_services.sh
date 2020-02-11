@@ -13,6 +13,12 @@ osism-kolla deploy haproxy
 osism-kolla deploy elasticsearch
 osism-kolla deploy kibana
 osism-kolla deploy etcd
+osisk-kolla deploy skydive
+
+# NOTE: The Skydive agent creates a high load on the Open vSwitch services.
+#       Therefore the agent is only started manually when needed.
+
+osism-generic manage-container -e container_action=stop -e container_name=skydive_agent -l skydive-agent
 
 # NOTE: workaround "Index .kibana belongs to a version of Kibana that cannot be
 #       automatically migrated. Reset it or use the X-Pack upgrade assistant."

@@ -516,6 +516,19 @@ This section describes how individual parts of the testbed can be deployed.
   osism-kolla deploy heat,gnocchi,ceilometer,aodh,panko
   ```
 
+* Skydive (also deploy `Clustered infrastructure services` and `Infrastructure services`)
+
+  ```
+  osism-kolla deploy skydive
+  ```
+
+  The Skydive agent creates a high load on the Open vSwitch services. Therefore the agent is only
+  started manually when needed.
+
+  ```
+  osism-generic manage-container -e container_action=stop -e container_name=skydive_agent -l skydive-agent
+  ```
+
 ## Webinterfaces
 
 | Name             | URL                        | Username | Password                                 |
@@ -525,6 +538,7 @@ This section describes how individual parts of the testbed can be deployed.
 | Kibana           | http://192.168.50.200:5601 | kibana   | k2ReobFEsoxNm3DyZnkZmFPadSnCz6BjQhaLFoyB |
 | Netdata          | http://192.168.40.5:19999  | -        | -                                        |
 | phpMyAdmin       | http://192.168.40.5:8110   | root     | qNpdZmkKuUKBK3D5nZ08KMZ5MnYrGEe2hzH6XC0i |
+| Skydive          | http://192.168.50.5:8085   | -        | -                                        |
 
 ## License
 
