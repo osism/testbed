@@ -280,6 +280,34 @@ Docker etc. are already installed during stack creation. Therefore the creation 
 The manager is started after the deployment of the HCI nodes has been completed. This is necessary to
 be able to carry out various preparatory steps after the manager has been made available.
 
+After a change to the definition of a stack, the stack can be updated.
+
+```
+openstack --os-cloud testbed \
+  stack update \
+  -e environment.yml \
+  -t stack.yml testbed
++---------------------+--------------------------------------+
+| Field               | Value                                |
++---------------------+--------------------------------------+
+| id                  | 2317ea11-f5c8-454e-9595-a7f0e14eaae6 |
+| stack_name          | testbed                              |
+| description         | No description                       |
+| creation_time       | 2020-02-09T19:41:54Z                 |
+| updated_time        | 2020-02-11T21:34:45Z                 |
+| stack_status        | UPDATE_IN_PROGRESS                   |
+| stack_status_reason | Stack UPDATE started                 |
++---------------------+--------------------------------------+
+```
+
+If the stack is no longer needed it can be deleted.
+
+```
+openstack --os-cloud testbed \
+  stack delete testbed
+Are you sure you want to delete this stack(s) [y/N]? y
+```
+
 ### Customisation
 
 By default, no services are deployed when the stack is created. This is customizable.
