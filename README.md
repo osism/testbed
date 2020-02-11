@@ -157,6 +157,7 @@ to use further services.
 ### Infrastructure
 
 * Ceph
+* Cockpit
 * Elasticsearch
 * Etcd
 * Fluentd
@@ -565,6 +566,12 @@ This section describes how individual parts of the testbed can be deployed.
   ```
 
   ![Netdata webinterface](https://raw.githubusercontent.com/osism/testbed/master/images/netdata.png)
+
+* Cockpit
+
+  ```
+  osism-generic cockpit
+  ```
 
 ## Webinterfaces
 
