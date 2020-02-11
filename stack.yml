@@ -487,6 +487,7 @@ resources:
     properties:
       external_gateway_info:
         network: {get_param: public}
+        enable_snat: true
 
   router_interface:
     type: OS::Neutron::RouterInterface
