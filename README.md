@@ -571,13 +571,17 @@ This section describes how individual parts of the testbed can be deployed.
 
   ```
   osism-generic cockpit
+  osism-run custom generate-ssh-known-hosts
   ```
+
+  ![Cockpit webinterface](https://raw.githubusercontent.com/osism/testbed/master/images/cockpit.png)
 
 ## Webinterfaces
 
 | Name             | URL                        | Username | Password                                 |
 |------------------|----------------------------|----------|------------------------------------------|
 | ARA              | http://192.168.40.5:8120   | ara      | S6JE2yJUwvraiX57                         |
+| Cockpit          | https://192.168.40.5:8130  | dragon   | da5pahthaew2Pai2                         |
 | Horizon          | http://192.168.50.200      | admin    | TTgPSOSmgdmQAJUKu627DuzutgnIoAzsSxFg2ntu |
 | Kibana           | http://192.168.50.200:5601 | kibana   | k2ReobFEsoxNm3DyZnkZmFPadSnCz6BjQhaLFoyB |
 | Netdata          | http://192.168.50.5:19999  | -        | -                                        |
