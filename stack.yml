@@ -159,6 +159,7 @@ resources:
 
                       # deploy helper services
                       sudo -iu dragon sh -c 'INTERACTIVE=false osism-infrastructure helper --tags sshconfig'
+                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-run custom generate-ssh-known-hosts'
                   fi
 
                   if [[ "deploy_infrastructure" == "True" ]]; then
