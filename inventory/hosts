@@ -541,3 +541,8 @@ designate
 
 [designate-backend-bind9:children]
 designate
+
+# elasticsearch
+
+[elasticsearch-curator:children]
+elasticsearch
