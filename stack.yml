@@ -210,6 +210,7 @@ resources:
                           sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy ceilometer'
                           sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy aodh'
                           sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy panko'
+                          sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy magnum'
                           sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy skydive'
                           sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic manage-container -e container_action=stop -e container_name=skydive_agent -l skydive-agent'
                       fi
