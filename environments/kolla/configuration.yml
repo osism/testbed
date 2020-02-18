@@ -47,7 +47,7 @@ docker_restart_policy_retry: 0
 
 # enable services
 enable_aodh: "yes"
-enable_barbican: "no"
+enable_barbican: "yes"
 enable_ceilometer: "yes"
 enable_cinder: "yes"
 enable_cinder_backup: "yes"
