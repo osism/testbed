@@ -7,10 +7,10 @@ ara_server_image: "{{ docker_registry|default('index.docker.io') }}/osism/ara-se
 ara_web_tag: "{{ osism_manager_version|default('latest') }}"
 ara_web_image: "{{ docker_registry|default('index.docker.io') }}/osism/ara-web:{{ ara_web_tag }}"
 
-ceph_ansible_tag: "{{ ceph_version|default('luminous') }}-{{ ceph_manager_version|default('latest') }}"
+ceph_ansible_tag: "{{ ceph_version|default('luminous') }}"
 ceph_ansible_image: "{{ docker_registry|default('index.docker.io') }}/osism/ceph-ansible:{{ ceph_ansible_tag }}"
 
-kolla_ansible_tag: "{{ openstack_version|default('rocky') }}-{{ kolla_manager_version|default('latest') }}"
+kolla_ansible_tag: "{{ openstack_version|default('rocky') }}"
 kolla_ansible_image: "{{ docker_registry|default('index.docker.io') }}/osism/kolla-ansible:{{ kolla_ansible_tag }}"
 
 mariadb_tag: "{{ osism_manager_version|default('latest') }}"
