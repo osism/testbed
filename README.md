@@ -177,6 +177,7 @@ to use further services.
 ### OpenStack
 
 * Aodh
+* Barbican
 * Ceilometer
 * Cinder
 * Glance
@@ -544,7 +545,7 @@ This section describes how individual parts of the testbed can be deployed.
 * Additional OpenStack services (also deploy `Basic OpenStack services` and all requirements)
 
   ```
-  osism-kolla deploy heat,gnocchi,ceilometer,aodh,panko,magnum
+  osism-kolla deploy heat,gnocchi,ceilometer,aodh,panko,magnum,barbican
   ```
 
 * Network analyzer (also deploy `Clustered infrastructure services`, `Infrastructure services`, and `Basic OpenStack services`)
