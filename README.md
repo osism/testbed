@@ -183,6 +183,7 @@ to use further services.
 * Heat
 * Horizon
 * Keystone
+* Magnum
 * Neutron
 * Nova
 * Panko
