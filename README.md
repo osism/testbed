@@ -6,6 +6,7 @@ Hyperconverged infrastructure (HCI) testbed based on OpenStack and Ceph, deploye
 
 - [Overview](#overview)
 - [Supported cloud providers](#supported-cloud-providers)
+- [Requirements](#requirements)
 - [Notes](#notes)
 - [Heat stack](#heat-stack)
 - [Network topology](#network-topology)
@@ -30,6 +31,24 @@ The manager serves as a central entry point into the environment.
 
 * Betacloud
 * Citycloud
+
+## Requirements
+
+To use this testbed, a project on an OpenStack cloud environment is required. Cinder and Heat
+must be usable there as additional services.
+
+The testbed requires the following resources When using the default flavors.
+
+* 1 keypair
+* 5 security groups (appr. 30 security group rules)
+* 6 networks with 6 subnetworks
+* 1 router
+* 30 ports
+* 1 floating ip address
+* 4 instances
+* 9 volumes (90 GByte)
+* 4 instances (14 VCPUs, 52 GByte memory)
+* 1 stack
 
 ## Notes
 
