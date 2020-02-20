@@ -87,6 +87,11 @@ By default, the number of nodes is set to ``3``. The number can be adjusted via 
 ``number_of_nodes``. When adding additional nodes (``number_of_nodes > 3``) to the stack, they
 are not automatically added to the configuration.
 
+The same with reduction of the number of nodes. When removing nodes (``number_of_nodes < 3``),
+they are not automatically removed from the configuration.
+
+The configuration is only tested with 3 nodes. With more or less nodes, the configuration must
+be adjusted manually and problems may occur.
 
 ```
 jinja2 -o stack.yml -D number_of_nodes=6 templates/stack.yml.j2
@@ -105,6 +110,9 @@ are not automatically added to the Ceph configuration.
 ```
 jinja2 -o stack.yml -D number_of_volumes=4 templates/stack.yml.j2
 ```
+
+The configuration is only tested with 3 volumes. With more or less volumes, the configuration must
+be adjusted manually and problems may occur.
 
 ## Network topology
 
