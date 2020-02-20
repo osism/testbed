@@ -413,6 +413,14 @@ openstack --os-cloud testbed \
     192.168.90.0/24
   ```
 
+### Change versions
+
+* Go to ``/opt/configuration`` on the manager node
+* Run ``./scripts/set-openstack-version.sh stein`` to set the OpenStack version to ``stein``
+* Run ``./scripts/set-ceph-version.sh nautilus`` to set the Ceph version to ``nautilus``
+* Go to ``/home/dragon`` on the manager node
+* Run ``ansible-playbook manager-part-2.yml`` to update the manager
+
 ## Deploy
 
 * Infrastructure services
