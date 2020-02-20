@@ -553,7 +553,7 @@ This section describes how individual parts of the testbed can be deployed.
 * Additional OpenStack services (also deploy `Basic OpenStack services` and all requirements)
 
   ```
-  osism-kolla deploy heat,gnocchi,ceilometer,aodh,panko,magnum,barbican
+  osism-kolla deploy heat,gnocchi,ceilometer,aodh,panko,magnum,barbican,designate
   ```
 
 * Network analyzer (also deploy `Clustered infrastructure services`, `Infrastructure services`, and `Basic OpenStack services`)
