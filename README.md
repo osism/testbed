@@ -547,7 +547,7 @@ This section describes how individual parts of the testbed can be deployed.
 * Basic OpenStack services (also deploy `Infrastructure services`, `Clustered infrastructure services`, and `Ceph`)
 
   ```
-  osism-kolla deploy keystone,horizon,glance,cinder,neutron,nova
+  osism-kolla deploy keystone,horizon,placement,glance,cinder,neutron,nova
   ```
 
 * Additional OpenStack services (also deploy `Basic OpenStack services` and all requirements)
