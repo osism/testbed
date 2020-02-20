@@ -201,6 +201,7 @@ resources:
                       else
                           sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy keystone'
                           sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy horizon'
+                          sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy placement'
                           sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy glance'
                           sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy cinder'
                           sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy neutron'
