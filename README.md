@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/osism/testbed.svg?branch=master)](https://travis-ci.org/osism/testbed)
 
-Hyperconverged infrastructure (HCI) testbed based on OpenStack and Ceph, deployed by OSISM.
+Hyperconverged infrastructure (HCI) testbed based on OpenStack and Ceph, deployed by [OSISM](https://www.osism.de).
 
 - [Overview](#overview)
 - [Supported cloud providers](#supported-cloud-providers)
@@ -29,8 +29,8 @@ The manager serves as a central entry point into the environment.
 
 ## Supported cloud providers
 
-* Betacloud
-* Citycloud
+* [Betacloud](https://www.betacloud.de)
+* [Citycloud](https://www.citycloud.com)
 
 ## Requirements
 
@@ -56,7 +56,8 @@ The testbed requires the following resources When using the default flavors.
   testbed publicly.**
 * The configuration is intentionally kept quite static. Please no PRs to make the configuration
   more flexible/dynamic.
-* The OSISM documentation uses hostnames, examples, addresses etc. from this testbed.
+* The [OSISM documentation](https://docs.osism.de) uses hostnames, examples, addresses etc.
+  from this testbed.
 * Even if all components (storage, network, compute, control) are operated on the same nodes,
   there are separate networks. This is because in larger productive HCI environments, dedicated
   control nodes and network nodes are usually provided. It is also common to place storage
