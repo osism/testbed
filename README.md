@@ -466,10 +466,16 @@ openstack --os-cloud testbed \
   /opt/configuration/scripts/deploy_ceph_services.sh
   ```
 
-* OpenStack services
+* Basic OpenStack services
 
   ```
-  /opt/configuration/scripts/deploy_openstack_services.sh
+  /opt/configuration/scripts/deploy_openstack_services_basic.sh
+  ```
+
+* Additional OpenStack services
+
+  ```
+  /opt/configuration/scripts/deploy_openstack_services_additional.sh
   ```
 
 ## Purge
