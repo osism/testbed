@@ -5,6 +5,7 @@
 Hyperconverged infrastructure (HCI) testbed based on OpenStack and Ceph, deployed by [OSISM](https://www.osism.de).
 
 - [Overview](#overview)
+- [Supported releases](#supported-releases)
 - [Supported cloud providers](#supported-cloud-providers)
 - [Requirements](#requirements)
 - [Notes](#notes)
@@ -26,6 +27,16 @@ By default the testbed consists of a manager and three HCI nodes, each with thre
 The manager serves as a central entry point into the environment.
 
 ![Stack topology](https://raw.githubusercontent.com/osism/testbed/master/images/overview.png)
+
+## Supported releases
+
+The following stable releases are supported. The development branch usually works too.
+
+* Ceph Luminous
+* Ceph Nautilus
+* OpenStack Rocky
+* OpenStack Stein
+* OpenStack Train
 
 ## Supported cloud providers
 
