@@ -18,3 +18,5 @@ osism-kolla deploy designate
 
 osisk-kolla deploy skydive
 osism-generic manage-container -e container_action=stop -e container_name=skydive_agent -l skydive-agent
+
+osism-run openstack bootstrap-additional

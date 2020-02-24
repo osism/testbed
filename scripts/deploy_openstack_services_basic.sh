@@ -12,4 +12,4 @@ osism-kolla deploy cinder
 osism-kolla deploy neutron
 osism-kolla deploy nova
 
-osism-custom run bootstrap-basic
+osism-run openstack bootstrap-basic
