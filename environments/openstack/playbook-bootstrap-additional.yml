@@ -1,0 +1,6 @@
+---
+- name: Bootstrap additional OpenStack services
+  hosts: localhost
+  connection: local
+
+  tasks: []

@@ -188,7 +188,7 @@ resources:
                           sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy neutron'
                           sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy nova'
 
-                          sudo -iu dragon sh -c 'INTERACTIVE=false osism-custom run bootstrap-basic'
+                          sudo -iu dragon sh -c 'INTERACTIVE=false osism-run openstack bootstrap-basic'
 
                           sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy heat'
                           sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy gnocchi'
@@ -201,6 +201,8 @@ resources:
 
                           sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy skydive'
                           sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic manage-container -e container_action=stop -e container_name=skydive_agent -l skydive-agent'
+
+                          sudo -iu dragon sh -c 'INTERACTIVE=false osism-run openstack bootstrap-additional'
                       fi
                   fi
 
