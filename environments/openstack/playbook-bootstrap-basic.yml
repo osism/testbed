@@ -153,3 +153,30 @@
         security_group: icmp
         protocol: icmp
         remote_ip_prefix: 0.0.0.0/0
+
+    - name: Create test instance
+      os_server:
+        cloud: test
+        state: present
+        name: test
+        image: cirros
+        flavor: 1C-512MB-1GB
+        network: test
+        delete_fip: true
+        security_groups:
+          - icmp
+          - ssh
+
+    - name: Create test volume
+      os_volume:
+        cloud: test
+        state: present
+        name: test
+        size: 1
+
+    - name: Attach test volume
+      os_server_volume:
+        cloud: test
+        state: present
+        server: test
+        volume: test
