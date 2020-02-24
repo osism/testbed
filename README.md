@@ -557,7 +557,9 @@ This section describes how individual parts of the testbed can be deployed.
 * Ceph
 
   ```
-  osism-ceph env-hci; osism-run custom fetch-ceph-keys; osism-infrastructure helper --tags cephclient
+  osism-ceph env-hci
+  osism-run custom fetch-ceph-keys
+  osism-infrastructure helper --tags cephclient
   ```
 
 * Clustered infrastructure services
@@ -576,6 +578,8 @@ This section describes how individual parts of the testbed can be deployed.
 
   ```
   osism-kolla deploy keystone,horizon,placement,glance,cinder,neutron,nova
+  osism-infrastructure helper --tags openstackclient
+  osism-custom run bootstrap-basic
   ```
 
 * Additional OpenStack services (also deploy `Basic OpenStack services` and all requirements)

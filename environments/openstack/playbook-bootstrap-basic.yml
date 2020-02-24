@@ -1,0 +1,155 @@
+---
+- name: Bootstrap basic OpenStack services
+  hosts: localhost
+  connection: local
+
+  tasks:
+    - name: Create test project
+      os_project:
+        cloud: admin
+        state: present
+        name: test
+        domain_id: default
+
+    - name: Create test user
+      os_user:
+        cloud: admin
+        state: present
+        name: test
+        password: test
+        email: test@osism.local
+        domain: default
+        default_project: test
+
+    - name: Add role member to user test
+      os_user_role:
+        cloud: admin
+        state: present
+        user: test
+        role: "{{ item }}"
+        project: test
+      with_items:
+        - member
+        - _member_
+
+    - name: Create tiny flavor
+      os_nova_flavor:
+        cloud: admin
+        state: present
+        name: 1C-512MB-1GB
+        ram: 512
+        vcpus: 1
+        disk: 1
+        ephemeral: 0
+
+    - name: Download cirros image
+      get_url:
+        url: https://download.cirros-cloud.net/0.4.0/cirros-0.4.0-x86_64-disk.img
+        dest: /tmp/cirros.img
+
+    - name: Upload cirros image
+      os_image:
+        cloud: admin
+        state: present
+        name: cirros
+        container_format: bare
+        disk_format: qcow2
+        filename: /tmp/cirros.img
+        properties:
+          cpu_arch: x86_64
+          distro: ubuntu
+
+    # NOTE: is_public from os_image is not working like expected
+
+    - name: Make cirros image visible
+      command: openstack --os-cloud admin image set --public cirros
+
+    # NOTE: we prepare the stuff for Octavia already here to be able
+    #       to use it when deploying Octavia
+
+    - name: Create octavia flavor
+      os_nova_flavor:
+        cloud: admin
+        state: present
+        name: octavia
+        flavorid: octavia
+        ram: 1024
+        vcpus: 1
+        disk: 2
+        ephemeral: 0
+        is_public: false
+        extra_specs:
+          "hw_rng:allowed": "True"
+
+    - name: Create public network
+      os_network:
+        cloud: admin
+        state: present
+        name: public
+        external: true
+        provider_network_type: flat
+        provider_physical_network: physnet1
+
+    - name: Create public subnet
+      os_subnet:
+        cloud: admin
+        state: present
+        name: subnet-public
+        network_name: public
+        cidr: 192.168.100.0/24
+        enable_dhcp: false
+        allocation_pool_start: 192.168.100.100
+        allocation_pool_end: 192.168.100.200
+
+    - name: Create test network
+      os_network:
+        cloud: test
+        state: present
+        name: test
+
+    - name: Create test subnet
+      os_subnet:
+        cloud: test
+        state: present
+        name: subnet-test
+        network_name: test
+        cidr: 192.168.200.0/24
+
+    - name: Create test router
+      os_router:
+        cloud: test
+        state: present
+        name: router-test
+        network: public
+        interfaces:
+          - subnet-test
+
+    - name: Create ssh security group
+      os_security_group:
+        cloud: test
+        state: present
+        name: ssh
+
+    - name: Add rule to ssh security group
+      os_security_group_rule:
+        cloud: test
+        state: present
+        security_group: ssh
+        protocol: tcp
+        port_range_min: 22
+        port_range_max: 22
+        remote_ip_prefix: 0.0.0.0/0
+
+    - name: Create icmp security group
+      os_security_group:
+        cloud: test
+        state: present
+        name: icmp
+
+    - name: Add rule to icmp security group
+      os_security_group_rule:
+        cloud: test
+        state: present
+        security_group: icmp
+        protocol: icmp
+        remote_ip_prefix: 0.0.0.0/0
