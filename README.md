@@ -171,6 +171,9 @@ The nodes always have the same postfix in the networks.
 
 ### VIPs
 
+On the local workstation you should put the following entries into ``/etc/hosts``.
+Without these entries e.g. the VNC access to instances does not work.
+
 | Name             | Address                  | Domain                  |
 |------------------|--------------------------|-------------------------|
 | external         | ``192.168.90.200``       | ``api.osism.local``     |
