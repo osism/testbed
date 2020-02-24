@@ -146,6 +146,8 @@ resources:
 
                   # NOTE(berendt): sudo -E does not work here because sudo -i is needed
 
+                  sudo -iu dragon sh -c 'INTERACTIVE=false osism-run custom cronjobs'
+
                   # prepare all systems
                   if [[ 3 -gt 0 ]]; then
                       sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic facts'
