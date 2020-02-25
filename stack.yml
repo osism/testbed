@@ -155,6 +155,10 @@ resources:
                       sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic hostname'
                       sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic network'
                       sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic hosts'
+
+                      # NOTE: Restart the manager services to update the /etc/hosts file
+                      sudo -iu dragon sh -c 'docker-compose -f /opt/manager/docker-compose.yml restart'
+
                       sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic cockpit'
                       sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic utilities'
                       sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic grub'
