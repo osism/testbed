@@ -6,7 +6,7 @@ Hyperconverged infrastructure (HCI) testbed based on OpenStack and Ceph, deploye
 
 - [Overview](#overview)
 - [Supported releases](#supported-releases)
-- [Supported cloud providers](#supported-cloud-providers)
+- [Test status of cloud providers](#test-status-of-cloud-providers)
 - [Requirements](#requirements)
 - [Notes](#notes)
 - [Heat stack](#heat-stack)
@@ -41,7 +41,7 @@ The following stable releases are supported. The development branch usually work
 ## Test status of cloud providers
 
 * [Betacloud](https://www.betacloud.de): Works
-* [Citycloud](https://www.citycloud.com): Works (need to change disk names from sdX to vdX before deploying ceph on manager node ``/opt/configuration/inventory/host_vars/testbed-node-?.osism.local.yml``)
+* [Citycloud](https://www.citycloud.com): Works (need to change disk names from sdX to vdX before deploying Ceph on manager node ``/opt/configuration/inventory/host_vars/testbed-node-?.osism.local.yml``)
 * [OTC](https://open-telekom-cloud.com/): Needs ``enable_snat``, ``enable_dhcp`` and older heat, still fails
 * [teuto.stack](https://teutostack.de/): Currently lacks support for heat
 
@@ -237,7 +237,7 @@ to use further services.
 
 * ``python-openstackclient`` must be installed
 * Heat, the OpenStack orchestration service,  must be usable on the cloud environment
-* a ``clouds.yml`` and ``secure.yml`` must be created (https://docs.openstack.org/python-openstackclient/latest/configuration/index.html#clouds-yaml) or alternatively (not recommended) the old ``OS_`` environment setting style be used (via sourcing an approipriate ``openrc`` file).
+* a ``clouds.yml`` and ``secure.yml`` must be created (https://docs.openstack.org/python-openstackclient/latest/configuration/index.html#clouds-yaml) or alternatively (not recommended) the old ``OS_`` environment setting style be used (via sourcing an appropriate ``openrc`` file).
 
 ## Configuration
 
