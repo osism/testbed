@@ -82,7 +82,7 @@ enable_central_logging: "yes"
 
 # elasticsearch
 
-es_heap_size: "4g"
+es_heap_size: "1g"
 
 # rabbitmq
 
