@@ -38,10 +38,12 @@ The following stable releases are supported. The development branch usually work
 * OpenStack Stein
 * OpenStack Train
 
-## Supported cloud providers
+## Test status of cloud providers
 
-* [Betacloud](https://www.betacloud.de)
-* [Citycloud](https://www.citycloud.com)
+* [Betacloud](https://www.betacloud.de): Works
+* [Citycloud](https://www.citycloud.com): Works (need to change disk names from sdX to vdX before deploying ceph on manager node ``/opt/configuration/inventory/host_vars/testbed-node-?.osism.local.yml``)
+* [OTC](https://open-telekom-cloud.com/): Needs ``enable_snat``, ``enable_dhcp`` and older heat, still fails
+* [teuto.stack](https://teutostack.de/): Currently lacks support for heat
 
 ## Requirements
 
