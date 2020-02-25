@@ -16,7 +16,7 @@ osism-kolla deploy designate
 # NOTE: The Skydive agent creates a high load on the Open vSwitch services.
 #       Therefore the agent is only started manually when needed.
 
-osisk-kolla deploy skydive
+osism-kolla deploy skydive
 osism-generic manage-container -e container_action=stop -e container_name=skydive_agent -l skydive-agent
 
 osism-run openstack bootstrap-additional
