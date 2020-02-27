@@ -104,6 +104,9 @@ enable_neutron_agent_ha: "yes"
 enable_neutron_dvr: "no"
 enable_neutron_qos: "yes"
 
+# NOTE: is only needed for Rocky
+neutron_fwaas_version: "v2"
+
 # nova
 nova_console: novnc
 
