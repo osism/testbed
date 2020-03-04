@@ -181,7 +181,7 @@ resources:
 
                       # Fixup drive names sdX -> vdX IF drives_vdx is set (TODO: Could autodetect this)
                       if [[ "drives_vdx" == "True" ]]; then
-                        sudo -iu dragon sh -c 'for file in /opt/configuration/inventory/host_vars/testbed*.yml; do sed -i "s@/dev/sd\([a-z]\)@/dev/vd\1@g" $file; done'
+                        sudo -iu dragon sh -c 'for file in /opt/configuration/inventory/host_vars/testbed*.yml; do sed -i "s@/dev/sd\([a-z]\)@/dev/vd\1@g" ${file}; done'
                       fi
                   fi
 
