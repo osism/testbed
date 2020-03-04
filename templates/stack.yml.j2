@@ -31,6 +31,10 @@ parameters:
     type: string
     default: south-1
 
+  volume_az:
+    type: string
+    default: south-1
+
   public:
     type: string
     constraints:
@@ -608,6 +612,7 @@ resources:
     properties:
       name: testbed-node-{{ n }}-volume-{{ m }}
       size: {get_param: volume_size_storage}
+      availability_zone: {get_param: volume_az}
 
   node_{{ n }}_volume_{{ m }}_attachment:
     type: OS::Cinder::VolumeAttachment
