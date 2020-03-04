@@ -66,7 +66,7 @@ watch: .deploy.$(STACKNAME)
 sshuttle: ~/.ssh/id_rsa.$(STACKNAME) .MANAGER_ADDRESS.$(STACKNAME)
 	eval $$(ssh-agent); ssh-add $<; \
 	source ./.MANAGER_ADDRESS.$(STACKNAME); \
-	sshuttle dragon@$$MANAGER_ADDRESS 192.168.40.0/24 192.168.50.0/24 192.168.90.0/24
+	sshuttle -r dragon@$$MANAGER_ADDRESS 192.168.40.0/24 192.168.50.0/24 192.168.90.0/24
 
 ssh_manager: ~/.ssh/id_rsa.$(STACKNAME) .MANAGER_ADDRESS.$(STACKNAME)
 	source ./.MANAGER_ADDRESS.$(STACKNAME); \
