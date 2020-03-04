@@ -20,6 +20,10 @@ parameters:
     type: string
     default: south-1
 
+  volume_az:
+    type: string
+    default: south-1
+
   public:
     type: string
     constraints:
