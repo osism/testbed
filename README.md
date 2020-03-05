@@ -152,6 +152,12 @@ jinja2 -o stack.yml -D number_of_volumes=4 templates/stack.yml.j2
 The configuration is only tested with 3 volumes. With more or less volumes, the configuration must
 be adjusted manually and problems may occur.
 
+Using the included Makefile and calling
+```
+make
+```
+will recreate ```stack.yml``` and ```stack-single.yml``` using default parameters (3 nodes, 3 volumes each).
+
 ## Network topology
 
 ![Network topology](https://raw.githubusercontent.com/osism/testbed/master/images/network-topology.png)
@@ -328,6 +334,8 @@ openstack --os-cloud testbed \
 +---------------------+--------------------------------------+
 ```
 
+This can also be achieved using ``make deploy``.
+
 Docker etc. are already installed during stack creation. Therefore the creation takes some time.
 
 The manager is started after the deployment of the HCI nodes has been completed. This is necessary to
@@ -361,6 +369,8 @@ openstack --os-cloud testbed \
 Are you sure you want to delete this stack(s) [y/N]? y
 ```
 
+This can also be achieved using ``make clean``.
+
 ### Customisation
 
 By default, no services are deployed when the stack is created. This is customizable.
@@ -376,6 +386,8 @@ openstack --os-cloud testbed \
   --parameter deploy_infrastructure=true \
   -t stack.yml testbed
 ```
+
+This can also be achieved using ``make deploy-infra``.
 
 The deployment of Ceph can be enabled via parameter ``deploy_ceph``.
 
@@ -403,6 +415,8 @@ openstack --os-cloud testbed \
   -t stack.yml testbed
 ```
 
+This can also be achieved using ``make deploy-infra-ceph-openstack``.
+
 ## Usage
 
 * Get private SSH key
@@ -420,6 +434,8 @@ openstack --os-cloud testbed \
   ```
   chmod 0600 id_rsa.testbed
   ```
+
+  Both steps can be done using ``make ~/.ssh/id_rsa.testbed``.
 
 * Get the manager's address
 
@@ -444,11 +460,16 @@ openstack --os-cloud testbed \
     testbed manager_address)
   ```
 
+  ``make .MANAGER_ADDRESS.testbed`` outputs the IP address and creates a
+  sourcable file ``.MANAGER_ADDRESS.testbed``.
+
 * Access the manager
 
   ```
   ssh -i id_rsa.testbed dragon@$MANAGER_ADDRESS
   ```
+
+  There is a shortcut ``make ssh_manager`` available.
 
 * Use sshuttle (https://github.com/sshuttle/sshuttle) to access the individual
   services locally
