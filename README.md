@@ -41,9 +41,9 @@ The following stable releases are supported. The development branch usually work
 ## Test status of cloud providers
 
 * [Betacloud](https://www.betacloud.de): Works
-* [Citycloud](https://www.citycloud.com): Works (need to change disk names from sdX to vdX before deploying Ceph on manager node ``/opt/configuration/inventory/host_vars/testbed-node-?.osism.local.yml``)
-* [OTC](https://open-telekom-cloud.com/): Needs ``enable_snat``, ``enable_dhcp`` and older heat, still fails
-* [teuto.stack](https://teutostack.de/): Currently lacks support for heat
+* [Citycloud](https://www.citycloud.com): Works (need to change disk names from sdX to vdX, pass ``drives_vdx: true`` in environment)
+* [OTC](https://open-telekom-cloud.com/): Needs ``enable_snat``, ``enable_dhcp``, ``dns_nameservers``, fixup NIC names via custom runcmd commands and an older heatversion. It also needs two cloud-init patches to get get userdata.
+* [teuto.stack](https://teutostack.de/): Currently lacks support for heat.
 
 ## Requirements
 
@@ -59,7 +59,7 @@ The testbed requires the following resources When using the default flavors.
 * 30 ports
 * 1 floating ip address
 * 4 instances
-* 9 volumes (90 GByte)
+* 9 volumes (min 90 GB) plus 140GB root disks (depends on flavors)
 * 4 instances (14 VCPUs, 52 GByte memory)
 * 1 stack
 
@@ -146,6 +146,12 @@ jinja2 -o stack.yml -D number_of_volumes=4 templates/stack.yml.j2
 
 The configuration is only tested with 3 volumes. With more or less volumes, the configuration must
 be adjusted manually and problems may occur.
+
+Using the included Makefile and calling
+```
+make
+```
+will recreate ```stack.yml``` and ```stack-single.yml``` using default parameters (3 nodes, 3 volumes each).
 
 ## Network topology
 
@@ -253,7 +259,7 @@ The defaults for the stack parameters are intended for the Betacloud.
     <td><code>south-1</code></td>
   </tr>
   <tr>
-    <td><code>flavor_controller</code></td>
+    <td><code>flavor_node</code></td>
     <td><code>4C-16GB-40GB</code></td>
   </tr>
   <tr>
@@ -272,6 +278,18 @@ The defaults for the stack parameters are intended for the Betacloud.
     <td><code>volume_size_storage</code></td>
     <td><code>10</code></td>
   </tr>
+  <tr>
+    <td><code>drives_vdx</code></td>
+    <td><code>false</code></td>
+  </tr>
+  <tr>
+    <td><code>ceph_version</code></td>
+    <td><code>luminous</code></td>
+  </tr>
+  <tr>
+    <td><code>openstack_version</code></td>
+    <td><code>rocky</code></td>
+  </tr>
 </table>
 
 With the file ``environment.yml`` the parameters of the stack can be adjusted.
@@ -286,6 +304,9 @@ parameters:
   image: Ubuntu 18.04
   public: public
   volume_size_storage: 10
+  drives_vdx: false
+  ceph_version: luminous
+  openstack_version: rocky
 ```
 
 ## Initialization
@@ -304,6 +325,8 @@ openstack --os-cloud testbed \
 ```
 
 If the check is successful, the stack can be created.
+You can set the ``export OS_CLOUD=testbed`` environment variable to avoid typing
+``--os-cloud testbed`` repeatedly.
 
 ```
 openstack --os-cloud testbed \
@@ -322,6 +345,8 @@ openstack --os-cloud testbed \
 | stack_status_reason | Stack CREATE started                 |
 +---------------------+--------------------------------------+
 ```
+
+This can also be achieved using ``make deploy``.
 
 Docker etc. are already installed during stack creation. Therefore the creation takes some time.
 
@@ -356,6 +381,8 @@ openstack --os-cloud testbed \
 Are you sure you want to delete this stack(s) [y/N]? y
 ```
 
+This can also be achieved using ``make clean``.
+
 ### Customisation
 
 By default, no services are deployed when the stack is created. This is customizable.
@@ -371,6 +398,8 @@ openstack --os-cloud testbed \
   --parameter deploy_infrastructure=true \
   -t stack.yml testbed
 ```
+
+This can also be achieved using ``make deploy-infra``.
 
 The deployment of Ceph can be enabled via parameter ``deploy_ceph``.
 
@@ -398,6 +427,17 @@ openstack --os-cloud testbed \
   -t stack.yml testbed
 ```
 
+This can also be achieved using ``make deploy-infra-ceph-openstack``.
+
+The parameter ``--parameter drives_vdx=true`` can be passed (or ``drives_vdx: true`` be set
+in ``environment.yml``) to change the testbed to use virtio disk names rather than SCSI disk
+names.
+
+The parameters ``ceph_version`` and ``openstack_version`` change the deployed versions of
+Ceph and OpenStack respectively from their defaults ``luminous`` and ``rocky``.
+For Ceph, ``nautilus`` can be used, for OpenStack, we can also test ``stein`` and ``train``.
+It should be noted that the defaults are tested best.
+
 ## Usage
 
 * Get private SSH key
@@ -415,6 +455,8 @@ openstack --os-cloud testbed \
   ```
   chmod 0600 id_rsa.testbed
   ```
+
+  Both steps can be done using ``make ~/.ssh/id_rsa.testbed``.
 
 * Get the manager's address
 
@@ -439,11 +481,16 @@ openstack --os-cloud testbed \
     testbed manager_address)
   ```
 
+  ``make .MANAGER_ADDRESS.testbed`` outputs the IP address and creates a
+  sourcable file ``.MANAGER_ADDRESS.testbed``.
+
 * Access the manager
 
   ```
   ssh -i id_rsa.testbed dragon@$MANAGER_ADDRESS
   ```
+
+  There is a shortcut ``make ssh_manager`` available.
 
 * Use sshuttle (https://github.com/sshuttle/sshuttle) to access the individual
   services locally
@@ -464,6 +511,9 @@ openstack --os-cloud testbed \
 * Run ``./scripts/set-ceph-version.sh nautilus`` to set the Ceph version to ``nautilus``
 * Go to ``/home/dragon`` on the manager node
 * Run ``ansible-playbook manager-part-2.yml`` to update the manager
+
+This can also be achieved automatically by passing the wanted versions inside the environment
+``ceph_version`` and ``openstack_version`` respectively.
 
 ## Deploy
 
