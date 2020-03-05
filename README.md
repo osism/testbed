@@ -360,6 +360,7 @@ openstack --os-cloud testbed \
 This can also be achieved using ``make deploy``.
 
 Docker etc. are already installed during stack creation. Therefore the creation takes some time.
+You can use ``make watch`` to watch the installation proceeding.
 
 The manager is started after the deployment of the HCI nodes has been completed. This is necessary to
 be able to carry out various preparatory steps after the manager has been made available.
