@@ -37,8 +37,8 @@ watch: .deploy.$(STACKNAME)
 		SRV=$$(openstack server list -f value -c "Name" -c "Status" | grep testbed-manager | cut -d ' ' -f2); \
 		openstack server list; \
 		if test -z "$$MGR_ADR" -a "$$SRV" = "ACTIVE"; then \
-			openstack stack output show $(STACKNAME) private_key -f value -c output_value > ~/.ssh/id_rsa.testbed; \
-			chmod 0600 ~/.ssh/id_rsa.testbed; \
+			openstack stack output show $(STACKNAME) private_key -f value -c output_value > ~/.ssh/id_rsa.$(STACKNAME); \
+			chmod 0600 ~/.ssh/id_rsa.$(STACKNAME); \
 			MGR_ADR=$$(openstack stack output show $(STACKNAME) manager_address -f value -c output_value); \
 			echo "MANAGER_ADDRESS=$$MGR_ADR" > .MANAGER_ADDRESS.$(STACKNAME); \
 		fi; \
@@ -64,9 +64,8 @@ watch: .deploy.$(STACKNAME)
 	echo $$MANAGER_ADDRESS
 
 sshuttle: ~/.ssh/id_rsa.$(STACKNAME) .MANAGER_ADDRESS.$(STACKNAME)
-	eval $$(ssh-agent); ssh-add $<; \
 	source ./.MANAGER_ADDRESS.$(STACKNAME); \
-	sshuttle -r dragon@$$MANAGER_ADDRESS 192.168.40.0/24 192.168.50.0/24 192.168.90.0/24
+	sshuttle --ssh-command "ssh -i $<" -r dragon@$$MANAGER_ADDRESS 192.168.40.0/24 192.168.50.0/24 192.168.90.0/24
 
 ssh_manager: ~/.ssh/id_rsa.$(STACKNAME) .MANAGER_ADDRESS.$(STACKNAME)
 	source ./.MANAGER_ADDRESS.$(STACKNAME); \
