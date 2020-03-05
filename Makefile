@@ -42,7 +42,7 @@ watch: .deploy.$(STACKNAME)
 			MGR_ADR=$$(openstack stack output show $(STACKNAME) manager_address -f value -c output_value); \
 			echo "MANAGER_ADDRESS=$$MGR_ADR" > .MANAGER_ADDRESS.$(STACKNAME); \
 		fi; \
-		if test -n "$$MGR_ADR"; then ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa.testbed ubuntu@$$MGR_ADR "sudo grep PLAY /var/log/cloud-init-output.log | grep -v 'PLAY \(\[\(Group hosts\|Gather facts\)\|RECAP\)' | tail -n3; sudo tail -n12 /var/log/cloud-init-output.log"; fi; \
+		if test -n "$$MGR_ADR"; then ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa.$(STACKNAME) ubuntu@$$MGR_ADR "sudo grep PLAY /var/log/cloud-init-output.log | grep -v 'PLAY \(\[\(Group hosts\|Gather facts\)\|RECAP\)' | tail -n3; sudo tail -n12 /var/log/cloud-init-output.log"; fi; \
 		STAT=$$(openstack stack list -f value -c "Stack Name" -c "Stack Status" | grep $(STACKNAME) | cut -d' ' -f2); \
 		if test "$$STAT" == "CREATE_COMPLETE"; then break; fi; \
 		if test "$$STAT" == "CREATE_FAILED"; then openstack stack show $(STACKNAME) -f value -c "stack_status_reason"; break; fi; \
