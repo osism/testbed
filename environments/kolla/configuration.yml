@@ -19,6 +19,8 @@ openstack_release: rocky
 config_strategy: COPY_ALWAYS
 node_custom_config: "{{ configuration_directory }}/environments/kolla/files/overlays"
 
+kolla_enable_sanity_checks: "yes"
+
 ##########################################################
 # haproxy
 
