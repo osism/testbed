@@ -92,6 +92,11 @@ The testbed requires the following resources When using the default flavors.
     - /dev/sdc
   #  - /dev/sdd  # NOTE: the third volume is commented to be added later in tests
   ```
+* Ansible errors that have something to do with undefined variables (e.g. AnsibleUndefined)
+  are most likely due to cached facts that are no longer valid. The facts can be updated by
+  running ``osism-generic facts``.
+
+  To avoid this problem a cronjob should be used for regular updates: ``osism-run custom cronjobs``.
 * The documentation of the OSISM can be found on https://docs.osism.de. There you will find
   further details on deployment, operation etc.
 
