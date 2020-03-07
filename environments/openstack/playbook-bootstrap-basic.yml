@@ -58,6 +58,7 @@
         properties:
           cpu_arch: x86_64
           distro: ubuntu
+          hw_rng_model: virtio
 
     # NOTE: is_public from os_image is not working like expected
 
