@@ -44,7 +44,7 @@
 
     - name: Download cirros image
       get_url:
-        url: https://github.com/cirros-dev/cirros/releases/download/0.5.0/cirros-0.5.0-x86_64-disk.img
+        url: https://github.com/cirros-dev/cirros/releases/download/0.5.1/cirros-0.5.1-x86_64-disk.img
         dest: /tmp/cirros.img
 
     - name: Upload cirros image
@@ -58,6 +58,7 @@
         properties:
           cpu_arch: x86_64
           distro: ubuntu
+          hw_rng_model: virtio
 
     # NOTE: is_public from os_image is not working like expected
 
