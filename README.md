@@ -59,7 +59,7 @@ The testbed requires the following resources When using the default flavors.
 * 30 ports
 * 1 floating ip address
 * 4 instances
-* 9 volumes (90 GByte)
+* 9 volumes (min 90 GB) plus 140GB root disks (depends on flavors)
 * 4 instances (14 VCPUs, 52 GByte memory)
 * 1 stack
 
@@ -277,6 +277,13 @@ The defaults for the stack parameters are intended for the Betacloud.
     <td><code>volume_size_storage</code></td>
     <td><code>10</code></td>
   </tr>
+    <td><code>ceph_version</code></td>
+    <td><code>luminous</code></td>
+  </tr>
+  <tr>
+    <td><code>openstack_version</code></td>
+    <td><code>rocky</code></td>
+  </tr>
   <tr>
     <td><code>drives_vdx</code></td>
     <td><code>false</code></td>
@@ -295,6 +302,8 @@ parameters:
   image: Ubuntu 18.04
   public: public
   volume_size_storage: 10
+  ceph_version: luminous
+  openstack_version: rocky
   drives_vdx: false
 ```
 
@@ -314,6 +323,10 @@ openstack --os-cloud testbed \
 ```
 
 If the check is successful, the stack can be created.
+
+Note that you can set the ``export OS_CLOUD=testbed`` environment variable to avoid typing
+``--os-cloud testbed`` repeatedly.
+
 
 ```
 openstack --os-cloud testbed \
@@ -412,6 +425,11 @@ The parameter ``--parameter drives_vdx=true`` can be passed (or ``drives_vdx: tr
 in ``environment.yml``) to change the testbed to use virtio disk names (``vdx``) rather than
 SCSI disk names (``sdx``).
 
+The parameters ``ceph_version`` and ``openstack_version`` change the deployed versions of
+Ceph and OpenStack respectively from their defaults ``luminous`` and ``rocky``.
+For Ceph, ``nautilus`` can be used, for OpenStack, we can also test ``stein`` and ``train``.
+It should be noted that the defaults are tested best.
+
 ## Usage
 
 * Get private SSH key
@@ -478,6 +496,9 @@ SCSI disk names (``sdx``).
 * Run ``./scripts/set-ceph-version.sh nautilus`` to set the Ceph version to ``nautilus``
 * Go to ``/home/dragon`` on the manager node
 * Run ``ansible-playbook manager-part-2.yml`` to update the manager
+
+This can also be achieved automatically by passing the wanted versions inside the environment
+``ceph_version`` and ``openstack_version`` respectively.
 
 ## Deploy
 
