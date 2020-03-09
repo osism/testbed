@@ -584,7 +584,7 @@ This section describes how individual parts of the testbed can be deployed.
 * Ceph
 
   ```
-  osism-ceph env-hci
+  osism-ceph testbed
   osism-run custom fetch-ceph-keys
   osism-infrastructure helper --tags cephclient
   ```
