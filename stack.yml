@@ -62,6 +62,10 @@ parameters:
     type: string
     default: rocky
 
+  drives_vdx:
+    type: boolean
+    default: false
+
 ##########
 resources:
 
@@ -119,6 +123,7 @@ resources:
                   deploy_openstack: {get_param: deploy_openstack}
                   ceph_version: {get_param: ceph_version}
                   openstack_version: {get_param: openstack_version}
+                  drives_vdx: {get_param: drives_vdx}
                   wc_notify: {get_attr: ['manager_wait_handle', 'curl_cli']}
                 template: |
                   #!/usr/bin/env bash
@@ -184,6 +189,11 @@ resources:
                       # deploy helper services
                       sudo -iu dragon sh -c 'INTERACTIVE=false osism-infrastructure helper --tags sshconfig'
                       sudo -iu dragon sh -c 'INTERACTIVE=false osism-run custom generate-ssh-known-hosts'
+
+                      # Fixup drive names sdX -> vdX IF drives_vdx is set (TODO: Could autodetect this)
+                      if [[ "drives_vdx" == "True" ]]; then
+                        sudo -iu dragon sh -c 'for file in /opt/configuration/inventory/host_vars/testbed*.yml; do sed -i "s@/dev/sd\([a-z]\)@/dev/vd\1@g" ${file}; done'
+                      fi
                   fi
 
                   if [[ "deploy_infrastructure" == "True" ]]; then
