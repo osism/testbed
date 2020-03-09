@@ -435,8 +435,12 @@ openstack --os-cloud testbed \
   --parameter deploy_ceph=true \
   --parameter deploy_infrastructure=true \
   --parameter deploy_openstack=true \
+  --timeout 9000 \
   -t stack.yml testbed
 ```
+
+The ``--timeout 9000`` parameter avoids heat giving up too early.
+(The default timeout for heat stacks is typically 3600.)
 
 This can also be achieved using ``make deploy-infra-ceph-openstack``.
 
