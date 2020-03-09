@@ -18,7 +18,7 @@ stack-single.yml: templates/stack.yml.j2
 	jinja2 -o $@ $(TMPL_PARAMS) -Dnumber_of_nodes=0 $^
 
 dry-run: stack.yml environment.yml
-	openstack stack create --dry-run -t $< -e environment.yml $(STACK_PARAMS) $(STACKNAME)
+	openstack stack create --dry-run -t $< -e environment.yml $(STACK_PARAMS) $(STACKNAME) -f json; echo
 
 deploy: stack.yml environment.yml
 	@touch .deploy.$(STACKNAME)
