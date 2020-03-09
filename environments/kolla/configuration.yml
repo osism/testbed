@@ -102,9 +102,11 @@ keystone_token_provider: "fernet"
 
 # neutron
 neutron_plugin_agent: "openvswitch"
+
 enable_neutron_agent_ha: "yes"
 enable_neutron_dvr: "no"
 enable_neutron_qos: "yes"
+enable_neutron_vpnaas: "yes"
 
 # NOTE: is only needed for Rocky
 neutron_fwaas_version: "v2"
