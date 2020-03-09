@@ -19,6 +19,38 @@ cluster_network: 192.168.80.0/24
 ##########################
 # pools & keys
 
+cephfs_pool_default_size: 1
+cephfs_pool_default_min_size: 0
+cephfs_pool_default_pg_num: 32
+
+cephfs_data_pool:
+  name: "cephfs_data"
+  pg_num: "{{ cephfs_pool_default_pg_num }}"
+  pgp_num: "{{ cephfs_pool_default_pg_num }}"
+  rule_name: "replicated_rule"
+  type: 1
+  erasure_profile: ""
+  expected_num_objects: ""
+  application: "cephfs"
+  size: "{{ cephfs_pool_default_size }}"
+  min_size: "{{ cephfs_pool_default_min_size }}"
+
+cephfs_metadata_pool:
+  name: "cephfs_metadata"
+  pg_num: "{{ cephfs_pool_default_pg_num }}"
+  pgp_num: "{{ cephfs_pool_default_pg_num }}"
+  rule_name: "replicated_rule"
+  type: 1
+  erasure_profile: ""
+  expected_num_objects: ""
+  application: "cephfs"
+  size: "{{ cephfs_pool_default_size }}"
+  min_size: "{{ cephfs_pool_default_min_size }}"
+
+cephfs_pools:
+  - "{{ cephfs_data_pool }}"
+  - "{{ cephfs_metadata_pool }}"
+
 # NOTE: After the initial deployment of the Ceph Clusters, the following parameter can be
 #       set to false. It must only be set to true again when new pools or keys are added.
 openstack_config: true

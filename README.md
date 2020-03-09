@@ -264,7 +264,7 @@ The defaults for the stack parameters are intended for the Betacloud.
     <td><code>south-1</code></td>
   </tr>
   <tr>
-    <td><code>flavor_controller</code></td>
+    <td><code>flavor_node</code></td>
     <td><code>4C-16GB-40GB</code></td>
   </tr>
   <tr>
@@ -292,7 +292,7 @@ Further details on environments on https://docs.openstack.org/heat/latest/templa
 ---
 parameters:
   availability_zone: south-1
-  flavor_controller: 4C-16GB-40GB
+  flavor_node: 4C-16GB-40GB
   flavor_manager: 2C-4GB-20GB
   image: Ubuntu 18.04
   public: public
@@ -610,7 +610,7 @@ This section describes how individual parts of the testbed can be deployed.
 * Ceph
 
   ```
-  osism-ceph env-hci
+  osism-ceph testbed
   osism-run custom fetch-ceph-keys
   osism-infrastructure helper --tags cephclient
   ```
