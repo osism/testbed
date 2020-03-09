@@ -41,9 +41,9 @@ The following stable releases are supported. The development branch usually work
 ## Test status of cloud providers
 
 * [Betacloud](https://www.betacloud.de): Works
-* [Citycloud](https://www.citycloud.com): Works (need to change disk names from sdX to vdX before deploying Ceph on manager node ``/opt/configuration/inventory/host_vars/testbed-node-?.osism.local.yml``)
-* [OTC](https://open-telekom-cloud.com/): Needs ``enable_snat``, ``enable_dhcp`` and older heat, still fails
-* [teuto.stack](https://teutostack.de/): Currently lacks support for heat
+* [Citycloud](https://www.citycloud.com): Works (need to change disk names from sdX to vdX, pass ``drives_vdx: true`` in environment)
+* [OTC](https://open-telekom-cloud.com/): Needs ``enable_snat``, ``enable_dhcp``, ``dns_nameservers``, fixup NIC names via custom runcmd commands and an older heatversion. It also needs two cloud-init patches to get get userdata.
+* [teuto.stack](https://teutostack.de/): Currently lacks support for heat.
 
 ## Requirements
 
@@ -277,6 +277,10 @@ The defaults for the stack parameters are intended for the Betacloud.
     <td><code>volume_size_storage</code></td>
     <td><code>10</code></td>
   </tr>
+  <tr>
+    <td><code>drives_vdx</code></td>
+    <td><code>false</code></td>
+  </tr>
 </table>
 
 With the file ``environment.yml`` the parameters of the stack can be adjusted.
@@ -291,6 +295,7 @@ parameters:
   image: Ubuntu 18.04
   public: public
   volume_size_storage: 10
+  drives_vdx: false
 ```
 
 ## Initialization
@@ -402,6 +407,10 @@ openstack --os-cloud testbed \
   --parameter deploy_openstack=true \
   -t stack.yml testbed
 ```
+
+The parameter ``--parameter drives_vdx=true`` can be passed (or ``drives_vdx: true`` be set
+in ``environment.yml``) to change the testbed to use virtio disk names (``vdx``) rather than
+SCSI disk names (``sdx``).
 
 ## Usage
 
