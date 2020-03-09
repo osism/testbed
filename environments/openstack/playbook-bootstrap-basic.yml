@@ -20,6 +20,7 @@
         email: test@osism.local
         domain: default
         default_project: test
+      no_log: true
 
     - name: Add role member to user test
       os_user_role:
@@ -41,6 +42,8 @@
         vcpus: 1
         disk: 1
         ephemeral: 0
+        extra_specs:
+          "hw_rng:allowed": "True"
 
     - name: Download cirros image
       get_url:
