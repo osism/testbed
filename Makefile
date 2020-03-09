@@ -12,19 +12,19 @@ stack-single.yml: templates/stack.yml.j2
 
 deploy: stack.yml environment.yml
 	@touch .deploy.$(STACKNAME)
-	openstack stack create -t $< -e environment.yml $(STACK_PARAMS) $(STACKNAME)
+	openstack stack create --timeout 3000 -t $< -e environment.yml $(STACK_PARAMS) $(STACKNAME)
 
 deploy-infra: stack.yml environment.yml
 	@touch .deploy.$(STACKNAME)
-	openstack stack create -t $< -e environment.yml $(STACK_PARAMS) --parameter deploy_infrastructure=true $(STACKNAME)
+	openstack stack create --timeout 4800 -t $< -e environment.yml $(STACK_PARAMS) --parameter deploy_infrastructure=true $(STACKNAME)
 
 deploy-infra-ceph: stack.yml environment.yml
 	@touch .deploy.$(STACKNAME)
-	openstack stack create -t $< -e environment.yml $(STACK_PARAMS) --parameter deploy_infrastructure=true --parameter deploy_ceph=true $(STACKNAME)
+	openstack stack create --timeout 6600 -t $< -e environment.yml $(STACK_PARAMS) --parameter deploy_infrastructure=true --parameter deploy_ceph=true $(STACKNAME)
 
 deploy-infra-ceph-openstack: stack.yml environment.yml
 	@touch .deploy.$(STACKNAME)
-	openstack stack create -t $< -e environment.yml $(STACK_PARAMS) --parameter deploy_infrastructure=true --parameter deploy_ceph=true --parameter deploy_openstack=true $(STACKNAME)
+	openstack stack create --timeout 9000 -t $< -e environment.yml $(STACK_PARAMS) --parameter deploy_infrastructure=true --parameter deploy_ceph=true --parameter deploy_openstack=true $(STACKNAME)
 
 clean:
 	openstack stack delete -y $(STACKNAME)
