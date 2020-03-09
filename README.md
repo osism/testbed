@@ -277,6 +277,14 @@ The defaults for the stack parameters are intended for the Betacloud.
     <td><code>volume_size_storage</code></td>
     <td><code>10</code></td>
   </tr>
+  <tr>
+    <td><code>ceph_version</code></td>
+    <td><code>luminous</code></td>
+  </tr>
+  <tr>
+    <td><code>openstack_version</code></td>
+    <td><code>rocky</code></td>
+  </tr>
 </table>
 
 With the file ``environment.yml`` the parameters of the stack can be adjusted.
@@ -291,6 +299,8 @@ parameters:
   image: Ubuntu 18.04
   public: public
   volume_size_storage: 10
+  ceph_version: luminous
+  openstack_version: rocky
 ```
 
 ## Initialization
@@ -403,6 +413,11 @@ openstack --os-cloud testbed \
   -t stack.yml testbed
 ```
 
+The parameters ``ceph_version`` and ``openstack_version`` change the deployed versions of
+Ceph and OpenStack respectively from their defaults ``luminous`` and ``rocky``.
+For Ceph, ``nautilus`` can be used, for OpenStack, we can also test ``stein`` and ``train``.
+It should be noted that the defaults are tested best.
+
 ## Usage
 
 * Get private SSH key
@@ -469,6 +484,9 @@ openstack --os-cloud testbed \
 * Run ``./scripts/set-ceph-version.sh nautilus`` to set the Ceph version to ``nautilus``
 * Go to ``/home/dragon`` on the manager node
 * Run ``ansible-playbook manager-part-2.yml`` to update the manager
+
+This can also be achieved automatically by passing the wanted versions inside the environment
+``ceph_version`` and ``openstack_version`` respectively.
 
 ## Deploy
 

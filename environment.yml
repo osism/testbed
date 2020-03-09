@@ -6,3 +6,5 @@ parameter_defaults:
   image: Ubuntu 18.04
   public: public
   volume_size_storage: 10
+  ceph_version: luminous
+  openstack_version: rocky
