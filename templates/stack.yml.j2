@@ -198,7 +198,7 @@ resources:
 
                   # deploy ceph services
                   if [[ "deploy_ceph" == "True" ]]; then
-                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-ceph env-hci'
+                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-ceph testbed'
                       sudo -iu dragon sh -c 'INTERACTIVE=false osism-run custom fetch-ceph-keys'
                       sudo -iu dragon sh -c 'INTERACTIVE=false osism-infrastructure helper --tags cephclient'
                   fi
