@@ -59,7 +59,7 @@ The testbed requires the following resources When using the default flavors.
 * 30 ports
 * 1 floating ip address
 * 4 instances
-* 9 volumes (90 GByte)
+* 9 volumes (min 90 GB) plus 140GB root disks (depends on flavors)
 * 4 instances (14 VCPUs, 52 GByte memory)
 * 1 stack
 
@@ -309,6 +309,10 @@ openstack --os-cloud testbed \
 ```
 
 If the check is successful, the stack can be created.
+
+Note that you can set the ``export OS_CLOUD=testbed`` environment variable to avoid typing
+``--os-cloud testbed`` repeatedly.
+
 
 ```
 openstack --os-cloud testbed \
