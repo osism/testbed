@@ -20,7 +20,7 @@ parameters:
     type: string
     default: south-1
 
-  volume_az:
+  volume_availability_zone:
     type: string
     default: south-1
 

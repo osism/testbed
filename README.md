@@ -258,7 +258,7 @@ The defaults for the stack parameters are intended for the Betacloud.
     <td><code>south-1</code></td>
   </tr>
   <tr>
-    <td><code>volume_az</code></td>
+    <td><code>volume_availability_zone</code></td>
     <td><code>south-1</code></td>
   </tr>
   <tr>
@@ -290,7 +290,7 @@ Further details on environments on https://docs.openstack.org/heat/latest/templa
 ---
 parameters:
   availability_zone: south-1
-  volume_az: south-1
+  volume_availability_zone: south-1
   flavor_node: 4C-16GB-40GB
   flavor_manager: 2C-4GB-20GB
   image: Ubuntu 18.04
