@@ -402,6 +402,22 @@ resources:
           port_range_max: 65535
         - remote_ip_prefix: 0.0.0.0/0
           protocol: icmp
+
+  security_group_provider:
+    type: OS::Neutron::SecurityGroup
+    properties:
+      name: testbed-provider
+      rules:
+        - remote_ip_prefix: 0.0.0.0/0
+          protocol: tcp
+          port_range_min: 1
+          port_range_max: 65535
+        - remote_ip_prefix: 0.0.0.0/0
+          protocol: udp
+          port_range_min: 1
+          port_range_max: 65535
+        - remote_ip_prefix: 0.0.0.0/0
+          protocol: icmp
 {% endif %}
   ############
   # Networks #
@@ -691,9 +707,12 @@ resources:
     type: OS::Neutron::Port
     properties:
       network_id: {get_resource: net_provider}
-      port_security_enabled: false
       fixed_ips:
         - ip_address: 192.168.100.1{{ n }}
+      allowed_address_pairs:
+        - ip_address: 192.168.100.0/24
+      security_groups:
+        - {get_resource: security_group_provider}
 
   node_{{ n }}_port_storage_frontend:
     type: OS::Neutron::Port

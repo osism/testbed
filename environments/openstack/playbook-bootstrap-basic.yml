@@ -95,6 +95,7 @@
         enable_dhcp: false
         allocation_pool_start: 192.168.100.100
         allocation_pool_end: 192.168.100.200
+        gateway_ip: 192.168.100.5
 
     - name: Create test network
       os_network:
