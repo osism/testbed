@@ -71,6 +71,8 @@ testbed-nodes
 
 # NOTE: Use the following groups only if these services are deployed.
 
+[ceph-iscsigw]
+
 [ceph-mds]
 
 [ceph-nfs]
@@ -82,6 +84,9 @@ testbed-nodes
 # NOTE: Subsequent groups necessary for compatibility to ceph-ansible. Don't change it.
 
 [ceph-client]
+
+[iscsi-gws:children]
+ceph-iscsigw
 
 [mdss:children]
 ceph-mds
