@@ -333,7 +333,8 @@ openstack --os-cloud testbed \
   -t stack.yml testbed
 ```
 
-If the check is successful, the stack can be created.
+If the check is successful, the stack can be created. ``make dry-run`` will do this 
+invocation for you.
 
 Note that you can set the ``export OS_CLOUD=testbed`` environment variable to avoid typing
 ``--os-cloud testbed`` repeatedly.
@@ -357,7 +358,7 @@ openstack --os-cloud testbed \
 +---------------------+--------------------------------------+
 ```
 
-This can also be achieved using ``make deploy``.
+This can also be achieved using ``make create``.
 
 Docker etc. are already installed during stack creation. Therefore the creation takes some time.
 You can use ``make watch`` to watch the installation proceeding.
@@ -393,7 +394,8 @@ openstack --os-cloud testbed \
 Are you sure you want to delete this stack(s) [y/N]? y
 ```
 
-This can also be achieved using ``make clean``.
+This can also be achieved using ``make clean`` or ``make clean-wait`` if you prefer watching
+the cleanup process.
 
 ### Customisation
 
@@ -425,6 +427,8 @@ openstack --os-cloud testbed \
   -t stack.yml testbed
 ```
 
+This can also be achieved using ``make deploy-ceph``.
+
 The deployment of OpenStack can be enabled via parameter ``deploy_openstack``.
 
 The deployment of OpenStack depends on the deployment of Ceph and the infrastructure services.
@@ -443,7 +447,7 @@ openstack --os-cloud testbed \
 The ``--timeout 9000`` parameter avoids heat giving up too early.
 (The default timeout for heat stacks is typically 3600.)
 
-This can also be achieved using ``make deploy-infra-ceph-openstack``.
+This can also be achieved using ``make deploy-openstack``.
 
 The parameter ``--parameter drives_vdx=true`` can be passed (or ``drives_vdx: true`` be set
 in ``environment.yml``) to change the testbed to use virtio disk names (``vdx``) rather than
@@ -506,7 +510,7 @@ It should be noted that the defaults are tested best.
   ssh -i id_rsa.testbed dragon@$MANAGER_ADDRESS
   ```
 
-  There is a shortcut ``make ssh_manager`` available.
+  There is a shortcut ``make ssh`` available.
 
 * Use sshuttle (https://github.com/sshuttle/sshuttle) to access the individual
   services locally
