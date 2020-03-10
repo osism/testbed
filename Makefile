@@ -4,10 +4,22 @@
 # STACK_PARAMS= (e.g. --parameter XYZ=abs) if you want to pass parameter to heat
 # TMPL_PARAMS= (e.g. -Dnumber_of_volumes=4) if you want to modify the stack
 #  generation from the template.
+# ENVIRONMENT= allows to override the default environment.yml file to be used.
+# If you have not configured your OS_ environment such that openstack works without
+# --os-cloud parameter, you can override teh testbed default by passing OS_CLOUD=.
 #
 # (c) Kurt Garloff <scs@garloff.de>, 3/2020, Apache2 License
 
 STACKNAME = testbed
+ENVIRONMENT = environment.yml
+
+NEED_OSCLOUD := $(shell test -z "$$OS_PASSWORD" -a -z "$$OS_CLOUD" && echo 1 || echo 0)
+ifeq ($(NEED_OSCLOUD),1)
+  OS_CLOUD=testbed
+  OPENSTACK=openstack --os-cloud $(OS_CLOUD)
+else
+  OPENSTACK=openstack
+endif
 
 default: stack.yml stack-single.yml
 
@@ -17,41 +29,44 @@ stack.yml: templates/stack.yml.j2
 stack-single.yml: templates/stack.yml.j2
 	jinja2 -o $@ $(TMPL_PARAMS) -Dnumber_of_nodes=0 $^
 
-dry-run: stack.yml environment.yml
-	openstack stack create --dry-run -t $< -e environment.yml $(STACK_PARAMS) $(STACKNAME) -f json; echo
+dry-run: stack.yml $(ENVIRONMENT)
+	$(OPENSTACK) stack create --dry-run -t $< -e $(ENVIRONMENT) $(STACK_PARAMS) $(STACKNAME) -f json; echo
 
-deploy: stack.yml environment.yml
+deploy: stack.yml $(ENVIRONMENT)
 	@touch .deploy.$(STACKNAME)
-	openstack stack create --timeout 3000 -t $< -e environment.yml $(STACK_PARAMS) $(STACKNAME)
+	$(OPENSTACK) stack create --timeout 3000 -t $< -e $(ENVIRONMENT) $(STACK_PARAMS) $(STACKNAME)
 
-deploy-infra: stack.yml environment.yml
+deploy-infra: stack.yml $(ENVIRONMENT)
 	@touch .deploy.$(STACKNAME)
-	openstack stack create --timeout 4200 -t $< -e environment.yml $(STACK_PARAMS) --parameter deploy_infrastructure=true $(STACKNAME)
+	$(OPENSTACK) stack create --timeout 4200 -t $< -e $(ENVIRONMENT) $(STACK_PARAMS) --parameter deploy_infrastructure=true $(STACKNAME)
 
-deploy-ceph: stack.yml environment.yml
+deploy-ceph: stack.yml $(ENVIRONMENT)
 	@touch .deploy.$(STACKNAME)
-	openstack stack create --timeout 4200 -t $< -e environment.yml $(STACK_PARAMS) --parameter deploy_ceph=true $(STACKNAME)
+	$(OPENSTACK) stack create --timeout 4200 -t $< -e $(ENVIRONMENT) $(STACK_PARAMS) --parameter deploy_ceph=true $(STACKNAME)
 
 # do it all
-deploy-openstack: stack.yml environment.yml
+deploy-openstack: stack.yml $(ENVIRONMENT)
 	@touch .deploy.$(STACKNAME)
-	openstack stack create --timeout 9000 -t $< -e environment.yml $(STACK_PARAMS) --parameter deploy_infrastructure=true --parameter deploy_ceph=true --parameter deploy_openstack=true $(STACKNAME)
+	$(OPENSTACK) stack create --timeout 9000 -t $< -e $(ENVIRONMENT) $(STACK_PARAMS) --parameter deploy_infrastructure=true --parameter deploy_ceph=true --parameter deploy_openstack=true $(STACKNAME)
 
 # this will not do kolla purges etc. so do this before manually if you have deployed infra, ceph or openstack
-update: stack.yml environment.yml
+update: stack.yml $(ENVIRONMENT)
 	@touch .deploy.$(STACKNAME)
-	openstack stack update -t $< -e environment.yml $(STACK_PARAMS) $(STACKNAME)
+	$(OPENSTACK) stack update -t $< -e $(ENVIRONMENT) $(STACK_PARAMS) $(STACKNAME)
 
 # Cleanup
 clean:
-	openstack stack delete -y $(STACKNAME)
+	$(OPENSTACK) stack delete -y $(STACKNAME)
 	@rm -f .deploy.$(STACKNAME) .MANAGER_ADDRESS.$(STACKNAME)
 	rm -f ~/.ssh/id_rsa.$(STACKNAME)
 
 clean-wait:
-	openstack stack delete -y --wait $(STACKNAME)
+	$(OPENSTACK) stack delete -y --wait $(STACKNAME)
 	@rm -f .deploy.$(STACKNAME) .MANAGER_ADDRESS.$(STACKNAME)
 	rm -f ~/.ssh/id_rsa.$(STACKNAME)
+
+list:
+	$(OPENSTACK) stack list
 
 # To recover from stale cached ssh-key and MANAGER_ADDRESS
 reset:
@@ -62,9 +77,9 @@ watch: .deploy.$(STACKNAME)
 	MGR_ADR=""; STAT=""; while true; do\
 		date; openstack stack list; \
 		SRV=$$(openstack server list -f value -c "Name" -c "Status" | grep testbed-manager | cut -d ' ' -f2); \
-		openstack server list; \
+		$(OPENSTACK) server list; \
 		if test -z "$$MGR_ADR" -a "$$SRV" = "ACTIVE"; then \
-			openstack stack output show $(STACKNAME) private_key -f value -c output_value > ~/.ssh/id_rsa.$(STACKNAME); \
+			$(OPENSTACK) stack output show $(STACKNAME) private_key -f value -c output_value > ~/.ssh/id_rsa.$(STACKNAME); \
 			chmod 0600 ~/.ssh/id_rsa.$(STACKNAME); \
 			MGR_ADR=$$(openstack stack output show $(STACKNAME) manager_address -f value -c output_value); \
 			echo "MANAGER_ADDRESS=$$MGR_ADR" > .MANAGER_ADDRESS.$(STACKNAME); \
@@ -83,7 +98,7 @@ watch: .deploy.$(STACKNAME)
 
 # Get output
 ~/.ssh/id_rsa.$(STACKNAME): .deploy.$(STACKNAME)
-	openstack stack output show $(STACKNAME) private_key -f value -c output_value > $@
+	$(OPENSTACK) stack output show $(STACKNAME) private_key -f value -c output_value > $@
 	chmod 0600 $@
 
 .MANAGER_ADDRESS.$(STACKNAME): .deploy.$(STACKNAME)

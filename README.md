@@ -358,7 +358,9 @@ openstack --os-cloud testbed \
 +---------------------+--------------------------------------+
 ```
 
-This can also be achieved using ``make create``.
+This can also be achieved using ``make create``. (If you are using a cloud name different from
+``testbed`` and you have not done an export OS_CLOUD, you can override the default by passing
+``make create OS_CLOUD=yourcloudname``.)
 
 Docker etc. are already installed during stack creation. Therefore the creation takes some time.
 You can use ``make watch`` to watch the installation proceeding.
