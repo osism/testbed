@@ -41,7 +41,7 @@ The following stable releases are supported. The development branch usually work
 ## Test status of cloud providers
 
 * [Betacloud](https://www.betacloud.de): Works
-* [Citycloud](https://www.citycloud.com): Works (need to change disk names from sdX to vdX, pass ``drives_vdx: true`` in environment)
+* [Citycloud](https://www.citycloud.com): Works (need to change disk names from sdX to vdX, pass ``drives_vdx: true`` in environment). You can use ``environment-CC.yml`` to get a set of working parameters.
 * [OTC](https://open-telekom-cloud.com/): Needs ``enable_snat``, ``enable_dhcp``, ``dns_nameservers``, fixup NIC names via custom runcmd commands and an older heatversion. It also needs two cloud-init patches to get get userdata.
 * [teuto.stack](https://teutostack.de/): Currently lacks support for heat.
 
