@@ -21,7 +21,7 @@ cluster_network: 192.168.80.0/24
 
 cephfs_pool_default_size: 1
 cephfs_pool_default_min_size: 0
-cephfs_pool_default_pg_num: 32
+cephfs_pool_default_pg_num: 64
 
 cephfs_data_pool:
   name: "cephfs_data"
@@ -57,7 +57,7 @@ openstack_config: true
 
 openstack_pool_default_size: 1
 openstack_pool_default_min_size: 0
-openstack_pool_default_pg_num: 32
+openstack_pool_default_pg_num: 64
 
 openstack_cinder_backup_pool:
   name: "backups"
