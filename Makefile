@@ -36,6 +36,8 @@ deploy: stack.yml $(ENVIRONMENT)
 	@touch .deploy.$(STACKNAME)
 	$(OPENSTACK) stack create --timeout 3000 -t $< -e $(ENVIRONMENT) $(STACK_PARAMS) $(STACKNAME)
 
+create: deploy
+
 deploy-infra: stack.yml $(ENVIRONMENT)
 	@touch .deploy.$(STACKNAME)
 	$(OPENSTACK) stack create --timeout 4200 -t $< -e $(ENVIRONMENT) $(STACK_PARAMS) --parameter deploy_infrastructure=true $(STACKNAME)
@@ -116,4 +118,4 @@ ssh: ~/.ssh/id_rsa.$(STACKNAME) .MANAGER_ADDRESS.$(STACKNAME)
 	ssh -i $< dragon@$$MANAGER_ADDRESS
 
 # avoid confusing make by non-file targets
-.PHONY: clean clean-wait reset watch sshuttle ssh_manager dry-run deploy deploy-infra deploy-infra-ceph deploy-infra-ceph-openstack
+.PHONY: clean clean-wait reset watch sshuttle ssh dry-run list create deploy deploy-infra deploy-ceph deploy-openstack
