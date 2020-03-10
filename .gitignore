@@ -1,10 +1,12 @@
+.MANAGER_ADDRESS.*
+.deploy.*
 .venv
 Pipfile.lock
 clouds.yml
+contrib/es_test_data.py
+contrib/mysql_random_data_load
+environments/**/ceph.client.*.keyring
 id_rsa.*
 roles
 secrets
 secure.yml
-contrib/mysql_random_data_load
-contrib/es_test_data.py
-environments/**/ceph.client.*.keyring
