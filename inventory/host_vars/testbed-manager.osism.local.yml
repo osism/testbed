@@ -7,8 +7,8 @@ ansible_host: 192.168.40.5
 ##########################################################
 # generic
 
-console_interface: ens3
-management_interface: ens4
+console_interface: "{{ ansible_local.testbed_network_devices.management }}"
+management_interface: "{{ ansible_local.testbed_network_devices.internal }}"
 
 internal_address: 192.168.50.5
 fluentd_host: 192.168.50.5
@@ -18,7 +18,7 @@ fluentd_host: 192.168.50.5
 
 configure_cockpit_server: yes
 cockpit_host: "{{ hostvars[inventory_hostname]['ansible_' + console_interface]['ipv4']['address'] }}"
-cockpit_ssh_interface: ens3
+cockpit_ssh_interface: "{{ ansible_local.testbed_network_devices.management }}"
 
 ##########################################################
 # netdata
@@ -32,7 +32,7 @@ network_allow_service_restart: no
 network_restart_method: nothing
 
 network_interfaces:
-  - device: ens3
+  - device: "{{ ansible_local.testbed_network_devices.management }}"
     auto: true
     family: inet
     method: static
@@ -41,7 +41,7 @@ network_interfaces:
     gateway: 192.168.40.1
     mtu: 1450
 
-  - device: ens4
+  - device: "{{ ansible_local.testbed_network_devices.internal }}"
     auto: true
     family: inet
     method: static
@@ -49,7 +49,7 @@ network_interfaces:
     netmask: 255.255.255.0
     mtu: 1450
 
-  - device: ens5
+  - device: "{{ ansible_local.testbed_network_devices.external }}"
     auto: true
     family: inet
     method: static
@@ -57,7 +57,7 @@ network_interfaces:
     netmask: 255.255.255.0
     mtu: 1450
 
-  - device: ens6
+  - device: "{{ ansible_local.testbed_network_devices.provider }}"
     auto: true
     family: inet
     method: static
@@ -65,7 +65,7 @@ network_interfaces:
     netmask: 255.255.255.0
     mtu: 1450
 
-  - device: ens7
+  - device: "{{ ansible_local.testbed_network_devices.storage_backend }}"
     auto: true
     family: inet
     method: static
@@ -76,4 +76,4 @@ network_interfaces:
 ##########################################################
 # kolla
 
-network_interface: ens4
+network_interface: "{{ ansible_local.testbed_network_devices.internal }}"
