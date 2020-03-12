@@ -204,16 +204,7 @@ resources:
 
                   # deploy infrastructure services
                   if [[ "deploy_infrastructure" == "True" ]]; then
-                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy common'
-                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy openvswitch'
-                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy memcached'
-                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy redis'
-                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy haproxy'
-                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy elasticsearch'
-                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy kibana'
-                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy etcd'
-                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy rabbitmq'
-                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy mariadb'
+                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy testbed --tags -infrastructure'
                   fi
 
                   # deploy ceph services
@@ -228,14 +219,7 @@ resources:
                       if [[ "deploy_infrastructure" != "True" ]]; then
                           echo "infrastructure services are necessary for the deployment of OpenStack"
                       else
-                          sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy keystone'
-                          sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy horizon'
-                          sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy placement'
-                          sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy glance'
-                          sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy cinder'
-                          sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy neutron'
-                          sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy nova'
-
+                          sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy --tags openstack'
                           sudo -iu dragon sh -c 'INTERACTIVE=false osism-run openstack bootstrap-basic'
 
                           sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy heat'
