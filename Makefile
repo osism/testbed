@@ -34,22 +34,22 @@ dry-run: stack.yml $(ENVIRONMENT)
 
 deploy: stack.yml $(ENVIRONMENT)
 	@touch .deploy.$(STACKNAME)
-	$(OPENSTACK) stack create --timeout 3000 -t $< -e $(ENVIRONMENT) $(STACK_PARAMS) $(STACKNAME)
+	$(OPENSTACK) stack create --timeout 45 -t $< -e $(ENVIRONMENT) $(STACK_PARAMS) $(STACKNAME)
 
 create: deploy
 
 deploy-infra: stack.yml $(ENVIRONMENT)
 	@touch .deploy.$(STACKNAME)
-	$(OPENSTACK) stack create --timeout 4200 -t $< -e $(ENVIRONMENT) $(STACK_PARAMS) --parameter deploy_infrastructure=true $(STACKNAME)
+	$(OPENSTACK) stack create --timeout 70 -t $< -e $(ENVIRONMENT) $(STACK_PARAMS) --parameter deploy_infrastructure=true $(STACKNAME)
 
 deploy-ceph: stack.yml $(ENVIRONMENT)
 	@touch .deploy.$(STACKNAME)
-	$(OPENSTACK) stack create --timeout 4200 -t $< -e $(ENVIRONMENT) $(STACK_PARAMS) --parameter deploy_ceph=true $(STACKNAME)
+	$(OPENSTACK) stack create --timeout 70 -t $< -e $(ENVIRONMENT) $(STACK_PARAMS) --parameter deploy_ceph=true $(STACKNAME)
 
 # do it all
 deploy-openstack: stack.yml $(ENVIRONMENT)
 	@touch .deploy.$(STACKNAME)
-	$(OPENSTACK) stack create --timeout 9000 -t $< -e $(ENVIRONMENT) $(STACK_PARAMS) --parameter deploy_infrastructure=true --parameter deploy_ceph=true --parameter deploy_openstack=true $(STACKNAME)
+	$(OPENSTACK) stack create --timeout 150 -t $< -e $(ENVIRONMENT) $(STACK_PARAMS) --parameter deploy_infrastructure=true --parameter deploy_ceph=true --parameter deploy_openstack=true $(STACKNAME)
 
 # this will not do kolla purges etc. so do this before manually if you have deployed infra, ceph or openstack
 update: stack.yml $(ENVIRONMENT)
