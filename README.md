@@ -442,12 +442,14 @@ openstack --os-cloud testbed \
   --parameter deploy_ceph=true \
   --parameter deploy_infrastructure=true \
   --parameter deploy_openstack=true \
-  --timeout 9000 \
+  --timeout 150 \
   -t stack.yml testbed
 ```
 
-The ``--timeout 9000`` parameter avoids heat giving up too early.
-(The default timeout for heat stacks is typically 3600.)
+The ``--timeout 150`` parameter tells heat to wait up to 2.5hrs for
+completion.
+(The default timeout for heat stacks is typically 60mins, which will only be enough under
+ideal conditions for the complete stack.)
 
 This can also be achieved using ``make deploy-openstack``.
 
