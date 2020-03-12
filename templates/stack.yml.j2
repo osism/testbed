@@ -215,11 +215,6 @@ resources:
                       sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy elasticsearch'
                       sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy kibana'
                       sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy etcd'
-
-                      # NOTE: workaround "Index .kibana belongs to a version of Kibana that cannot be
-                      #       automatically migrated. Reset it or use the X-Pack upgrade assistant."
-                      curl -X DELETE http://192.168.50.200:9200/.kibana
-
                       sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy rabbitmq'
                       sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy mariadb'
                   fi
