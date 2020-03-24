@@ -42,15 +42,22 @@ parameters:
     type: boolean
     default: false
 
-# select luminous or nautilus
   ceph_version:
     type: string
     default: luminous
+    constraints:
+      - allowed_values:
+          - luminous
+          - nautilus
 
-# select rocky, stein, train
   openstack_version:
     type: string
     default: rocky
+    constraints:
+      - allowed_values:
+          - rocky
+          - stein
+          - train
 
   drives_vdx:
     type: boolean
