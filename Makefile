@@ -122,5 +122,8 @@ ssh: ~/.ssh/id_rsa.$(STACKNAME) .MANAGER_ADDRESS.$(STACKNAME)
 	source ./.MANAGER_ADDRESS.$(STACKNAME); \
 	ssh -i $< dragon@$$MANAGER_ADDRESS
 
+console: .deploy.$(STACKNAME)
+	$(OPENSTACK) console log show testbed-manager
+
 # avoid confusing make by non-file targets
-.PHONY: clean clean-wait reset watch sshuttle ssh dry-run list create deploy deploy-infra deploy-ceph deploy-openstack
+.PHONY: clean clean-wait console reset watch sshuttle ssh dry-run list create deploy deploy-infra deploy-ceph deploy-openstack
