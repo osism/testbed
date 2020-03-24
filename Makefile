@@ -1,15 +1,20 @@
 # Makefile
+#
 # Shortcuts to invoke OSISM testbed stack generation
+#
+# Pass STACKFILE=XXX to change the path to the template (default: stack.yml),
 # Pass STACKNAME=XXX to change the name of the deployed stack (default: testbed),
 # STACK_PARAMS= (e.g. --parameter XYZ=abs) if you want to pass parameter to heat
 # TMPL_PARAMS= (e.g. -Dnumber_of_volumes=4) if you want to modify the stack
 #  generation from the template.
 # ENVIRONMENT= allows to override the default environment.yml file to be used.
+#
 # If you have not configured your OS_ environment such that openstack works without
 # --os-cloud parameter, you can override teh testbed default by passing OS_CLOUD=.
 #
 # (c) Kurt Garloff <scs@garloff.de>, 3/2020, Apache2 License
 
+STACKFILE = stack.yml
 STACKNAME = testbed
 ENVIRONMENT = environment.yml
 
@@ -29,30 +34,30 @@ stack.yml: templates/stack.yml.j2
 stack-single.yml: templates/stack.yml.j2
 	jinja2 -o $@ $(TMPL_PARAMS) -Dnumber_of_nodes=0 $^
 
-dry-run: stack.yml $(ENVIRONMENT)
+dry-run: $(STACKFILE) $(ENVIRONMENT)
 	$(OPENSTACK) stack create --dry-run -t $< -e $(ENVIRONMENT) $(STACK_PARAMS) $(STACKNAME) -f json; echo
 
-deploy: stack.yml $(ENVIRONMENT)
+deploy: $(STACKFILE) $(ENVIRONMENT)
 	@touch .deploy.$(STACKNAME)
 	$(OPENSTACK) stack create --timeout 45 -t $< -e $(ENVIRONMENT) $(STACK_PARAMS) $(STACKNAME)
 
 create: deploy
 
-deploy-infra: stack.yml $(ENVIRONMENT)
+deploy-infra: $(STACKFILE) $(ENVIRONMENT)
 	@touch .deploy.$(STACKNAME)
 	$(OPENSTACK) stack create --timeout 70 -t $< -e $(ENVIRONMENT) $(STACK_PARAMS) --parameter deploy_infrastructure=true $(STACKNAME)
 
-deploy-ceph: stack.yml $(ENVIRONMENT)
+deploy-ceph: $(STACKFILE) $(ENVIRONMENT)
 	@touch .deploy.$(STACKNAME)
 	$(OPENSTACK) stack create --timeout 70 -t $< -e $(ENVIRONMENT) $(STACK_PARAMS) --parameter deploy_ceph=true $(STACKNAME)
 
 # do it all
-deploy-openstack: stack.yml $(ENVIRONMENT)
+deploy-openstack: $(STACKFILE) $(ENVIRONMENT)
 	@touch .deploy.$(STACKNAME)
 	$(OPENSTACK) stack create --timeout 150 -t $< -e $(ENVIRONMENT) $(STACK_PARAMS) --parameter deploy_infrastructure=true --parameter deploy_ceph=true --parameter deploy_openstack=true $(STACKNAME)
 
 # this will not do kolla purges etc. so do this before manually if you have deployed infra, ceph or openstack
-update: stack.yml $(ENVIRONMENT)
+update: $(STACKFILE) $(ENVIRONMENT)
 	@touch .deploy.$(STACKNAME)
 	$(OPENSTACK) stack update -t $< -e $(ENVIRONMENT) $(STACK_PARAMS) $(STACKNAME)
 
