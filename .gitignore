@@ -6,7 +6,7 @@ clouds.yml
 contrib/es_test_data.py
 contrib/mysql_random_data_load
 environments/**/ceph.client.*.keyring
-id_rsa.*
+.id_rsa.*
 roles
 secrets
 secure.yml

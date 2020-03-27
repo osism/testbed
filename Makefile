@@ -65,12 +65,12 @@ update: $(STACKFILE) $(ENVIRONMENT)
 clean:
 	$(OPENSTACK) stack delete -y $(STACKNAME)
 	@rm -f .deploy.$(STACKNAME) .MANAGER_ADDRESS.$(STACKNAME)
-	rm -f ~/.ssh/id_rsa.$(STACKNAME)
+	rm -f .id_rsa.$(STACKNAME)
 
 clean-wait:
 	$(OPENSTACK) stack delete -y --wait $(STACKNAME)
 	@rm -f .deploy.$(STACKNAME) .MANAGER_ADDRESS.$(STACKNAME)
-	rm -f ~/.ssh/id_rsa.$(STACKNAME)
+	rm -f .id_rsa.$(STACKNAME)
 
 list:
 	$(OPENSTACK) stack list
@@ -86,12 +86,12 @@ watch: .deploy.$(STACKNAME)
 		SRV=$$($(OPENSTACK) server list -f value -c "Name" -c "Status" | grep testbed-manager | cut -d ' ' -f2); \
 		$(OPENSTACK) server list; \
 		if test -z "$$MGR_ADR" -a "$$SRV" = "ACTIVE"; then \
-			$(OPENSTACK) stack output show $(STACKNAME) private_key -f value -c output_value > ~/.ssh/id_rsa.$(STACKNAME); \
-			chmod 0600 ~/.ssh/id_rsa.$(STACKNAME); \
+			$(OPENSTACK) stack output show $(STACKNAME) private_key -f value -c output_value > .id_rsa.$(STACKNAME); \
+			chmod 0600 .id_rsa.$(STACKNAME); \
 			MGR_ADR=$$($(OPENSTACK) stack output show $(STACKNAME) manager_address -f value -c output_value); \
 			echo "MANAGER_ADDRESS=$$MGR_ADR" > .MANAGER_ADDRESS.$(STACKNAME); \
 		fi; \
-		if test -n "$$MGR_ADR"; then ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa.$(STACKNAME) ubuntu@$$MGR_ADR "sudo grep PLAY /var/log/cloud-init-output.log | grep -v 'PLAY \(\[\(Group hosts\|Gather facts\)\|RECAP\)' | tail -n3; sudo tail -n12 /var/log/cloud-init-output.log"; fi; \
+		if test -n "$$MGR_ADR"; then ssh -o StrictHostKeyChecking=no -i .id_rsa.$(STACKNAME) ubuntu@$$MGR_ADR "sudo grep PLAY /var/log/cloud-init-output.log | grep -v 'PLAY \(\[\(Group hosts\|Gather facts\)\|RECAP\)' | tail -n3; sudo tail -n12 /var/log/cloud-init-output.log"; fi; \
 		STAT=$$($(OPENSTACK) stack list -f value -c "Stack Name" -c "Stack Status" | grep $(STACKNAME) | cut -d' ' -f2); \
 		if test "$$STAT" == "CREATE_COMPLETE"; then break; fi; \
 		if test "$$STAT" == "CREATE_FAILED"; then $(OPENSTACK) stack show $(STACKNAME) -f value -c "stack_status_reason"; break; fi; \
@@ -104,7 +104,7 @@ watch: .deploy.$(STACKNAME)
 	if test -n "$$STAT"; then touch .deploy.$(STACKNAME); else echo "use make deploy or deploy-infra or ...."; exit 1; fi
 
 # Get output
-~/.ssh/id_rsa.$(STACKNAME): .deploy.$(STACKNAME)
+.id_rsa.$(STACKNAME): .deploy.$(STACKNAME)
 	$(OPENSTACK) stack output show $(STACKNAME) private_key -f value -c output_value > $@
 	chmod 0600 $@
 
@@ -114,11 +114,11 @@ watch: .deploy.$(STACKNAME)
 	echo $$MANAGER_ADDRESS
 
 # Convenience: sshuttle invocation
-sshuttle: ~/.ssh/id_rsa.$(STACKNAME) .MANAGER_ADDRESS.$(STACKNAME)
+sshuttle: .id_rsa.$(STACKNAME) .MANAGER_ADDRESS.$(STACKNAME)
 	source ./.MANAGER_ADDRESS.$(STACKNAME); \
 	sshuttle --ssh-cmd "ssh -i $<" -r dragon@$$MANAGER_ADDRESS 192.168.40.0/24 192.168.50.0/24 192.168.90.0/24
 
-ssh: ~/.ssh/id_rsa.$(STACKNAME) .MANAGER_ADDRESS.$(STACKNAME)
+ssh: .id_rsa.$(STACKNAME) .MANAGER_ADDRESS.$(STACKNAME)
 	source ./.MANAGER_ADDRESS.$(STACKNAME); \
 	ssh -i $< dragon@$$MANAGER_ADDRESS
 
