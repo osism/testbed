@@ -52,6 +52,10 @@ parameters:
     type: boolean
     default: false
 
+  configuration_version:
+    type: string
+    default: master
+
   ceph_version:
     type: string
     default: luminous
@@ -69,10 +73,6 @@ parameters:
           - rocky
           - stein
           - train
-
-  drives_vdx:
-    type: boolean
-    default: false
 
 ##########
 resources:
@@ -129,9 +129,9 @@ resources:
                   deploy_ceph: {get_param: deploy_ceph}
                   deploy_infrastructure: {get_param: deploy_infrastructure}
                   deploy_openstack: {get_param: deploy_openstack}
+                  configuration_version: {get_param: configuration_version}
                   ceph_version: {get_param: ceph_version}
                   openstack_version: {get_param: openstack_version}
-                  drives_vdx: {get_param: drives_vdx}
                   wc_notify: {get_attr: ['manager_wait_handle', 'curl_cli']}
                 template: |
                   #!/usr/bin/env bash
@@ -149,7 +149,7 @@ resources:
                   ansible-galaxy install git+https://github.com/osism/ansible-repository
                   ansible-galaxy install git+https://github.com/osism/ansible-resolvconf
 
-                  curl https://raw.githubusercontent.com/osism/testbed/master/playbooks/node.yml > /root/node.yml
+                  curl https://raw.githubusercontent.com/osism/testbed/configuration_version/playbooks/node.yml > /root/node.yml
                   ansible-playbook -i localhost, /root/node.yml
 
                   cp /home/ubuntu/.ssh/id_rsa /home/dragon/.ssh/id_rsa
@@ -159,25 +159,27 @@ resources:
                   sudo -iu dragon ansible-galaxy install git+https://github.com/osism/ansible-configuration
                   sudo -iu dragon ansible-galaxy install git+https://github.com/osism/ansible-manager
 
-                  curl https://raw.githubusercontent.com/osism/testbed/master/playbooks/manager-part-1.yml | sudo -iu dragon tee /home/dragon/manager-part-1.yml
-                  curl https://raw.githubusercontent.com/osism/testbed/master/playbooks/manager-part-2.yml | sudo -iu dragon tee /home/dragon/manager-part-2.yml
-                  sudo -iu dragon ansible-playbook -i localhost, /home/dragon/manager-part-1.yml
+                  curl https://raw.githubusercontent.com/osism/testbed/configuration_version/playbooks/manager-part-1.yml | sudo -iu dragon tee /home/dragon/manager-part-1.yml
+                  curl https://raw.githubusercontent.com/osism/testbed/configuration_version/playbooks/manager-part-2.yml | sudo -iu dragon tee /home/dragon/manager-part-2.yml
+                  sudo -iu dragon ansible-playbook -i testbed-manager.osism.local, /home/dragon/manager-part-1.yml -e configuration_git_version=configuration_version
                   sudo -iu dragon sh -c 'cd /opt/configuration; ./scripts/set-ceph-version.sh ceph_version'
                   sudo -iu dragon sh -c 'cd /opt/configuration; ./scripts/set-openstack-version.sh openstack_version'
-                  sudo -iu dragon ansible-playbook -i localhost, /home/dragon/manager-part-2.yml
+                  sudo -iu dragon ansible-playbook -i testbed-manager.osism.local, /home/dragon/manager-part-2.yml
 
                   sudo -iu dragon docker cp /home/dragon/.ssh/id_rsa.pub manager_osism-ansible_1:/share/id_rsa.pub
 
                   rm /home/ubuntu/.ssh/id_rsa*
 
-                  # NOTE(berendt): sometimes ARA doesn't really get up after the bootstrap
-                  sleep 15
-                  sudo -iu dragon docker restart manager_ara-server_1
-                  sleep 15
+                  # NOTE(berendt): wait for ARA
+
+                  until [[ "$(/usr/bin/docker inspect -f '{{.State.Health.Status}}' manager_ara-server_1)" == "healthy" ]]; do
+                      sleep 1;
+                  done;
 
                   # NOTE(berendt): sudo -E does not work here because sudo -i is needed
 
                   sudo -iu dragon sh -c 'INTERACTIVE=false osism-run custom cronjobs'
+                  sudo -iu dragon sh -c 'INTERACTIVE=false osism-run custom facts'
 
                   # prepare all systems
                   if [[ 3 -gt 0 ]]; then
@@ -197,11 +199,6 @@ resources:
                       # deploy helper services
                       sudo -iu dragon sh -c 'INTERACTIVE=false osism-infrastructure helper --tags sshconfig'
                       sudo -iu dragon sh -c 'INTERACTIVE=false osism-run custom generate-ssh-known-hosts'
-
-                      # Fixup drive names sdX -> vdX IF drives_vdx is set (TODO: Could autodetect this)
-                      if [[ "drives_vdx" == "True" ]]; then
-                        sudo -iu dragon sh -c 'for file in /opt/configuration/inventory/host_vars/testbed*.yml; do sed -i "s@/dev/sd\([a-z]\)@/dev/vd\1@g" ${file}; done'
-                      fi
                   fi
 
                   if [[ "deploy_infrastructure" == "True" ]]; then
@@ -275,6 +272,7 @@ resources:
           - content:
               str_replace:
                 params:
+                  configuration_version: {get_param: configuration_version}
                   wc_notify: {get_attr: ['node_wait_handle', 'curl_cli']}
                 template: |
                   #!/usr/bin/env bash
@@ -294,7 +292,7 @@ resources:
                   ansible-galaxy install git+https://github.com/osism/ansible-repository
                   ansible-galaxy install git+https://github.com/osism/ansible-resolvconf
 
-                  curl https://raw.githubusercontent.com/osism/testbed/master/playbooks/node.yml > /root/node.yml
+                  curl https://raw.githubusercontent.com/osism/testbed/configuration_version/playbooks/node.yml > /root/node.yml
                   ansible-playbook -i localhost, /root/node.yml
 
                   rm /home/ubuntu/.ssh/id_rsa*
@@ -305,8 +303,8 @@ resources:
           - "rm -f /etc/network/interfaces.d/50-cloud-init.cfg"
           - "mv /etc/netplan/50-cloud-init.yaml /etc/netplan/50-cloud-init.yaml.unused"
           - "echo 'auto lo\niface lo inet loopback\n\nsource /etc/network/interfaces.d/*' > /etc/network/interfaces"
-          - "for iface in $(ip -o link | cut -d: -f2 | tr -d ' ' | grep ^ens); do echo 'auto '${iface}'\niface '${iface}' inet dhcp\n' > '/etc/network/interfaces.d/device-'$iface; done"
-          - "for iface in $(ip -o link | cut -d: -f2 | tr -d ' ' | grep ^ens | grep -v ens3); do echo '\n\npost-up ip route del default dev '${iface} || exit 0'\n' >> '/etc/network/interfaces.d/device-'$iface; done"
+          - "for iface in $(find /sys/class/net -type l -not -lname '*virtual*' -printf '%f\n'); do echo 'auto '${iface}'\niface '${iface}' inet dhcp\n' > '/etc/network/interfaces.d/device-'$iface; done"
+          - "primary=$(ip route get 8.8.8.8 | grep via | awk '{print $5}'); for iface in $(find /sys/class/net -type l -not -lname '*virtual*' -printf '%f\n' | grep -v $primary); do echo '\n\npost-up ip route del default dev '${iface} || exit 0'\n' >> '/etc/network/interfaces.d/device-'$iface; done"
           - "/root/run.sh"
         final_message: "The system is finally up, after $UPTIME seconds"
 

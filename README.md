@@ -41,10 +41,10 @@ The following stable releases are supported. The development branch usually work
 
 ## Test status of cloud providers
 
-* [Betacloud](https://www.betacloud.de): Works
-* [Citycloud](https://www.citycloud.com): Works (need to change disk names from sdX to vdX, pass ``drives_vdx: true`` in environment). You can use ``environment-CityCloud.yml`` to get a set of working parameters.
-* [OTC](https://open-telekom-cloud.com/): Needs ``enable_snat``, ``enable_dhcp``, ``dns_nameservers``, fixup NIC names via custom runcmd commands and an older heatversion. It also needs two cloud-init patches to get get userdata.
-* [teuto.stack](https://teutostack.de/): Currently lacks support for heat.
+* [Betacloud](https://www.betacloud.de): Works.
+* [Citycloud](https://www.citycloud.com): Works. You can use ``environment-CityCloud.yml`` to get a set of working parameters.
+* [OTC](https://open-telekom-cloud.com/): Needs ``enable_snat``, ``enable_dhcp``, ``dns_nameservers``, and an older ``heat_template_version``. It also needs two cloud-init patches to get get userdata.
+* [teuto.stack](https://teutostack.de/): Currently lacks support for Heat.
 
 ## Requirements
 
@@ -88,11 +88,15 @@ The testbed requires the following resources When using the default flavors.
   scaling of Ceph.
 
   ```
-  devices:
-    - /dev/sdb
-    - /dev/sdc
-  #  - /dev/sdd  # NOTE: the third volume is commented to be added later in tests
+  devices: "{{ ansible_local.testbed_ceph_devices }}"
   ```
+
+  To use the third block device for Ceph change this parameter as follows.
+
+  ```
+  devices: "{{ ansible_local.testbed_ceph_devices_all }}"
+  ```
+
 * Ansible errors that have something to do with undefined variables (e.g. AnsibleUndefined)
   are most likely due to cached facts that are no longer valid. The facts can be updated by
   running ``osism-generic facts``.
@@ -288,16 +292,16 @@ The defaults for the stack parameters are intended for the Betacloud.
     <td><code>volume_size_storage</code></td>
     <td><code>10</code></td>
   </tr>
+    <td><code>configuration_version</code></td>
+    <td><code>master</code></td>
+  </tr>
+  </tr>
     <td><code>ceph_version</code></td>
     <td><code>luminous</code></td>
   </tr>
   <tr>
     <td><code>openstack_version</code></td>
     <td><code>rocky</code></td>
-  </tr>
-  <tr>
-    <td><code>drives_vdx</code></td>
-    <td><code>false</code></td>
   </tr>
 </table>
 
@@ -316,7 +320,6 @@ parameters:
   volume_size_storage: 10
   ceph_version: luminous
   openstack_version: rocky
-  drives_vdx: false
 ```
 
 ## Initialization
@@ -453,10 +456,6 @@ completion.
 ideal conditions for the complete stack.)
 
 This can also be achieved using ``make deploy-openstack``.
-
-The parameter ``--parameter drives_vdx=true`` can be passed (or ``drives_vdx: true`` be set
-in ``environment.yml``) to change the testbed to use virtio disk names (``vdx``) rather than
-SCSI disk names (``sdx``).
 
 The parameters ``ceph_version`` and ``openstack_version`` change the deployed versions of
 Ceph and OpenStack respectively from their defaults ``luminous`` and ``rocky``.

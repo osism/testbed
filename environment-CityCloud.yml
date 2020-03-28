@@ -12,4 +12,3 @@ parameter_defaults:
   volume_size_storage: 12
   ceph_version: nautilus
   openstack_version: train
-  drives_vdx: true

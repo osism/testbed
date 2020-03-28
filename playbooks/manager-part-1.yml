@@ -1,11 +1,10 @@
 ---
 - name: Apply role osism.configuration
-  hosts: localhost
+  hosts: testbed-manager.osism.local
   connection: local
   gather_facts: true
 
   vars:
-    configuration_git_version: master
     configuration_git_host: github.com
     configuration_git_port: 443
     configuration_git_repository: osism/testbed.git
