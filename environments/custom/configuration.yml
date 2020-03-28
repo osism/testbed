@@ -1,4 +1,8 @@
 ---
-# Dummy variable to avoid error because ansible does not recognize the
-# file as a good configuration file when no variable in it.
-dummy:
+# registry proxy
+
+registry_proxy_docker_compose_directory: /opt/registry-proxy
+registry_proxy_network: 172.31.200.0/28
+
+registry_proxy_host: "{{ hostvars[inventory_hostname]['ansible_' + management_interface]['ipv4']['address'] }}"
+registry_proxy_port: 8000

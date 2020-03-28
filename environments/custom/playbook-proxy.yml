@@ -1,0 +1,43 @@
+---
+- hosts: manager
+  gather_facts: false
+
+  tasks:
+    - name: Install squid package
+      package:
+        name: squid
+        state: present
+      become: true
+
+    - name: Create cache directory
+      file:
+        path: /var/cache/squid
+        state: directory
+        mode: 0755
+        owner: proxy
+        group: proxy
+      become: true
+
+    - name: Copy squid configuration file
+      copy:
+        src: squid.conf
+        dest: /etc/squid/squid.conf
+        mode: 0644
+        owner: root
+        group: root
+      become: true
+      notify: Restart squid service
+
+    - name: Start/enable squid service
+      service:
+        name: squid
+        enabled: true
+        state: started
+      become: true
+
+  handlers:
+    - name: Restart squid service
+      service:
+        name: squid
+        state: restarted
+      become: true

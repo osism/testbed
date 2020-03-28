@@ -96,7 +96,7 @@ resources:
     properties:
       cloud_config:
         package_update: true
-        package_upgrade: true
+        package_upgrade: false
         packages:
           - ifupdown
         write_files:
@@ -124,10 +124,8 @@ resources:
                   add-apt-repository --yes ppa:ansible/ansible
                   apt-get install --yes ansible
 
-                  ansible-galaxy install git+https://github.com/openstack/ansible-hardening
                   ansible-galaxy install git+https://github.com/osism/ansible-chrony
                   ansible-galaxy install git+https://github.com/osism/ansible-common
-                  ansible-galaxy install git+https://github.com/osism/ansible-docker
                   ansible-galaxy install git+https://github.com/osism/ansible-operator
                   ansible-galaxy install git+https://github.com/osism/ansible-repository
                   ansible-galaxy install git+https://github.com/osism/ansible-resolvconf
@@ -140,21 +138,25 @@ resources:
                   chown -R dragon:dragon /home/dragon/.ssh
 
                   sudo -iu dragon ansible-galaxy install git+https://github.com/osism/ansible-configuration
+                  sudo -iu dragon ansible-galaxy install git+https://github.com/osism/ansible-docker
                   sudo -iu dragon ansible-galaxy install git+https://github.com/osism/ansible-manager
 
                   curl https://raw.githubusercontent.com/osism/testbed/configuration_version/playbooks/manager-part-1.yml | sudo -iu dragon tee /home/dragon/manager-part-1.yml
                   curl https://raw.githubusercontent.com/osism/testbed/configuration_version/playbooks/manager-part-2.yml | sudo -iu dragon tee /home/dragon/manager-part-2.yml
+                  curl https://raw.githubusercontent.com/osism/testbed/configuration_version/playbooks/manager-part-3.yml | sudo -iu dragon tee /home/dragon/manager-part-3.yml
+
                   sudo -iu dragon ansible-playbook -i testbed-manager.osism.local, /home/dragon/manager-part-1.yml -e configuration_git_version=configuration_version
                   sudo -iu dragon sh -c 'cd /opt/configuration; ./scripts/set-ceph-version.sh ceph_version'
                   sudo -iu dragon sh -c 'cd /opt/configuration; ./scripts/set-openstack-version.sh openstack_version'
+
                   sudo -iu dragon ansible-playbook -i testbed-manager.osism.local, /home/dragon/manager-part-2.yml
+                  sudo -iu dragon ansible-playbook -i testbed-manager.osism.local, /home/dragon/manager-part-3.yml
 
                   sudo -iu dragon docker cp /home/dragon/.ssh/id_rsa.pub manager_osism-ansible_1:/share/id_rsa.pub
 
                   rm /home/ubuntu/.ssh/id_rsa*
 
                   # NOTE(berendt): wait for ARA
-
                   until [[ "$(/usr/bin/docker inspect -f '{{.State.Health.Status}}' manager_ara-server_1)" == "healthy" ]]; do
                       sleep 1;
                   done;
@@ -164,35 +166,33 @@ resources:
                   sudo -iu dragon sh -c 'INTERACTIVE=false osism-run custom cronjobs'
                   sudo -iu dragon sh -c 'INTERACTIVE=false osism-run custom facts'
 
+                  sudo -iu dragon sh -c 'INTERACTIVE=false osism-run custom proxy'
+                  sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic proxy'
+
                   # prepare all systems
                   if [[ 0 -gt 0 ]]; then
-                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic facts'
-                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic timezone'
-                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic hostname'
-                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic network'
-                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic hosts'
+                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic bootstrap'
 
                       # NOTE: Restart the manager services to update the /etc/hosts file
                       sudo -iu dragon sh -c 'docker-compose -f /opt/manager/docker-compose.yml restart'
 
-                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic cockpit'
-                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic utilities'
-                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic grub'
+                      # NOTE(berendt): wait for ARA
+                      until [[ "$(/usr/bin/docker inspect -f '{{.State.Health.Status}}' manager_ara-server_1)" == "healthy" ]]; do
+                          sleep 1;
+                      done;
 
                       # deploy helper services
                       sudo -iu dragon sh -c 'INTERACTIVE=false osism-infrastructure helper --tags sshconfig'
                       sudo -iu dragon sh -c 'INTERACTIVE=false osism-run custom generate-ssh-known-hosts'
-                  fi
-
-                  if [[ "deploy_infrastructure" == "True" ]]; then
-                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-infrastructure helper --tags phpmyadmin'
-                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-infrastructure helper --tags openstackclient'
-                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-infrastructure netdata'
+                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-run custom registry-proxy'
                   fi
 
                   # deploy infrastructure services
                   if [[ "deploy_infrastructure" == "True" ]]; then
-                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy testbed --tags -infrastructure'
+                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-infrastructure helper --tags phpmyadmin'
+                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-infrastructure helper --tags openstackclient'
+                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-infrastructure netdata'
+                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy testbed --tags infrastructure'
                   fi
 
                   # deploy ceph services
