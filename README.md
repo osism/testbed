@@ -34,6 +34,7 @@ The following stable releases are supported. The development branch usually work
 
 * Ceph Luminous
 * Ceph Nautilus
+* Ceph Octopus
 * OpenStack Rocky
 * OpenStack Stein
 * OpenStack Train
@@ -459,8 +460,8 @@ SCSI disk names (``sdx``).
 
 The parameters ``ceph_version`` and ``openstack_version`` change the deployed versions of
 Ceph and OpenStack respectively from their defaults ``luminous`` and ``rocky``.
-For Ceph, ``nautilus`` can be used, for OpenStack, we can also test ``stein`` and ``train``.
-It should be noted that the defaults are tested best.
+For Ceph, ``nautilus`` and ``octopus`` can be used, for OpenStack, we can also test ``stein``
+and ``train``. It should be noted that the defaults are tested best.
 
 ## Usage
 
