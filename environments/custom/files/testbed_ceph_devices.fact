@@ -4,12 +4,13 @@ import json
 import os
 from subprocess import PIPE, run
 
-import requests
+result = run("df -hT | grep /$ | awk '{print $1}'", stdout=PIPE, stderr=PIPE, universal_newlines=True, shell=True)
+partition = os.path.basename(result.stdout.strip())
 
-response = requests.get('http://169.254.169.254/latest/meta-data/block-device-mapping/root')
-root = os.path.basename(response.text)
+result = run("basename $(readlink -f '/sys/class/block/%s/..')" % partition, stdout=PIPE, stderr=PIPE, universal_newlines=True, shell=True)
+root = result.stdout.strip()
 
-devices = run("lsblk -nd -I 8,220,252 --output NAME | sort | grep -v %s" % root, stdout=PIPE, stderr=PIPE, universal_newlines=True, shell=True)
-result = devices.stdout.strip().split("\n")
+result = run("lsblk -nd -I 8,220,252 --output NAME | sort | grep -v %s" % root, stdout=PIPE, stderr=PIPE, universal_newlines=True, shell=True)
+devices = result.stdout.strip().split("\n")
 
-print(json.dumps(["/dev/%s" % x for x in result[:-1]]))
+print(json.dumps(["/dev/%s" % x for x in devices[:-1]]))
