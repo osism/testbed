@@ -34,6 +34,10 @@ parameters:
     type: string
     default: south-2
 
+  network_availability_zone:
+    type: string
+    default: south-2
+
   public:
     type: string
     constraints:
@@ -402,6 +406,9 @@ resources:
     type: OS::Neutron::Net
     properties:
       name: testbed-management
+      value_specs:
+        availability_zone_hints:
+          - {get_param: network_availability_zone}
 
   subnet_management:
     type: OS::Neutron::Subnet
@@ -417,6 +424,9 @@ resources:
     type: OS::Neutron::Net
     properties:
       name: testbed-internal
+      value_specs:
+        availability_zone_hints:
+          - {get_param: network_availability_zone}
 
   subnet_internal:
     type: OS::Neutron::Subnet
@@ -434,6 +444,9 @@ resources:
     type: OS::Neutron::Net
     properties:
       name: testbed-provider
+      value_specs:
+        availability_zone_hints:
+          - {get_param: network_availability_zone}
 
   subnet_provider:
     type: OS::Neutron::Subnet
@@ -451,6 +464,9 @@ resources:
     type: OS::Neutron::Net
     properties:
       name: testbed-external
+      value_specs:
+        availability_zone_hints:
+          - {get_param: network_availability_zone}
 
   subnet_external:
     type: OS::Neutron::Subnet
@@ -482,6 +498,9 @@ resources:
     type: OS::Neutron::Net
     properties:
       name: testbed-storage-frontend
+      value_specs:
+        availability_zone_hints:
+          - {get_param: network_availability_zone}
 
   subnet_storage_frontend:
     type: OS::Neutron::Subnet
@@ -499,6 +518,9 @@ resources:
     type: OS::Neutron::Net
     properties:
       name: testbed-storage-backend
+      value_specs:
+        availability_zone_hints:
+          - {get_param: network_availability_zone}
 
   subnet_storage_backend:
     type: OS::Neutron::Subnet
@@ -521,6 +543,9 @@ resources:
     properties:
       external_gateway_info:
         network: {get_param: public}
+      value_specs:
+        availability_zone_hints:
+          - {get_param: network_availability_zone}
 
   router_interface:
     type: OS::Neutron::RouterInterface
