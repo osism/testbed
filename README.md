@@ -104,6 +104,11 @@ The testbed requires the following resources When using the default flavors.
   To avoid this problem a cronjob should be used for regular updates: ``osism-run custom cronjobs``.
 * The documentation of the OSISM can be found on https://docs.osism.de. There you will find
   further details on deployment, operation etc.
+* The manager is used as pull through cache for Docker images and Ubuntu packages. This reduces
+  the amount of traffic consumed.
+* To speed up the Ansible playbooks, [ARA](https://ara.recordsansible.org) can be disabled. This
+  is done by executing ``/opt/configuration/scripts/disable-ara.sh``. Afterwards no more logs are
+  available in the ARA web interface.
 
 ## Heat stack
 

@@ -1,0 +1,29 @@
+---
+version: '3'
+services:
+  registry-proxy:
+    container_name: registry-proxy
+    restart: unless-stopped
+    image: "{{ registry_proxy_image }}"
+    environment:
+      REGISTRIES: "index.docker.io quay.io"
+    volumes:
+      - "cache:/docker_mirror_cache:rw"
+      - "certs:/ca:rw"
+      - "/etc/hosts:/etc/hosts:ro"
+    ports:
+      - "{{ registry_proxy_host }}:{{ registry_proxy_port }}:3128"
+    healthcheck:
+      test: wget -q -O - http://localhost:3128/
+
+volumes:
+  cache:
+  certs:
+
+networks:
+ default:
+   driver: bridge
+   ipam:
+     driver: default
+     config:
+       - subnet:  {{ registry_proxy_network }}

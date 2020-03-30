@@ -38,7 +38,7 @@ docker_registry: index.docker.io
 ##########################
 # versions
 
-docker_version: "5:19.03.4"
+docker_version: "5:19.03.5"
 repository_version: latest
 
 ##########################
@@ -86,7 +86,8 @@ network_restart_method: nothing
 ##########################
 # proxy
 
-proxy_proxies: {}
+proxy_proxies:
+  http: http://testbed-manager.osism.local:3128
 
 ##########################
 # resolvconf

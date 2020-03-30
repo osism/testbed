@@ -25,7 +25,8 @@ testbed-node-1.osism.local
 [netdata:children]
 testbed-all
 
-[cobbler]
+[cobbler:children]
+testbed-manager
 
 [helper:children]
 testbed-manager
@@ -33,7 +34,8 @@ testbed-manager
 [manager:children]
 testbed-manager
 
-[mirror]
+[mirror:children]
+testbed-manager
 
 [openstackclient:children]
 testbed-manager

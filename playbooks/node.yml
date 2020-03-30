@@ -28,12 +28,7 @@
       - xauth
     rng_enable_common: yes
     smartd_enable_common: no
-
-    # ansible-docker
-    docker_user: dragon
-    docker_configure_repository: no
-    docker_configure_storage_driver: yes
-    docker_storage_driver: overlay2
+    upgrade_packages_common: no
 
     # ansible-operator
     operator_user: dragon
@@ -58,21 +53,9 @@
       - name: "{{ ansible_distribution_release }}-updates"
         repository: "deb [arch=amd64] http://de.archive.ubuntu.com/ubuntu/ {{ ansible_distribution_release }}-updates main restricted universe multiverse"
 
-    # ansible-hardening
-    stig_version: rhel7
-    security_rhel7_enable_chrony: no
-    security_rhel7_enable_linux_security_module: no
-    security_rhel7_remove_shosts_files: yes
-    security_package_clean_on_remove: yes
-    security_rhel7_automatic_package_updates: no
-    security_rhel7_session_timeout: 3600
-    security_sshd_allowed_macs: hmac-sha2-256,hmac-sha2-512,hmac-sha1
-
   roles:
     - ansible-resolvconf
     - ansible-chrony
     - ansible-repository
     - ansible-common
     - ansible-operator
-    - ansible-docker
-    - ansible-hardening

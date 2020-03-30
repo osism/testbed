@@ -18,6 +18,11 @@ STACKFILE = stack.yml
 STACKNAME = testbed
 ENVIRONMENT = environment.yml
 
+TIMEOUT_DEPLOY = 45
+TIMEOUT_DEPLOY_CEPH = 70
+TIMEOUT_DEPLOY_INFRA = 70
+TIMEOUT_DEPLOY_OPENSTACK = 150
+
 NEED_OSCLOUD := $(shell test -z "$$OS_PASSWORD" -a -z "$$OS_CLOUD" && echo 1 || echo 0)
 ifeq ($(NEED_OSCLOUD),1)
   OS_CLOUD=testbed
@@ -39,22 +44,22 @@ dry-run: $(STACKFILE) $(ENVIRONMENT)
 
 deploy: $(STACKFILE) $(ENVIRONMENT)
 	@touch .deploy.$(STACKNAME)
-	$(OPENSTACK) stack create --timeout 45 -t $< -e $(ENVIRONMENT) $(STACK_PARAMS) $(STACKNAME)
+	$(OPENSTACK) stack create --timeout $(TIMEOUT_DEPLOY) -t $< -e $(ENVIRONMENT) $(STACK_PARAMS) $(STACKNAME)
 
 create: deploy
 
 deploy-infra: $(STACKFILE) $(ENVIRONMENT)
 	@touch .deploy.$(STACKNAME)
-	$(OPENSTACK) stack create --timeout 70 -t $< -e $(ENVIRONMENT) $(STACK_PARAMS) --parameter deploy_infrastructure=true $(STACKNAME)
+	$(OPENSTACK) stack create --timeout $(TIMEOUT_DEPLOY_INFRA) -t $< -e $(ENVIRONMENT) $(STACK_PARAMS) --parameter deploy_infrastructure=true $(STACKNAME)
 
 deploy-ceph: $(STACKFILE) $(ENVIRONMENT)
 	@touch .deploy.$(STACKNAME)
-	$(OPENSTACK) stack create --timeout 70 -t $< -e $(ENVIRONMENT) $(STACK_PARAMS) --parameter deploy_ceph=true $(STACKNAME)
+	$(OPENSTACK) stack create --timeout $(TIMEOUT_DEPLOY_CEPH) -t $< -e $(ENVIRONMENT) $(STACK_PARAMS) --parameter deploy_ceph=true $(STACKNAME)
 
 # do it all
 deploy-openstack: $(STACKFILE) $(ENVIRONMENT)
 	@touch .deploy.$(STACKNAME)
-	$(OPENSTACK) stack create --timeout 150 -t $< -e $(ENVIRONMENT) $(STACK_PARAMS) --parameter deploy_infrastructure=true --parameter deploy_ceph=true --parameter deploy_openstack=true $(STACKNAME)
+	$(OPENSTACK) stack create --timeout $(TIMEOUT_DEPLOY_OPENSTACK) -t $< -e $(ENVIRONMENT) $(STACK_PARAMS) --parameter deploy_infrastructure=true --parameter deploy_ceph=true --parameter deploy_openstack=true $(STACKNAME)
 
 # this will not do kolla purges etc. so do this before manually if you have deployed infra, ceph or openstack
 update: $(STACKFILE) $(ENVIRONMENT)
