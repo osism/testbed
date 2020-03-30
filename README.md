@@ -306,7 +306,7 @@ The defaults for the stack parameters are intended for the Betacloud.
   </tr>
   </tr>
     <td><code>ceph_version</code></td>
-    <td><code>luminous</code></td>
+    <td><code>nautilus</code></td>
   </tr>
   <tr>
     <td><code>openstack_version</code></td>
@@ -328,7 +328,7 @@ parameters:
   image: Ubuntu 18.04
   public: external
   volume_size_storage: 10
-  ceph_version: luminous
+  ceph_version: nautilus
   openstack_version: rocky
 ```
 
@@ -468,8 +468,9 @@ ideal conditions for the complete stack.)
 This can also be achieved using ``make deploy-openstack``.
 
 The parameters ``ceph_version`` and ``openstack_version`` change the deployed versions of
-Ceph and OpenStack respectively from their defaults ``luminous`` and ``rocky``.
-For Ceph, ``nautilus`` and ``octopus`` can be used, for OpenStack, we can also test ``stein``
+Ceph and OpenStack respectively from their defaults ``nautilus`` and ``rocky``.
+
+For Ceph, ``luminous`` and ``octopus`` can be used, for OpenStack, we can also test ``stein``
 and ``train``. It should be noted that the defaults are tested best.
 
 ## Usage
