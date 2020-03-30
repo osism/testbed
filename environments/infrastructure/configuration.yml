@@ -2,7 +2,7 @@
 ##########################
 # versions
 
-ceph_version: luminous
+ceph_version: nautilus
 openstack_version: rocky
 
 ##########################
