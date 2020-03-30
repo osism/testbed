@@ -290,7 +290,7 @@ The defaults for the stack parameters are intended for the Betacloud.
   </tr>
   <tr>
     <td><code>public</code></td>
-    <td><code>public</code></td>
+    <td><code>external</code></td>
   </tr>
   <tr>
     <td><code>volume_size_storage</code></td>
@@ -321,7 +321,7 @@ parameters:
   flavor_node: 4C-16GB-40GB
   flavor_manager: 2C-4GB-20GB
   image: Ubuntu 18.04
-  public: public
+  public: external
   volume_size_storage: 10
   ceph_version: luminous
   openstack_version: rocky

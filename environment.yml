@@ -6,7 +6,7 @@ parameter_defaults:
   flavor_node: 4C-16GB-40GB
   flavor_manager: 2C-4GB-20GB
   image: Ubuntu 18.04
-  public: public
+  public: external
   volume_size_storage: 10
   ceph_version: luminous
   openstack_version: rocky
