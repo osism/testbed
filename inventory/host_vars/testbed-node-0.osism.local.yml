@@ -108,3 +108,6 @@ monitor_address: 192.168.70.10
 # radosgw_address:
 
 devices: "{{ ansible_local.testbed_ceph_devices }}"
+
+# NOTE: to use the third block device for Ceph change this parameter as follows
+# devices: "{{ ansible_local.testbed_ceph_devices_all }}"
