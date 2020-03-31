@@ -86,17 +86,6 @@ The testbed requires the following resources When using the default flavors.
   ```
 * The third volume (``/dev/sdd``) is not enabled for Ceph by default. This is to test the
   scaling of Ceph.
-
-  ```
-  devices: "{{ ansible_local.testbed_ceph_devices }}"
-  ```
-
-  To use the third block device for Ceph change this parameter as follows.
-
-  ```
-  devices: "{{ ansible_local.testbed_ceph_devices_all }}"
-  ```
-
 * Ansible errors that have something to do with undefined variables (e.g. AnsibleUndefined)
   are most likely due to cached facts that are no longer valid. The facts can be updated by
   running ``osism-generic facts``.
