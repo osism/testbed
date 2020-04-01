@@ -193,8 +193,6 @@ resources:
                   sudo -iu dragon sh -c 'INTERACTIVE=false osism-run custom proxy'
                   sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic proxy'
 
-                  sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic network'
-
                   # prepare all systems
                   if [[ {{ number_of_nodes|default(3)|int }} -gt 0 ]]; then
                       sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic bootstrap'
@@ -212,6 +210,9 @@ resources:
                       sudo -iu dragon sh -c 'INTERACTIVE=false osism-run custom generate-ssh-known-hosts'
                       sudo -iu dragon sh -c 'INTERACTIVE=false osism-run custom registry-proxy'
                   fi
+
+                  # copy network configuration
+                  sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic network'
 
                   # deploy infrastructure services
                   if [[ "deploy_infrastructure" == "True" ]]; then
