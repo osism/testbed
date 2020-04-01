@@ -190,6 +190,8 @@ resources:
                   sudo -iu dragon sh -c 'INTERACTIVE=false osism-run custom proxy'
                   sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic proxy'
 
+                  sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic network'
+
                   # prepare all systems
                   if [[ 3 -gt 0 ]]; then
                       sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic bootstrap'
@@ -304,9 +306,6 @@ resources:
           - "echo 'network: {config: disabled}' > /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg"
           - "rm -f /etc/network/interfaces.d/50-cloud-init.cfg"
           - "mv /etc/netplan/50-cloud-init.yaml /etc/netplan/50-cloud-init.yaml.unused"
-          - "echo 'auto lo\niface lo inet loopback\n\nsource /etc/network/interfaces.d/*' > /etc/network/interfaces"
-          - "for iface in $(find /sys/class/net -type l -not -lname '*virtual*' -printf '%f\n'); do echo 'auto '${iface}'\niface '${iface}' inet dhcp\n' > '/etc/network/interfaces.d/device-'$iface; done"
-          - "primary=$(ip route get 8.8.8.8 | grep via | awk '{print $5}'); for iface in $(find /sys/class/net -type l -not -lname '*virtual*' -printf '%f\n' | grep -v $primary); do echo '\n\npost-up ip route del default dev '${iface} || exit 0'\n' >> '/etc/network/interfaces.d/device-'$iface; done"
           - "/root/run.sh"
         final_message: "The system is finally up, after $UPTIME seconds"
 
