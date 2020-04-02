@@ -9,4 +9,4 @@ parameter_defaults:
   public: external
   volume_size_storage: 10
   ceph_version: nautilus
-  openstack_version: rocky
+  openstack_version: train

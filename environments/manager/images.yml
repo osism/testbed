@@ -10,7 +10,7 @@ ara_web_image: "{{ docker_registry|default('index.docker.io') }}/osism/ara-web:{
 ceph_ansible_tag: "{{ ceph_version|default('nautilus') }}"
 ceph_ansible_image: "{{ docker_registry|default('quay.io') }}/osism/ceph-ansible:{{ ceph_ansible_tag }}"
 
-kolla_ansible_tag: "{{ openstack_version|default('rocky') }}"
+kolla_ansible_tag: "{{ openstack_version|default('train') }}"
 kolla_ansible_image: "{{ docker_registry|default('quay.io') }}/osism/kolla-ansible:{{ kolla_ansible_tag }}"
 
 mariadb_tag: "{{ osism_manager_version|default('latest') }}"

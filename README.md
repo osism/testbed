@@ -299,7 +299,7 @@ The defaults for the stack parameters are intended for the Betacloud.
   </tr>
   <tr>
     <td><code>openstack_version</code></td>
-    <td><code>rocky</code></td>
+    <td><code>train</code></td>
   </tr>
 </table>
 
@@ -318,7 +318,7 @@ parameters:
   public: external
   volume_size_storage: 10
   ceph_version: nautilus
-  openstack_version: rocky
+  openstack_version: train
 ```
 
 ## Initialization
@@ -457,10 +457,10 @@ ideal conditions for the complete stack.)
 This can also be achieved using ``make deploy-openstack``.
 
 The parameters ``ceph_version`` and ``openstack_version`` change the deployed versions of
-Ceph and OpenStack respectively from their defaults ``nautilus`` and ``rocky``.
+Ceph and OpenStack respectively from their defaults ``nautilus`` and ``train``.
 
-For Ceph, ``luminous`` and ``octopus`` can be used, for OpenStack, we can also test ``stein``
-and ``train``. It should be noted that the defaults are tested best.
+For Ceph, ``luminous`` and ``octopus`` can be used, for OpenStack, we can also test ``rocky``
+and ``stein``. It should be noted that the defaults are tested best.
 
 ## Usage
 
