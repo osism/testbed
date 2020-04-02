@@ -3,7 +3,7 @@
 # versions
 
 ceph_version: nautilus
-openstack_version: rocky
+openstack_version: train
 
 ceph_manager_version: latest
 kolla_manager_version: latest

@@ -71,7 +71,7 @@ parameters:
 
   openstack_version:
     type: string
-    default: rocky
+    default: train
     constraints:
       - allowed_values:
           - rocky
