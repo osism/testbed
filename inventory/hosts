@@ -59,7 +59,7 @@ testbed-nodes
 [cephclient:children]
 testbed-manager
 
-[ceph-grafana-server]
+[ceph-grafana-server:children]
 ceph-control
 
 [ceph-mds:children]
