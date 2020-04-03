@@ -1,13 +1,7 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
-# NOTE: based on https://gist.github.com/pklaus/289646
-# NOTE: currently only works with python2, needs to be adapted
-
-import array
-import fcntl
 import json
-import socket
-import struct
+import netifaces
 
 NETWORKS = {
     'external': '192.168.90',
@@ -17,52 +11,25 @@ NETWORKS = {
     'storage_backend': '192.168.80'
 }
 
-def all_interfaces():
-    max_possible = 128  # arbitrary. raise if needed.
-    bytes = max_possible * 32
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    names = array.array('B', '\0' * bytes)
-    outbytes = struct.unpack('iL', fcntl.ioctl(
-        s.fileno(),
-        0x8912,  # SIOCGIFCONF
-        struct.pack('iL', bytes, names.buffer_info()[0])
-    ))[0]
-    namestr = names.tostring()
-    lst = []
-    for i in range(0, outbytes, 40):
-        name = namestr[i:i+16].split('\0', 1)[0]
-        ip   = namestr[i+20:i+24]
-        lst.append((name, ip))
-    return lst
-
-def format_ip(addr):
-    return str(ord(addr[0])) + '.' + \
-           str(ord(addr[1])) + '.' + \
-           str(ord(addr[2])) + '.' + \
-           str(ord(addr[3]))
-
 result = {}
 
-ifs = all_interfaces()
-for i in ifs:
-    address = format_ip(i[1])
-    device = i[0]
-    is_provider = True
-
-    if device in ['lo', 'docker0', 'ohm0']:
+for interface in netifaces.interfaces():
+    if interface in ['lo', 'docker0', 'ohm0']:
         continue
-    elif device.startswith('br'):
+    elif interface.startswith('br'):
         continue
 
-    for network in NETWORKS:
-        if address.startswith(NETWORKS[network]):
-            result[network] = device
-            is_provider = False
+    addrs = netifaces.ifaddresses(interface)
+    if netifaces.AF_INET in addrs:
+        addr = addrs[netifaces.AF_INET][0]['addr']
+
+        for network in NETWORKS:
+            if addr.startswith(NETWORKS[network]):
+                result[network] = interface
 
     # NOTE: After a reboot of the nodes the provider network has
     #       no more IP configuration.
-
-    if is_provider:
-        result['provider'] = device
+    else:
+        result['provider'] = interface
 
 print(json.dumps(result))
