@@ -234,6 +234,7 @@ to use further services.
 * Barbican
 * Ceilometer
 * Cinder
+* Cloudkitty
 * Glance
 * Heat
 * Horizon
