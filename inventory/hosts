@@ -59,6 +59,9 @@ testbed-nodes
 [cephclient:children]
 testbed-manager
 
+[ceph-grafana-server]
+ceph-control
+
 [ceph-mds:children]
 ceph-control
 
@@ -86,6 +89,9 @@ testbed-nodes
 # NOTE: Subsequent groups necessary for compatibility to ceph-ansible. Don't change it.
 
 [ceph-client]
+
+[grafana-server:children]
+ceph-grafana-server
 
 [iscsi-gws:children]
 ceph-iscsigw
