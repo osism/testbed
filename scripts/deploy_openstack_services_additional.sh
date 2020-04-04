@@ -12,6 +12,7 @@ osism-kolla deploy panko
 osism-kolla deploy magnum
 osism-kolla deploy barbican
 osism-kolla deploy designate
+osism-kolla deploy cloudkitty
 
 # NOTE: The Skydive agent creates a high load on the Open vSwitch services.
 #       Therefore the agent is only started manually when needed.
