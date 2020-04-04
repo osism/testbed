@@ -1,18 +1,25 @@
 #!/bin/bash
 
+if [ ${DIB_DEBUG_TRACE:-0} -gt 0 ]; then
+    set -x
+fi
 set -eu
 set -o pipefail
 
-ansible-galaxy install git+https://github.com/openstack/ansible-hardening
-ansible-galaxy install git+https://github.com/osism/ansible-chrony
+# install required ansible roles
+
+ansible-galaxy install git+https://github.com/ANXS/apt
+ansible-galaxy install git+https://github.com/ANXS/timezone
+ansible-galaxy install git+https://github.com/ANXS/utilities
 ansible-galaxy install git+https://github.com/osism/ansible-common
 ansible-galaxy install git+https://github.com/osism/ansible-docker
 ansible-galaxy install git+https://github.com/osism/ansible-operator
 ansible-galaxy install git+https://github.com/osism/ansible-repository
-ansible-galaxy install git+https://github.com/osism/ansible-resolvconf
 
-curl https://raw.githubusercontent.com/osism/testbed/master/playbooks/diskimage.yml > /root/diskimage.yml
-ansible-playbook -i localhost, /root/diskimage.yml
+# run ansible playbook
 
-sudo -iu dragon ansible-galaxy install git+https://github.com/osism/ansible-configuration
-sudo -iu dragon ansible-galaxy install git+https://github.com/osism/ansible-manager
+ansible-playbook -i localhost, /tmp/in_target.d/diskimage.yml
+
+# cleanup
+
+rm -rf /root/.ansible
