@@ -18,6 +18,12 @@ for interface in netifaces.interfaces():
         continue
     elif interface.startswith('br'):
         continue
+    elif interface.startswith('veth'):
+        continue
+    elif interface.startswith('tap'):
+        continue
+    elif interface.startswith('qg'):
+        continue
 
     addrs = netifaces.ifaddresses(interface)
     if netifaces.AF_INET in addrs:
