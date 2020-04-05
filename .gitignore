@@ -10,4 +10,3 @@ environments/**/ceph.client.*.keyring
 roles
 secrets
 secure.yml
-testbed.*
