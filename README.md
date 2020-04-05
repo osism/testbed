@@ -6,7 +6,7 @@ Hyperconverged infrastructure (HCI) testbed based on OpenStack and Ceph, deploye
 
 - [Overview](#overview)
 - [Supported releases](#supported-releases)
-- [Supported cloud providers](#test-status-of-cloud-providers)
+- [Supported cloud providers](#test-supported-cloud-providers)
 - [Requirements](#requirements)
 - [Notes](#notes)
 - [Heat stack](#heat-stack)
