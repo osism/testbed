@@ -4,11 +4,39 @@
   gather_facts: true
 
   vars:
+    # ANXS.apt
+    apt__enabled: no
+
+    # ANXS.timezone
+    timezone_zone: UTC
+
+    # ansible-common
+    cleanup_services_common: []
+    cleanup_packages_common:
+      - apport
+      - apport-symptoms
+      - dosfstools
+      - libvirt-bin
+      - lxc
+      - lxd
+      - ntfs-3g
+      - open-iscsi
+      - popularity-contest
+      - python3-apport
+      - snapd
+      - telnet
+      - ubuntu-server
+      - xauth
+    rng_enable_common: yes
+    smartd_enable_common: no
+    upgrade_packages_common: yes
+
     # ansible-docker
-    docker_user: dragon
     docker_configure_repository: no
     docker_configure_storage_driver: yes
     docker_storage_driver: overlay2
+    docker_user: dragon
+    docker_version: "5:19.03.5"
 
     # ansible-operator
     operator_user: dragon
@@ -33,5 +61,8 @@
 
   roles:
     - ansible-repository
+    - ansible-common
     - ansible-operator
     - ansible-docker
+    - timezone
+    - utilities
