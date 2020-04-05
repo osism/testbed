@@ -6,7 +6,7 @@ Hyperconverged infrastructure (HCI) testbed based on OpenStack and Ceph, deploye
 
 - [Overview](#overview)
 - [Supported releases](#supported-releases)
-- [Test status of cloud providers](#test-status-of-cloud-providers)
+- [Supported cloud providers](#test-status-of-cloud-providers)
 - [Requirements](#requirements)
 - [Notes](#notes)
 - [Heat stack](#heat-stack)
@@ -39,11 +39,21 @@ The following stable releases are supported. The development branch usually work
 * OpenStack Stein
 * OpenStack Train
 
-## Test status of cloud providers
+## Supported cloud providers
 
-* [Betacloud](https://www.betacloud.de): Works.
-* [Citycloud](https://www.citycloud.com): Works. You can use ``environment-CityCloud.yml`` to get a set of working parameters.
+**Works**
+
+There is a separate environment file, e.g. ``environment-Betacloud.yml``, for each supported cloud provider.
+
+* [Betacloud](https://www.betacloud.de)
+* [Citycloud](https://www.citycloud.com)
+
+**Works with manual workarounds**
+
 * [OTC](https://open-telekom-cloud.com/): Needs ``enable_snat``, ``enable_dhcp``, ``dns_nameservers``, and an older ``heat_template_version``. It also needs two cloud-init patches to get get userdata.
+
+**Not working at the moment**
+
 * [teuto.stack](https://teutostack.de/): Currently lacks support for Heat.
 
 ## Requirements
@@ -171,15 +181,15 @@ They are standard networks on the Betacloud.
 With the exception of the manager, all nodes have a connection to any network. The manager
 only has no connection to the storage backend.
 
-| Name             | CIDR                 | Description                                                                                              |
-|------------------|----------------------|----------------------------------------------------------------------------------------------------------|
-| out of band      | ``192.168.30.0/24``  | This network is not used in the testbed. It is available because there is usually always an OOB network. |
-| management       | ``192.168.40.0/24``  | SSH access via this network.                                                                             |
-| internal         | ``192.168.50.0/24``  | All internal communication, e.g. MariaDB and RabbitMQ, is done via this.                                 |
-| storage frontend | ``192.168.70.0/24``  | For access of the compute nodes to the storage nodes.                                                    |
-| storage backend  | ``192.168.80.0/24``  | For synchronization between storage nodes.                                                               |
-| external         | ``192.168.90.0/24``  | Is used to emulate an external network.                                                                  |
-| provider         | ``192.168.100.0/24`` | Is used to emulate an provider network.                                                                  |
+| Name             | CIDR                 | Description                                                                                       |
+|------------------|----------------------|---------------------------------------------------------------------------------------------------|
+| out of band      | ``192.168.30.0/24``  | This network is not used in the testbed. It is available because there is usually an OOB network. |
+| management       | ``192.168.40.0/24``  | SSH access via this network.                                                                      |
+| internal         | ``192.168.50.0/24``  | All internal communication, e.g. MariaDB and RabbitMQ, is done via this.                          |
+| storage frontend | ``192.168.70.0/24``  | For access of the compute nodes to the storage nodes.                                             |
+| storage backend  | ``192.168.80.0/24``  | For synchronization between storage nodes.                                                        |
+| external         | ``192.168.90.0/24``  | Is used to emulate an external network.                                                           |
+| provider         | ``192.168.100.0/24`` | Is used to emulate an provider network.                                                           |
 
 ### Nodes
 
@@ -343,7 +353,6 @@ invocation for you.
 Note that you can set the ``export OS_CLOUD=testbed`` environment variable to avoid typing
 ``--os-cloud testbed`` repeatedly.
 
-
 ```
 openstack --os-cloud testbed \
   stack create \
@@ -365,6 +374,8 @@ openstack --os-cloud testbed \
 This can also be achieved using ``make create``. (If you are using a cloud name different from
 ``testbed`` and you have not done an export OS_CLOUD, you can override the default by passing
 ``make create OS_CLOUD=yourcloudname``.)
+
+The environment file to be used can be specified via the parameter ``ENVIRONMENT``.
 
 Docker etc. are already installed during stack creation. Therefore the creation takes some time.
 You can use ``make watch`` to watch the installation proceeding.
