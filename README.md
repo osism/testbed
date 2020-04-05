@@ -20,7 +20,6 @@ Hyperconverged infrastructure (HCI) testbed based on OpenStack and Ceph, deploye
 - [Tools](#tools)
 - [Recipes](#recipes)
 - [Webinterfaces](#webinterfaces)
-- [Diskimage](#diskimage)
 
 ## Overview
 
@@ -727,37 +726,6 @@ This section describes how individual parts of the testbed can be deployed.
 | Netdata          | http://192.168.50.5:19999  | -        | -                                        |
 | phpMyAdmin       | http://192.168.40.5:8110   | root     | qNpdZmkKuUKBK3D5nZ08KMZ5MnYrGEe2hzH6XC0i |
 | Skydive          | http://192.168.50.5:8085   | -        | -                                        |
-
-## Diskimage
-
-* https://github.com/openstack/diskimage-builder
-* https://docs.openstack.org/diskimage-builder/latest/
-
-### Build
-
-```
-$ pip3 install diskimage-builder
-$ sudo apt-get install -y qemu-utils kpartx
-$ bash scripts/diskimage.sh
-```
-
-### Upload
-
-```
-$ pip3 install python-openstackclient
-$ qemu-img convert testbed.qcow2 testbed.img
-$ openstack --os-cloud testbed image create \
-    --private \
-    --disk-format raw \
-    --file testbed.img \
-    --min-disk 8 \
-    --min-ram 2048 \
-    --property hw_disk_bus=scsi \
-    --property hw_scsi_model=virtio-scsi \
-    --property os_distro=ubuntu \
-    --property os_version=18.04 \
-    "OSISM base"
-```
 
 ## License
 
