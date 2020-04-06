@@ -86,10 +86,6 @@ enable_central_logging: "yes"
 
 es_heap_size: "1g"
 
-# rabbitmq
-
-rabbitmq_cluster_version: 1
-
 # mariadb
 
 enable_mariabackup: "yes"
