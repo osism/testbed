@@ -149,8 +149,14 @@ testbed-nodes
 [storage:children]
 testbed-nodes
 
+[monitoring:children]
+testbed-manager
+
 [grafana:children]
-control
+monitoring
+
+[influxdb:children]
+monitoring
 
 [kibana:children]
 control
