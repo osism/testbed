@@ -210,7 +210,7 @@ resources:
                       if [[ "deploy_infrastructure" != "True" ]]; then
                           echo "infrastructure services are necessary for the deployment of OpenStack"
                       else
-                          sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy --tags openstack'
+                          sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy testbed --tags openstack'
                           sudo -iu dragon sh -c 'INTERACTIVE=false osism-run openstack bootstrap-basic'
 
                           sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy heat'
