@@ -13,6 +13,8 @@ docker_proxy_http: "http://192.168.50.5:8000"
 ##########################################################
 # generic
 
+node_id: 1
+
 console_interface: "{{ ansible_local.testbed_network_devices.management }}"
 management_interface: "{{ ansible_local.testbed_network_devices.internal }}"
 
@@ -84,6 +86,14 @@ network_interfaces:
     address: 192.168.80.11
     netmask: 255.255.255.0
     mtu: 1450
+
+  - device: ohm0
+    method: static
+    address: 192.168.110.11
+    netmask: 255.255.255.0
+    up:
+      - ip link set dev ohm0 address 02:00:00:00:00:11
+      - iptables -I INPUT -i ohm0 -p udp --dport 5555 -j ACCEPT
 
 ##########################################################
 # kolla

@@ -194,6 +194,7 @@ only has no connection to the storage backend.
 | storage backend  | ``192.168.80.0/24``  | For synchronization between storage nodes.                                                        |
 | external         | ``192.168.90.0/24``  | Is used to emulate an external network.                                                           |
 | provider         | ``192.168.100.0/24`` | Is used to emulate an provider network.                                                           |
+| octavia          | ``192.168.110.0/24`` | Internal Octavia management network.                                                              |
 
 ### Nodes
 
@@ -256,6 +257,7 @@ to use further services.
 * Magnum
 * Neutron
 * Nova
+* Octavia
 * Panko
 
 ## Preparations

@@ -58,7 +58,7 @@ enable_designate: "yes"
 enable_gnocchi: "yes"
 enable_heat: "yes"
 enable_magnum: "yes"
-enable_ocatvia: "no"
+enable_octavia: "yes"
 enable_panko: "yes"
 enable_watcher: "no"
 
@@ -111,9 +111,9 @@ nova_console: novnc
 # octavia
 octavia_loadbalancer_topology: "ACTIVE_STANDBY"
 
-# octavia_amp_boot_network_list: FIXME
-# octavia_amp_secgroup_list: FIXME
-# octavia_amp_flavor_id: FIXME
+octavia_amp_boot_network_list: OCTAVIA_MGMT_NETWORK_ID
+octavia_amp_secgroup_list: OCTAVIA_MGMT_SECURITY_GROUP_ID
+octavia_amp_flavor_id: OCTAVIA_FLAVOR_ID
 
 # ceilometer
 ceilometer_database_type: gnocchi

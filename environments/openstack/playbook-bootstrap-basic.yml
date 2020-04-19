@@ -22,7 +22,14 @@
         default_project: test
       no_log: true
 
-    - name: Add role member to user test
+    # NOTE: this role is required by octavia
+    - name: Create load-balancer_member role
+      os_keystone_role:
+        cloud: admin
+        state: present
+        name: load-balancer_member
+
+    - name: Add member roles to user test
       os_user_role:
         cloud: admin
         state: present
@@ -30,6 +37,7 @@
         role: "{{ item }}"
         project: test
       with_items:
+        - load-balancer_member
         - member
         - _member_
 
@@ -67,23 +75,6 @@
 
     - name: Make cirros image visible
       command: openstack --os-cloud admin image set --public cirros
-
-    # NOTE: we prepare the stuff for Octavia already here to be able
-    #       to use it when deploying Octavia
-
-    - name: Create octavia flavor
-      os_nova_flavor:
-        cloud: admin
-        state: present
-        name: octavia
-        flavorid: octavia
-        ram: 1024
-        vcpus: 1
-        disk: 2
-        ephemeral: 0
-        is_public: false
-        extra_specs:
-          "hw_rng:allowed": "True"
 
     - name: Create public network
       os_network:
