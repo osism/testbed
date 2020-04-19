@@ -334,6 +334,7 @@ parameters:
   volume_size_storage: 10
   ceph_version: nautilus
   openstack_version: train
+  configuration_version: master
 ```
 
 ## Initialization
