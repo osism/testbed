@@ -1,0 +1,188 @@
+---
+- name: Bootstrap octavia project
+  hosts: localhost
+  connection: local
+
+  tasks:
+    - name: Create octavia flavor
+      os_nova_flavor:
+        cloud: admin
+        state: present
+        name: octavia
+        ram: 1024
+        vcpus: 1
+        disk: 2
+        ephemeral: 0
+        is_public: false
+        extra_specs:
+          "hw_rng:allowed": "True"
+      register: flavor
+
+    - name: Download amphora image
+      get_url:
+        url: http://files.osism.de/octavia-amphora-haproxy-master.qcow2
+        dest: /tmp/amphora.img
+
+    - name: Upload amphora image
+      os_image:
+        cloud: admin
+        state: present
+        name: Octavia Amphora
+        container_format: bare
+        disk_format: qcow2
+        filename: /tmp/amphora.img
+        properties:
+          cpu_arch: x86_64
+          distro: ubuntu
+          hw_rng_model: virtio
+
+    - name: Add amphora tag to amphora image
+      command: openstack --os-cloud admin image set --tag amphora 'Octavia Amphora'
+
+    - name: Create octavia_ssh_key ssh keypair
+      os_keypair:
+        cloud: octavia
+        state: present
+        name: octavia_ssh_key
+        public_key_file: /opt/configuration/environments/kolla/files/overlays/octavia/octavia_ssh_key.pub
+
+    - name: Create lb-health-mgr-sec-grp security group
+      os_security_group:
+        cloud: admin
+        state: present
+        name: lb-health-mgr-sec-grp
+
+    - name: Add tcp rules to lb-health-mgr-sec-grp security group
+      os_security_group_rule:
+        cloud: admin
+        state: present
+        security_group: lb-health-mgr-sec-grp
+        protocol: tcp
+        port_range_min: "{{ item }}"
+        port_range_max: "{{ item }}"
+        remote_ip_prefix: 0.0.0.0/0
+      with_items:
+        - 5555
+        - 10514
+        - 20514
+
+    - name: Create lb-mgmt-sec-grp security group
+      os_security_group:
+        cloud: admin
+        state: present
+        name: lb-mgmt-sec-grp
+      register: secgrp
+
+    - name: Add icmp rule to lb-mgmt-sec-grp security group
+      os_security_group_rule:
+        cloud: admin
+        state: present
+        security_group: lb-mgmt-sec-grp
+        protocol: icmp
+        remote_ip_prefix: 0.0.0.0/0
+
+    - name: Add tcp rules to lb-mgmt-sec-grp security group
+      os_security_group_rule:
+        cloud: admin
+        state: present
+        security_group: lb-mgmt-sec-grp
+        protocol: tcp
+        port_range_min: "{{ item }}"
+        port_range_max: "{{ item }}"
+        remote_ip_prefix: 0.0.0.0/0
+      with_items:
+        - 22
+        - 9443
+
+    - name: Create lb-mgmt-net network
+      os_network:
+        cloud: admin
+        state: present
+        name: lb-mgmt-net
+      register: network
+
+    - name: Create lb-mgmt-subnet subnet
+      os_subnet:
+        cloud: admin
+        state: present
+        name: lb-mgmt-subnet
+        network_name: lb-mgmt-net
+        cidr: 192.168.110.0/24
+
+    - name: Create control ports in lb-mgmt-net network
+      os_port:
+        cloud: admin
+        state: present
+        name: "octavia-health-manager-testbed-node-{{ item }}-listen-port"
+        network: lb-mgmt-net
+        security_groups: lb-health-mgr-sec-grp
+        device_owner: Octavia:health-mgr
+        fixed_ips:
+          - ip_address: "192.168.110.1{{ item }}"
+        mac_address: "02:00:00:00:00:1{{ item }}"
+      with_items:
+        - 0
+        - 1
+        - 2
+
+    # NOTE: host parameter is currently not available for os_port task
+    - name: Set host on control ports in lb-mgmt-net network
+      command: "openstack --os-cloud admin port set --host testbed-node-{{ item }} octavia-health-manager-testbed-node-{{ item }}-listen-port"
+      with_items:
+        - 0
+        - 1
+        - 2
+
+    - name: Set octavia_amp_boot_network_list in environments/kolla/configuration.yml
+      lineinfile:
+        path: /opt/configuration/environments/kolla/configuration.yml
+        regexp: '^octavia_amp_boot_network_list:'
+        line: "octavia_amp_boot_network_list: {{ network.id }}"
+      delegate_to: testbed-manager
+
+    - name: Set octavia_amp_secgroup_list in environments/kolla/configuration.yml
+      lineinfile:
+        path: /opt/configuration/environments/kolla/configuration.yml
+        regexp: '^octavia_amp_secgroup_list:'
+        line: "octavia_amp_secgroup_list: {{ secgrp.id }}"
+      delegate_to: testbed-manager
+
+    - name: Set octavia_amp_flavor_id in environments/kolla/configuration.yml
+      lineinfile:
+        path: /opt/configuration/environments/kolla/configuration.yml
+        regexp: '^octavia_amp_flavor_id:'
+        line: "octavia_amp_flavor_id: {{ flavor.id }}"
+      delegate_to: testbed-manager
+
+- name: Prepare Octavia control nodes
+  hosts: octavia
+
+  tasks:
+    - name: Get port information
+      os_port_info:
+        cloud: admin
+        port: "octavia-health-manager-{{ inventory_hostname_short }}-listen-port"
+      register: result
+      delegate_to: localhost
+
+    - name: Add port to br-int
+      command: |
+        docker exec openvswitch_vswitchd ovs-vsctl -- --may-exist add-port br-int ohm0 \
+          -- set Interface ohm0 external-ids:iface-status=active \
+          -- set Interface ohm0 external-ids:skip_cleanup=true \
+          -- set Interface ohm0 type=internal \
+          -- set Interface ohm0 external-ids:attached-mac={{ result.openstack_ports.0.mac_address }} \
+          -- set Interface ohm0 external-ids:iface-id={{ result.openstack_ports.0.id }}
+
+    # FIXME: Use clean solution!
+    - name: Add ip address to device
+      shell: "ip addr add dev ohm0 192.168.110.1{{ node_id }}/24 || exit 0"
+      become: true
+
+    - name: Set device mtu
+      command: ip link set mtu 1450 dev ohm0
+      become: true
+
+    - name: Set device up
+      command: ip link set up dev ohm0
+      become: true

@@ -14,6 +14,9 @@ osism-kolla deploy barbican
 osism-kolla deploy designate
 osism-kolla deploy cloudkitty
 
+osism-run openstack bootstrap-octavia
+osism-kolla deploy octavia
+
 # NOTE: The Skydive agent creates a high load on the Open vSwitch services.
 #       Therefore the agent is only started manually when needed.
 
