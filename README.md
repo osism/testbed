@@ -29,6 +29,11 @@ The manager serves as a central entry point into the environment.
 
 ![Stack topology](https://raw.githubusercontent.com/osism/testbed/master/images/overview.png)
 
+The virtual testbed provides an up-to-date, fully functional Ceph and OpenStack environment. It is
+possible to evaluate workloads like Kubernetes on the basis of this virtual testbed.
+
+![Horizon screenshot](https://raw.githubusercontent.com/osism/testbed/master/images/horizon.png)
+
 ## Supported releases
 
 The following stable releases are supported. The development branch usually works too.
