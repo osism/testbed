@@ -1,0 +1,12 @@
+---
+- username: refstack-0
+  user_domain_name: default
+  tenant_name: test
+  project_domain_name: default
+  password: password
+
+- username: refstack-1
+  user_domain_name: default
+  tenant_name: test
+  project_domain_name: default
+  password: password

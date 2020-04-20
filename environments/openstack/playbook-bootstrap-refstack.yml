@@ -1,0 +1,122 @@
+---
+- name: Bootstrap refstack ressources
+  hosts: localhost
+  connection: local
+
+  tasks:
+    - name: Create refstack users
+      os_user:
+        cloud: admin
+        state: present
+        name: "{{ item }}"
+        password: password
+        domain: default
+        default_project: test
+      loop:
+        - refstack-0
+        - refstack-1
+
+    - name: Add member roles to refstack users
+      os_user_role:
+        cloud: admin
+        state: present
+        user: "{{ item.0 }}"
+        role: "{{ item.1 }}"
+        project: test
+      loop: "{{ ['refstack-0', 'refstack-1']|zip(['member', '_member_'])|list }}"
+
+    - name: Create tiny flavors
+      os_nova_flavor:
+        cloud: admin
+        state: present
+        name: "{{ item }}"
+        ram: 512
+        vcpus: 1
+        disk: 1
+        ephemeral: 0
+        extra_specs:
+          "hw_rng:allowed": "True"
+      loop:
+        - refstack-0
+        - refstack-1
+      register: flavors
+
+#    - name: Download image
+#      get_url:
+#        url: http://cloud-images.ubuntu.com/minimal/releases/bionic/release/ubuntu-18.04-minimal-cloudimg-amd64.img
+#        dest: /tmp/image.img
+
+    - name: Download image
+      get_url:
+        url: https://github.com/cirros-dev/cirros/releases/download/0.5.1/cirros-0.5.1-x86_64-disk.img
+        dest: /tmp/image.img
+
+    - name: Upload images
+      os_image:
+        cloud: admin
+        state: present
+        name: "{{ item }}"
+        container_format: bare
+        disk_format: qcow2
+        filename: /tmp/image.img
+        properties:
+          cpu_arch: x86_64
+          hw_rng_model: virtio
+      loop:
+        - refstack-0
+        - refstack-1
+      register: images
+
+    # NOTE: is_public from os_image is not working like expected
+
+    - name: Make ubuntu images visible
+      command: "openstack --os-cloud admin image set --public {{ item }}"
+      loop:
+        - refstack-0
+        - refstack-1
+
+    - name: Get public network
+      os_networks_info:
+        cloud: admin
+        name:  public
+      register: public
+
+    - name: Set image_ref in tempest.conf
+      ini_file:
+        path: /opt/configuration/contrib/refstack/tempest.conf
+        section: compute
+        option: image_ref
+        value: "{{ images.results.0.id }}"
+      delegate_to: testbed-manager
+
+    - name: Set image_ref_alt in tempest.conf
+      ini_file:
+        path: /opt/configuration/contrib/refstack/tempest.conf
+        section: compute
+        option: image_ref_alt
+        value: "{{ images.results.1.id }}"
+      delegate_to: testbed-manager
+
+    - name: Set flavor_ref in tempest.conf
+      ini_file:
+        path: /opt/configuration/contrib/refstack/tempest.conf
+        section: compute
+        option: flavor_ref
+        value: "{{ flavors.results.0.id }}"
+      delegate_to: testbed-manager
+
+    - name: Set flavor_ref_alt in tempest.conf
+      ini_file:
+        path: /opt/configuration/contrib/refstack/tempest.conf
+        section: compute
+        option: flavor_ref_alt
+        value: "{{ flavors.results.1.id }}"
+      delegate_to: testbed-manager
+
+    - name: Set public_network_id in tempest.conf
+      ini_file:
+        path: /opt/configuration/contrib/refstack/tempest.conf
+        section: network
+        option: public_network_id
+        value: "{{ public.openstack_networks.0.id }}"
+      delegate_to: testbed-manager
