@@ -74,6 +74,9 @@ ceph-control
 [ceph-osd:children]
 testbed-nodes
 
+[ceph-rgw:children]
+testbed-nodes
+
 # NOTE: Use the following groups only if these services are deployed.
 
 [ceph-iscsigw]
@@ -83,8 +86,6 @@ testbed-nodes
 [ceph-nfs]
 
 [ceph-rbdmirror]
-
-[ceph-rgw]
 
 # NOTE: Subsequent groups necessary for compatibility to ceph-ansible. Don't change it.
 

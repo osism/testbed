@@ -115,7 +115,7 @@ storage_interface: "{{ ansible_local.testbed_network_devices.storage_frontend }}
 # monitor_interface:
 monitor_address: 192.168.70.10
 # radosgw_interface:
-# radosgw_address:
+radosgw_address: 192.168.70.10
 
 devices: "{{ ansible_local.testbed_ceph_devices }}"
 

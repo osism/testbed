@@ -19,6 +19,29 @@ cluster_network: 192.168.80.0/24
 ##########################
 # pools & keys
 
+rgw_zone: default
+rgw_create_pools:
+  "{{ rgw_zone }}.rgw.buckets.data":
+    pg_num: 64
+    size: 3
+    type: replicated
+  "{{ rgw_zone }}.rgw.buckets.index":
+    pg_num: 16
+    size: 3
+    type: replicated
+  "{{ rgw_zone }}.rgw.meta":
+    pg_num: 8
+    size: 3
+    type: replicated
+  "{{ rgw_zone }}.rgw.log":
+    pg_num: 8
+    size: 3
+    type: replicated
+  "{{ rgw_zone }}.rgw.control":
+    pg_num: 8
+    size: 3
+    type: replicated
+
 # NOTE: default size of 2 because by default there are only 2 volumes per node
 cephfs_pool_default_size: 2
 cephfs_pool_default_min_size: 0
@@ -170,11 +193,33 @@ ceph_mgr_modules:
   - status
 
 ##########################
+# rgw
+
+radosgw_frontend_port: 8081
+
+##########################
 # custom
 
 ceph_conf_overrides:
   mon:
     mon allow pool delete: true
+
   osd:
     # NOTE: default size of 2 because by default there are only 2 volumes per node
     osd pool default size: 2
+
+  "client.rgw.{{ hostvars[inventory_hostname]['ansible_hostname'] }}.rgw0":
+    "rgw enable apis": "swift, s3"
+    "rgw keystone accepted roles": "Member, _member_, admin"
+    "rgw keystone admin domain": "default"
+    "rgw keystone admin password": "hF6NWPG4rWTpK00oANEcRAiKbwbEcKFHHYYskar2"
+    "rgw keystone admin project": "service"
+    "rgw keystone admin tenant": "service"
+    "rgw keystone admin user":  "swift"
+    "rgw keystone api version": "3"
+    "rgw keystone revocation interval": "900"
+    "rgw keystone url": "http://api-int.osism.local:35357"
+    "rgw keystone_implicit_tenants": "true"
+    "rgw s3 auth use keystone": "true"
+    "rgw swift account in url":  "true"
+    "rgw swift versioning enabled": "true"
