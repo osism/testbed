@@ -740,7 +740,7 @@ This section describes how individual parts of the testbed can be deployed.
 |------------------|----------------------------|----------|------------------------------------------|
 | ARA              | http://192.168.40.5:8120   | ara      | S6JE2yJUwvraiX57                         |
 | Cockpit          | https://192.168.40.5:8130  | dragon   | da5pahthaew2Pai2                         |
-| Horizon          | http://192.168.50.200      | admin    | TTgPSOSmgdmQAJUKu627DuzutgnIoAzsSxFg2ntu |
+| Horizon          | http://192.168.50.200      | admin    | pYV8bV749aDMXLPlYJwoJs4ouRPWezCIOXYAQP6v |
 | Kibana           | http://192.168.50.200:5601 | kibana   | k2ReobFEsoxNm3DyZnkZmFPadSnCz6BjQhaLFoyB |
 | Netdata          | http://192.168.50.5:19999  | -        | -                                        |
 | phpMyAdmin       | http://192.168.40.5:8110   | root     | qNpdZmkKuUKBK3D5nZ08KMZ5MnYrGEe2hzH6XC0i |
