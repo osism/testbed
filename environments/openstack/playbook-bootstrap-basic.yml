@@ -1,4 +1,30 @@
 ---
+- name: Prepare masquerading on the manager node
+  hosts: testbed-manager
+
+  tasks:
+    - name: Accpet FORWARD on the management interface (incoming)
+      iptables:
+        chain: FORWARD
+        in_interface: "{{ ansible_local.testbed_network_devices.management }}"
+        jump: ACCEPT
+      become: yes
+
+    - name: Accept FORWARD on the management interface (outgoing)
+      iptables:
+        chain: FORWARD
+        out_interface: "{{ ansible_local.testbed_network_devices.management }}"
+        jump: ACCEPT
+      become: yes
+
+    - name: Masquerade traffic on the management interface
+      iptables:
+        table: nat
+        chain: POSTROUTING
+        out_interface: "{{ ansible_local.testbed_network_devices.management }}"
+        jump: MASQUERADE
+      become: yes
+
 - name: Bootstrap basic OpenStack services
   hosts: localhost
   connection: local

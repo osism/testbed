@@ -40,6 +40,10 @@ network_interfaces:
     netmask: 255.255.255.0
     gateway: 192.168.40.1
     mtu: 1450
+    up:
+      - "iptables -A FORWARD -i {{ ansible_local.testbed_network_devices.management }} -j ACCEPT"
+      - "iptables -A FORWARD -o {{ ansible_local.testbed_network_devices.management }} -j ACCEPT"
+      - "iptables -t nat -A POSTROUTING -o {{ ansible_local.testbed_network_devices.management }} -j MASQUERADE"
 
   - device: "{{ ansible_local.testbed_network_devices.internal }}"
     auto: true
