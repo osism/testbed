@@ -20,6 +20,7 @@ Hyperconverged infrastructure (HCI) testbed based on OpenStack and Ceph, deploye
 - [Tools](#tools)
 - [Recipes](#recipes)
 - [Webinterfaces](#webinterfaces)
+- [Refstack](#refstack)
 
 ## Overview
 
@@ -744,6 +745,14 @@ This section describes how individual parts of the testbed can be deployed.
 | Netdata          | http://192.168.50.5:19999  | -        | -                                        |
 | phpMyAdmin       | http://192.168.40.5:8110   | root     | qNpdZmkKuUKBK3D5nZ08KMZ5MnYrGEe2hzH6XC0i |
 | Skydive          | http://192.168.50.5:8085   | -        | -                                        |
+
+## Refstack
+
+```
+osism-run openstack bootstrap-basic
+osism-run openstack bootstrap-refstack
+/opt/configuration/contrib/refstack/refstack.sh
+```
 
 ## License
 
