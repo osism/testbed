@@ -1,0 +1,44 @@
+---
+- name: Bootstrap ceph rgw
+  hosts: localhost
+  connection: local
+
+  tasks:
+    - name: Create swift service account
+      os_user:
+        cloud: admin
+        state: present
+        name: swift
+        password: hF6NWPG4rWTpK00oANEcRAiKbwbEcKFHHYYskar2
+        domain: default
+        default_project: service
+      no_log: true
+
+    - name: Add admin role to swift service account
+      os_user_role:
+        cloud: admin
+        state: present
+        user: swift
+        role: admin
+        project: service
+
+    - name: Create swift service
+      os_keystone_service:
+        cloud: admin
+        state: present
+        name: swift
+        service_type: object-store
+        description: Openstack Object Storage
+
+    - name: Create swift endpoints
+      os_keystone_endpoint:
+        cloud: admin
+        state: present
+        service: swift
+        endpoint_interface: "{{ item }}"
+        url: http://api.osism.local:8080/swift/v1/AUTH_%(tenant_id)s
+        region: RegionOne
+      with_items:
+        - admin
+        - internal
+        - public
