@@ -49,7 +49,7 @@ The following stable releases are supported. The development branch usually work
 
 **Works**
 
-There is a separate environment file, e.g. ``environment-Betacloud.yml``, for each supported cloud provider.
+There is a separate environment file, e.g. ``heat/environment-Betacloud.yml``, for each supported cloud provider.
 
 * [Betacloud](https://www.betacloud.de)
 * [Citycloud](https://www.citycloud.com)
@@ -116,15 +116,15 @@ The testbed requires the following resources When using the default flavors.
   available in the ARA web interface.
 * There is a prepared OpenStack base image. This will create the testbed a bit faster. On the
   Betacloud this image is available as ``OSISM base``. It is used as default in the
-  ``environment-Betacloud.yml`` environment file. Further details can be found in the repository
+  ``heat/environment-Betacloud.yml`` environment file. Further details can be found in the repository
   [osism/testbed-image](https://github.com/osism/testbed-image).
 
 ## Heat stack
 
 The testbed is based on a Heat stack.
 
-* ``stack.yml`` - stack with one manager node and three HCI nodes
-* ``stack-single.yml`` - stack with only one manager node
+* ``heat/stack.yml`` - stack with one manager node and three HCI nodes
+* ``heat/stack-single.yml`` - stack with only one manager node
 
 ![Stack topology](https://raw.githubusercontent.com/osism/testbed/master/images/stack-topology.png)
 
@@ -133,11 +133,11 @@ The testbed is based on a Heat stack.
 It is usually sufficient to use the prepared stacks. Changes to the template itself are normally
 not necessary.
 
-If you change the template of the Heat stack (``templates/stack.yml.j2``) you can update the
-``stack.yml`` file with the ``jinja2-cli`` (https://github.com/mattrobenolt/jinja2-cli).
+If you change the template of the Heat stack (``heat/templates/stack.yml.j2``) you can update the
+``heat/stack.yml`` file with the ``jinja2-cli`` (https://github.com/mattrobenolt/jinja2-cli).
 
 ```
-jinja2 -o stack.yml templates/stack.yml.j2
+jinja2 -o stack.yml heat/templates/stack.yml.j2
 ```
 
 By default, the number of nodes is set to ``3``. The number can be adjusted via the parameter
@@ -151,13 +151,13 @@ The configuration is only tested with 3 nodes. With more or less nodes, the conf
 be adjusted manually and problems may occur.
 
 ```
-jinja2 -o stack.yml -D number_of_nodes=6 templates/stack.yml.j2
+jinja2 -o heat/stack.yml -D number_of_nodes=6 heat/templates/stack.yml.j2
 ```
 
 To start only the manager ``number_of_nodes`` can be set to ``0``.
 
 ```
-jinja2 -o stack-single.yml -D number_of_nodes=0 templates/stack.yml.j2
+jinja2 -o heat/stack-single.yml -D number_of_nodes=0 heat/templates/stack.yml.j2
 ```
 
 By default, the number of additional volumes is set to ``3``. The number can be adjusted via the parameter
@@ -165,7 +165,7 @@ By default, the number of additional volumes is set to ``3``. The number can be 
 are not automatically added to the Ceph configuration.
 
 ```
-jinja2 -o stack.yml -D number_of_volumes=4 templates/stack.yml.j2
+jinja2 -o heat/stack.yml -D number_of_volumes=4 heat/templates/stack.yml.j2
 ```
 
 The configuration is only tested with 3 volumes. With more or less volumes, the configuration must
@@ -175,7 +175,7 @@ Using the included Makefile and calling
 ```
 make
 ```
-will recreate ```stack.yml``` and ```stack-single.yml``` using default parameters (3 nodes, 3 volumes each).
+will recreate ```heat/stack.yml``` and ```heat/stack-single.yml``` using default parameters (3 nodes, 3 volumes each).
 
 ## Network topology
 
@@ -326,7 +326,7 @@ The defaults for the stack parameters are intended for the Betacloud.
   </tr>
 </table>
 
-With the file ``environment.yml`` the parameters of the stack can be adjusted.
+With the file ``heat/environment.yml`` the parameters of the stack can be adjusted.
 Further details on environments on https://docs.openstack.org/heat/latest/template_guide/environment.html.
 
 ```
@@ -347,8 +347,8 @@ parameters:
 
 ## Initialization
 
-To start a testbed with one manager and three HCI nodes, ``stack.yml`` is used. To start
-only a manager ``stack-single.yml`` is used.
+To start a testbed with one manager and three HCI nodes, ``heat/stack.yml`` is used. To start
+only a manager ``heat/stack-single.yml`` is used.
 
 Before building the stack it should be checked if it is possible to build it.
 
@@ -356,8 +356,8 @@ Before building the stack it should be checked if it is possible to build it.
 openstack --os-cloud testbed \
   stack create \
   --dry-run \
-  -e environment.yml \
-  -t stack.yml testbed
+  -e heat/environment.yml \
+  -t heat/stack.yml testbed
 ```
 
 If the check is successful, the stack can be created. ``make dry-run`` will do this 
@@ -369,8 +369,8 @@ Note that you can set the ``export OS_CLOUD=testbed`` environment variable to av
 ```
 openstack --os-cloud testbed \
   stack create \
-  -e environment.yml \
-  -t stack.yml testbed
+  -e heat/environment.yml \
+  -t heat/stack.yml testbed
 +---------------------+--------------------------------------+
 | Field               | Value                                |
 +---------------------+--------------------------------------+
@@ -401,8 +401,8 @@ After a change to the definition of a stack, the stack can be updated.
 ```
 openstack --os-cloud testbed \
   stack update \
-  -e environment.yml \
-  -t stack.yml testbed
+  -e heat/environment.yml \
+  -t heat/stack.yml testbed
 +---------------------+--------------------------------------+
 | Field               | Value                                |
 +---------------------+--------------------------------------+
@@ -438,9 +438,9 @@ Without the deployment of the infrastructure services the deployment of OpenStac
 ```
 openstack --os-cloud testbed \
   stack create \
-  -e environment.yml \
+  -e heat/environment.yml \
   --parameter deploy_infrastructure=true \
-  -t stack.yml testbed
+  -t heat/stack.yml testbed
 ```
 
 This can also be achieved using ``make deploy-infra``.
@@ -452,9 +452,9 @@ Without the deployment of Ceph the deployment of OpenStack is not possible.
 ```
 openstack --os-cloud testbed \
   stack create \
-  -e environment.yml \
+  -e heat/environment.yml \
   --parameter deploy_ceph=true \
-  -t stack.yml testbed
+  -t heat/stack.yml testbed
 ```
 
 This can also be achieved using ``make deploy-ceph``.
@@ -466,12 +466,12 @@ The deployment of OpenStack depends on the deployment of Ceph and the infrastruc
 ```
 openstack --os-cloud testbed \
   stack create \
-  -e environment.yml \
+  -e heat/environment.yml \
   --parameter deploy_ceph=true \
   --parameter deploy_infrastructure=true \
   --parameter deploy_openstack=true \
   --timeout 150 \
-  -t stack.yml testbed
+  -t heat/stack.yml testbed
 ```
 
 The ``--timeout 150`` parameter tells heat to wait up to 2.5hrs for

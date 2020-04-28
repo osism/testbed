@@ -14,9 +14,9 @@
 #
 # (c) Kurt Garloff <scs@garloff.de>, 3/2020, Apache2 License
 
-STACKFILE = stack.yml
+STACKFILE = heat/stack.yml
 STACKNAME = testbed
-ENVIRONMENT = environment.yml
+ENVIRONMENT = heat/environment.yml
 
 TIMEOUT_DEPLOY = 45
 TIMEOUT_DEPLOY_CEPH = 70
@@ -33,11 +33,11 @@ endif
 
 default: stack.yml stack-single.yml
 
-stack.yml: templates/stack.yml.j2
-	jinja2 -o $@ $(TMPL_PARAMS) $^
+stack.yml: heat/stack.yml.j2
+	jinja2 -o heat/$@ $(TMPL_PARAMS) $^
 
-stack-single.yml: templates/stack.yml.j2
-	jinja2 -o $@ $(TMPL_PARAMS) -Dnumber_of_nodes=0 $^
+stack-single.yml: heat/stack.yml.j2
+	jinja2 -o heat/$@ $(TMPL_PARAMS) -Dnumber_of_nodes=0 $^
 
 dry-run: $(STACKFILE) $(ENVIRONMENT)
 	$(OPENSTACK) stack create --dry-run -t $< -e $(ENVIRONMENT) $(STACK_PARAMS) $(STACKNAME) -f json; echo
