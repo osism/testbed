@@ -250,6 +250,11 @@ resources:
                           sudo -iu dragon sh -c 'INTERACTIVE=false osism-run openstack bootstrap-octavia'
                           sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy octavia'
 
+                          if [[ "deploy_ceph" == "True" ]]; then
+                              sudo -iu dragon sh -c 'INTERACTIVE=false osism-run openstack bootstrap-ceph-rgw
+                              sudo -iu dragon sh -c 'INTERACTIVE=false osism-ceph rgws'
+                          fi
+
                           sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy skydive'
                           sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic manage-container -e container_action=stop -e container_name=skydive_agent -l skydive-agent'
 
