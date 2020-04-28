@@ -754,9 +754,18 @@ This section describes how individual parts of the testbed can be deployed.
 ## Refstack
 
 ```
-osism-run openstack bootstrap-basic
-osism-run openstack bootstrap-refstack
 /opt/configuration/contrib/refstack/refstack.sh
+[...]
+======
+Totals
+======
+Ran: 285 tests in 1306.4010 sec.
+ - Passed: 283
+ - Skipped: 2
+ - Expected Fail: 0
+ - Unexpected Success: 0
+ - Failed: 0
+Sum of execute time for each test: 1027.4324 sec.
 ```
 
 ## License

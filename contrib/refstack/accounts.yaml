@@ -4,9 +4,35 @@
   tenant_name: test
   project_domain_name: default
   password: password
+  roles:
+    - member
 
 - username: refstack-1
   user_domain_name: default
   tenant_name: test
   project_domain_name: default
   password: password
+  roles:
+    - member
+
+- username: refstack-2
+  user_domain_name: default
+  tenant_name: test
+  project_domain_name: default
+  password: password
+  roles:
+    - member
+  types:
+    - admin
+    - operator
+    - reseller_admin
+
+- username: admin
+  user_domain_name: default
+  tenant_name: admin
+  project_domain_name: default
+  password: pYV8bV749aDMXLPlYJwoJs4ouRPWezCIOXYAQP6v
+  types:
+    - admin
+    - operator
+    - reseller_admin

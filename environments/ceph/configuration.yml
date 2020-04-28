@@ -209,6 +209,7 @@ ceph_conf_overrides:
     osd pool default size: 2
 
   "client.rgw.{{ hostvars[inventory_hostname]['ansible_hostname'] }}.rgw0":
+    "rgw content length compat": "true"
     "rgw enable apis": "swift, s3"
     "rgw keystone accepted roles": "Member, _member_, admin"
     "rgw keystone admin domain": "default"
