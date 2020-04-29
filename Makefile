@@ -46,6 +46,9 @@ deploy: $(STACKFILE) $(ENVIRONMENT)
 	@touch .deploy.$(STACKNAME)
 	$(OPENSTACK) stack create --timeout $(TIMEOUT_DEPLOY) -t $< -e $(ENVIRONMENT) $(STACK_PARAMS) $(STACKNAME)
 
+show:
+	$(OPENSTACK) stack show $(STACKNAME)
+
 create: deploy
 
 deploy-infra: $(STACKFILE) $(ENVIRONMENT)
