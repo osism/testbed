@@ -15,6 +15,19 @@
       loop:
         - refstack-0
         - refstack-1
+        - refstack-2
+      no_log: true
+
+    - name: Add admin role to required users
+      os_user_role:
+        cloud: admin
+        state: present
+        user: "{{ item }}"
+        role: admin
+        project: test
+      loop:
+        - admin
+        - refstack-2
 
     - name: Add member roles to refstack users
       os_user_role:
@@ -23,7 +36,7 @@
         user: "{{ item.0 }}"
         role: "{{ item.1 }}"
         project: test
-      loop: "{{ ['refstack-0', 'refstack-1']|zip(['member', '_member_'])|list }}"
+      loop: "{{ ['refstack-0', 'refstack-1', 'refstack-2']|zip(['member', '_member_'])|list }}"
 
     - name: Create tiny flavors
       os_nova_flavor:
@@ -120,3 +133,17 @@
         option: public_network_id
         value: "{{ public.openstack_networks.0.id }}"
       delegate_to: testbed-manager
+
+    - name: Check swift endpoint
+      command: openstack --os-cloud admin endpoint list --service swift
+      register: result
+      delegate_to: testbed-manager
+
+    - name: Set swift in tempest.conf
+      ini_file:
+        path: /opt/configuration/contrib/refstack/tempest.conf
+        section: service_available
+        option: swift
+        value: "true"
+      delegate_to: testbed-manager
+      when: "'object-store' in result.stdout"

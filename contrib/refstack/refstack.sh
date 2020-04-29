@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+INTERACTIVE=false osism-run openstack bootstrap-basic
+INTERACTIVE=false osism-run openstack bootstrap-refstack
+
 sudo mkdir -p /opt/refstack
 sudo chown dragon: /opt/refstack
 
@@ -10,10 +13,15 @@ pushd /opt/refstack/client
 popd
 
 GUIDELINE=${1:-2019.11}
+TARGET=${2:-platform}
 
-curl -s "https://refstack.openstack.org/api/v1/guidelines/$GUIDELINE/tests?target=compute&type=required,advisory&alias=true&flag=true" | \
-    grep -v tempest.api.identity.v3.test_projects.IdentityV3ProjectsTest.test_list_projects_returns_only_authorized_projects | \
-    grep -v "tempest.api.compute.servers.test_list_server_filters.ListServerFiltersTestJSON.test_list_servers_filtered_by_ip_regex" \
+# NOTE: AccountQuotasNegativeTest.test_user_modify_quota and AccountQuotasTest.test_upload_valid_object
+#       are not working with Ceph RGW
+
+curl -s "https://refstack.openstack.org/api/v1/guidelines/$GUIDELINE/tests?target=$TARGET&type=required,advisory&alias=true&flag=true" | \
+    grep -v tempest.api.object_storage.test_account_quotas_negative.AccountQuotasNegativeTest.test_user_modify_quota | \
+    grep -v tempest.api.object_storage.test_account_quotas.AccountQuotasTest.test_upload_valid_object | \
+    grep -v tempest.api.identity.v3.test_projects.IdentityV3ProjectsTest.test_list_projects_returns_only_authorized_projects \
     > /opt/refstack/test-list.txt
 
 source /opt/refstack/client/.venv/bin/activate

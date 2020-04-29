@@ -57,6 +57,10 @@ parameters:
     type: boolean
     default: false
 
+  run_refstack:
+    type: boolean
+    default: false
+
   configuration_version:
     type: string
     default: master
@@ -237,6 +241,16 @@ resources:
                           sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy testbed --tags openstack'
                           sudo -iu dragon sh -c 'INTERACTIVE=false osism-run openstack bootstrap-basic'
 
+                          if [[ "deploy_ceph" == "True" ]]; then
+                              sudo -iu dragon sh -c 'INTERACTIVE=false osism-run openstack bootstrap-ceph-rgw'
+                              sudo -iu dragon sh -c 'INTERACTIVE=false osism-ceph rgws'
+                          fi
+
+                          if [[ "run_refstack" == "True" ]]; then
+                              sudo -iu dragon sh -c 'INTERACTIVE=false osism-run openstack bootstrap-refstack'
+                              sudo -iu dragon sh -c '/opt/configuration/contrib/refstack/refstack.sh'
+                          fi
+
                           sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy heat'
                           sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy gnocchi'
                           sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy ceilometer'
@@ -249,11 +263,6 @@ resources:
 
                           sudo -iu dragon sh -c 'INTERACTIVE=false osism-run openstack bootstrap-octavia'
                           sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy octavia'
-
-                          if [[ "deploy_ceph" == "True" ]]; then
-                              sudo -iu dragon sh -c 'INTERACTIVE=false osism-run openstack bootstrap-ceph-rgw'
-                              sudo -iu dragon sh -c 'INTERACTIVE=false osism-ceph rgws'
-                          fi
 
                           sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy skydive'
                           sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic manage-container -e container_action=stop -e container_name=skydive_agent -l skydive-agent'
