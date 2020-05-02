@@ -1,12 +1,16 @@
 .MANAGER_ADDRESS.*
 .deploy.*
 .id_rsa.*
+.terraform
 .venv
 Pipfile.lock
 clouds.yml
+clouds.yaml
 contrib/es_test_data.py
 contrib/mysql_random_data_load
 environments/**/ceph.client.*.keyring
 roles
 secrets
 secure.yml
+secure.yaml
+terraform.tfstate*

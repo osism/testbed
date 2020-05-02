@@ -38,7 +38,7 @@
   tasks:
     - name: Wait for registry proxy service
       wait_for:
-        host: testbed-manager.osism.local
+        host: 192.168.50.5
         port: 8000
         delay: 10
 
@@ -53,7 +53,7 @@
 
     - name: Add registry-proxy ca certificate to /etc/docker/certs.d
       get_url:
-        url: http://testbed-manager.osism.local:8000/ca.crt
+        url: http://192.168.50.5:8000/ca.crt
         dest: /etc/docker/certs.d/testbed-manager.osism.local.crt
         mode: 0644
         owner: root
@@ -71,7 +71,7 @@
 
     - name: Add registry-proxy ca certificate to /usr/local/share/ca-certificates
       get_url:
-        url: http://testbed-manager.osism.local:8000/ca.crt
+        url: http://192.168.50.5:8000/ca.crt
         dest: /usr/local/share/ca-certificates/testbed-manager.osism.local.crt
         mode: 0644
         owner: root

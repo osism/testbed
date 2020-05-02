@@ -170,8 +170,8 @@ resources:
                   sudo -iu dragon sh -c 'INTERACTIVE=false osism-run custom cronjobs'
                   sudo -iu dragon sh -c 'INTERACTIVE=false osism-run custom facts'
 
-                  sudo -iu dragon sh -c 'INTERACTIVE=false osism-run custom proxy'
-                  sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic proxy'
+                  # deploy proxy services
+                  sudo -iu dragon sh -c '/opt/configuration/scripts/deploy_proxy_services.sh'
 
                   # prepare all systems
                   if [[ 0 -gt 0 ]]; then
@@ -186,9 +186,7 @@ resources:
                       done;
 
                       # deploy helper services
-                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-infrastructure helper --tags sshconfig'
-                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-run custom generate-ssh-known-hosts'
-                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-run custom registry-proxy'
+                      sudo -iu dragon sh -c '/opt/configuration/scripts/deploy_helper_services.sh'
                   fi
 
                   # copy network configuration
@@ -196,17 +194,12 @@ resources:
 
                   # deploy infrastructure services
                   if [[ "deploy_infrastructure" == "True" ]]; then
-                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-infrastructure helper --tags phpmyadmin'
-                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-infrastructure helper --tags openstackclient'
-                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-infrastructure netdata'
-                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy testbed --tags infrastructure'
+                      sudo -iu dragon sh -c '/opt/configuration/scripts/deploy_infrastructure_services.sh'
                   fi
 
                   # deploy ceph services
                   if [[ "deploy_ceph" == "True" ]]; then
-                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-ceph testbed'
-                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-run custom fetch-ceph-keys'
-                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-infrastructure helper --tags cephclient'
+                      sudo -iu dragon sh -c '/opt/configuration/scripts/deploy_ceph_services.sh'
                   fi
 
                   # deploy openstack services
@@ -227,23 +220,7 @@ resources:
                               sudo -iu dragon sh -c '/opt/configuration/contrib/refstack/refstack.sh'
                           fi
 
-                          sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy heat'
-                          sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy gnocchi'
-                          sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy ceilometer'
-                          sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy aodh'
-                          sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy panko'
-                          sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy magnum'
-                          sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy barbican'
-                          sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy designate'
-                          sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy cloudkitty'
-
-                          sudo -iu dragon sh -c 'INTERACTIVE=false osism-run openstack bootstrap-octavia'
-                          sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy octavia'
-
-                          sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy skydive'
-                          sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic manage-container -e container_action=stop -e container_name=skydive_agent -l skydive-agent'
-
-                          sudo -iu dragon sh -c 'INTERACTIVE=false osism-run openstack bootstrap-additional'
+                          sudo -iu dragon sh -c '/opt/configuration/scripts/deploy_openstack_services_additional.sh'
                       fi
                   fi
 

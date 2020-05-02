@@ -14,9 +14,9 @@
 #
 # (c) Kurt Garloff <scs@garloff.de>, 3/2020, Apache2 License
 
-STACKFILE = heat/stack.yml
+STACKFILE = stack.yml
 STACKNAME = testbed
-ENVIRONMENT = heat/environment.yml
+ENVIRONMENT = environment.yml
 
 TIMEOUT_DEPLOY = 45
 TIMEOUT_DEPLOY_CEPH = 70
@@ -33,11 +33,11 @@ endif
 
 default: stack.yml stack-single.yml
 
-stack.yml: heat/stack.yml.j2
-	jinja2 -o heat/$@ $(TMPL_PARAMS) $^
+stack.yml: stack.yml.j2
+	jinja2 -o $@ $(TMPL_PARAMS) $^
 
-stack-single.yml: heat/stack.yml.j2
-	jinja2 -o heat/$@ $(TMPL_PARAMS) -Dnumber_of_nodes=0 $^
+stack-single.yml: stack.yml.j2
+	jinja2 -o $@ $(TMPL_PARAMS) -Dnumber_of_nodes=0 $^
 
 dry-run: $(STACKFILE) $(ENVIRONMENT)
 	$(OPENSTACK) stack create --dry-run -t $< -e $(ENVIRONMENT) $(STACK_PARAMS) $(STACKNAME) -f json; echo
@@ -91,7 +91,7 @@ reset:
 watch: .deploy.$(STACKNAME)
 	MGR_ADR=""; STAT=""; while true; do\
 		date; $(OPENSTACK) stack list; \
-		SRV=$$($(OPENSTACK) server list -f value -c "Name" -c "Status" | grep testbed-manager | cut -d ' ' -f2); \
+		SRV=$$($(OPENSTACK) server list -f value -c "Name" -c "Status" | grep $(STACKNAME)-manager | cut -d ' ' -f2); \
 		$(OPENSTACK) server list; \
 		if test -z "$$MGR_ADR" -a "$$SRV" = "ACTIVE"; then \
 			$(OPENSTACK) stack output show $(STACKNAME) private_key -f value -c output_value > .id_rsa.$(STACKNAME); \
@@ -131,7 +131,7 @@ ssh: .id_rsa.$(STACKNAME) .MANAGER_ADDRESS.$(STACKNAME)
 	ssh -i $< dragon@$$MANAGER_ADDRESS
 
 console: .deploy.$(STACKNAME)
-	$(OPENSTACK) console log show testbed-manager
+	$(OPENSTACK) console log show $(STACKNAME)-manager
 
 # avoid confusing make by non-file targets
 .PHONY: clean clean-wait console reset watch sshuttle ssh dry-run list create deploy deploy-infra deploy-ceph deploy-openstack

@@ -1,0 +1,1 @@
+image = "OSISM base"
