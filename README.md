@@ -137,7 +137,7 @@ If you change the template of the Heat stack (``heat/templates/stack.yml.j2``) y
 ``heat/stack.yml`` file with the ``jinja2-cli`` (https://github.com/mattrobenolt/jinja2-cli).
 
 ```
-jinja2 -o stack.yml heat/templates/stack.yml.j2
+jinja2 -o heat/stack.yml heat/templates/stack.yml.j2
 ```
 
 By default, the number of nodes is set to ``3``. The number can be adjusted via the parameter
