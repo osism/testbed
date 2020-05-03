@@ -212,7 +212,6 @@ resources:
 
                           if [[ "deploy_ceph" == "True" ]]; then
                               sudo -iu dragon sh -c 'INTERACTIVE=false osism-run openstack bootstrap-ceph-rgw'
-                              sudo -iu dragon sh -c 'INTERACTIVE=false osism-ceph rgws'
                           fi
 
                           if [[ "run_refstack" == "True" ]]; then

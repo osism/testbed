@@ -195,7 +195,6 @@ write_files:
 
               if [[ "${var.deploy_ceph}" == "true" ]]; then
                   sudo -iu dragon sh -c 'INTERACTIVE=false osism-run openstack bootstrap-ceph-rgw'
-                  sudo -iu dragon sh -c 'INTERACTIVE=false osism-ceph rgws'
               fi
 
               if [[ "${var.run_refstack}" == "true" ]]; then
