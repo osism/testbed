@@ -44,6 +44,7 @@ clean:
 	@terraform destroy -auto-approve -var-file="$(ENVIRONMENT)" $(PARAMS)
 	@rm -f .deploy.$(STACKNAME) .MANAGER_ADDRESS.$(STACKNAME)
 	@rm -f .id_rsa.$(STACKNAME)
+	@rm -f terraform.tfstate terraform.tfstate.backup
 
 list:
 	@terraform state list
