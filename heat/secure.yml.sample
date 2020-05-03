@@ -2,4 +2,4 @@
 clouds:
   testbed:
     auth:
-      password: password
+      password: PASSWORD

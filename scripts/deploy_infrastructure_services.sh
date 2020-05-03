@@ -7,4 +7,4 @@ osism-infrastructure helper --tags openstackclient
 osism-infrastructure netdata
 osism-generic cockpit
 
-osism-kolla deploy --tags infrastructure
+osism-kolla deploy testbed --tags infrastructure
