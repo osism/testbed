@@ -21,34 +21,35 @@ cluster_network: 192.168.80.0/24
 
 # NOTE: default size of 2 because by default there are only 2 volumes per node
 rgw_pool_default_size: 2
+rgw_pool_default_pg_num: 8
 
 rgw_zone: default
 rgw_create_pools:
   "{{ rgw_zone }}.rgw.buckets.data":
-    pg_num: 64
+    pg_num: "{{ rgw_pool_default_pg_num }}"
     size: "{{ rgw_pool_default_size }}"
     type: replicated
   "{{ rgw_zone }}.rgw.buckets.index":
-    pg_num: 16
+    pg_num: "{{ rgw_pool_default_pg_num }}"
     size: "{{ rgw_pool_default_size }}"
     type: replicated
   "{{ rgw_zone }}.rgw.meta":
-    pg_num: 8
+    pg_num: "{{ rgw_pool_default_pg_num }}"
     size: "{{ rgw_pool_default_size }}"
     type: replicated
   "{{ rgw_zone }}.rgw.log":
-    pg_num: 8
+    pg_num: "{{ rgw_pool_default_pg_num }}"
     size: "{{ rgw_pool_default_size }}"
     type: replicated
   "{{ rgw_zone }}.rgw.control":
-    pg_num: 8
+    pg_num: "{{ rgw_pool_default_pg_num }}"
     size: "{{ rgw_pool_default_size }}"
     type: replicated
 
 # NOTE: default size of 2 because by default there are only 2 volumes per node
 cephfs_pool_default_size: 2
 cephfs_pool_default_min_size: 0
-cephfs_pool_default_pg_num: 32
+cephfs_pool_default_pg_num: 16
 
 cephfs_data_pool:
   name: "cephfs_data"
