@@ -55,7 +55,7 @@ ssh: .MANAGER_ADDRESS.$(STACKNAME) .id_rsa.$(STACKNAME)
 
 sshuttle: .MANAGER_ADDRESS.$(STACKNAME) .id_rsa.$(STACKNAME)
 	@source ./.MANAGER_ADDRESS.$(STACKNAME); \
-	sshuttle --ssh-cmd "ssh -i .id_rsa.$(STACKNAME) " -r dragon@$$MANAGER_ADDRESS 192.168.40.0/24 192.168.50.0/24 192.168.90.0/24
+	sshuttle --ssh-cmd "ssh -i .id_rsa.$(STACKNAME) " -r dragon@$$MANAGER_ADDRESS 192.168.40.0/24 192.168.50.0/24 192.168.90.0/24 192.168.100.0/24
 
 console: .deploy.$(STACKNAME)
 	@$(OPENSTACK) console log show $(STACKNAME)-manager

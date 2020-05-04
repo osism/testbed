@@ -124,7 +124,7 @@ watch: .deploy.$(STACKNAME)
 # Convenience: sshuttle invocation
 sshuttle: .id_rsa.$(STACKNAME) .MANAGER_ADDRESS.$(STACKNAME)
 	source ./.MANAGER_ADDRESS.$(STACKNAME); \
-	sshuttle --ssh-cmd "ssh -i $<" -r dragon@$$MANAGER_ADDRESS 192.168.40.0/24 192.168.50.0/24 192.168.90.0/24
+	sshuttle --ssh-cmd "ssh -i $<" -r dragon@$$MANAGER_ADDRESS 192.168.40.0/24 192.168.50.0/24 192.168.90.0/24 192.168.100.0/24
 
 ssh: .id_rsa.$(STACKNAME) .MANAGER_ADDRESS.$(STACKNAME)
 	source ./.MANAGER_ADDRESS.$(STACKNAME); \
