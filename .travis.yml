@@ -4,8 +4,17 @@ language: python
 install:
   - pip install -r requirements.txt
   - pip install -r test-requirements.txt
+  - pip install -r docs/requirements.txt
 
 script:
  - jinja2 -o stack.yml templates/stack.yml.j2; yamllint -c .yamllint.yml stack.yml
  - jinja2 -o stack-manager.yml -D number_of_nodes=0 templates/stack.yml.j2; yamllint -c .yamllint.yml stack-manager.yml
  - flake8 src/render-stack-template.py
+ - cd docs; sphinx-build -b html source build/html
+
+deploy:
+  - provider: script
+    script: lftp -u '$FTP_USERNAME,$FTP_PASSWORD' -e 'set sftp:auto-confirm yes; mirror -R --delete docs/build/html osism/testbed; exit;' 'sftp://$FTP_HOSTNAME'
+    skip_cleanup: true
+    on:
+      branch: master
