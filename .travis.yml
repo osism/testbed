@@ -7,8 +7,8 @@ install:
   - pip install -r docs/requirements.txt
 
 script:
- - jinja2 -o stack.yml templates/stack.yml.j2; yamllint -c .yamllint.yml stack.yml
- - jinja2 -o stack-manager.yml -D number_of_nodes=0 templates/stack.yml.j2; yamllint -c .yamllint.yml stack-manager.yml
+ - jinja2 -o stack.yml heat/stack.yml.j2; yamllint -c .yamllint.yml stack.yml
+ - jinja2 -o stack-manager.yml -D number_of_nodes=0 heat/stack.yml.j2; yamllint -c .yamllint.yml stack-manager.yml
  - flake8 src/render-stack-template.py
  - cd docs; sphinx-build -b html source build/html
 
