@@ -45,6 +45,7 @@ Infrastructure
 * Gnocchi
 * Grafana
 * Haproxy
+* Influxdb
 * Keepalived
 * Kibana
 * Mariadb
