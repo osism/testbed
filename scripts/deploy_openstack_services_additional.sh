@@ -12,6 +12,8 @@ osism-kolla deploy panko
 osism-kolla deploy magnum
 osism-kolla deploy barbican
 osism-kolla deploy designate
+
+osism-kolla deploy influxdb
 osism-kolla deploy cloudkitty
 
 osism-run openstack bootstrap-octavia
