@@ -17,7 +17,7 @@ script:
 
 deploy:
   - provider: script
-    script: lftp -u '$FTP_USERNAME,$FTP_PASSWORD' -e 'set sftp:auto-confirm yes; mirror -R --delete docs/build/html osism/testbed; exit;' 'sftp://$FTP_HOSTNAME'
+    script: lftp -u '$FTP_USERNAME,$FTP_PASSWORD' -e 'set sftp:auto-confirm yes; mirror -R --delete build/html osism/testbed; exit;' 'sftp://$FTP_HOSTNAME'
     skip_cleanup: true
     on:
       branch: master
