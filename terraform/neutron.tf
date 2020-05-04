@@ -2,6 +2,18 @@
 # Security groups #
 ###################
 
+resource "openstack_compute_secgroup_v2" "security_group_manager" {
+  name = "testbed-manager"
+  description = "manager security group"
+
+  rule {
+    cidr        = "0.0.0.0/0"
+    ip_protocol = "udp"
+    from_port   = 51820
+    to_port     = 51820
+  }
+}
+
 resource "openstack_compute_secgroup_v2" "security_group_management" {
   name = "testbed-management"
   description = "management security group"

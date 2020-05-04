@@ -6,7 +6,10 @@ resource "openstack_networking_floatingip_v2" "manager_floating_ip" {
 
 resource "openstack_networking_port_v2" "manager_port_management" {
   network_id         = openstack_networking_network_v2.net_management.id
-  security_group_ids = [ openstack_compute_secgroup_v2.security_group_management.id ]
+  security_group_ids = [
+    openstack_compute_secgroup_v2.security_group_management.id,
+    openstack_compute_secgroup_v2.security_group_manager.id
+  ]
 
   fixed_ip {
     ip_address = "192.168.40.5"
@@ -22,6 +25,10 @@ resource "openstack_networking_port_v2" "manager_port_internal" {
     ip_address = "192.168.50.5"
     subnet_id  = openstack_networking_subnet_v2.subnet_internal.id
   }
+
+  allowed_address_pairs {
+    ip_address = "192.168.60.0/24"
+  }
 }
 
 resource "openstack_networking_port_v2" "manager_port_external" {
@@ -31,6 +38,10 @@ resource "openstack_networking_port_v2" "manager_port_external" {
   fixed_ip {
     ip_address = "192.168.90.5"
     subnet_id  = openstack_networking_subnet_v2.subnet_external.id
+  }
+
+  allowed_address_pairs {
+    ip_address = "192.168.60.0/24"
   }
 }
 
@@ -214,6 +225,9 @@ runcmd:
   - "mv /etc/netplan/50-cloud-init.yaml /etc/netplan/50-cloud-init.yaml.unused"
   - "/root/run.sh"
 final_message: "The system is finally up, after $UPTIME seconds"
+power_state:
+  mode: reboot
+  condition: True
 EOT
 
 }

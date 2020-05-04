@@ -48,6 +48,10 @@ network_interfaces:
     netmask: 255.255.255.0
     gateway: 192.168.40.1
     mtu: 1450
+    up:
+      - ip route add 192.168.60.0/24 via 192.168.50.5
+    down:
+      - ip route del 192.168.60.0/24 via 192.168.50.5
 
   - device: "{{ ansible_local.testbed_network_devices.internal }}"
     auto: true

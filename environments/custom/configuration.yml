@@ -6,3 +6,7 @@ registry_proxy_network: 172.31.200.0/28
 
 registry_proxy_host: "{{ hostvars[inventory_hostname]['ansible_' + management_interface]['ipv4']['address'] }}"
 registry_proxy_port: 8000
+
+# wireguard
+
+wireguard_peer_public_key: vYrE3ZMlN5Xa2d/s4IbFsiGNPN+dKqQ/L070hRC+Pjc=

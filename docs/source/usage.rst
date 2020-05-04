@@ -5,6 +5,29 @@ Usage
 .. contents::
    :local:
 
+Wireguard
+=========
+
+* deployment
+
+  .. code-block:: console
+
+     osism-run custom wireguard
+
+* client configuration
+
+  .. code-block:: console
+
+     [Interface]
+     PrivateKey = eFvxE9jOhSRg4drIUBEO1xqHP9cpV0bQiGASFqvGMkU=
+     Address = 192.168.60.4/24
+
+     [Peer]
+     PublicKey = MANAGER_CONTENTS_OF_/etc/wireguard/osism.pub
+     PresharedKey = MANAGER_CONTENTS_OF_/etc/wireguard/osism.psk
+     AllowedIPs = 192.168.60.5/32, 192.168.50.0/24, 192.168.90.0/24, 192.168.100.0/24
+     Endpoint = MANAGER_PUBLIC_IP_ADDRESS:51820
+
 Change versions
 ===============
 
