@@ -19,27 +19,30 @@ cluster_network: 192.168.80.0/24
 ##########################
 # pools & keys
 
+# NOTE: default size of 2 because by default there are only 2 volumes per node
+rgw_pool_default_size: 2
+
 rgw_zone: default
 rgw_create_pools:
   "{{ rgw_zone }}.rgw.buckets.data":
     pg_num: 64
-    size: 3
+    size: "{{ rgw_pool_default_size }}"
     type: replicated
   "{{ rgw_zone }}.rgw.buckets.index":
     pg_num: 16
-    size: 3
+    size: "{{ rgw_pool_default_size }}"
     type: replicated
   "{{ rgw_zone }}.rgw.meta":
     pg_num: 8
-    size: 3
+    size: "{{ rgw_pool_default_size }}"
     type: replicated
   "{{ rgw_zone }}.rgw.log":
     pg_num: 8
-    size: 3
+    size: "{{ rgw_pool_default_size }}"
     type: replicated
   "{{ rgw_zone }}.rgw.control":
     pg_num: 8
-    size: 3
+    size: "{{ rgw_pool_default_size }}"
     type: replicated
 
 # NOTE: default size of 2 because by default there are only 2 volumes per node
