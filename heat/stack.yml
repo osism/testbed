@@ -197,6 +197,7 @@ resources:
                   # prepare all systems
                   if [[ 3 -gt 0 ]]; then
                       sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic bootstrap'
+                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic operator'
 
                       # NOTE: Restart the manager services to update the /etc/hosts file
                       sudo -iu dragon sh -c 'docker-compose -f /opt/manager/docker-compose.yml restart'
@@ -208,6 +209,8 @@ resources:
 
                       # deploy helper services
                       sudo -iu dragon sh -c '/opt/configuration/scripts/deploy_helper_services.sh'
+                  else
+                      sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic operator -l manager'
                   fi
 
                   # copy network configuration
