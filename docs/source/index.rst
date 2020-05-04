@@ -12,3 +12,4 @@ Hyperconverged infrastructure (HCI) testbed based on OpenStack and Ceph, deploye
    deployment
    usage
    notes
+   appendix
