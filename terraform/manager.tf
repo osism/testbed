@@ -159,6 +159,7 @@ write_files:
       sudo -iu dragon sh -c '/opt/configuration/scripts/deploy_proxy_services.sh'
 
       sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic bootstrap'
+      sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic operator'
 
       # NOTE: Restart the manager services to update the /etc/hosts file
       sudo -iu dragon sh -c 'docker-compose -f /opt/manager/docker-compose.yml restart'
