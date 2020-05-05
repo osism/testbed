@@ -177,7 +177,7 @@
         remote_ip_prefix: 0.0.0.0/0
 
     - name: Create test keypair
-      os_server:
+      os_keypair:
         cloud: test
         state: present
         name: test
