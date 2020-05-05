@@ -126,6 +126,9 @@ ceilometer_event_type: panko
 # designate
 designate_ns_record: openstack.osism.local
 
+# magnum
+enable_cluster_user_trust: "yes"
+
 ##########################################################
 # external ceph
 
