@@ -1,5 +1,5 @@
 ---
-- name: Bootstrap refstack ressources
+- name: Bootstrap refstack
   hosts: localhost
   connection: local
 
