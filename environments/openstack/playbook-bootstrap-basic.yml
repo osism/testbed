@@ -181,7 +181,7 @@
         cloud: test
         state: present
         name: test
-        public_key_file: /configuration/id_rsa.test.pub
+        public_key_file: /opt/configuration/environments/openstack/id_rsa.test.pub
 
     - name: Create test instance
       os_server:
