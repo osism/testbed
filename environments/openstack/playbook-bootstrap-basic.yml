@@ -176,6 +176,13 @@
         protocol: icmp
         remote_ip_prefix: 0.0.0.0/0
 
+    - name: Create test keypair
+      os_server:
+        cloud: test
+        state: present
+        name: test
+        public_key_file: /configuration/id_rsa.test.pub
+
     - name: Create test instance
       os_server:
         cloud: test
