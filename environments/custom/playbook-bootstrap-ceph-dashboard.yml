@@ -1,0 +1,20 @@
+---
+- name: Bootstraph ceph dashboard
+  hosts: manager
+  gather_facts: no
+
+  tasks:
+    - name: Set mgr/dashboard/ssl to false
+      command: ceph config set mgr mgr/dashboard/ssl false
+      environment:
+        INTERACTIVE: false
+
+    - name: Set mgr/dashboard/server_port to 7000
+      command: ceph config set mgr mgr/dashboard/server_port 7000
+      environment:
+        INTERACTIVE: false
+
+    - name: Create admin user
+      command: "ceph dashboard ac-user-create {{ ceph_dashboard_username }} {{ ceph_dashboard_password }} administrator"
+      environment:
+        INTERACTIVE: false
