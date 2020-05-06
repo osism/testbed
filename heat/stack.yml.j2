@@ -259,6 +259,9 @@ resources:
           - "mv /etc/netplan/50-cloud-init.yaml /etc/netplan/50-cloud-init.yaml.unused"
           - "/root/run.sh"
         final_message: "The system is finally up, after $UPTIME seconds"
+        power_state:
+          mode: reboot
+          condition: True
 {% if number_of_nodes|default(3)|int > 0 %}
   node_boot_config:
     type: OS::Heat::CloudConfig
@@ -313,6 +316,16 @@ resources:
   #################
   # Security groups
   #################
+
+  security_group_manager:
+    type: OS::Neutron::SecurityGroup
+    properties:
+      name: testbed-manager
+      rules:
+        - remote_ip_prefix: 0.0.0.0/0
+          protocol: udp
+          port_range_min: 51820
+          port_range_max: 51820
 
   security_group_management:
     type: OS::Neutron::SecurityGroup
@@ -566,6 +579,7 @@ resources:
         - ip_address: 192.168.40.5
       security_groups:
         - {get_resource: security_group_management}
+        - {get_resource: security_group_manager}
 
   manager_port_internal:
     type: OS::Neutron::Port
@@ -573,6 +587,8 @@ resources:
       network_id: {get_resource: net_internal}
       fixed_ips:
         - ip_address: 192.168.50.5
+      allowed_address_pairs:
+        - ip_address: 192.168.60.0/24
       security_groups:
         - {get_resource: security_group_internal}
 {% if number_of_nodes|default(3)|int > 0 %}
@@ -582,6 +598,8 @@ resources:
       network_id: {get_resource: net_external}
       fixed_ips:
         - ip_address: 192.168.90.5
+      allowed_address_pairs:
+        - ip_address: 192.168.60.0/24
       security_groups:
         - {get_resource: security_group_external}
 
@@ -661,7 +679,7 @@ resources:
       fixed_ips:
         - ip_address: 192.168.50.1{{ n }}
       allowed_address_pairs:
-        - ip_address: 192.168.50.200/24
+        - ip_address: 192.168.50.200/32
       security_groups:
         - {get_resource: security_group_internal}
 
@@ -672,7 +690,7 @@ resources:
       fixed_ips:
         - ip_address: 192.168.90.1{{ n }}
       allowed_address_pairs:
-        - ip_address: 192.168.90.200/24
+        - ip_address: 192.168.90.200/32
       security_groups:
         - {get_resource: security_group_external}
 

@@ -1,0 +1,92 @@
+---
+- hosts: manager
+  gather_facts: false
+
+  tasks:
+
+    # NOTE: the wirguard repository is only required on Bionic
+    - name: Add wireguard repository
+      apt_repository:
+        repo: ppa:wireguard/wireguard
+      become: true
+      when: "ansible_distribution_release == 'bionic'"
+
+    # NOTE: required by wireguard-dkms
+    - name: Install kernel headers
+      package:
+        name: linux-headers-generic
+        state: present
+      become: true
+      when: "ansible_distribution_release == 'bionic'"
+
+    - name: Install wireguard package
+      package:
+        name: wireguard
+        state: present
+      become: true
+
+    - name: Build wireguard kernel module
+      command: dpkg-reconfigure wireguard-dkms
+      become: true
+
+    - name: Create public and private key
+      shell: umask 077; wg genkey | tee /etc/wireguard/osism.key | wg pubkey > /etc/wireguard/osism.pub
+      args:
+        creates: /etc/wireguard/osism.key
+      become: true
+
+    - name: Create preshared key
+      shell: umask 077; wg genpsk > /etc/wireguard/osism.psk
+      args:
+        creates: /etc/wireguard/osism.psk
+      become: true
+
+    - name: Get preshared key
+      slurp:
+        src: /etc/wireguard/osism.psk
+      register: preshared_key
+      become: true
+
+    - name: Get public key
+      slurp:
+        src: /etc/wireguard/osism.pub
+      register: public_key
+      become: true
+
+    - name: Get private key
+      slurp:
+        src: /etc/wireguard/osism.key
+      register: private_key
+      become: true
+
+    - name: Copy wg0.conf configuration file
+      template:
+        src: wireguard/wg0.conf.j2
+        dest: /etc/wireguard/wg0.conf
+        owner: root
+        group: root
+        mode: 0600
+      become: true
+      notify: Restart wg0 service
+
+    - name: Start/enable wg-quick@wg0.service service
+      systemd:
+        name: wg-quick@wg0.service
+        state: started
+        enabled: yes
+      become: true
+
+  handlers:
+    - name: Restart wg0 service
+      systemd:
+        name: wg-quick@wg0.service
+        state: restarted
+      become: true
+
+- hosts: all:!manager
+  gather_facts: false
+
+  tasks:
+    - name: Add route to 192.168.60.0/24
+      command: ip route replace 192.168.60.0/24 via 192.168.50.5
+      become: true

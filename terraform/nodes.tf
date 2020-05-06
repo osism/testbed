@@ -20,7 +20,7 @@ resource "openstack_networking_port_v2" "node_port_internal" {
   }
 
   allowed_address_pairs {
-    ip_address = "192.168.50.200"
+    ip_address = "192.168.50.200/32"
   }
 }
 
@@ -35,7 +35,7 @@ resource "openstack_networking_port_v2" "node_port_external" {
   }
 
   allowed_address_pairs {
-    ip_address = "192.168.90.200"
+    ip_address = "192.168.90.200/32"
   }
 }
 
