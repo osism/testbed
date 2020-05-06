@@ -19,7 +19,7 @@ cluster_network: 192.168.80.0/24
 ##########################
 # pools & keys
 
-# NOTE: default size of 2 because by default there are only 2 volumes per node
+# NOTE: default size of 2 because by default there are only 2 nodes
 rgw_pool_default_size: 2
 rgw_pool_default_pg_num: 8
 
@@ -46,7 +46,7 @@ rgw_create_pools:
     size: "{{ rgw_pool_default_size }}"
     type: replicated
 
-# NOTE: default size of 2 because by default there are only 2 volumes per node
+# NOTE: default size of 2 because by default there are only 2 nodes
 cephfs_pool_default_size: 2
 cephfs_pool_default_min_size: 0
 cephfs_pool_default_pg_num: 16
@@ -83,7 +83,7 @@ cephfs_pools:
 #       set to false. It must only be set to true again when new pools or keys are added.
 openstack_config: true
 
-# NOTE: default size of 2 because by default there are only 2 volumes per node
+# NOTE: default size of 2 because by default there are only 2 nodes
 openstack_pool_default_size: 2
 openstack_pool_default_min_size: 0
 openstack_pool_default_pg_num: 64
@@ -205,12 +205,13 @@ radosgw_frontend_port: 8081
 # custom
 
 ceph_conf_overrides:
+  global:
+    # NOTE: default size of 2 because by default there are only 2 nodes
+    osd pool default size: 2
+    osd pool default min size: 0
+
   mon:
     mon allow pool delete: true
-
-  osd:
-    # NOTE: default size of 2 because by default there are only 2 volumes per node
-    osd pool default size: 2
 
   "client.rgw.{{ hostvars[inventory_hostname]['ansible_hostname'] }}.rgw0":
     "rgw content length compat": "true"
