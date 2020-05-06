@@ -119,6 +119,52 @@ phpMyAdmin       http://192.168.40.5:8110   root     qNpdZmkKuUKBK3D5nZ08KMZ5MnY
 Skydive          http://192.168.50.5:8085   -        -
 ================ ========================== ======== ========================================
 
+Ceph
+----
+
+Deploy `Ceph` first.
+
+.. code-block:: console
+
+   osism-run custom bootstraph-ceph-dashboard
+
+.. figure:: /images/ceph-dashboard.png
+
+Cockpit
+-------
+
+.. code-block:: console
+
+   osism-generic cockpit
+   osism-run custom generate-ssh-known-hosts
+
+.. figure:: /images/cockpit.png
+
+Netdata
+-------
+
+.. code-block:: console
+
+   osism-infrastructure netdata
+
+.. figure:: /images/netdata.png
+
+Skydive
+-------
+
+Deploy `Clustered infrastructure services`, `Infrastructure services`, and `Basic OpenStack services` first.
+
+.. code-block:: console
+
+   osism-kolla deploy skydive
+
+The Skydive agent creates a high load on the Open vSwitch services. Therefore the agent is only
+started manually when needed.
+
+.. code-block:: console
+
+   osism-generic manage-container -e container_action=stop -e container_name=skydive_agent -l skydive-agent
+
 Tools
 =====
 
@@ -229,33 +275,3 @@ This section describes how individual parts of the testbed can be deployed.
   .. code-block:: console
 
      osism-kolla deploy heat,gnocchi,ceilometer,aodh,panko,magnum,barbican,designate
-
-* Network analyzer (also deploy `Clustered infrastructure services`, `Infrastructure services`, and `Basic OpenStack services`)
-
-  .. code-block:: console
-
-     osism-kolla deploy skydive
-
-  The Skydive agent creates a high load on the Open vSwitch services. Therefore the agent is only
-  started manually when needed.
-
-  .. code-block:: console
-
-     osism-generic manage-container -e container_action=stop -e container_name=skydive_agent -l skydive-agent
-
-* Realtime monitoring
-
-  .. code-block:: console
-
-     osism-infrastructure netdata
-
-  .. figure:: /images/netdata.png
-
-* Cockpit
-
-  .. code-block:: console
-
-     osism-generic cockpit
-     osism-run custom generate-ssh-known-hosts
-
-  .. figure:: /images/cockpit.png
