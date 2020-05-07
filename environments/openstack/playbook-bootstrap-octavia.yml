@@ -1,5 +1,5 @@
 ---
-- name: Bootstrap octavia project
+- name: Bootstrap octavia
   hosts: localhost
   connection: local
 
