@@ -8,7 +8,6 @@ ansible_host: 192.168.40.11
 # docker
 
 docker_configure_proxy: yes
-docker_disable_default_network: yes
 docker_proxy_http: "http://192.168.50.5:8000"
 
 ##########################################################
