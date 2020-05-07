@@ -205,10 +205,6 @@ write_files:
               sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy testbed --tags openstack'
               sudo -iu dragon sh -c 'INTERACTIVE=false osism-run openstack bootstrap-basic'
 
-              if [[ "${var.deploy_ceph}" == "true" ]]; then
-                  sudo -iu dragon sh -c 'INTERACTIVE=false osism-run openstack bootstrap-ceph-rgw'
-              fi
-
               if [[ "${var.run_refstack}" == "true" ]]; then
                   sudo -iu dragon sh -c 'INTERACTIVE=false osism-run openstack bootstrap-refstack'
                   sudo -iu dragon sh -c '/opt/configuration/contrib/refstack/refstack.sh'

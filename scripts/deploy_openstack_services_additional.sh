@@ -2,8 +2,6 @@
 
 export INTERACTIVE=false
 
-# deploy additional OpenStack services
-
 osism-kolla deploy heat
 osism-kolla deploy gnocchi
 osism-kolla deploy ceilometer
