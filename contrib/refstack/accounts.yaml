@@ -1,7 +1,7 @@
 ---
 - username: refstack-0
   user_domain_name: default
-  tenant_name: test
+  tenant_name: refstack-0
   project_domain_name: default
   password: password
   roles:
@@ -9,7 +9,7 @@
 
 - username: refstack-1
   user_domain_name: default
-  tenant_name: test
+  tenant_name: refstack-1
   project_domain_name: default
   password: password
   roles:
@@ -17,7 +17,7 @@
 
 - username: refstack-2
   user_domain_name: default
-  tenant_name: test
+  tenant_name: refstack-2
   project_domain_name: default
   password: password
   roles:

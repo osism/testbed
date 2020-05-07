@@ -178,13 +178,13 @@ Refstack
    ======
    Totals
    ======
-   Ran: 285 tests in 1306.4010 sec.
-    - Passed: 283
+   Ran: 286 tests in 1197.9323 sec.
+    - Passed: 284
     - Skipped: 2
     - Expected Fail: 0
     - Unexpected Success: 0
     - Failed: 0
-Sum of execute time for each test: 1027.4324 sec.
+   Sum of execute time for each test: 932.9678 sec.
 
 Check infrastructure services
 -----------------------------

@@ -20,8 +20,7 @@ TARGET=${2:-platform}
 
 curl -s "https://refstack.openstack.org/api/v1/guidelines/$GUIDELINE/tests?target=$TARGET&type=required,advisory&alias=true&flag=true" | \
     grep -v tempest.api.object_storage.test_account_quotas_negative.AccountQuotasNegativeTest.test_user_modify_quota | \
-    grep -v tempest.api.object_storage.test_account_quotas.AccountQuotasTest.test_upload_valid_object | \
-    grep -v tempest.api.identity.v3.test_projects.IdentityV3ProjectsTest.test_list_projects_returns_only_authorized_projects \
+    grep -v tempest.api.object_storage.test_account_quotas.AccountQuotasTest.test_upload_valid_object \
     > /opt/refstack/test-list.txt
 
 source /opt/refstack/client/.venv/bin/activate
