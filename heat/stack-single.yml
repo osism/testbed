@@ -213,10 +213,6 @@ resources:
                           sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy testbed --tags openstack'
                           sudo -iu dragon sh -c 'INTERACTIVE=false osism-run openstack bootstrap-basic'
 
-                          if [[ "deploy_ceph" == "True" ]]; then
-                              sudo -iu dragon sh -c 'INTERACTIVE=false osism-run openstack bootstrap-ceph-rgw'
-                          fi
-
                           if [[ "run_refstack" == "True" ]]; then
                               sudo -iu dragon sh -c 'INTERACTIVE=false osism-run openstack bootstrap-refstack'
                               sudo -iu dragon sh -c '/opt/configuration/contrib/refstack/refstack.sh'
