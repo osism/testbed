@@ -3,7 +3,21 @@
   hosts: localhost
   connection: local
 
+  vars:
+    refstack_users:
+      - refstack-0
+      - refstack-1
+      - refstack-2
+
   tasks:
+    - name: Create refstack projects
+      os_project:
+        cloud: admin
+        state: present
+        name: "{{ item }}"
+        domain_id: default
+      loop: "{{ refstack_users }}"
+
     - name: Create refstack users
       os_user:
         cloud: admin
@@ -11,11 +25,8 @@
         name: "{{ item }}"
         password: password
         domain: default
-        default_project: test
-      loop:
-        - refstack-0
-        - refstack-1
-        - refstack-2
+        default_project: "{{ item }}"
+      loop: "{{ refstack_users }}"
       no_log: true
 
     - name: Add admin role to required users
@@ -35,8 +46,40 @@
         state: present
         user: "{{ item.0 }}"
         role: "{{ item.1 }}"
-        project: test
-      loop: "{{ ['refstack-0', 'refstack-1', 'refstack-2']|zip(['member', '_member_'])|list }}"
+        project: "{{ item.0 }}"
+      # loop: "{{ refstack_users|lookup('cartesian', ['member', '_member_']) }}"
+      with_cartesian:
+        - "{{ refstack_users }}"
+        - ['member', '_member_']
+
+    - name: Create test networks
+      os_network:
+        cloud: admin
+        project: "{{ item }}"
+        state: present
+        name: test
+      loop: "{{ refstack_users }}"
+
+    - name: Create test subnets
+      os_subnet:
+        cloud: admin
+        project: "{{ item }}"
+        state: present
+        name: subnet-test
+        network_name: test
+        cidr: 192.168.200.0/24
+      loop: "{{ refstack_users }}"
+
+    - name: Create test router
+      os_router:
+        cloud: admin
+        project: "{{ item }}"
+        state: present
+        name: router-test
+        network: public
+        interfaces:
+          - subnet-test
+      loop: "{{ refstack_users }}"
 
     - name: Create tiny flavors
       os_nova_flavor:
