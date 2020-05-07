@@ -58,6 +58,7 @@ enable_designate: "yes"
 enable_gnocchi: "yes"
 enable_heat: "yes"
 enable_magnum: "yes"
+enable_manila: "yes"
 enable_octavia: "yes"
 enable_panko: "yes"
 enable_watcher: "no"
@@ -128,6 +129,9 @@ designate_ns_record: openstack.osism.local
 
 # magnum
 enable_cluster_user_trust: "yes"
+
+# manila
+enable_manila_backend_generic: "yes"
 
 ##########################################################
 # external ceph

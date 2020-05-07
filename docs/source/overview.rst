@@ -69,6 +69,7 @@ OpenStack
 * Horizon
 * Keystone
 * Magnum
+* Manila
 * Neutron
 * Nova
 * Octavia
