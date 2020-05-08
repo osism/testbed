@@ -1,7 +1,6 @@
 ---
 - name: Bootstrap refstack
   hosts: localhost
-  connection: local
 
   vars:
     refstack_users:

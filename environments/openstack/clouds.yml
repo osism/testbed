@@ -24,3 +24,27 @@ clouds:
       project_domain_name: default
       user_domain_name: default
     identity_api_version: 3
+  refstack-0:
+    auth:
+      username: refstack-0
+      project_name: refstack-0
+      auth_url: http://api.osism.local:5000/v3
+      project_domain_name: default
+      user_domain_name: default
+    identity_api_version: 3
+  refstack-1:
+    auth:
+      username: refstack-1
+      project_name: refstack-1
+      auth_url: http://api.osism.local:5000/v3
+      project_domain_name: default
+      user_domain_name: default
+    identity_api_version: 3
+  refstack-2:
+    auth:
+      username: refstack-2
+      project_name: refstack-2
+      auth_url: http://api.osism.local:5000/v3
+      project_domain_name: default
+      user_domain_name: default
+    identity_api_version: 3
