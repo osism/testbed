@@ -22,3 +22,7 @@ The testbed requires the following resources When using the default flavors.
 
    When deploying all additional OpenStack services, the use of nodes with at least
    32 GByte memory is recommended. Then 100 GByte memory are required.
+
+.. note::
+
+   When using Heat, the ``heat_stack_owner`` role is required accordingly.
