@@ -233,7 +233,7 @@ resources:
         final_message: "The system is finally up, after $UPTIME seconds"
         power_state:
           mode: reboot
-          condition: True
+          condition: true
 
   #################
   # Security groups

@@ -257,7 +257,7 @@ resources:
         final_message: "The system is finally up, after $UPTIME seconds"
         power_state:
           mode: reboot
-          condition: True
+          condition: true
 {% if number_of_nodes|default(3)|int > 0 %}
   node_boot_config:
     type: OS::Heat::CloudConfig
