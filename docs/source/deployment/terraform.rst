@@ -14,7 +14,7 @@ Supported cloud providers
 
 There is a separate environment file, e.g. ``environment-Betacloud.tfvars``, for each supported cloud provider.
 
-* [Betacloud](https://www.betacloud.de)
+* `Betacloud <https://www.betacloud.de>`_
 
 Preparations
 ============
