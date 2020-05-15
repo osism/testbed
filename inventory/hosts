@@ -276,6 +276,9 @@ control
 [prometheus:children]
 monitoring
 
+[zun:children]
+control
+
 # glance
 
 [glance-api:children]
@@ -648,3 +651,14 @@ elasticsearch
 
 [prometheus-blackbox-exporter:children]
 monitoring
+
+# zun
+
+[zun-api:children]
+zun
+
+[zun-wsproxy:children]
+zun
+
+[zun-compute:children]
+compute
