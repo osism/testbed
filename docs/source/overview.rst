@@ -68,6 +68,7 @@ OpenStack
 * Heat
 * Horizon
 * Keystone
+* Kuryr
 * Magnum
 * Manila
 * Neutron
