@@ -55,13 +55,19 @@ Deploy services
 
      /opt/configuration/scripts/deploy_ceph_services.sh
 
-* Basic OpenStack services
+* Basic OpenStack services (Compute, Storage, ..)
 
   .. code-block:: console
 
      /opt/configuration/scripts/deploy_openstack_services_basic.sh
 
-* Additional OpenStack services
+* Extented OpenStack services (Telemetry, Loadbalancer, Kubernetes, ..)
+
+  .. code-block:: console
+
+     /opt/configuration/scripts/deploy_openstack_services_extented.sh
+
+* Additional OpenStack services (Rating, Container, ..)
 
   .. code-block:: console
 

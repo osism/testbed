@@ -194,9 +194,10 @@ Without the deployment of Ceph the deployment of OpenStack is not possible.
 
 This can also be achieved using ``make deploy-ceph``.
 
-The deployment of OpenStack can be enabled via parameter ``deploy_openstack``.
+The deployment of basic OpenStack services can be enabled via parameter ``deploy_openstack``.
 
-The deployment of OpenStack depends on the deployment of Ceph and the infrastructure services.
+The deployment of basic OpenStack services depends on the deployment of Ceph and the
+infrastructure services.
 
 .. code-block:: console
 
