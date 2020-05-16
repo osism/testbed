@@ -202,15 +202,12 @@ write_files:
           if [[ "${var.deploy_infrastructure}" != "true" ]]; then
               echo "infrastructure services are necessary for the deployment of OpenStack"
           else
-              sudo -iu dragon sh -c 'INTERACTIVE=false osism-kolla deploy testbed --tags openstack'
-              sudo -iu dragon sh -c 'INTERACTIVE=false osism-run openstack bootstrap-basic'
+              sudo -iu dragon sh -c '/opt/configuration/scripts/deploy_openstack_services_basic.sh'
 
               if [[ "${var.run_refstack}" == "true" ]]; then
                   sudo -iu dragon sh -c 'INTERACTIVE=false osism-run openstack bootstrap-refstack'
                   sudo -iu dragon sh -c '/opt/configuration/contrib/refstack/refstack.sh'
               fi
-
-              sudo -iu dragon sh -c '/opt/configuration/scripts/deploy_openstack_services_additional.sh'
           fi
       fi
     path: /root/run.sh
