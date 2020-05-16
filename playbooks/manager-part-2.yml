@@ -5,10 +5,11 @@
   gather_facts: true
 
   vars:
-    docker_user: dragon
     docker_configure_repository: no
     docker_configure_storage_driver: yes
     docker_storage_driver: overlay2
+    docker_user: dragon
+    docker_version: "5:19.03.5"
 
   roles:
     - ansible-docker
