@@ -178,6 +178,10 @@ write_files:
       curl https://raw.githubusercontent.com/osism/testbed/${var.configuration_version}/playbooks/node.yml > /root/node.yml
       ansible-playbook -i localhost, /root/node.yml
 
+      curl https://raw.githubusercontent.com/osism/testbed/${var.configuration_version}/playbooks/cleanup.yml > /root/cleanup.yml
+      ansible-playbook -i localhost, /root/cleanup.yml
+      update-alternatives --install /usr/bin/python python /usr/bin/python3 1
+
       rm /home/ubuntu/.ssh/id_rsa*
     path: /root/run.sh
     permissions: 0700
