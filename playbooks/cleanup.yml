@@ -1,0 +1,16 @@
+---
+- name: Cleanup after bootstrap
+  hosts: localhost
+  connection: local
+  gather_facts: true
+
+  tasks:
+
+    # NOTE: This must be the last task. It will uninstall Ansible.
+    - name: Purge python2 environment
+      apt:
+        name: python-minimal
+        state: absent
+        autoremove: true
+        purge: true
+      become: true

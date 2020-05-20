@@ -161,6 +161,10 @@ write_files:
           sleep 1;
       done;
 
+      curl https://raw.githubusercontent.com/osism/testbed/${var.configuration_version}/playbooks/cleanup.yml > /root/cleanup.yml
+      ansible-playbook -i localhost, /root/cleanup.yml
+      update-alternatives --install /usr/bin/python python /usr/bin/python3 1
+
       # NOTE(berendt): sudo -E does not work here because sudo -i is needed
 
       sudo -iu dragon sh -c 'INTERACTIVE=false osism-run custom cronjobs'
