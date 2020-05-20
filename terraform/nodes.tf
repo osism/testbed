@@ -1,7 +1,7 @@
 resource "openstack_networking_port_v2" "node_port_management" {
   count              = var.number_of_nodes
   network_id         = openstack_networking_network_v2.net_management.id
-  security_group_ids = [ openstack_compute_secgroup_v2.security_group_management.id ]
+  security_group_ids = [openstack_compute_secgroup_v2.security_group_management.id]
 
   fixed_ip {
     ip_address = "192.168.40.1${count.index}"
@@ -12,7 +12,7 @@ resource "openstack_networking_port_v2" "node_port_management" {
 resource "openstack_networking_port_v2" "node_port_internal" {
   count              = var.number_of_nodes
   network_id         = openstack_networking_network_v2.net_internal.id
-  security_group_ids = [ openstack_compute_secgroup_v2.security_group_internal.id ]
+  security_group_ids = [openstack_compute_secgroup_v2.security_group_internal.id]
 
   fixed_ip {
     ip_address = "192.168.50.1${count.index}"
@@ -27,7 +27,7 @@ resource "openstack_networking_port_v2" "node_port_internal" {
 resource "openstack_networking_port_v2" "node_port_external" {
   count              = var.number_of_nodes
   network_id         = openstack_networking_network_v2.net_external.id
-  security_group_ids = [ openstack_compute_secgroup_v2.security_group_external.id ]
+  security_group_ids = [openstack_compute_secgroup_v2.security_group_external.id]
 
   fixed_ip {
     ip_address = "192.168.90.1${count.index}"
@@ -53,7 +53,7 @@ resource "openstack_networking_port_v2" "node_port_provider" {
 resource "openstack_networking_port_v2" "node_port_storage_frontend" {
   count              = var.number_of_nodes
   network_id         = openstack_networking_network_v2.net_storage_frontend.id
-  security_group_ids = [ openstack_compute_secgroup_v2.security_group_storage_frontend.id ]
+  security_group_ids = [openstack_compute_secgroup_v2.security_group_storage_frontend.id]
 
   fixed_ip {
     ip_address = "192.168.70.1${count.index}"
@@ -64,7 +64,7 @@ resource "openstack_networking_port_v2" "node_port_storage_frontend" {
 resource "openstack_networking_port_v2" "node_port_storage_backend" {
   count              = var.number_of_nodes
   network_id         = openstack_networking_network_v2.net_storage_backend.id
-  security_group_ids = [ openstack_compute_secgroup_v2.security_group_storage_backend.id ]
+  security_group_ids = [openstack_compute_secgroup_v2.security_group_storage_backend.id]
 
   fixed_ip {
     ip_address = "192.168.80.1${count.index}"
