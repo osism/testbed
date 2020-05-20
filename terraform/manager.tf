@@ -1,11 +1,11 @@
 resource "openstack_networking_floatingip_v2" "manager_floating_ip" {
   pool       = var.public
   port_id    = openstack_networking_port_v2.manager_port_management.id
-  depends_on = [ openstack_networking_router_interface_v2.router_interface ]
+  depends_on = [openstack_networking_router_interface_v2.router_interface]
 }
 
 resource "openstack_networking_port_v2" "manager_port_management" {
-  network_id         = openstack_networking_network_v2.net_management.id
+  network_id = openstack_networking_network_v2.net_management.id
   security_group_ids = [
     openstack_compute_secgroup_v2.security_group_management.id,
     openstack_compute_secgroup_v2.security_group_manager.id
@@ -19,7 +19,7 @@ resource "openstack_networking_port_v2" "manager_port_management" {
 
 resource "openstack_networking_port_v2" "manager_port_internal" {
   network_id         = openstack_networking_network_v2.net_internal.id
-  security_group_ids = [ openstack_compute_secgroup_v2.security_group_internal.id ]
+  security_group_ids = [openstack_compute_secgroup_v2.security_group_internal.id]
 
   fixed_ip {
     ip_address = "192.168.50.5"
@@ -33,7 +33,7 @@ resource "openstack_networking_port_v2" "manager_port_internal" {
 
 resource "openstack_networking_port_v2" "manager_port_external" {
   network_id         = openstack_networking_network_v2.net_external.id
-  security_group_ids = [ openstack_compute_secgroup_v2.security_group_external.id ]
+  security_group_ids = [openstack_compute_secgroup_v2.security_group_external.id]
 
   fixed_ip {
     ip_address = "192.168.90.5"
@@ -57,7 +57,7 @@ resource "openstack_networking_port_v2" "manager_port_provider" {
 
 resource "openstack_networking_port_v2" "manager_port_storage_frontend" {
   network_id         = openstack_networking_network_v2.net_storage_frontend.id
-  security_group_ids = [ openstack_compute_secgroup_v2.security_group_storage_frontend.id ]
+  security_group_ids = [openstack_compute_secgroup_v2.security_group_storage_frontend.id]
 
   fixed_ip {
     ip_address = "192.168.70.5"

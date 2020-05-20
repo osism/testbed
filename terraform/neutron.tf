@@ -3,7 +3,7 @@
 ###################
 
 resource "openstack_compute_secgroup_v2" "security_group_manager" {
-  name = "testbed-manager"
+  name        = "testbed-manager"
   description = "manager security group"
 
   rule {
@@ -15,7 +15,7 @@ resource "openstack_compute_secgroup_v2" "security_group_manager" {
 }
 
 resource "openstack_compute_secgroup_v2" "security_group_management" {
-  name = "testbed-management"
+  name        = "testbed-management"
   description = "management security group"
 
   rule {
@@ -34,7 +34,7 @@ resource "openstack_compute_secgroup_v2" "security_group_management" {
 }
 
 resource "openstack_compute_secgroup_v2" "security_group_internal" {
-  name = "testbed-internal"
+  name        = "testbed-internal"
   description = "internal security group"
 
   rule {
@@ -68,7 +68,7 @@ resource "openstack_networking_secgroup_rule_v2" "security_group_internal_vrrp" 
 }
 
 resource "openstack_compute_secgroup_v2" "security_group_storage_frontend" {
-  name = "testbed-storage-frontend"
+  name        = "testbed-storage-frontend"
   description = "storage frontend security group"
 
   rule {
@@ -94,7 +94,7 @@ resource "openstack_compute_secgroup_v2" "security_group_storage_frontend" {
 }
 
 resource "openstack_compute_secgroup_v2" "security_group_storage_backend" {
-  name = "testbed-storage-backend"
+  name        = "testbed-storage-backend"
   description = "storage backend security group"
 
   rule {
@@ -120,7 +120,7 @@ resource "openstack_compute_secgroup_v2" "security_group_storage_backend" {
 }
 
 resource "openstack_compute_secgroup_v2" "security_group_external" {
-  name = "testbed-external"
+  name        = "testbed-external"
   description = "external security group"
 
   rule {
@@ -151,13 +151,13 @@ resource "openstack_compute_secgroup_v2" "security_group_external" {
 
 resource "openstack_networking_network_v2" "net_management" {
   name                    = "testbed-management"
-  availability_zone_hints = [ var.network_availability_zone ]
+  availability_zone_hints = [var.network_availability_zone]
 }
 
 resource "openstack_networking_subnet_v2" "subnet_management" {
-  network_id      = openstack_networking_network_v2.net_management.id
-  cidr            = "192.168.40.0/24"
-  ip_version      = 4
+  network_id = openstack_networking_network_v2.net_management.id
+  cidr       = "192.168.40.0/24"
+  ip_version = 4
 
   allocation_pool {
     start = "192.168.40.100"
@@ -167,15 +167,15 @@ resource "openstack_networking_subnet_v2" "subnet_management" {
 
 resource "openstack_networking_network_v2" "net_internal" {
   name                    = "testbed-internal"
-  availability_zone_hints = [ var.network_availability_zone ]
+  availability_zone_hints = [var.network_availability_zone]
 }
 
 resource "openstack_networking_subnet_v2" "subnet_internal" {
-  network_id      = openstack_networking_network_v2.net_internal.id
-  cidr            = "192.168.50.0/24"
-  ip_version      = 4
-  gateway_ip      = null
-  enable_dhcp     = false
+  network_id  = openstack_networking_network_v2.net_internal.id
+  cidr        = "192.168.50.0/24"
+  ip_version  = 4
+  gateway_ip  = null
+  enable_dhcp = false
 
   allocation_pool {
     start = "192.168.50.100"
@@ -185,15 +185,15 @@ resource "openstack_networking_subnet_v2" "subnet_internal" {
 
 resource "openstack_networking_network_v2" "net_provider" {
   name                    = "testbed-provider"
-  availability_zone_hints = [ var.network_availability_zone ]
+  availability_zone_hints = [var.network_availability_zone]
 }
 
 resource "openstack_networking_subnet_v2" "subnet_provider" {
-  network_id      = openstack_networking_network_v2.net_provider.id
-  cidr            = "192.168.100.0/24"
-  ip_version      = 4
-  gateway_ip      = null
-  enable_dhcp     = false
+  network_id  = openstack_networking_network_v2.net_provider.id
+  cidr        = "192.168.100.0/24"
+  ip_version  = 4
+  gateway_ip  = null
+  enable_dhcp = false
 
   allocation_pool {
     start = "192.168.100.100"
@@ -203,15 +203,15 @@ resource "openstack_networking_subnet_v2" "subnet_provider" {
 
 resource "openstack_networking_network_v2" "net_external" {
   name                    = "testbed-external"
-  availability_zone_hints = [ var.network_availability_zone ]
+  availability_zone_hints = [var.network_availability_zone]
 }
 
 resource "openstack_networking_subnet_v2" "subnet_external" {
-  network_id      = openstack_networking_network_v2.net_external.id
-  cidr            = "192.168.90.0/24"
-  ip_version      = 4
-  gateway_ip      = null
-  enable_dhcp     = false
+  network_id  = openstack_networking_network_v2.net_external.id
+  cidr        = "192.168.90.0/24"
+  ip_version  = 4
+  gateway_ip  = null
+  enable_dhcp = false
 
   allocation_pool {
     start = "192.168.90.100"
@@ -239,15 +239,15 @@ resource "openstack_networking_port_v2" "vip_port_internal" {
 
 resource "openstack_networking_network_v2" "net_storage_frontend" {
   name                    = "testbed-storage-frontend"
-  availability_zone_hints = [ var.network_availability_zone ]
+  availability_zone_hints = [var.network_availability_zone]
 }
 
 resource "openstack_networking_subnet_v2" "subnet_storage_frontend" {
-  network_id      = openstack_networking_network_v2.net_storage_frontend.id
-  cidr            = "192.168.70.0/24"
-  ip_version      = 4
-  gateway_ip      = null
-  enable_dhcp     = false
+  network_id  = openstack_networking_network_v2.net_storage_frontend.id
+  cidr        = "192.168.70.0/24"
+  ip_version  = 4
+  gateway_ip  = null
+  enable_dhcp = false
 
   allocation_pool {
     start = "192.168.70.100"
@@ -257,15 +257,15 @@ resource "openstack_networking_subnet_v2" "subnet_storage_frontend" {
 
 resource "openstack_networking_network_v2" "net_storage_backend" {
   name                    = "testbed-storage-backend"
-  availability_zone_hints = [ var.network_availability_zone ]
+  availability_zone_hints = [var.network_availability_zone]
 }
 
 resource "openstack_networking_subnet_v2" "subnet_storage_backend" {
-  network_id      = openstack_networking_network_v2.net_storage_backend.id
-  cidr            = "192.168.80.0/24"
-  ip_version      = 4
-  gateway_ip      = null
-  enable_dhcp     = false
+  network_id  = openstack_networking_network_v2.net_storage_backend.id
+  cidr        = "192.168.80.0/24"
+  ip_version  = 4
+  gateway_ip  = null
+  enable_dhcp = false
 
   allocation_pool {
     start = "192.168.80.100"
@@ -279,7 +279,7 @@ data "openstack_networking_network_v2" "public" {
 
 resource "openstack_networking_router_v2" "router" {
   external_network_id     = data.openstack_networking_network_v2.public.id
-  availability_zone_hints = [ var.network_availability_zone ]
+  availability_zone_hints = [var.network_availability_zone]
 }
 
 resource "openstack_networking_router_interface_v2" "router_interface" {
