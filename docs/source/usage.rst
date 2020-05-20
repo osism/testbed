@@ -25,7 +25,7 @@ Wireguard
      [Peer]
      PublicKey = MANAGER_CONTENTS_OF_/etc/wireguard/osism.pub
      PresharedKey = MANAGER_CONTENTS_OF_/etc/wireguard/osism.psk
-     AllowedIPs = 192.168.60.5/32, 192.168.50.0/24, 192.168.90.0/24, 192.168.100.0/24
+     AllowedIPs = 192.168.40.0/24, 192.168.50.0/24, 192.168.60.0/24, 192.168.90.0/24, 192.168.100.0/24
      Endpoint = MANAGER_PUBLIC_IP_ADDRESS:51820
 
 Change versions
