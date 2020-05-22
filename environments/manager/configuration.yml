@@ -14,4 +14,9 @@ osism_manager_version: latest
 
 configure_cockpit: yes
 cockpit_host: "{{ hostvars[inventory_hostname]['ansible_' + console_interface]['ipv4']['address'] }}"
+
+ara_enable: yes
 ara_server_host: "{{ hostvars[inventory_hostname]['ansible_' + console_interface]['ipv4']['address'] }}"
+
+awx_enable: yes
+awx_host: "{{ hostvars[inventory_hostname]['ansible_' + console_interface]['ipv4']['address'] }}"
