@@ -122,6 +122,7 @@ Webinterfaces
 Name             URL                        Username Password
 ================ ========================== ======== ========================================
 ARA              http://192.168.40.5:8120   ara      S6JE2yJUwvraiX57
+AWX              http://192.168.40.5:8052   dragon   vaeh7eingix8ooPi
 Ceph             http://192.168.50.200:7000 admin    phoon7Chahvae6we
 Cockpit          https://192.168.40.5:8130  dragon   da5pahthaew2Pai2
 Horizon          http://192.168.50.200      admin    pYV8bV749aDMXLPlYJwoJs4ouRPWezCIOXYAQP6v

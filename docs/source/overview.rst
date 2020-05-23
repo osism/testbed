@@ -37,6 +37,7 @@ to use further services.
 Infrastructure
 --------------
 
+* AWX
 * Ceph
 * Cockpit
 * Elasticsearch
