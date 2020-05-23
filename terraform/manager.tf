@@ -214,6 +214,11 @@ write_files:
               fi
           fi
       fi
+
+      # deploy monitoring services
+      if [[ "${var.deploy_monitoring}" == "true" ]]; then
+          sudo -iu dragon sh -c '/opt/configuration/scripts/deploy_monitoring_services.sh'
+      fi
     path: /root/run.sh
     permissions: 0700
 runcmd:
