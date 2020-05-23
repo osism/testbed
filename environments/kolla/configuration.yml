@@ -66,6 +66,7 @@ enable_watcher: "no"
 
 enable_etcd: "yes"
 enable_grafana: "yes"
+enable_prometheus: "yes"
 enable_redis: "yes"
 enable_skydive: "yes"
 

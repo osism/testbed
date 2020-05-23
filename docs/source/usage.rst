@@ -73,6 +73,12 @@ Deploy services
 
      /opt/configuration/scripts/deploy_openstack_services_additional.sh
 
+* Monitoring services (Netdata, Prometheus, ..)
+
+  .. code-block:: console
+
+     /opt/configuration/scripts/deploy_monitoring_services.sh
+
 Purge services
 ==============
 
@@ -170,6 +176,15 @@ started manually when needed.
 .. code-block:: console
 
    osism-generic manage-container -e container_action=stop -e container_name=skydive_agent -l skydive-agent
+
+Prometheus
+----------
+
+Deploy `Clustered infrastructure services`, `Infrastructure services`, and `Basic OpenStack services` first.
+
+.. code-block:: console
+
+   osism-kolla deploy prometheus
 
 Tools
 =====

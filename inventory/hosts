@@ -273,6 +273,9 @@ control
 [etcd:children]
 control
 
+[prometheus:children]
+monitoring
+
 # glance
 
 [glance-api:children]
@@ -608,3 +611,40 @@ ovn-database
 
 [ovn-sb-db:children]
 ovn-database
+
+# prometheus
+
+[prometheus-node-exporter:children]
+monitoring
+control
+compute
+network
+storage
+
+[prometheus-mysqld-exporter:children]
+mariadb
+
+[prometheus-haproxy-exporter:children]
+haproxy
+
+[prometheus-memcached-exporter:children]
+memcached
+
+[prometheus-cadvisor:children]
+monitoring
+control
+compute
+network
+storage
+
+[prometheus-alertmanager:children]
+monitoring
+
+[prometheus-openstack-exporter:children]
+monitoring
+
+[prometheus-elasticsearch-exporter:children]
+elasticsearch
+
+[prometheus-blackbox-exporter:children]
+monitoring

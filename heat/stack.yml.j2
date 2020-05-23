@@ -57,6 +57,10 @@ parameters:
     type: boolean
     default: false
 
+  deploy_monitoring:
+    type: boolean
+    default: false
+
   run_refstack:
     type: boolean
     default: false
@@ -244,6 +248,11 @@ resources:
                               sudo -iu dragon sh -c '/opt/configuration/contrib/refstack/refstack.sh'
                           fi
                       fi
+                  fi
+
+                  # deploy monitoring services
+                  if [[ "deploy_monitoring" == "True" ]]; then
+                      sudo -iu dragon sh -c '/opt/configuration/scripts/deploy_monitoring_services.sh'
                   fi
 
                   wc_notify --data-binary '{"status": "SUCCESS"}'

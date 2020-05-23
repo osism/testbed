@@ -53,6 +53,11 @@ variable "deploy_ceph" {
   type    = bool
 }
 
+variable "deploy_monitoring" {
+  default = false
+  type    = bool
+}
+
 variable "run_refstack" {
   default = false
   type    = bool
