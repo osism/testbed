@@ -7,6 +7,9 @@ ara_server_image: "{{ docker_registry|default('index.docker.io') }}/osism/ara-se
 ara_web_tag: "{{ osism_manager_version|default('latest') }}"
 ara_web_image: "{{ docker_registry|default('index.docker.io') }}/osism/ara-web:{{ ara_web_tag }}"
 
+awx_tag: "{{ ceph_version|default('nautilus') }}-{{ openstack_version|default('train') }}"
+awx_image: "{{ docker_registry|default('quay.io') }}/osism/manager:{{ awx_tag }}"
+
 ceph_ansible_tag: "{{ ceph_version|default('nautilus') }}"
 ceph_ansible_image: "{{ docker_registry|default('quay.io') }}/osism/ceph-ansible:{{ ceph_ansible_tag }}"
 
