@@ -63,6 +63,7 @@ enable_manila: "yes"
 enable_octavia: "yes"
 enable_panko: "yes"
 enable_watcher: "no"
+enable_zun: "yes"
 
 enable_etcd: "yes"
 enable_grafana: "yes"
