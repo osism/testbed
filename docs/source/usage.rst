@@ -8,7 +8,7 @@ Usage
 Wireguard
 =========
 
-* deployment
+* deployment (Wireguard is rolled out by default)
 
   .. code-block:: console
 
