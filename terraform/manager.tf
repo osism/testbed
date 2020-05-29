@@ -139,6 +139,7 @@ write_files:
 
       sudo -iu dragon ansible-galaxy install git+https://github.com/osism/ansible-configuration
       sudo -iu dragon ansible-galaxy install git+https://github.com/osism/ansible-docker
+      sudo -iu dragon ansible-galaxy install git+https://github.com/osism/ansible-docker-compose
       sudo -iu dragon ansible-galaxy install git+https://github.com/osism/ansible-manager
 
       curl https://raw.githubusercontent.com/osism/testbed/${var.configuration_version}/playbooks/manager-part-1.yml | sudo -iu dragon tee /home/dragon/manager-part-1.yml

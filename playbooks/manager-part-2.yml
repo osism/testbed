@@ -14,3 +14,11 @@
 
   roles:
     - ansible-docker
+
+- name: Apply role osism.docker-compose
+  hosts: testbed-manager.osism.local
+  connection: local
+  gather_facts: true
+
+  roles:
+    - ansible-docker-compose
