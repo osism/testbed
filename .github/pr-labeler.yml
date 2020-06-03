@@ -1,0 +1,9 @@
+build: build/*
+chore: chore/*
+ci: ci/*
+docs: ['docs/*', 'doc/*', 'documentation/*']
+feature: ['feature/*', 'feat/*']
+fix: ['fix/*', 'issue/*']
+revert: revert/*
+style: style/*
+test: test/*
