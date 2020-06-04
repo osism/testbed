@@ -36,7 +36,7 @@
     operator_user: dragon
     operator_group: dragon
     operator_authorized_keys:
-      - "{{lookup('file', '/home/ubuntu/.ssh/id_rsa.pub')}}"
+      - "{{ lookup('file', '/home/ubuntu/.ssh/id_rsa.pub') }}"
 
     # ansible-repository
     repository_cache_valid_time: 0
