@@ -79,7 +79,7 @@
       become: true
 
     - name: Run update-ca-certificates
-      shell: update-ca-certificates --fresh
+      command: update-ca-certificates --fresh
       become: true
 
     - name: Restart docker service

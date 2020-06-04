@@ -30,9 +30,13 @@
       become: true
 
     - name: Create public and private key
-      shell: umask 077; wg genkey | tee /etc/wireguard/osism.key | wg pubkey > /etc/wireguard/osism.pub
+      shell: |
+        set -o pipefail
+        umask 077
+        wg genkey | tee /etc/wireguard/osism.key | wg pubkey > /etc/wireguard/osism.pub
       args:
         creates: /etc/wireguard/osism.key
+        executable: /bin/bash
       become: true
 
     - name: Create preshared key
