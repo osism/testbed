@@ -3,9 +3,12 @@ def setup(app):
 
 
 extensions = [
-  'sphinx.ext.autosectionlabel', 'sphinxcontrib.blockdiag',
-  'sphinxcontrib.nwdiag', 'sphinx.ext.todo', 'sphinx_fontawesome'
-  ]
+  'sphinx.ext.autosectionlabel',
+  'sphinx.ext.todo',
+  'sphinx_fontawesome',
+  'sphinxcontrib.blockdiag',
+  'sphinxcontrib.nwdiag'
+]
 source_suffix = '.rst'
 master_doc = 'index'
 project = u'OSISM Testbed'
