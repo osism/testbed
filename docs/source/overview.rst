@@ -26,6 +26,7 @@ The following stable releases are supported. The development branch usually work
 * OpenStack Rocky
 * OpenStack Stein
 * OpenStack Train
+* OpenStack Ussuri
 
 Services
 ========

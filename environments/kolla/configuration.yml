@@ -146,10 +146,9 @@ glance_backend_ceph: "yes"
 gnocchi_backend_storage: "ceph"
 nova_backend_ceph: "yes"
 
-cinder_backup_driver: "ceph"
-
 ceph_gnocchi_pool_name: "metrics"
-
+ceph_nova_keyring: ceph.client.nova.keyring
+cinder_backup_driver: "ceph"
 glance_backend_file: "no"
 
 # NOTE: public_network from environments/ceph/configuration.yml
