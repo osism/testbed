@@ -1,6 +1,12 @@
 name: Verify heat
 
-on: [push, pull_request]
+on:
+  push:
+    paths:
+      - 'heat/**'
+  pull_request:
+    paths:
+      - 'heat/**'
 
 jobs:
   build:

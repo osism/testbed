@@ -1,6 +1,12 @@
 name: Verify terraform
 
-on: [push, pull_request]
+on:
+  push:
+    paths:
+      - 'terraform/**'
+  pull_request:
+    paths:
+      - 'terraform/**'
 
 jobs:
   build:

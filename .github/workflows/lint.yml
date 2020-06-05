@@ -1,6 +1,14 @@
 name: Lint
 
-on: [push, pull_request]
+on:
+  push:
+    paths:
+      - docs/source/conf.py
+      - '**.yml'
+  pull_request:
+    paths:
+      - docs/source/conf.py
+      - '**.yml'
 
 jobs:
   build:
