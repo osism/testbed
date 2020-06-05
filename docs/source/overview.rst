@@ -15,18 +15,25 @@ possible to evaluate workloads like Kubernetes on the basis of this virtual test
 
 .. figure:: /images/horizon.png
 
-Supported release
-=================
+Supported releases
+==================
 
-The following stable releases are supported. The development branch usually works too.
+The following stable Ceph and OpenStack releases are supported. The development branch usually works too.
 
-* Ceph Luminous
-* Ceph Nautilus
-* Ceph Octopus
-* OpenStack Rocky
-* OpenStack Stein
-* OpenStack Train
-* OpenStack Ussuri
+Ceph
+----
+
+* Luminous
+* Nautilus
+* Octopus
+
+OpenStack
+---------
+
+* Rocky
+* Stein
+* Train
+* Ussuri
 
 Services
 ========
