@@ -31,3 +31,8 @@ jobs:
       - name: Build documentation
         run: sphinx-build -b html source build/html
         working-directory: docs
+      - name: Push documentation
+        run: |
+          sudo apt-get install -y lftp
+          lftp -u '${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }}' -e 'set sftp:auto-confirm yes; mirror -R --delete docs/build/html /; exit;' 'sftp://${{ secrets.FTP_HOSTNAME }}'
+        if: github.ref == 'refs/heads/master'
