@@ -1,0 +1,22 @@
+name: Verify terraform
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 0.12.26
+      - name: Terraform init
+        run: terraform init
+        working-directory: ./terraform
+      - name: Terraform format
+        run: terraform fmt -check
+        working-directory: ./terraform
