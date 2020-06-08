@@ -10,18 +10,6 @@ ansible_host: 192.168.40.10
 docker_configure_proxy: yes
 docker_proxy_http: "http://192.168.50.5:8000"
 
-# NOTE: The testbed runs zun-compute on the node itself. Therefore the access
-#       via TCP to Docker is necessary. This is not recommended for production.
-
-docker_hosts:
-  - "unix:///var/run/docker.sock"
-  - "tcp://192.168.50.10:2375"
-
-# NOTE: The cluster store is required because the nodes are used in Zun.
-
-docker_opts:
-  "cluster-store": "etcd://192.168.50.10:2379"
-
 ##########################################################
 # generic
 
