@@ -4,11 +4,16 @@
 
 containerized_deployment: true
 
+generate_fsid: false
+fsid: ce766f84-6dde-4ba0-9c57-ddb62431f1cd
+
+##########################
+# osd
+
 osd_objectstore: bluestore
 osd_scenario: lvm
 
-generate_fsid: false
-fsid: ce766f84-6dde-4ba0-9c57-ddb62431f1cd
+dmcrypt: true
 
 ##########################
 # network
