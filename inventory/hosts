@@ -662,3 +662,6 @@ zun
 
 [zun-compute:children]
 compute
+
+[zun-cni-daemon:children]
+compute
