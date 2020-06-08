@@ -46,7 +46,7 @@ cockpit_ssh_interface: "{{ ansible_local.testbed_network_devices.management }}"
 netdata_host_type: client
 
 ##########################################################
-# network-interfaces
+# network
 
 network_allow_service_restart: no
 network_restart_method: nothing

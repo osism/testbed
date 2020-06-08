@@ -78,7 +78,7 @@ operator_group: dragon
 operator_authorized_keys: "{{lookup('file', '/share/id_rsa.pub')}}"
 
 ##########################
-# network-interfaces
+# network
 
 network_allow_service_restart: no
 network_restart_method: nothing
@@ -139,7 +139,7 @@ osism_serial:
   hardening: 100%
   hostname: 100%
   hosts: 100%
-  network-interfaces: 100%
+  network: 100%
   operator: 100%
   pipelining: 100%
   proxy: 100%
