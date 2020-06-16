@@ -105,6 +105,7 @@ watch: .deploy.$(STACKNAME)
 			MGR_ADR=$$($(OPENSTACK) stack output show $(STACKNAME) manager_address -f value -c output_value); \
 			echo "MANAGER_ADDRESS=$$MGR_ADR" > .MANAGER_ADDRESS.$(STACKNAME); \
 		fi; \
+		STAT=$$($(OPENSTACK) stack list -f value -c "Stack Name" -c "Stack Status" | grep $(STACKNAME) | cut -d' ' -f2); \
 		if test -n "$$MGR_ADR"; then \
 			LEN=$$(ssh -o StrictHostKeyChecking=no -i .id_rsa.$(STACKNAME) ubuntu@$$MGR_ADR sudo wc -l /var/log/cloud-init-output.log 2>/dev/null); \
 			LEN=$${LEN%% *}; \
@@ -114,11 +115,11 @@ watch: .deploy.$(STACKNAME)
 			  DISP=$$LEN; \
 			fi; \
 		fi; \
-		STAT=$$($(OPENSTACK) stack list -f value -c "Stack Name" -c "Stack Status" | grep $(STACKNAME) | cut -d' ' -f2); \
 		if test "$$STAT" == "CREATE_COMPLETE"; then break; fi; \
 		if test "$$STAT" == "CREATE_FAILED"; then $(OPENSTACK) stack show $(STACKNAME) -f value -c "stack_status_reason"; break; fi; \
-		sleep 10; \
-	done
+		sleep 5; \
+	done; \
+	date
 
 # Look for stack
 .deploy.$(STACKNAME):
