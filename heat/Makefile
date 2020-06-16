@@ -93,10 +93,12 @@ watch: .deploy.$(STACKNAME)
 	if test "$$COLORTERM" = "1"; then \
 	  GREEN=$$(echo -e "\e[0;32m"); GREENBOLD=$$(echo -e "\e[1;32m"); BOLD=$$(echo -e "\e[0;1m"); RED=$$(echo -e "\e[0;31m"); YELLOW=$$(echo -e "\e[0;33m"); NORM=$$(echo -e "\e[0;0m"); \
 	fi; \
-	MGR_ADR=""; STAT=""; while true; do\
-		date; $(OPENSTACK) stack list; \
-		SRV=$$($(OPENSTACK) server list -f value -c "Name" -c "Status" | grep $(STACKNAME)-manager | cut -d ' ' -f2); \
-		$(OPENSTACK) server list; \
+	date; $(OPENSTACK) stack list; \
+	MGR_ADR=""; STAT=""; while true; do \
+		if test "$$DISP" = "0"; then \
+			SRV=$$($(OPENSTACK) server list -f value -c "Name" -c "Status" | grep $(STACKNAME)-manager | cut -d ' ' -f2); \
+			$(OPENSTACK) server list; \
+		fi; \
 		if test -z "$$MGR_ADR" -a "$$SRV" = "ACTIVE"; then \
 			$(OPENSTACK) stack output show $(STACKNAME) private_key -f value -c output_value > .id_rsa.$(STACKNAME); \
 			chmod 0600 .id_rsa.$(STACKNAME); \
