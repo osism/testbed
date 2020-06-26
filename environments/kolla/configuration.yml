@@ -81,7 +81,7 @@ openstack_logging_debug: "False"
 openstack_service_workers: 5
 
 # profiling
-enable_osprofiler: "yes"
+enable_osprofiler: "no"
 
 # logging
 enable_central_logging: "yes"
