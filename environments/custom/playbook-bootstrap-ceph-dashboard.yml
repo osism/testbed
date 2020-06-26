@@ -16,5 +16,20 @@
 
     - name: Create admin user
       command: "ceph dashboard ac-user-create {{ ceph_dashboard_username }} {{ ceph_dashboard_password }} administrator"
+      register: result
+      changed_when: "'already exists' not in result.stderr"
+      failed_when: ( result.rc not in [ 0, 17 ] )
       environment:
         INTERACTIVE: false
+
+- name: Restart ceph manager services
+  hosts: ceph-mon
+  gather_facts: no
+  serial: 1
+
+  tasks:
+    - name: Restart ceph manager service
+      service:
+        name: "ceph-mgr@{{ inventory_hostname_short }}"
+        state: restarted
+      become: true
