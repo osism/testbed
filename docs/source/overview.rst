@@ -82,7 +82,7 @@ OpenStack
 * Magnum
 * Manila
 * Neutron
-* Nova
+* Nova (with KVM)
 * Octavia
 * Panko
-* Zun
+* Zun (with Kata Containers)
