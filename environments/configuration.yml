@@ -36,6 +36,11 @@ ceph_docker_registry: index.docker.io
 docker_registry: index.docker.io
 
 ##########################
+# docker-compose
+
+docker_compose_install_type: package
+
+##########################
 # versions
 
 docker_version: "5:19.03.5"
