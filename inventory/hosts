@@ -25,9 +25,6 @@ testbed-node-1.osism.local
 [netdata:children]
 testbed-all
 
-[cobbler:children]
-testbed-manager
-
 [helper:children]
 testbed-manager
 
@@ -41,7 +38,6 @@ testbed-manager
 testbed-manager
 
 [infrastructure:children]
-cobbler
 helper
 manager
 mirror
