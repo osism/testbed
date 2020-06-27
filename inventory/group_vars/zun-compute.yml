@@ -12,3 +12,4 @@ docker_hosts:
 
 docker_opts:
   "cluster-store": "etcd://{{ internal_address }}:2379"
+  "cluster-advertise": "{{ internal_address }}:2375"
