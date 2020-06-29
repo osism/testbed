@@ -128,6 +128,7 @@ Cockpit          https://192.168.40.5:8130  dragon   da5pahthaew2Pai2
 Horizon          http://192.168.50.200      admin    pYV8bV749aDMXLPlYJwoJs4ouRPWezCIOXYAQP6v
 Kibana           http://192.168.50.200:5601 kibana   k2ReobFEsoxNm3DyZnkZmFPadSnCz6BjQhaLFoyB
 Netdata          http://192.168.50.5:19999  -        -
+Patchman         http://192.168.50.5:8150   patchman aiB4aijiebeesiu0
 Prometheus       http://192.168.50.5:9091   -        -
 Skydive          http://192.168.50.5:8085   -        -
 phpMyAdmin       http://192.168.40.5:8110   root     qNpdZmkKuUKBK3D5nZ08KMZ5MnYrGEe2hzH6XC0i
@@ -178,6 +179,29 @@ started manually when needed.
 .. code-block:: console
 
    osism-generic manage-container -e container_action=stop -e container_name=skydive_agent -l skydive-agent
+
+Patchman
+--------
+
+.. code-block:: console
+
+   osism-generic patchman-client
+   osism-infrastructure patchman
+
+Every night the package list of the clients is transmitted via cron. Initially we transfer these lists manually.
+
+.. code-block:: console
+
+   osism-ansible generic all -m command -a patchman-client
+
+After the clients have transferred their package lists for the first time the database can be built by Patchman.
+This takes some time on the first run. Later, this update will be done once a day during the night via cron.
+
+.. code-block:: console
+
+   patchman-update
+
+.. figure:: /images/patchman.png
 
 Prometheus
 ----------
