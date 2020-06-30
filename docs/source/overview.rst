@@ -61,6 +61,7 @@ Infrastructure
 * Memcached
 * Netdata
 * Openvswitch
+* Patchman
 * Prometheus
 * Rabbitmq
 * Redis

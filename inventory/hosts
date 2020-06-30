@@ -37,11 +37,15 @@ testbed-manager
 [openstackclient:children]
 testbed-manager
 
+[patchman:children]
+testbed-manager
+
 [infrastructure:children]
 helper
 manager
 mirror
 openstackclient
+patchman
 
 ##########################################################
 # environment: ceph

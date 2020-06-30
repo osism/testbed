@@ -7,3 +7,8 @@ dotfiles_repo_version: master
 dotfiles_repo_local_destination: "~/dotfiles"
 dotfiles_files:
   - .tmux.conf
+
+##########################
+# patchman-client
+
+patchman_client_server_url: http://{{ hostvars['testbed-manager.osism.local']['ansible_' + management_interface]['ipv4']['address'] }}:8150
