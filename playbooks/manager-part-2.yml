@@ -7,7 +7,7 @@
   vars:
     ansible_python_interpreter: /usr/bin/python3
     docker_compose_install_type: package
-    docker_configure_repository: no
+    docker_configure_repository: yes
     docker_configure_storage_driver: yes
     docker_storage_driver: overlay2
     docker_user: dragon
