@@ -6,7 +6,7 @@ INTERACTIVE=false osism-run openstack bootstrap-refstack
 sudo mkdir -p /opt/refstack
 sudo chown dragon: /opt/refstack
 
-git clone https://github.com/openstack/refstack-client /opt/refstack/client
+git clone https://opendev.org/osf/refstack-client /opt/refstack/client
 
 pushd /opt/refstack/client
 ./setup_env
