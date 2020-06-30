@@ -22,7 +22,7 @@ pushd /opt/refstack/client
 ./setup_env
 popd
 
-GUIDELINE=${1:-2019.11}
+GUIDELINE=${1:-2020.06}
 TARGET=${2:-platform}
 
 # NOTE: AccountQuotasNegativeTest.test_user_modify_quota and AccountQuotasTest.test_upload_valid_object
