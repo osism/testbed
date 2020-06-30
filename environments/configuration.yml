@@ -27,8 +27,6 @@ configuration_git_protocol: https
 
 docker_user: "{{ operator_user }}"
 
-docker_configure_repository: no
-
 docker_configure_storage_driver: yes
 docker_storage_driver: overlay2
 
@@ -47,19 +45,12 @@ docker_version: "5:19.03.5"
 repository_version: latest
 
 ##########################
-# repository
+# repositories
 
-repository_keys:
-  - https://download.docker.com/linux/ubuntu/gpg
-  - https://packagecloud.io/netdata/netdata-edge/gpgkey
-
+repository_keys: {}
 repository_key_ids: {}
 
 repositories:
-  - name: "{{ ansible_distribution_release }}-docker"
-    repository: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
-  - name: "{{ ansible_distribution_release }}-netdata"
-    repository: "deb [arch=amd64] https://packagecloud.io/netdata/netdata-edge/ubuntu/ {{ ansible_distribution_release }} main"
   - name: "{{ ansible_distribution_release }}"
     repository: "deb [arch=amd64] http://de.archive.ubuntu.com/ubuntu/ {{ ansible_distribution_release }} main restricted universe multiverse"
   - name: "{{ ansible_distribution_release }}-backports"
@@ -68,6 +59,10 @@ repositories:
     repository: "deb [arch=amd64] http://de.archive.ubuntu.com/ubuntu/ {{ ansible_distribution_release }}-security main restricted universe multiverse"
   - name: "{{ ansible_distribution_release }}-updates"
     repository: "deb [arch=amd64] http://de.archive.ubuntu.com/ubuntu/ {{ ansible_distribution_release }}-updates main restricted universe multiverse"
+
+docker_configure_repository: yes
+netdata_configure_repository: yes
+osquery_configure_repository: yes
 
 ##########################
 # timezone
