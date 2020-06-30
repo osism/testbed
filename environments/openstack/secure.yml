@@ -9,3 +9,12 @@ clouds:
   octavia:
     auth:
       password: FhXdWbXyVk63hLdeGhJ6oq48tj4FAE6v71w6VLF9
+  refstack-0:
+    auth:
+      password: password
+  refstack-1:
+    auth:
+      password: password
+  refstack-2:
+    auth:
+      password: password
