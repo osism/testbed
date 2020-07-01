@@ -19,11 +19,14 @@
       become: true
       when: "ansible_distribution_release == 'bionic'"
 
-    - name: Install wireguard package
+    - name: Install wireguard packages
       package:
-        name: wireguard
+        name: "{{ item }}"
         state: present
       become: true
+      loop:
+        - wireguard
+        - wireguard-dkms
 
     - name: Build wireguard kernel module
       command: dpkg-reconfigure wireguard-dkms
