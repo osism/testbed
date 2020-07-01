@@ -105,7 +105,8 @@ horizon_backend_database: "yes"
 keystone_token_provider: "fernet"
 
 # neutron
-neutron_plugin_agent: "openvswitch"
+neutron_plugin_agent: "{{ 'ovn' if openstack_release in ['ussuri'] else 'openvswitch' }}"
+
 enable_neutron_agent_ha: "yes"
 enable_neutron_dvr: "no"
 enable_neutron_qos: "yes"
