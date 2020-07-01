@@ -15,6 +15,21 @@ Supported cloud providers
 There is a separate environment file, e.g. ``environment-Betacloud.tfvars``, for each supported cloud provider.
 
 * `Betacloud <https://www.betacloud.de>`_
+* `OVH <https://www.ovhcloud.com>`_
+
+  .. note::
+
+     * The public L3 network services at OVH are currently still in beta. For more details, please
+       visit https://labs.ovh.com/public-cloud-l3-services.
+
+     * The use of private networks must be explicitly activated at OVH. A so-called vRack is created for this purpose.
+
+     * There is a problem with creating multiple networks at once on OVH. Therefore the creation of the networks must
+       be started several times
+
+       .. code-block:: none
+
+          {"NeutronError": {"message": "Invalid input for operation: Can not get vracks for tenant xxx from DB!.", "type": "InvalidInput", "detail": ""}}
 
 Preparations
 ============

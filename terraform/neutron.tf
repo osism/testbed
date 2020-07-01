@@ -2,6 +2,32 @@
 # Security groups #
 ###################
 
+resource "openstack_compute_secgroup_v2" "security_group_provider" {
+  name        = "testbed-provider"
+  description = "provider security group"
+
+  rule {
+    cidr        = "0.0.0.0/0"
+    ip_protocol = "tcp"
+    from_port   = 1
+    to_port     = 65535
+  }
+
+  rule {
+    cidr        = "0.0.0.0/0"
+    ip_protocol = "udp"
+    from_port   = 1
+    to_port     = 65535
+  }
+
+  rule {
+    cidr        = "0.0.0.0/0"
+    ip_protocol = "icmp"
+    from_port   = -1
+    to_port     = -1
+  }
+}
+
 resource "openstack_compute_secgroup_v2" "security_group_manager" {
   name        = "testbed-manager"
   description = "manager security group"
@@ -155,9 +181,10 @@ resource "openstack_networking_network_v2" "net_management" {
 }
 
 resource "openstack_networking_subnet_v2" "subnet_management" {
-  network_id = openstack_networking_network_v2.net_management.id
-  cidr       = "192.168.40.0/24"
-  ip_version = 4
+  network_id      = openstack_networking_network_v2.net_management.id
+  cidr            = "192.168.40.0/24"
+  ip_version      = 4
+  dns_nameservers = ["9.9.9.9", "149.112.112.112"]
 
   allocation_pool {
     start = "192.168.40.100"

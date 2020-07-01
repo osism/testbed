@@ -40,9 +40,18 @@ resource "openstack_networking_port_v2" "node_port_external" {
 }
 
 resource "openstack_networking_port_v2" "node_port_provider" {
-  count                 = var.number_of_nodes
-  network_id            = openstack_networking_network_v2.net_provider.id
-  port_security_enabled = false
+  count      = var.number_of_nodes
+  network_id = openstack_networking_network_v2.net_provider.id
+
+  # NOTE: port_security_enabled not usable with OVH
+  #
+  # {"NeutronError": {"message": "Unrecognized attribute(s) 'port_security_enabled'", "type": "HTTPBadRequest", "detail": ""}}
+  # port_security_enabled = false
+
+  security_group_ids = [openstack_compute_secgroup_v2.security_group_provider.id]
+  allowed_address_pairs {
+    ip_address = "0.0.0.0/0"
+  }
 
   fixed_ip {
     ip_address = "192.168.100.1${count.index}"
