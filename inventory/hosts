@@ -129,6 +129,9 @@ memcached
 elasticsearch
 kibana
 
+[podman:children]
+testbed-manager
+
 ##########################################################
 # environment: kolla
 
