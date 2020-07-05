@@ -229,6 +229,9 @@ write_files:
       if [[ "${var.deploy_monitoring}" == "true" ]]; then
           sudo -iu dragon sh -c '/opt/configuration/scripts/deploy_monitoring_services.sh'
       fi
+
+      # reboot nodes
+      sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic reboot -l "testbed-all:!testbed-manager" -e ireallymeanit=yes'
     path: /root/run.sh
     permissions: 0700
 runcmd:
