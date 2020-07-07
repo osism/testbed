@@ -186,6 +186,9 @@ write_files:
       sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic bootstrap'
       sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic operator'
 
+      # copy network configuration
+      sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic network'
+
       # reboot nodes
       sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic reboot -l "testbed-all:!testbed-manager" -e ireallymeanit=yes'
       sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic wait-for-connection -l "testbed-all:!testbed-manager" -e ireallymeanit=yes'
@@ -201,9 +204,6 @@ write_files:
 
       # deploy helper services
       sudo -iu dragon sh -c '/opt/configuration/scripts/deploy_helper_services.sh'
-
-      # copy network configuration
-      sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic network'
 
       # deploy infrastructure services
       if [[ "${var.deploy_infrastructure}" == "true" ]]; then
