@@ -76,19 +76,25 @@
       become: true
       notify: Restart wg0 service
 
+    # NOTE: Errors are ignored because the kernel module may not be available
+    #       after initial installation until after a reboot.
     - name: Start/enable wg-quick@wg0.service service
       systemd:
         name: wg-quick@wg0.service
         state: started
         enabled: yes
       become: true
+      ignore_errors: true
 
   handlers:
+    # NOTE: Errors are ignored because the kernel module may not be available
+    #       after initial installation until after a reboot.
     - name: Restart wg0 service
       systemd:
         name: wg-quick@wg0.service
         state: restarted
       become: true
+      ignore_errors: true
 
 - hosts: all:!manager
   gather_facts: false
