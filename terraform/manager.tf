@@ -138,6 +138,8 @@ write_files:
 
       ansible-galaxy install git+https://github.com/osism/ansible-chrony
       ansible-galaxy install git+https://github.com/osism/ansible-common
+      ansible-galaxy install git+https://github.com/osism/ansible-docker
+      ansible-galaxy install git+https://github.com/osism/ansible-docker-compose
       ansible-galaxy install git+https://github.com/osism/ansible-operator
       ansible-galaxy install git+https://github.com/osism/ansible-repository
       ansible-galaxy install git+https://github.com/osism/ansible-resolvconf
