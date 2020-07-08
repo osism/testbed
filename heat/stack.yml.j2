@@ -151,6 +151,8 @@ resources:
                 template: |
                   #!/usr/bin/env bash
 
+                  echo '* libraries/restart-without-asking boolean true' | debconf-set-selections
+
                   chown -R ubuntu:ubuntu /home/ubuntu/.ssh
 
                   add-apt-repository --yes ppa:ansible/ansible
