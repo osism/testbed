@@ -42,10 +42,6 @@
     repository_cache_valid_time: 0
     repository_key_ids: {}
     repositories:
-      - name: "{{ ansible_distribution_release }}-docker"
-        repository: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
-      - name: "{{ ansible_distribution_release }}-netdata"
-        repository: "deb [arch=amd64] https://packagecloud.io/netdata/netdata-edge/ubuntu/ {{ ansible_distribution_release }} main"
       - name: "{{ ansible_distribution_release }}"
         repository: "deb [arch=amd64] http://de.archive.ubuntu.com/ubuntu/ {{ ansible_distribution_release }} main restricted universe multiverse"
       - name: "{{ ansible_distribution_release }}-backports"
@@ -61,3 +57,20 @@
     - ansible-repository
     - ansible-common
     - ansible-operator
+
+- name: Apply role osism.docker
+- hosts: localhost
+  connection: local
+  gather_facts: true
+
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+    docker_compose_install_type: package
+    docker_configure_repository: yes
+    docker_configure_storage_driver: yes
+    docker_storage_driver: overlay2
+    docker_user: dragon
+    docker_version: "5:19.03.5"
+
+  roles:
+    - ansible-docker
