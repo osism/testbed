@@ -59,7 +59,7 @@
     - ansible-operator
 
 - name: Apply role osism.docker
-- hosts: localhost
+  hosts: localhost
   connection: local
   gather_facts: true
 
