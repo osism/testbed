@@ -16,3 +16,4 @@ secrets
 secure.yaml
 secure.yml
 terraform.tfstate*
+terraform-workspace-*
