@@ -12,7 +12,7 @@ on:
       - 'playbooks/**.yml'
 
 jobs:
-  build:
+  default:
 
     runs-on: ubuntu-latest
 

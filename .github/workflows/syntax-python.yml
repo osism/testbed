@@ -10,7 +10,7 @@ on:
       - '**.py'
 
 jobs:
-  build:
+  default:
 
     runs-on: ubuntu-latest
 

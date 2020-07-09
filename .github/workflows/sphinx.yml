@@ -10,7 +10,7 @@ on:
       - 'docs/**'
 
 jobs:
-  build:
+  default:
 
     runs-on: ubuntu-latest
 
