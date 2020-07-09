@@ -28,10 +28,6 @@ deploy: init
 	@touch .deploy.$(ENVIRONMENT)
 	@terraform apply -auto-approve -var-file="environment-$(ENVIRONMENT).tfvars" $(PARAMS)
 
-create: deploy
-
-update: deploy
-
 deploy-infra: init
 	@touch .deploy.$(ENVIRONMENT)
 	@terraform apply -auto-approve -var-file="environment-$(ENVIRONMENT).tfvars" -var 'deploy_infrastructure=true' $(PARAMS)
@@ -100,4 +96,4 @@ watch: .id_rsa.$(ENVIRONMENT) .MANAGER_ADDRESS.$(ENVIRONMENT)
 	done;
 	#@$(OPENSTACK) server list
 
-PHONY: clean console sshuttle ssh dry-run list create deploy deploy-infra deploy-ceph deploy-openstack update watch
+PHONY: clean console sshuttle ssh dry-run list deploy deploy-infra deploy-ceph deploy-openstack watch
