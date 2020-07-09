@@ -18,7 +18,8 @@ possible to evaluate workloads like Kubernetes on the basis of this virtual test
 Supported releases
 ==================
 
-The following stable Ceph and OpenStack releases are supported. The development branch usually works too.
+The following stable Ceph and OpenStack releases are supported. The development branch
+usually works too.
 
 Ceph
 ----

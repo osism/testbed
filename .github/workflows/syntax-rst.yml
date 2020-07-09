@@ -1,0 +1,23 @@
+---
+name: Check rst syntax
+
+on:
+  push:
+    paths:
+      - '**.rst'
+  pull_request:
+    paths:
+      - '**.rst'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+      - run: pip3 install doc8
+      - run: doc8 --max-line-length 100
