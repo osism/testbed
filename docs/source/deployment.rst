@@ -45,7 +45,7 @@ Supported cloud providers
 
 **Works**
 
-There is a separate environment file, e.g. ``environment-Betacloud.tfvars``, for each supported cloud provider.
+There is a separate environment file, e.g. ``environment-betacloud.tfvars``, for each supported cloud provider.
 
 * `Betacloud <https://www.betacloud.de>`_
 
@@ -86,10 +86,10 @@ Preparations
 Configuration
 =============
 
-The defaults for the environment parameters are intended for the Betacloud.
+The defaults for the environment variables are intended for the Betacloud.
 
 ========================= ===========
-**Parameter**             **Default**
+**Variable**              **Default**
 ------------------------- -----------
 availability_zone         south-2
 volume_availability_zone  south-2
@@ -104,11 +104,11 @@ ceph_version              nautilus
 openstack_version         train
 ========================= ===========
 
-With the file ``environment.tfvars`` the parameters of the environment can be adjusted.
+With the file ``environment-CLOUDPROVIDER.tfvars`` the parameters of the environment can be adjusted.
 
 .. code-block:: none
 
-   image = "OSISM base"
+   image       = "OSISM base"
    flavor_node = "8C-32GB-40GB"
 
 Initialization
@@ -116,19 +116,19 @@ Initialization
 
 .. code-block:: console
 
-   make dry-run
+   make dry-run ENVIRONMENT=betacloud
 
 .. code-block:: console
 
-   make create
+   make create ENVIRONMENT=betacloud
 
 .. code-block:: console
 
-   make create ENVIRONMENT=environment-Betacloud.tfvars
+   make create ENVIRONMENT=betacloud
 
 .. code-block:: console
 
-   make clean
+   make clean ENVIRONMENT=betacloud
 
 Customisation
 =============
@@ -137,15 +137,15 @@ By default, no services are deployed when the environment is created. This is cu
 
 .. code-block:: console
 
-   make deploy-infra ENVIRONMENT=environment-Betacloud.tfvars
-   make deploy-ceph ENVIRONMENT=environment-Betacloud.tfvars
-   make deploy-openstack ENVIRONMENT=environment-Betacloud.tfvars
+   make deploy-infra ENVIRONMENT=betacloud
+   make deploy-ceph ENVIRONMENT=betacloud
+   make deploy-openstack ENVIRONMENT=betacloud
 
 Usage
 =====
 
 .. code-block:: console
 
-   make console
-   make ssh
-   make sshuttle
+   make console ENVIRONMENT=betacloud
+   make ssh ENVIRONMENT=betacloud
+   make sshuttle ENVIRONMENT=betacloud
