@@ -1,5 +1,5 @@
 provider "openstack" {
-  cloud = "testbed"
+  cloud = var.cloud_provider
 }
 
 terraform {

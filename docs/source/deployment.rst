@@ -48,9 +48,22 @@ Supported cloud providers
 There is a separate environment file, e.g. ``environment-Betacloud.tfvars``, for each supported cloud provider.
 
 * `Betacloud <https://www.betacloud.de>`_
+
+  .. note::
+
+     * The credentials are stored in ``clouds.yaml`` and ``secure.yaml`` with the name ``betacloud``.
+
+* `Citycloud <https://www.citycloud.com>`_
+
+  .. note::
+
+     * The credentials are stored in ``clouds.yaml`` and ``secure.yaml`` with the name ``citycloud``.
+
 * `OVH <https://www.ovhcloud.com>`_
 
   .. note::
+
+     * The credentials are stored in ``clouds.yaml`` and ``secure.yaml`` with the name ``ovh``.
 
      * The public L3 network services at OVH are currently still in beta. For more details, please
        visit https://labs.ovh.com/public-cloud-l3-services.
