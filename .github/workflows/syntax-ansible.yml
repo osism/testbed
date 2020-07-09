@@ -1,0 +1,22 @@
+name: Check ansible syntax
+
+on:
+  push:
+    paths:
+      - 'environments/**.yml'
+      - 'playbooks/**.yml'
+  pull_request:
+    paths:
+      - 'environments/**.yml'
+      - 'playbooks/**.yml'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ansible/ansible-lint-action@master
+        with:
+          args: -x 301
