@@ -12,7 +12,7 @@ endif
 
 init:
 	@if [ ! -d .terraform/plugins ]; then \
-		terraform init \;
+		terraform init; \
 	fi
 
 	@if [ -d "terraform.tfstate.d/${ENVIRONMENT}" ]; then \
