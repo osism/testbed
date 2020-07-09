@@ -80,8 +80,13 @@ There is a separate environment file, e.g. ``environment-betacloud.tfvars``, for
 Preparations
 ============
 
-* ``Terraform`` must be installed (https://learn.hashicorp.com/terraform/getting-started/install.html)
-* a ``clouds.yaml`` and ``secure.yaml`` must be created (https://docs.openstack.org/python-openstackclient/latest/configuration/index.html#clouds-yaml) (the file extension ``yaml`` is important)
+* `Terraform <https://www.terraform.io>`_ must be installed (https://learn.hashicorp.com/terraform/getting-started/install.html)
+* ``clouds.yaml`` and ``secure.yaml`` files must be created
+  (https://docs.openstack.org/python-openstackclient/latest/configuration/index.html#clouds-yaml)
+
+  .. warning::
+
+     The file extension ``yaml`` is important!
 
 Configuration
 =============
@@ -92,19 +97,21 @@ The defaults for the environment variables are intended for the Betacloud.
 **Variable**              **Default**
 ------------------------- -----------
 availability_zone         south-2
-volume_availability_zone  south-2
-network_availability_zone south-2
-flavor_node               4C-16GB-40GB
-flavor_manager            2C-4GB-20GB
-image                     Ubuntu 18.04
-public                    external
-volume_size_storage       10
-configuration_version     master
 ceph_version              nautilus
+cloud_provider            betacloud
+configuration_version     master
+flavor_manager            2C-4GB-20GB
+flavor_node               4C-16GB-40GB
+image                     Ubuntu 18.04
+network_availability_zone south-2
 openstack_version         train
+public                    external
+volume_availability_zone  south-2
+volume_size_storage       10
 ========================= ===========
 
-With the file ``environment-CLOUDPROVIDER.tfvars`` the parameters of the environment can be adjusted.
+With the file ``environment-CLOUDPROVIDER.tfvars`` the parameters of the environment
+``CLOUDPROVIDER`` can be adjusted.
 
 .. code-block:: none
 
@@ -117,29 +124,19 @@ Initialization
 .. code-block:: console
 
    make dry-run ENVIRONMENT=betacloud
+   make deploy ENVIRONMENT=betacloud
+   make watch ENVIRONMENT=betacloud
 
-.. code-block:: console
+.. note::
 
-   make create ENVIRONMENT=betacloud
+   By default, no additional services are deployed when the environment is
+   created. The environment is only prepared and the manager is provided. This
+   is customizable.
 
-.. code-block:: console
-
-   make create ENVIRONMENT=betacloud
-
-.. code-block:: console
-
-   make clean ENVIRONMENT=betacloud
-
-Customisation
-=============
-
-By default, no services are deployed when the environment is created. This is customizable.
-
-.. code-block:: console
-
-   make deploy-infra ENVIRONMENT=betacloud
-   make deploy-ceph ENVIRONMENT=betacloud
-   make deploy-openstack ENVIRONMENT=betacloud
+   * Use ``deploy-infra`` to deploy infrastructure services when building the environment.
+   * Use ``deploy-ceph`` to deploy Ceph when building the environment.
+   * Use ``deploy-openstack`` to deploy OpenStack when building the environment. This also
+     includes Ceph and infrastructure services.
 
 Usage
 =====
@@ -149,3 +146,10 @@ Usage
    make console ENVIRONMENT=betacloud
    make ssh ENVIRONMENT=betacloud
    make sshuttle ENVIRONMENT=betacloud
+
+Decommissioning
+===============
+
+.. code-block:: console
+
+   make clean ENVIRONMENT=betacloud
