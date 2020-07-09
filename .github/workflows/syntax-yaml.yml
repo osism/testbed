@@ -1,13 +1,15 @@
 ---
-name: Check python syntax
+name: Check yaml syntax
 
 on:
   push:
     paths:
-      - '**.py'
+      - '**.yml'
+      - '**.yaml'
   pull_request:
     paths:
-      - '**.py'
+      - '**.yml'
+      - '**.yaml'
 
 jobs:
   build:
@@ -19,5 +21,5 @@ jobs:
       - uses: actions/setup-python@v2
         with:
           python-version: '3.x'
-      - run: pip3 install flake8
-      - run: flake8
+      - run: pip3 install yamllint
+      - run: yamllint --config-file .github/yamllint.yml .

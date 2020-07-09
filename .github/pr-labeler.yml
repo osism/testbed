@@ -1,3 +1,4 @@
+---
 'Type: Bugfix': ['fix/*', 'issue/*']
 'Type: Build': build/*
 'Type: CI': ['ci/*', 'travis/*', 'zuul/*']
