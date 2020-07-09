@@ -1,5 +1,0 @@
----
-clouds:
-  testbed:
-    auth:
-      password: PASSWORD
