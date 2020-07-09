@@ -26,3 +26,6 @@ jobs:
       - name: Terraform format
         run: terraform fmt -check
         working-directory: ./terraform
+      - name: Terraform validate
+        run: terraform validate
+        working-directory: ./terraform
