@@ -1,3 +1,8 @@
+variable "cloud_provider" {
+  default = "testbed"
+  type    = string
+}
+
 variable "image" {
   default = "Ubuntu 18.04"
   type    = string
