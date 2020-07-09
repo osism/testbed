@@ -1,6 +1,6 @@
 ---
 clouds:
-  testbed:
+  betacloud:
     profile: betacloud
     auth:
       username: USERNAME

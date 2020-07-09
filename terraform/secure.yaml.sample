@@ -1,5 +1,5 @@
 ---
 clouds:
-  testbed:
+  betacloud:
     auth:
       password: PASSWORD
