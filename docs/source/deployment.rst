@@ -45,7 +45,8 @@ Supported cloud providers
 
 **Works**
 
-There is a separate environment file, e.g. ``environment-betacloud.tfvars``, for each supported cloud provider.
+There is a separate environment file, e.g. ``environment-betacloud.tfvars``, for
+each supported cloud provider.
 
 * `Betacloud <https://www.betacloud.de>`_
 
@@ -73,7 +74,7 @@ There is a separate environment file, e.g. ``environment-betacloud.tfvars``, for
      * There is a problem with creating multiple networks at once on OVH. Therefore the creation of the networks must
        be started several times
 
-       .. code-block:: none
+       .. code-block:: json
 
           {"NeutronError": {"message": "Invalid input for operation: Can not get vracks for tenant xxx from DB!.", "type": "InvalidInput", "detail": ""}}
 
@@ -113,7 +114,7 @@ volume_size_storage       10
 With the file ``environment-CLOUDPROVIDER.tfvars`` the parameters of the environment
 ``CLOUDPROVIDER`` can be adjusted.
 
-.. code-block:: none
+.. code-block:: json
 
    image       = "OSISM base"
    flavor_node = "8C-32GB-40GB"

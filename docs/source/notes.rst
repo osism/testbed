@@ -19,7 +19,7 @@ Notes
 * The third node (``testbed-node-2``) is not enabled for services by default. This is to
   test the scaling of the services.
 
-  .. code-block:: none
+  .. code-block:: ini
 
      # NOTE: The node testbed-node-2 is commented to be able to test scaling
      #       in the testbed.

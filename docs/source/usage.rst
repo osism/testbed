@@ -167,14 +167,15 @@ Netdata
 Skydive
 -------
 
-Deploy `Clustered infrastructure services`, `Infrastructure services`, and `Basic OpenStack services` first.
+Deploy `Clustered infrastructure services`, `Infrastructure services`, and
+`Basic OpenStack services` first.
 
 .. code-block:: console
 
    osism-kolla deploy skydive
 
-The Skydive agent creates a high load on the Open vSwitch services. Therefore the agent is only
-started manually when needed.
+The Skydive agent creates a high load on the Open vSwitch services. Therefore
+the agent is only started manually when needed.
 
 .. code-block:: console
 
@@ -188,14 +189,18 @@ Patchman
    osism-generic patchman-client
    osism-infrastructure patchman
 
-Every night the package list of the clients is transmitted via cron. Initially we transfer these lists manually.
+Every night the package list of the clients is transmitted via cron. Initially
+we transfer these lists manually.
 
 .. code-block:: console
 
    osism-ansible generic all -m command -a patchman-client
 
-After the clients have transferred their package lists for the first time the database can be built by Patchman.
-This takes some time on the first run. Later, this update will be done once a day during the night via cron.
+After the clients have transferred their package lists for the first time the
+database can be built by Patchman.
+
+This takes some time on the first run. Later, this update will be done once a day
+during the night via cron.
 
 .. code-block:: console
 
@@ -206,7 +211,8 @@ This takes some time on the first run. Later, this update will be done once a da
 Prometheus
 ----------
 
-Deploy `Clustered infrastructure services`, `Infrastructure services`, and `Basic OpenStack services` first.
+Deploy `Clustered infrastructure services`, `Infrastructure services`, and
+`Basic OpenStack services` first.
 
 .. code-block:: console
 
@@ -254,15 +260,16 @@ configuration is so that two nodes are already sufficient.
 Random data
 -----------
 
-The contrib directory contains some scripts to fill the components of the environment with random data.
-This is intended to generate a realistic data load, e.g. for upgrades or scaling tests.
+The contrib directory contains some scripts to fill the components of the
+environment with random data. This is intended to generate a realistic data
+load, e.g. for upgrades or scaling tests.
 
 MySQL
 ~~~~~
 
-After deployment of MariaDB including HAProxy it is possible to create four test databases each with
-four tables which are filled with randomly generated data. The script can be executed multiple
-times to generate more data.
+After deployment of MariaDB including HAProxy it is possible to create four
+test databases each with four tables which are filled with randomly generated
+data. The script can be executed multiple times to generate more data.
 
 .. code-block:: console
 
@@ -309,7 +316,8 @@ This section describes how individual parts of the testbed can be deployed.
 
      osism-kolla deploy openvswitch,memcached,etcd,kibana
 
-* Basic OpenStack services (also deploy `Infrastructure services`, `Clustered infrastructure services`, and `Ceph`)
+* Basic OpenStack services (also deploy `Infrastructure services`,
+  `Clustered infrastructure services`, and `Ceph`)
 
   .. code-block:: console
 
