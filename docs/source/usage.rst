@@ -130,7 +130,7 @@ Kibana           http://192.168.50.200:5601 kibana   k2ReobFEsoxNm3DyZnkZmFPadSn
 Netdata          http://192.168.50.5:19999  -        -
 Patchman         http://192.168.50.5:8150   patchman aiB4aijiebeesiu0
 Prometheus       http://192.168.50.5:9091   -        -
-Skydive          http://192.168.50.5:8085   -        -
+Skydive          http://192.168.50.5:8085   admin    pYV8bV749aDMXLPlYJwoJs4ouRPWezCIOXYAQP6v
 phpMyAdmin       http://192.168.40.5:8110   root     qNpdZmkKuUKBK3D5nZ08KMZ5MnYrGEe2hzH6XC0i
 ================ ========================== ======== ========================================
 
@@ -190,6 +190,8 @@ the agent is only started manually when needed.
 .. code-block:: console
 
    osism-generic manage-container -e container_action=stop -e container_name=skydive_agent -l skydive-agent
+
+.. figure:: /images/skydive.png
 
 Patchman
 --------
