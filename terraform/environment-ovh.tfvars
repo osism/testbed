@@ -7,3 +7,4 @@ flavor_manager            = "s1-8"
 image                     = "Ubuntu 18.04"
 public                    = "Ext-Net"
 volume_size_storage       = "10"
+port_security_enabled     = null
