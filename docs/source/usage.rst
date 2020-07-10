@@ -139,6 +139,11 @@ ARA
 
 .. figure:: /images/ara.png
 
+AWX
+---
+
+.. figure:: /images/awx.png
+
 Ceph
 ----
 
