@@ -84,7 +84,7 @@ while getopts “hvu:p:H:P:w:c:f:m:s:0” OPTION; do
       mysqluser=$OPTARG
       ;;
     p)
-      password=$OPTARG
+      export MYSQL_PWD=$OPTARG
       ;;
     H)
       mysqlhost=$OPTARG
@@ -131,10 +131,9 @@ create_param() {
 param_mysqlhost=$(create_param -h "$mysqlhost")
 param_port=$(create_param -P "$port")
 param_mysqluser=$(create_param -u "$mysqluser")
-param_password=$(create_param -p "$password")
 param_configfile=$(create_param --defaults-extra-file= "$myconfig")
 
-param_mysql="$param_mysqlhost $param_port $param_mysqluser $param_password $param_configfile"
+param_mysql="$param_mysqlhost $param_port $param_mysqluser $param_configfile"
 
 #
 # verify the database connection
