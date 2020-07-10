@@ -3,6 +3,11 @@ variable "cloud_provider" {
   type    = string
 }
 
+variable "prefix" {
+  default = "testbed"
+  type    = string
+}
+
 variable "image" {
   default = "Ubuntu 18.04"
   type    = string
