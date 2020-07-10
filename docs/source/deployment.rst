@@ -163,3 +163,6 @@ Decommissioning
 .. code-block:: console
 
    make clean ENVIRONMENT=betacloud
+
+.. raw:: html
+   :file: html/asciinema-tf-clean.html
