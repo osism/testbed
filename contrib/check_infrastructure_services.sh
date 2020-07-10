@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-packages='libmonitoring-plugin-perl libwww-perl libjson-perl monitoring-plugins'
+packages='libmonitoring-plugin-perl libwww-perl libjson-perl monitoring-plugins mysql-client'
 if ! dpkg -s $packages >/dev/null 2>&1; then
   sudo apt-get install -y $packages
 fi
