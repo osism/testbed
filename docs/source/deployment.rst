@@ -125,7 +125,16 @@ Initialization
 .. code-block:: console
 
    make dry-run ENVIRONMENT=betacloud
+
+.. code-block:: console
+
    make deploy ENVIRONMENT=betacloud
+
+.. raw:: html
+   :file: html/asciinema-tf-deployment.html
+
+.. code-block:: console
+
    make watch ENVIRONMENT=betacloud
 
 .. note::
