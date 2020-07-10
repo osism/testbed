@@ -230,6 +230,8 @@ Deploy `Clustered infrastructure services`, `Infrastructure services`, and
 
    osism-kolla deploy prometheus
 
+.. figure:: /images/prometheus.png
+
 Tools
 =====
 
