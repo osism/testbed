@@ -134,6 +134,11 @@ Skydive          http://192.168.50.5:8085   -        -
 phpMyAdmin       http://192.168.40.5:8110   root     qNpdZmkKuUKBK3D5nZ08KMZ5MnYrGEe2hzH6XC0i
 ================ ========================== ======== ========================================
 
+ARA
+---
+
+.. figure:: /images/ara.png
+
 Ceph
 ----
 
