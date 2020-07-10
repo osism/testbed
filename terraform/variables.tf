@@ -48,6 +48,11 @@ variable "public" {
   type    = string
 }
 
+variable "port_security_enabled" {
+  default = false
+  type    = bool
+}
+
 variable "deploy_infrastructure" {
   default = false
   type    = bool

@@ -46,12 +46,7 @@ resource "openstack_networking_port_v2" "node_port_provider" {
   # NOTE: port_security_enabled not usable with OVH
   #
   # {"NeutronError": {"message": "Unrecognized attribute(s) 'port_security_enabled'", "type": "HTTPBadRequest", "detail": ""}}
-  # port_security_enabled = false
-
-  security_group_ids = [openstack_compute_secgroup_v2.security_group_provider.id]
-  allowed_address_pairs {
-    ip_address = "0.0.0.0/0"
-  }
+  port_security_enabled = var.port_security_enabled
 
   fixed_ip {
     ip_address = "192.168.100.1${count.index}"
