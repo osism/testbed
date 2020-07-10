@@ -75,7 +75,7 @@ resource "openstack_networking_port_v2" "manager_port_storage_frontend" {
 }
 
 resource "openstack_compute_instance_v2" "manager_server" {
-  name              = "testbed-manager"
+  name              = "${var.prefix}-manager"
   availability_zone = var.availability_zone
   image_name        = var.image
   flavor_name       = var.flavor_manager

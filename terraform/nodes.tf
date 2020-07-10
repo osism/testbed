@@ -83,7 +83,7 @@ resource "openstack_networking_port_v2" "node_port_storage_backend" {
 
 resource "openstack_blockstorage_volume_v3" "node_volume_0" {
   count             = var.number_of_nodes
-  name              = "testbed-node-${count.index}-volume-0"
+  name              = "${var.prefix}-node-${count.index}-volume-0"
   size              = var.volume_size_storage
   availability_zone = var.volume_availability_zone
 }
@@ -96,7 +96,7 @@ resource "openstack_compute_volume_attach_v2" "node_volume_0_attachment" {
 
 resource "openstack_blockstorage_volume_v3" "node_volume_1" {
   count             = var.number_of_nodes
-  name              = "testbed-node-${count.index}-volume-1"
+  name              = "${var.prefix}-node-${count.index}-volume-1"
   size              = var.volume_size_storage
   availability_zone = var.volume_availability_zone
 }
@@ -109,7 +109,7 @@ resource "openstack_compute_volume_attach_v2" "node_volume_1_attachment" {
 
 resource "openstack_blockstorage_volume_v3" "node_volume_2" {
   count             = var.number_of_nodes
-  name              = "testbed-node-${count.index}-volume-2"
+  name              = "${var.prefix}-node-${count.index}-volume-2"
   size              = var.volume_size_storage
   availability_zone = var.volume_availability_zone
 }
@@ -122,7 +122,7 @@ resource "openstack_compute_volume_attach_v2" "node_volume_2_attachment" {
 
 resource "openstack_compute_instance_v2" "node_server" {
   count             = var.number_of_nodes
-  name              = "testbed-node-${count.index}"
+  name              = "${var.prefix}-node-${count.index}"
   availability_zone = var.availability_zone
   image_name        = var.image
   flavor_name       = var.flavor_node

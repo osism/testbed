@@ -3,7 +3,7 @@
 ###################
 
 resource "openstack_compute_secgroup_v2" "security_group_provider" {
-  name        = "testbed-provider"
+  name        = "${var.prefix}-provider"
   description = "provider security group"
 
   rule {
@@ -29,7 +29,7 @@ resource "openstack_compute_secgroup_v2" "security_group_provider" {
 }
 
 resource "openstack_compute_secgroup_v2" "security_group_manager" {
-  name        = "testbed-manager"
+  name        = "${var.prefix}-manager"
   description = "manager security group"
 
   rule {
@@ -41,7 +41,7 @@ resource "openstack_compute_secgroup_v2" "security_group_manager" {
 }
 
 resource "openstack_compute_secgroup_v2" "security_group_management" {
-  name        = "testbed-management"
+  name        = "${var.prefix}-management"
   description = "management security group"
 
   rule {
@@ -60,7 +60,7 @@ resource "openstack_compute_secgroup_v2" "security_group_management" {
 }
 
 resource "openstack_compute_secgroup_v2" "security_group_internal" {
-  name        = "testbed-internal"
+  name        = "${var.prefix}-internal"
   description = "internal security group"
 
   rule {
@@ -94,7 +94,7 @@ resource "openstack_networking_secgroup_rule_v2" "security_group_internal_vrrp" 
 }
 
 resource "openstack_compute_secgroup_v2" "security_group_storage_frontend" {
-  name        = "testbed-storage-frontend"
+  name        = "${var.prefix}-storage-frontend"
   description = "storage frontend security group"
 
   rule {
@@ -120,7 +120,7 @@ resource "openstack_compute_secgroup_v2" "security_group_storage_frontend" {
 }
 
 resource "openstack_compute_secgroup_v2" "security_group_storage_backend" {
-  name        = "testbed-storage-backend"
+  name        = "${var.prefix}-storage-backend"
   description = "storage backend security group"
 
   rule {
@@ -146,7 +146,7 @@ resource "openstack_compute_secgroup_v2" "security_group_storage_backend" {
 }
 
 resource "openstack_compute_secgroup_v2" "security_group_external" {
-  name        = "testbed-external"
+  name        = "${var.prefix}-external"
   description = "external security group"
 
   rule {
@@ -176,7 +176,7 @@ resource "openstack_compute_secgroup_v2" "security_group_external" {
 ############
 
 resource "openstack_networking_network_v2" "net_management" {
-  name                    = "testbed-management"
+  name                    = "${var.prefix}-management"
   availability_zone_hints = [var.network_availability_zone]
 }
 
@@ -193,7 +193,7 @@ resource "openstack_networking_subnet_v2" "subnet_management" {
 }
 
 resource "openstack_networking_network_v2" "net_internal" {
-  name                    = "testbed-internal"
+  name                    = "${var.prefix}-internal"
   availability_zone_hints = [var.network_availability_zone]
 }
 
@@ -211,7 +211,7 @@ resource "openstack_networking_subnet_v2" "subnet_internal" {
 }
 
 resource "openstack_networking_network_v2" "net_provider" {
-  name                    = "testbed-provider"
+  name                    = "${var.prefix}-provider"
   availability_zone_hints = [var.network_availability_zone]
 }
 
@@ -229,7 +229,7 @@ resource "openstack_networking_subnet_v2" "subnet_provider" {
 }
 
 resource "openstack_networking_network_v2" "net_external" {
-  name                    = "testbed-external"
+  name                    = "${var.prefix}-external"
   availability_zone_hints = [var.network_availability_zone]
 }
 
@@ -265,7 +265,7 @@ resource "openstack_networking_port_v2" "vip_port_internal" {
 }
 
 resource "openstack_networking_network_v2" "net_storage_frontend" {
-  name                    = "testbed-storage-frontend"
+  name                    = "${var.prefix}-storage-frontend"
   availability_zone_hints = [var.network_availability_zone]
 }
 
@@ -283,7 +283,7 @@ resource "openstack_networking_subnet_v2" "subnet_storage_frontend" {
 }
 
 resource "openstack_networking_network_v2" "net_storage_backend" {
-  name                    = "testbed-storage-backend"
+  name                    = "${var.prefix}-storage-backend"
   availability_zone_hints = [var.network_availability_zone]
 }
 
