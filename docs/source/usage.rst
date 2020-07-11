@@ -218,6 +218,12 @@ during the night via cron.
 
    patchman-update
 
+The previous steps can also be done with a custom playbook.
+
+.. code-block:: console
+
+   osism-run custom bootstrap-patchman
+
 .. figure:: /images/patchman.png
 
 Prometheus
