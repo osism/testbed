@@ -100,7 +100,7 @@
     # NOTE: is_public from os_image is not working like expected
 
     - name: Make cirros image visible
-      command: openstack --os-cloud admin image set --public cirros
+      command: openstack --os-cloud admin image set --public cirros # noqa 301
 
     - name: Create public network
       os_network:
