@@ -29,7 +29,7 @@
         - wireguard-dkms
 
     - name: Build wireguard kernel module
-      command: dpkg-reconfigure wireguard-dkms
+      command: dpkg-reconfigure wireguard-dkms # noqa 301
       become: true
 
     - name: Create public and private key
@@ -101,5 +101,5 @@
 
   tasks:
     - name: Add route to 192.168.60.0/24
-      command: ip route replace 192.168.60.0/24 via 192.168.50.5
+      command: ip route replace 192.168.60.0/24 via 192.168.50.5 # noqa 301
       become: true

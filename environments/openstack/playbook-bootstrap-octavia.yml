@@ -37,7 +37,7 @@
           hw_rng_model: virtio
 
     - name: Add amphora tag to amphora image
-      command: openstack --os-cloud admin image set --tag amphora 'Octavia Amphora'
+      command: openstack --os-cloud admin image set --tag amphora 'Octavia Amphora' # noqa 301
 
     - name: Create octavia_ssh_key ssh keypair
       os_keypair:
@@ -127,7 +127,7 @@
 
     # NOTE: host parameter is currently not available for os_port task
     - name: Set host on control ports in lb-mgmt-net network
-      command: "openstack --os-cloud admin port set --host testbed-node-{{ item }} octavia-health-manager-testbed-node-{{ item }}-listen-port"
+      command: "openstack --os-cloud admin port set --host testbed-node-{{ item }} octavia-health-manager-testbed-node-{{ item }}-listen-port" # noqa 301
       with_items:
         - 0
         - 1
@@ -173,16 +173,18 @@
           -- set Interface ohm0 type=internal \
           -- set Interface ohm0 external-ids:attached-mac={{ result.openstack_ports.0.mac_address }} \
           -- set Interface ohm0 external-ids:iface-id={{ result.openstack_ports.0.id }}
+      tags:
+        - skip_ansible_lint
 
     # FIXME: Use clean solution!
     - name: Add ip address to device
-      shell: "ip addr add dev ohm0 192.168.110.1{{ node_id }}/24 || exit 0"
+      shell: "ip addr add dev ohm0 192.168.110.1{{ node_id }}/24 || exit 0" # noqa 301
       become: true
 
     - name: Set device mtu
-      command: ip link set mtu 1450 dev ohm0
+      command: ip link set mtu 1450 dev ohm0 # noqa 301
       become: true
 
     - name: Set device up
-      command: ip link set up dev ohm0
+      command: ip link set up dev ohm0 # noqa 301
       become: true

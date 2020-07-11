@@ -125,7 +125,7 @@
     # NOTE: is_public from os_image is not working like expected
 
     - name: Make ubuntu images visible
-      command: "openstack --os-cloud admin image set --public {{ item }}"
+      command: "openstack --os-cloud admin image set --public {{ item }}" # noqa 301
       loop:
         - refstack-0
         - refstack-1
@@ -177,7 +177,7 @@
       delegate_to: testbed-manager
 
     - name: Check swift endpoint
-      command: openstack --os-cloud admin endpoint list --service swift
+      command: openstack --os-cloud admin endpoint list --service swift # noqa 301
       register: result
       delegate_to: testbed-manager
 

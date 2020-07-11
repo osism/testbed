@@ -79,7 +79,7 @@
       become: true
 
     - name: Run update-ca-certificates
-      command: update-ca-certificates --fresh
+      command: update-ca-certificates --fresh # noqa 301
       become: true
 
     - name: Restart docker service
