@@ -43,11 +43,17 @@ This can also be achieved automatically by passing the wanted versions inside th
 Deploy services
 ===============
 
-* Infrastructure services
+* Basic infrastructure services (MariaDB, RabbitMQ, Redis, ..)
 
   .. code-block:: console
 
-     /opt/configuration/scripts/deploy_infrastructure_services.sh
+     /opt/configuration/scripts/deploy_infrastructure_services_basic.sh
+
+* Extented infrastructure services (Patchman, phpMyAdmin, Cockpit, ..)
+
+  .. code-block:: console
+
+     /opt/configuration/scripts/deploy_infrastructure_services_extented.sh
 
 * Ceph services
 

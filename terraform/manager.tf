@@ -207,7 +207,7 @@ write_files:
 
       # deploy infrastructure services
       if [[ "${var.deploy_infrastructure}" == "true" ]]; then
-          sudo -iu dragon sh -c '/opt/configuration/scripts/deploy_infrastructure_services.sh'
+          sudo -iu dragon sh -c '/opt/configuration/scripts/deploy_infrastructure_services_basic.sh'
       fi
 
       # deploy ceph services
