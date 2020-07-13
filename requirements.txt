@@ -1,5 +1,5 @@
-Jinja2
-PyYAML
-jinja2-cli
-python-gilt
-requests
+Jinja2==2.11.2
+PyYAML==5.3.1
+jinja2-cli==1.1.3
+python-gilt==1.2.3
+requests==2.24.0
