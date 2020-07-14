@@ -1,6 +1,4 @@
 ---
-docker_kata_install: yes
-
 # NOTE: The testbed runs zun-compute on the node itself. Therefore the access
 #       via TCP to Docker is necessary. This is not recommended for production.
 
