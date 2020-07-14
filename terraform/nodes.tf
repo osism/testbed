@@ -164,6 +164,14 @@ write_files:
     path: /home/ubuntu/.ssh/id_rsa
     permissions: 0600
   - content: |
+      ${indent(6, file("playbooks/node.yml"))}
+    path: /opt/node.yml
+    permissions: 0644
+  - content: |
+      ${indent(6, file("playbooks/cleanup.yml"))}
+    path: /opt/cleanup.yml
+    permissions: 0644
+  - content: |
       #!/usr/bin/env bash
 
       echo '* libraries/restart-without-asking boolean true' | debconf-set-selections
@@ -184,11 +192,8 @@ write_files:
       ansible-galaxy install git+https://github.com/osism/ansible-repository
       ansible-galaxy install git+https://github.com/osism/ansible-resolvconf
 
-      curl https://raw.githubusercontent.com/osism/testbed/${var.configuration_version}/playbooks/node.yml > /root/node.yml
-      ansible-playbook -i localhost, /root/node.yml
-
-      curl https://raw.githubusercontent.com/osism/testbed/${var.configuration_version}/playbooks/cleanup.yml > /root/cleanup.yml
-      ansible-playbook -i localhost, /root/cleanup.yml
+      ansible-playbook -i localhost, /opt/node.yml
+      ansible-playbook -i localhost, /opt/cleanup.yml
       update-alternatives --install /usr/bin/python python /usr/bin/python3 1
 
       rm /home/ubuntu/.ssh/id_rsa*

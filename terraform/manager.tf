@@ -119,6 +119,26 @@ write_files:
     path: /home/ubuntu/.ssh/id_rsa
     permissions: 0600
   - content: |
+      ${indent(6, file("playbooks/node.yml"))}
+    path: /opt/node.yml
+    permissions: 0644
+  - content: |
+      ${indent(6, file("playbooks/cleanup.yml"))}
+    path: /opt/cleanup.yml
+    permissions: 0644
+  - content: |
+      ${indent(6, file("playbooks/manager-part-1.yml"))}
+    path: /opt/manager-part-1.yml
+    permissions: 0644
+  - content: |
+      ${indent(6, file("playbooks/manager-part-2.yml"))}
+    path: /opt/manager-part-2.yml
+    permissions: 0644
+  - content: |
+      ${indent(6, file("playbooks/manager-part-3.yml"))}
+    path: /opt/manager-part-3.yml
+    permissions: 0644
+  - content: |
       #!/usr/bin/env bash
 
       echo '* libraries/restart-without-asking boolean true' | debconf-set-selections
@@ -139,8 +159,7 @@ write_files:
       ansible-galaxy install git+https://github.com/osism/ansible-repository
       ansible-galaxy install git+https://github.com/osism/ansible-resolvconf
 
-      curl https://raw.githubusercontent.com/osism/testbed/${var.configuration_version}/playbooks/node.yml > /root/node.yml
-      ansible-playbook -i localhost, /root/node.yml
+      ansible-playbook -i localhost, /opt/node.yml
 
       cp /home/ubuntu/.ssh/id_rsa /home/dragon/.ssh/id_rsa
       cp /home/ubuntu/.ssh/id_rsa.pub /home/dragon/.ssh/id_rsa.pub
@@ -151,16 +170,12 @@ write_files:
       sudo -iu dragon ansible-galaxy install git+https://github.com/osism/ansible-docker-compose
       sudo -iu dragon ansible-galaxy install git+https://github.com/osism/ansible-manager
 
-      curl https://raw.githubusercontent.com/osism/testbed/${var.configuration_version}/playbooks/manager-part-1.yml | sudo -iu dragon tee /home/dragon/manager-part-1.yml
-      curl https://raw.githubusercontent.com/osism/testbed/${var.configuration_version}/playbooks/manager-part-2.yml | sudo -iu dragon tee /home/dragon/manager-part-2.yml
-      curl https://raw.githubusercontent.com/osism/testbed/${var.configuration_version}/playbooks/manager-part-3.yml | sudo -iu dragon tee /home/dragon/manager-part-3.yml
-
-      sudo -iu dragon ansible-playbook -i testbed-manager.osism.local, /home/dragon/manager-part-1.yml -e configuration_git_version=${var.configuration_version}
+      sudo -iu dragon ansible-playbook -i testbed-manager.osism.local, /opt/manager-part-1.yml -e configuration_git_version=${var.configuration_version}
       sudo -iu dragon sh -c 'cd /opt/configuration; ./scripts/set-ceph-version.sh ${var.ceph_version}'
       sudo -iu dragon sh -c 'cd /opt/configuration; ./scripts/set-openstack-version.sh ${var.openstack_version}'
 
-      sudo -iu dragon ansible-playbook -i testbed-manager.osism.local, /home/dragon/manager-part-2.yml
-      sudo -iu dragon ansible-playbook -i testbed-manager.osism.local, /home/dragon/manager-part-3.yml
+      sudo -iu dragon ansible-playbook -i testbed-manager.osism.local, /opt/manager-part-2.yml
+      sudo -iu dragon ansible-playbook -i testbed-manager.osism.local, /opt/manager-part-3.yml
 
       sudo -iu dragon docker cp /home/dragon/.ssh/id_rsa.pub manager_osism-ansible_1:/share/id_rsa.pub
 
@@ -171,8 +186,7 @@ write_files:
           sleep 1;
       done;
 
-      curl https://raw.githubusercontent.com/osism/testbed/${var.configuration_version}/playbooks/cleanup.yml > /root/cleanup.yml
-      ansible-playbook -i localhost, /root/cleanup.yml
+      ansible-playbook -i localhost, /opt/cleanup.yml
       update-alternatives --install /usr/bin/python python /usr/bin/python3 1
 
       # NOTE(berendt): sudo -E does not work here because sudo -i is needed
