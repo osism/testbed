@@ -164,39 +164,15 @@ write_files:
     path: /home/ubuntu/.ssh/id_rsa
     permissions: 0600
   - content: |
-      ${indent(6, file("playbooks/node.yml"))}
+      ${indent(6, file("files/node.yml"))}
     path: /opt/node.yml
     permissions: 0644
   - content: |
-      ${indent(6, file("playbooks/cleanup.yml"))}
+      ${indent(6, file("files/cleanup.yml"))}
     path: /opt/cleanup.yml
     permissions: 0644
   - content: |
-      #!/usr/bin/env bash
-
-      echo '* libraries/restart-without-asking boolean true' | debconf-set-selections
-
-      apt-get install --yes python3-netifaces
-      python3 /root/configure-network-devices.py
-
-      chown -R ubuntu:ubuntu /home/ubuntu/.ssh
-
-      add-apt-repository --yes ppa:ansible/ansible
-      apt-get install --yes ansible
-
-      ansible-galaxy install git+https://github.com/osism/ansible-chrony
-      ansible-galaxy install git+https://github.com/osism/ansible-common
-      ansible-galaxy install git+https://github.com/osism/ansible-docker
-      ansible-galaxy install git+https://github.com/osism/ansible-docker-compose
-      ansible-galaxy install git+https://github.com/osism/ansible-operator
-      ansible-galaxy install git+https://github.com/osism/ansible-repository
-      ansible-galaxy install git+https://github.com/osism/ansible-resolvconf
-
-      ansible-playbook -i localhost, /opt/node.yml
-      ansible-playbook -i localhost, /opt/cleanup.yml
-      update-alternatives --install /usr/bin/python python /usr/bin/python3 1
-
-      rm /home/ubuntu/.ssh/id_rsa*
+      ${indent(6, file("files/node.sh"))}
     path: /root/run.sh
     permissions: 0700
 runcmd:
