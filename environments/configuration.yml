@@ -27,6 +27,8 @@ configuration_git_protocol: https
 
 docker_user: "{{ operator_user }}"
 
+docker_kata_install: yes
+
 docker_configure_storage_driver: yes
 docker_storage_driver: overlay2
 
