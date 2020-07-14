@@ -1,6 +1,7 @@
 # Makefile
 
 ENVIRONMENT = betacloud
+SSH_USERNAME = dragon
 
 NEED_OSCLOUD := $(shell test -z "$$OS_PASSWORD" -a -z "$$OS_CLOUD" && echo 1 || echo 0)
 ifeq ($(NEED_OSCLOUD),1)
@@ -55,11 +56,11 @@ list: init
 
 ssh: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
 	@source ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
-	ssh -i .id_rsa.$(ENVIRONMENT) dragon@$$MANAGER_ADDRESS
+	ssh -i .id_rsa.$(ENVIRONMENT) $(SSH_USERNAME)@$$MANAGER_ADDRESS
 
 sshuttle: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
 	@source ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
-	sshuttle --ssh-cmd "ssh -i .id_rsa.$(ENVIRONMENT) " -r dragon@$$MANAGER_ADDRESS 192.168.40.0/24 192.168.50.0/24 192.168.90.0/24 192.168.100.0/24
+	sshuttle --ssh-cmd "ssh -i .id_rsa.$(ENVIRONMENT) " -r $(SSH_USERNAME)@$$MANAGER_ADDRESS 192.168.40.0/24 192.168.50.0/24 192.168.90.0/24 192.168.100.0/24
 
 console: .deploy.$(ENVIRONMENT)
 	@$(OPENSTACK) console log show testbed-manager
