@@ -19,7 +19,3 @@ ansible-galaxy install git+https://github.com/osism/ansible-repository
 ansible-galaxy install git+https://github.com/osism/ansible-resolvconf
 
 ansible-playbook -i localhost, /opt/node.yml
-ansible-playbook -i localhost, /opt/cleanup.yml
-update-alternatives --install /usr/bin/python python /usr/bin/python3 1
-
-rm /home/ubuntu/.ssh/id_rsa*
