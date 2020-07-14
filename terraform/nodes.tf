@@ -172,14 +172,19 @@ write_files:
     path: /opt/cleanup.yml
     permissions: 0644
   - content: |
+      ${indent(6, file("files/cleanup.sh"))}
+    path: /root/cleanup.sh
+    permissions: 0700
+  - content: |
       ${indent(6, file("files/node.sh"))}
-    path: /root/run.sh
+    path: /root/node.sh
     permissions: 0700
 runcmd:
   - "echo 'network: {config: disabled}' > /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg"
   - "rm -f /etc/network/interfaces.d/50-cloud-init.cfg"
   - "mv /etc/netplan/50-cloud-init.yaml /etc/netplan/50-cloud-init.yaml.unused"
-  - "/root/run.sh"
+  - "/root/node.sh"
+  - "/root/cleanup.sh"
 final_message: "The system is finally up, after $UPTIME seconds"
 EOT
 }

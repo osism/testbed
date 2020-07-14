@@ -139,27 +139,11 @@ write_files:
     path: /opt/manager-part-3.yml
     permissions: 0644
   - content: |
+      ${indent(6, file("files/node.sh"))}
+    path: /root/node.sh
+    permissions: 0700
+  - content: |
       #!/usr/bin/env bash
-
-      echo '* libraries/restart-without-asking boolean true' | debconf-set-selections
-
-      apt-get install --yes python3-netifaces
-      python3 /root/configure-network-devices.py
-
-      chown -R ubuntu:ubuntu /home/ubuntu/.ssh
-
-      add-apt-repository --yes ppa:ansible/ansible
-      apt-get install --yes ansible
-
-      ansible-galaxy install git+https://github.com/osism/ansible-chrony
-      ansible-galaxy install git+https://github.com/osism/ansible-common
-      ansible-galaxy install git+https://github.com/osism/ansible-docker
-      ansible-galaxy install git+https://github.com/osism/ansible-docker-compose
-      ansible-galaxy install git+https://github.com/osism/ansible-operator
-      ansible-galaxy install git+https://github.com/osism/ansible-repository
-      ansible-galaxy install git+https://github.com/osism/ansible-resolvconf
-
-      ansible-playbook -i localhost, /opt/node.yml
 
       cp /home/ubuntu/.ssh/id_rsa /home/dragon/.ssh/id_rsa
       cp /home/ubuntu/.ssh/id_rsa.pub /home/dragon/.ssh/id_rsa.pub
@@ -179,15 +163,12 @@ write_files:
 
       sudo -iu dragon docker cp /home/dragon/.ssh/id_rsa.pub manager_osism-ansible_1:/share/id_rsa.pub
 
-      rm /home/ubuntu/.ssh/id_rsa*
-
       # NOTE(berendt): wait for ARA
       until [[ "$(/usr/bin/docker inspect -f '{{.State.Health.Status}}' manager_ara-server_1)" == "healthy" ]]; do
           sleep 1;
       done;
 
-      ansible-playbook -i localhost, /opt/cleanup.yml
-      update-alternatives --install /usr/bin/python python /usr/bin/python3 1
+      /root/cleanup.sh
 
       # NOTE(berendt): sudo -E does not work here because sudo -i is needed
 
@@ -247,13 +228,14 @@ write_files:
       if [[ "${var.deploy_monitoring}" == "true" ]]; then
           sudo -iu dragon sh -c '/opt/configuration/scripts/deploy_monitoring_services.sh'
       fi
-    path: /root/run.sh
+    path: /root/manager.sh
     permissions: 0700
 runcmd:
   - "echo 'network: {config: disabled}' > /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg"
   - "rm -f /etc/network/interfaces.d/50-cloud-init.cfg"
   - "mv /etc/netplan/50-cloud-init.yaml /etc/netplan/50-cloud-init.yaml.unused"
-  - "/root/run.sh"
+  - "/root/node.sh"
+  - "/root/manager.sh"
 final_message: "The system is finally up, after $UPTIME seconds"
 power_state:
   mode: reboot
