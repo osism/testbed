@@ -130,6 +130,16 @@ resource "openstack_compute_instance_v2" "node_server" {
   network { port = openstack_networking_port_v2.node_port_storage_frontend[count.index].id }
   network { port = openstack_networking_port_v2.node_port_storage_backend[count.index].id }
 
+  provisioner "file" {
+    source      = "playbooks/node.yml"
+    destination = "/root/node.yml"
+  }
+
+  provisioner "file" {
+    source      = "playbooks/cleanup.yml"
+    destination = "/root/cleanup.yml"
+  }
+
   user_data = <<-EOT
 #cloud-config
 package_update: true
@@ -184,10 +194,7 @@ write_files:
       ansible-galaxy install git+https://github.com/osism/ansible-repository
       ansible-galaxy install git+https://github.com/osism/ansible-resolvconf
 
-      curl https://raw.githubusercontent.com/osism/testbed/${var.configuration_version}/playbooks/node.yml > /root/node.yml
       ansible-playbook -i localhost, /root/node.yml
-
-      curl https://raw.githubusercontent.com/osism/testbed/${var.configuration_version}/playbooks/cleanup.yml > /root/cleanup.yml
       ansible-playbook -i localhost, /root/cleanup.yml
       update-alternatives --install /usr/bin/python python /usr/bin/python3 1
 

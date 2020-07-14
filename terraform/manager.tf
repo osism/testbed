@@ -86,6 +86,26 @@ resource "openstack_compute_instance_v2" "manager_server" {
   network { port = openstack_networking_port_v2.manager_port_provider.id }
   network { port = openstack_networking_port_v2.manager_port_storage_frontend.id }
 
+  provisioner "file" {
+    source      = "playbooks/node.yml"
+    destination = "/root/node.yml"
+  }
+
+  provisioner "file" {
+    source      = "playbooks/manager-part-1.yml"
+    destination = "/home/dragon/manager-part-1.yml"
+  }
+
+  provisioner "file" {
+    source      = "playbooks/manager-part-2.yml"
+    destination = "/home/dragon/manager-part-2.yml"
+  }
+
+  provisioner "file" {
+    source      = "playbooks/manager-part-3.yml"
+    destination = "/home/dragon/manager-part-3.yml"
+  }
+
   user_data = <<-EOT
 #cloud-config
 package_update: true
@@ -139,7 +159,6 @@ write_files:
       ansible-galaxy install git+https://github.com/osism/ansible-repository
       ansible-galaxy install git+https://github.com/osism/ansible-resolvconf
 
-      curl https://raw.githubusercontent.com/osism/testbed/${var.configuration_version}/playbooks/node.yml > /root/node.yml
       ansible-playbook -i localhost, /root/node.yml
 
       cp /home/ubuntu/.ssh/id_rsa /home/dragon/.ssh/id_rsa
@@ -150,10 +169,6 @@ write_files:
       sudo -iu dragon ansible-galaxy install git+https://github.com/osism/ansible-docker
       sudo -iu dragon ansible-galaxy install git+https://github.com/osism/ansible-docker-compose
       sudo -iu dragon ansible-galaxy install git+https://github.com/osism/ansible-manager
-
-      curl https://raw.githubusercontent.com/osism/testbed/${var.configuration_version}/playbooks/manager-part-1.yml | sudo -iu dragon tee /home/dragon/manager-part-1.yml
-      curl https://raw.githubusercontent.com/osism/testbed/${var.configuration_version}/playbooks/manager-part-2.yml | sudo -iu dragon tee /home/dragon/manager-part-2.yml
-      curl https://raw.githubusercontent.com/osism/testbed/${var.configuration_version}/playbooks/manager-part-3.yml | sudo -iu dragon tee /home/dragon/manager-part-3.yml
 
       sudo -iu dragon ansible-playbook -i testbed-manager.osism.local, /home/dragon/manager-part-1.yml -e configuration_git_version=${var.configuration_version}
       sudo -iu dragon sh -c 'cd /opt/configuration; ./scripts/set-ceph-version.sh ${var.ceph_version}'
