@@ -119,23 +119,23 @@ write_files:
     path: /home/ubuntu/.ssh/id_rsa
     permissions: 0600
   - content: |
-      ${indent(6, file("playbooks/node.yml"))}
+      ${indent(6, file("files/node.yml"))}
     path: /opt/node.yml
     permissions: 0644
   - content: |
-      ${indent(6, file("playbooks/cleanup.yml"))}
+      ${indent(6, file("files/cleanup.yml"))}
     path: /opt/cleanup.yml
     permissions: 0644
   - content: |
-      ${indent(6, file("playbooks/manager-part-1.yml"))}
+      ${indent(6, file("files/manager-part-1.yml"))}
     path: /opt/manager-part-1.yml
     permissions: 0644
   - content: |
-      ${indent(6, file("playbooks/manager-part-2.yml"))}
+      ${indent(6, file("files/manager-part-2.yml"))}
     path: /opt/manager-part-2.yml
     permissions: 0644
   - content: |
-      ${indent(6, file("playbooks/manager-part-3.yml"))}
+      ${indent(6, file("files/manager-part-3.yml"))}
     path: /opt/manager-part-3.yml
     permissions: 0644
   - content: |
