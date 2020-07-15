@@ -97,4 +97,7 @@ watch: .id_rsa.$(ENVIRONMENT) .MANAGER_ADDRESS.$(ENVIRONMENT)
 	done;
 	#@$(OPENSTACK) server list
 
-PHONY: clean console sshuttle ssh dry-run list deploy deploy-infra deploy-ceph deploy-openstack watch
+openstack: init
+	@$(OPENSTACK)
+
+PHONY: clean console sshuttle ssh dry-run list deploy deploy-infra deploy-ceph deploy-openstack watch openstack
