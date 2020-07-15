@@ -175,7 +175,6 @@ security_rhel7_enable_linux_security_module: no
 
 security_rhel7_remove_shosts_files: yes
 security_package_clean_on_remove: yes
-security_rhel7_automatic_package_updates: no
 
 security_rhel7_session_timeout: 3600
 
