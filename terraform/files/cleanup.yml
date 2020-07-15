@@ -10,6 +10,7 @@
   tasks:
     - name: Set python3 as default
       command: update-alternatives --install /usr/bin/python python /usr/bin/python3 1  # noqa 301
+      become: true
 
     # NOTE: This must be the last task. It will uninstall Ansible.
     - name: Purge python2 environment
