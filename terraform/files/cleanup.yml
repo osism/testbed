@@ -8,11 +8,13 @@
     ansible_python_interpreter: /usr/bin/python3
 
   tasks:
+    - name: Set python3 as default
+      command: update-alternatives --install /usr/bin/python python /usr/bin/python3 1  # noqa 301
 
     # NOTE: This must be the last task. It will uninstall Ansible.
     - name: Purge python2 environment
       apt:
-        name: python-minimal
+        name: python
         state: absent
         autoremove: true
         purge: true
