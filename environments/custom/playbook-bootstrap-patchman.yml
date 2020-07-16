@@ -1,12 +1,4 @@
 ---
-- hosts: all
-  gather_facts: false
-  become: false
-
-  tasks:
-    - name: Run patchman-client
-      command: /usr/local/bin/patchman-client # noqa 301
-
 - hosts: patchman
   gather_facts: false
   become: false
