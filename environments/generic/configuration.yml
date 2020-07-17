@@ -11,4 +11,4 @@ dotfiles_files:
 ##########################
 # patchman-client
 
-patchman_client_server_url: http://{{ hostvars['testbed-manager.osism.local']['ansible_' + management_interface]['ipv4']['address'] }}:8150
+patchman_client_host: "{{ hostvars['testbed-manager.osism.local']['ansible_' + management_interface]['ipv4']['address'] }}"
