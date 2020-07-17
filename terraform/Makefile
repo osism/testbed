@@ -2,13 +2,11 @@
 
 ENVIRONMENT = betacloud
 SSH_USERNAME = dragon
+OPENSTACK = openstack
 
 NEED_OSCLOUD := $(shell test -z "$$OS_PASSWORD" -a -z "$$OS_CLOUD" && echo 1 || echo 0)
 ifeq ($(NEED_OSCLOUD),1)
-  OS_CLOUD=$(ENVIRONMENT)
-  OPENSTACK=openstack --os-cloud $(OS_CLOUD)
-else
-  OPENSTACK=openstack
+  export OS_CLOUD=$(ENVIRONMENT)
 endif
 
 init:
