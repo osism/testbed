@@ -24,7 +24,7 @@ variable "flavor_node" {
 }
 
 variable "flavor_manager" {
-  default = "2C-4GB-20GB"
+  default = "4C-8GB-20GB"
   type    = string
 }
 
