@@ -46,6 +46,9 @@ testbed-manager
 [pulp:children]
 testbed-manager
 
+[zabbix-agent:children]
+testbed-all
+
 [infrastructure:children]
 helper
 manager
