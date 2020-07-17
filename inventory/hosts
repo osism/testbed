@@ -22,9 +22,6 @@ testbed-node-1.osism.local
 ##########################################################
 # environment: manager & infrastructure
 
-[netdata:children]
-testbed-all
-
 [helper:children]
 testbed-manager
 
@@ -33,6 +30,12 @@ testbed-manager
 
 [mirror:children]
 testbed-manager
+
+[netbox:children]
+testbed-manager
+
+[netdata:children]
+testbed-all
 
 [openstackclient:children]
 testbed-manager
@@ -47,6 +50,7 @@ testbed-manager
 helper
 manager
 mirror
+netbox
 openstackclient
 patchman
 pulp
