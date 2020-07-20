@@ -2,6 +2,6 @@
 
 export INTERACTIVE=false
 
-osism-generic zabbix-agent
-osism-infrastructure netdata
+osism-monitoring zabbix-agent
+osism-monitoring netdata
 osism-kolla deploy prometheus
