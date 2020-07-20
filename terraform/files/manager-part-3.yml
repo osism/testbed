@@ -37,6 +37,7 @@
 
   vars:
     ansible_python_interpreter: /usr/bin/python3
+    docker_registry_ansible: quay.io
 
   vars_files:
     - /opt/configuration/inventory/host_vars/testbed-manager.osism.local.yml
