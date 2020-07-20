@@ -176,7 +176,7 @@ Netdata
 
 .. code-block:: console
 
-   osism-infrastructure netdata
+   osism-monitoring netdata
 
 .. figure:: /images/netdata.png
 
