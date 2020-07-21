@@ -1,0 +1,12 @@
+---
+scrape_configs:
+  - job_name: awx
+    tls_config:
+      insecure_skip_verify: true
+    metrics_path: /api/v2/metrics
+    scrape_interval: 60s
+    scheme: http
+    bearer_token: "{{ awx_token|default('') }}"
+    static_configs:
+      - targets:
+          - "{{ hostvars['testbed-manager.osism.local']['ansible_' + console_interface]['ipv4']['address'] }}:8150"
