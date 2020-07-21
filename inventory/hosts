@@ -167,6 +167,13 @@ testbed-nodes
 [monitoring:children]
 testbed-manager
 
+[common:children]
+control
+network
+compute
+storage
+monitoring
+
 [grafana:children]
 monitoring
 
@@ -679,3 +686,17 @@ compute
 
 [zun-cni-daemon:children]
 compute
+
+# common
+
+[cron:children]
+common
+
+[fluentd:children]
+common
+
+[kolla-logs:children]
+common
+
+[kolla-toolbox:children]
+common
