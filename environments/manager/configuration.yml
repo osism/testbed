@@ -20,3 +20,6 @@ ara_server_host: "{{ hostvars[inventory_hostname]['ansible_' + console_interface
 
 awx_enable: yes
 awx_host: "{{ hostvars[inventory_hostname]['ansible_' + console_interface]['ipv4']['address'] }}"
+
+awx_vault_type: vault
+vault_host: "{{ hostvars[inventory_hostname]['ansible_' + console_interface]['ipv4']['address'] }}"
