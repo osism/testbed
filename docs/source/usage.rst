@@ -137,7 +137,7 @@ Netdata          http://192.168.50.5:19999  -        -
 Patchman         http://192.168.50.5:8150   patchman aiB4aijiebeesiu0
 Prometheus       http://192.168.50.5:9091   -        -
 Skydive          http://192.168.50.5:8085   admin    pYV8bV749aDMXLPlYJwoJs4ouRPWezCIOXYAQP6v
-phpMyAdmin       http://192.168.40.5:8110   root     qNpdZmkKuUKBK3D5nZ08KMZ5MnYrGEe2hzH6XC0i
+phpMyAdmin       http://192.168.50.5:8110   root     qNpdZmkKuUKBK3D5nZ08KMZ5MnYrGEe2hzH6XC0i
 ================ ========================== ======== ========================================
 
 ARA
