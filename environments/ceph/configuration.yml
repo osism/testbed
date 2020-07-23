@@ -5,7 +5,7 @@
 containerized_deployment: true
 
 generate_fsid: false
-fsid: ce766f84-6dde-4ba0-9c57-ddb62431f1cd
+fsid: 00000000-0000-0000-0000-000000000000
 
 ##########################
 # osd

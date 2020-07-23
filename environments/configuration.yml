@@ -189,7 +189,7 @@ security_sshd_allowed_macs: hmac-sha2-256,hmac-sha2-512,hmac-sha1
 # ceph
 
 ceph_share_directory: /share
-ceph_cluster_fsid: ce766f84-6dde-4ba0-9c57-ddb62431f1cd
+ceph_cluster_fsid: 00000000-0000-0000-0000-000000000000
 
 ##########################
 # cockpit
