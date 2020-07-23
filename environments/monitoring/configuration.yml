@@ -3,3 +3,14 @@
 # netdata
 
 netdata_api_host: "{{ hostvars['testbed-manager.osism.local']['ansible_' + management_interface]['ipv4']['address'] }}"
+
+##########################
+# zabbix-agent
+
+zabbix_agent_server: "{{ hostvars['testbed-manager.osism.local']['ansible_' + management_interface]['ipv4']['address'] }}"
+
+##########################
+# zabbix
+
+zabbix_server_host: "{{ hostvars['testbed-manager.osism.local']['ansible_' + management_interface]['ipv4']['address'] }}"
+zabbix_web_host: "{{ hostvars['testbed-manager.osism.local']['ansible_' + management_interface]['ipv4']['address'] }}"

@@ -138,6 +138,7 @@ Patchman         http://192.168.50.5:8150   patchman aiB4aijiebeesiu0
 Prometheus       http://192.168.50.5:9091   -        -
 Skydive          http://192.168.50.5:8085   admin    pYV8bV749aDMXLPlYJwoJs4ouRPWezCIOXYAQP6v
 phpMyAdmin       http://192.168.50.5:8110   root     qNpdZmkKuUKBK3D5nZ08KMZ5MnYrGEe2hzH6XC0i
+Zabbix           http://192.168.50.5:8160   Admin    zabbix
 ================ ========================== ======== ========================================
 
 ARA
@@ -243,6 +244,16 @@ Deploy `Clustered infrastructure services`, `Infrastructure services`, and
    osism-kolla deploy prometheus
 
 .. figure:: /images/prometheus.png
+
+Zabbix
+------
+
+.. code-block:: console
+
+   osism-monitoring zabbix-agent
+   osism-monitoring zabbix
+
+.. figure:: /images/zabbix.png
 
 Tools
 =====
