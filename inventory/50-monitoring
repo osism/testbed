@@ -1,0 +1,11 @@
+##########################################################
+# environment: monitoring
+
+[netdata:children]
+global
+
+[zabbix-agent:children]
+global
+
+[zabbix:children]
+monitoring

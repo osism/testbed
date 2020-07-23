@@ -185,8 +185,8 @@ write_files:
       sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic network'
 
       # reboot nodes
-      sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic reboot -l "testbed-all:!testbed-manager" -e ireallymeanit=yes'
-      sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic wait-for-connection -l "testbed-all:!testbed-manager" -e ireallymeanit=yes'
+      sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic reboot -l "global:!manager" -e ireallymeanit=yes'
+      sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic wait-for-connection -l "all:!manager" -e ireallymeanit=yes'
 
       # NOTE: Restart the manager services to update the /etc/hosts file
       sudo -iu dragon sh -c 'docker-compose -f /opt/manager/docker-compose.yml restart'

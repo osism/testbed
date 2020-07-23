@@ -1,0 +1,16 @@
+##########################################################
+# environment: generic
+
+[controller:children]
+control
+mariadb
+rabbitmq
+memcached
+elasticsearch
+kibana
+
+[docker:children]
+global
+
+[podman:children]
+manager

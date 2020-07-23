@@ -1,0 +1,20 @@
+##########################################################
+# environment: manager & infrastructure
+
+[helper:children]
+manager
+
+[mirror:children]
+manager
+
+[netbox:children]
+manager
+
+[openstackclient:children]
+manager
+
+[patchman:children]
+manager
+
+[pulp:children]
+manager
