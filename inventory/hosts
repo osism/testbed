@@ -20,6 +20,18 @@ testbed-node-1.osism.local
 # testbed-node-2.osism.local
 
 ##########################################################
+# environment: monitoring
+
+[netdata:children]
+testbed-all
+
+[zabbix-agent:children]
+testbed-all
+
+[zabbix:children]
+testbed-manager
+
+##########################################################
 # environment: manager & infrastructure
 
 [helper:children]
@@ -34,9 +46,6 @@ testbed-manager
 [netbox:children]
 testbed-manager
 
-[netdata:children]
-testbed-all
-
 [openstackclient:children]
 testbed-manager
 
@@ -45,9 +54,6 @@ testbed-manager
 
 [pulp:children]
 testbed-manager
-
-[zabbix-agent:children]
-testbed-all
 
 [infrastructure:children]
 helper
