@@ -1,0 +1,26 @@
+##########################################################
+# roles
+
+[manager:children]
+testbed-manager
+
+[monitoring:children]
+testbed-manager
+
+[control:children]
+testbed-nodes
+
+[compute:children]
+testbed-nodes
+
+[network:children]
+testbed-nodes
+
+[storage:children]
+testbed-nodes
+
+[ceph-control:children]
+testbed-nodes
+
+[ceph-resource:children]
+testbed-nodes
