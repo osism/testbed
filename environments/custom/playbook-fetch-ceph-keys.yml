@@ -39,4 +39,4 @@
 
     - name: Copy ceph keys to the configuration repository
       command: "docker cp manager_ceph-ansible_1:/share/{{ ceph_cluster_fsid }}/etc/ceph/{{ item.src }} {{ item.dest }}" # noqa 301
-      with_items: "{{ ceph_keys }}"
+      loop: "{{ ceph_keys }}"

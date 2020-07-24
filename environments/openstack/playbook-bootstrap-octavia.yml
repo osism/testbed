@@ -61,7 +61,7 @@
         port_range_min: "{{ item }}"
         port_range_max: "{{ item }}"
         remote_ip_prefix: 0.0.0.0/0
-      with_items:
+      loop:
         - 5555
         - 10514
         - 20514
@@ -90,7 +90,7 @@
         port_range_min: "{{ item }}"
         port_range_max: "{{ item }}"
         remote_ip_prefix: 0.0.0.0/0
-      with_items:
+      loop:
         - 22
         - 9443
 
@@ -120,7 +120,7 @@
         fixed_ips:
           - ip_address: "192.168.110.1{{ item }}"
         mac_address: "02:00:00:00:00:1{{ item }}"
-      with_items:
+      loop:
         - 0
         - 1
         - 2
@@ -128,7 +128,7 @@
     # NOTE: host parameter is currently not available for os_port task
     - name: Set host on control ports in lb-mgmt-net network
       command: "openstack --os-cloud admin port set --host testbed-node-{{ item }} octavia-health-manager-testbed-node-{{ item }}-listen-port" # noqa 301
-      with_items:
+      loop:
         - 0
         - 1
         - 2

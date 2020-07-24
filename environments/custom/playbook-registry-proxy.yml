@@ -11,7 +11,7 @@
         group: "{{ operator_group }}"
         mode: 0750
       become: true
-      with_items:
+      loop:
         - "{{ registry_proxy_docker_compose_directory }}"
 
     - name: registry-proxy - copy docker-compose.yml file
