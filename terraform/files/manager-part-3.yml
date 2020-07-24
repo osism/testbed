@@ -25,7 +25,7 @@
         group: root
         mode: 0755
       become: true
-      with_items:
+      loop:
         - testbed_ceph_devices
         - testbed_ceph_devices_all
         - testbed_network_devices

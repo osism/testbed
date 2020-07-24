@@ -62,7 +62,7 @@
         user: test
         role: "{{ item }}"
         project: test
-      with_items:
+      loop:
         - load-balancer_member
         - member
         - _member_
