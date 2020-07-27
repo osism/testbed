@@ -1,5 +1,5 @@
 ##########################################################
-# environment: manager & infrastructure
+# environment: infrastructure
 
 [helper:children]
 manager
@@ -17,4 +17,7 @@ manager
 manager
 
 [pulp:children]
+manager
+
+[ucs:children]
 manager
