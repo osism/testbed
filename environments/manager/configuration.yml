@@ -23,3 +23,6 @@ awx_host: "{{ hostvars[inventory_hostname]['ansible_' + console_interface]['ipv4
 
 awx_vault_type: vault
 vault_host: "{{ hostvars[inventory_hostname]['ansible_' + console_interface]['ipv4']['address'] }}"
+
+netbox_enable: yes
+netbox_host: "{{ hostvars[inventory_hostname]['ansible_' + console_interface]['ipv4']['address'] }}"
