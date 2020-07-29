@@ -7,6 +7,9 @@
 # NOTE: only required when using Neutron DVR
 [external-compute]
 
+[storage:children]
+control
+
 [common:children]
 control
 network

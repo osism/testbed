@@ -16,9 +16,6 @@ testbed-nodes
 [network:children]
 testbed-nodes
 
-[storage:children]
-testbed-nodes
-
 [ceph-control:children]
 testbed-nodes
 
