@@ -81,7 +81,7 @@ each supported cloud provider.
 Preparations
 ============
 
-* `Terraform <https://www.terraform.io>`_ must be installed (https://learn.hashicorp.com/terraform/getting-started/install.html)
+* `Terraform <https://www.terraform.io>`_ must be installed (https://learn.hashicorp.com/tutorials/terraform/install-cli)
 * ``clouds.yaml`` and ``secure.yaml`` files must be created
   (https://docs.openstack.org/python-openstackclient/latest/configuration/index.html#clouds-yaml)
 
