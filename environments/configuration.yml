@@ -64,6 +64,7 @@ repositories:
     repository: "deb [arch=amd64] http://de.archive.ubuntu.com/ubuntu/ {{ ansible_distribution_release }}-updates main restricted universe multiverse"
 
 docker_configure_repository: yes
+falco_configure_repository: yes
 netdata_configure_repository: yes
 osquery_configure_repository: yes
 sysdig_configure_repository: yes
