@@ -1,8 +1,0 @@
-[global]
-testbed-manager.osism.local
-testbed-node-0.osism.local
-testbed-node-1.osism.local
-
-# NOTE: The node testbed-node-2 is commented to be able to test scaling
-#       in the testbed.
-# testbed-node-2.osism.local
