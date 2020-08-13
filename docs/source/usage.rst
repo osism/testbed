@@ -178,7 +178,7 @@ Netbox
 
 Netbox is part of the manager and does not need to be deployed individually.
 
-.. figure:: /images/netdata.png
+.. figure:: /images/netbox.png
 
 Netdata
 -------
