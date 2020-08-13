@@ -137,6 +137,9 @@ enable_cluster_user_trust: "yes"
 # manila
 enable_manila_backend_generic: "yes"
 
+# prometheus
+enable_prometheus_server: "no"
+
 ##########################################################
 # external ceph
 

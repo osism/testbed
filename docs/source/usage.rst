@@ -133,6 +133,7 @@ Ceph             http://192.168.50.200:7000 admin    phoon7Chahvae6we
 Cockpit          https://192.168.40.5:8130  dragon   da5pahthaew2Pai2
 Horizon          http://192.168.50.200      admin    pYV8bV749aDMXLPlYJwoJs4ouRPWezCIOXYAQP6v
 Kibana           http://192.168.50.200:5601 kibana   k2ReobFEsoxNm3DyZnkZmFPadSnCz6BjQhaLFoyB
+Netbox           http://192.168.40.5:8121   netbox   password
 Netdata          http://192.168.50.5:19999  -        -
 Patchman         http://192.168.50.5:8150   patchman aiB4aijiebeesiu0
 Prometheus       http://192.168.50.5:9091   -        -
@@ -171,6 +172,13 @@ Cockpit
    osism-run custom generate-ssh-known-hosts
 
 .. figure:: /images/cockpit.png
+
+Netbox
+------
+
+Netbox is part of the manager and does not need to be deployed individually.
+
+.. figure:: /images/netdata.png
 
 Netdata
 -------
