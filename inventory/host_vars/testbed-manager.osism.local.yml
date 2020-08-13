@@ -5,6 +5,11 @@
 ansible_host: 192.168.40.5
 
 ##########################################################
+# netbox
+
+netbox_inventory_status: Active
+
+##########################################################
 # generic
 
 console_interface: "{{ ansible_local.testbed_network_devices.management }}"
