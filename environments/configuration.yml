@@ -1,16 +1,5 @@
 ---
 ##########################
-# debops
-
-# apt
-
-apt__enabled: no
-
-# grub
-
-grub_hidden_timeout: false
-
-##########################
 # configuration
 
 configuration_directory: /opt/configuration
