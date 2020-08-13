@@ -5,6 +5,11 @@
 ansible_host: 192.168.40.12
 
 ##########################################################
+# netbox
+
+netbox_inventory_status: Active
+
+##########################################################
 # docker
 
 docker_configure_proxy: yes
