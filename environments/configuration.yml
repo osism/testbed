@@ -73,12 +73,6 @@ operator_group: dragon
 operator_authorized_keys: "{{lookup('file', '/share/id_rsa.pub')}}"
 
 ##########################
-# network
-
-network_allow_service_restart: no
-network_restart_method: nothing
-
-##########################
 # proxy
 
 proxy_proxies:
