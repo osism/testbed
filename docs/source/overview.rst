@@ -60,6 +60,7 @@ Infrastructure
 * Kibana
 * Mariadb
 * Memcached
+* Netbox
 * Netdata
 * Openvswitch
 * Patchman
