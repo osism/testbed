@@ -109,26 +109,6 @@ osism_serial:
   utilities: 100%
 
 ##########################
-# hardening
-
-stig_version: rhel7
-
-# NOTE: osism.chrony is used instead of this integration
-security_rhel7_enable_chrony: no
-
-# NOTE: http://docs.openstack.org/developer/kolla-ansible/security.html#selinux
-security_rhel7_enable_linux_security_module: no
-
-security_rhel7_remove_shosts_files: yes
-security_package_clean_on_remove: yes
-
-security_rhel7_session_timeout: 3600
-
-# NOTE(berendt): allow hmac-sha1 to make cockpit usable
-#                https://github.com/cockpit-project/cockpit/issues/8733
-security_sshd_allowed_macs: hmac-sha2-256,hmac-sha2-512,hmac-sha1
-
-##########################
 # ceph
 
 ceph_share_directory: /share
