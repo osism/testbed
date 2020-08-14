@@ -8,6 +8,7 @@
     - name: Add wireguard repository
       apt_repository:
         repo: ppa:wireguard/wireguard
+        mode: 0600
       become: true
       when: "ansible_distribution_release == 'bionic'"
 
