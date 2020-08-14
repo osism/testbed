@@ -161,7 +161,7 @@ write_files:
       sudo -iu dragon ansible-playbook -i testbed-manager.osism.local, /opt/manager-part-2.yml
       sudo -iu dragon ansible-playbook -i testbed-manager.osism.local, /opt/manager-part-3.yml
 
-      sudo -iu dragon docker cp /home/dragon/.ssh/id_rsa.pub manager_osism-ansible_1:/share/id_rsa.pub
+      sudo -iu dragon cp /home/dragon/.ssh/id_rsa.pub /opt/ansible/secrets/id_rsa.operator.pub
 
       # NOTE(berendt): wait for ARA
       until [[ "$(/usr/bin/docker inspect -f '{{.State.Health.Status}}' manager_ara-server_1)" == "healthy" ]]; do
