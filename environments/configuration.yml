@@ -37,29 +37,6 @@ docker_version: "5:19.03.5"
 repository_version: latest
 
 ##########################
-# repositories
-
-repository_keys: {}
-repository_key_ids: {}
-
-repositories:
-  - name: "{{ ansible_distribution_release }}"
-    repository: "deb [arch=amd64] http://de.archive.ubuntu.com/ubuntu/ {{ ansible_distribution_release }} main restricted universe multiverse"
-  - name: "{{ ansible_distribution_release }}-backports"
-    repository: "deb [arch=amd64] http://de.archive.ubuntu.com/ubuntu/ {{ ansible_distribution_release }}-backports main restricted universe multiverse"
-  - name: "{{ ansible_distribution_release }}-security"
-    repository: "deb [arch=amd64] http://de.archive.ubuntu.com/ubuntu/ {{ ansible_distribution_release }}-security main restricted universe multiverse"
-  - name: "{{ ansible_distribution_release }}-updates"
-    repository: "deb [arch=amd64] http://de.archive.ubuntu.com/ubuntu/ {{ ansible_distribution_release }}-updates main restricted universe multiverse"
-
-docker_configure_repository: yes
-falco_configure_repository: yes
-netdata_configure_repository: yes
-osquery_configure_repository: yes
-sysdig_configure_repository: yes
-zabbix_agent_configure_repository: yes
-
-##########################
 # operator
 
 operator_user: dragon
