@@ -28,6 +28,11 @@ cockpit_host: "{{ hostvars[inventory_hostname]['ansible_' + console_interface]['
 cockpit_ssh_interface: "{{ ansible_local.testbed_network_devices.management }}"
 
 ##########################################################
+# docker
+
+docker_dragonfly: true
+
+##########################################################
 # netdata
 
 netdata_host_type: client
