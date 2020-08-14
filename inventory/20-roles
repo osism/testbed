@@ -1,6 +1,9 @@
 ##########################################################
 # roles
 
+# NOTE: This file is used to store the hosts for initial import into
+#       the netbox (when using netbox).
+
 [generic:children]
 testbed-manager
 testbed-nodes
@@ -25,3 +28,23 @@ testbed-nodes
 
 [ceph-resource:children]
 testbed-nodes
+
+# NOTE: After the initial import of the inventory in the netbox,
+#       the groups in this file can be emptied. The systems are
+#       then assigned to their roles via tags in the netbox.
+
+# [generic]
+#
+# [manager]
+#
+# [monitoring]
+#
+# [control]
+#
+# [compute]
+#
+# [network]
+#
+# [ceph-control]
+#
+# [ceph-resource]
