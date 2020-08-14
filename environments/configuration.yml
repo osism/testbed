@@ -39,9 +39,6 @@ repository_version: latest
 ##########################
 # operator
 
-operator_user: dragon
-operator_group: dragon
-
 operator_authorized_keys: "{{lookup('file', '/share/id_rsa.pub')}}"
 
 ##########################
