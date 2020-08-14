@@ -111,17 +111,6 @@ osism_serial:
   utilities: 100%
 
 ##########################
-# chrony
-
-chrony_servers:
-  - 1.de.pool.ntp.org
-  - 2.de.pool.ntp.org
-  - 3.de.pool.ntp.org
-  - 4.de.pool.ntp.org
-chrony_allowed_subnets:
-  - 127.0.0.1/32
-
-##########################
 # hardening
 
 stig_version: rhel7
