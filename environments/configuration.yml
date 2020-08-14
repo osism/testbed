@@ -39,7 +39,8 @@ repository_version: latest
 ##########################
 # operator
 
-operator_authorized_keys: "{{lookup('file', '/share/id_rsa.pub')}}"
+operator_authorized_keys:
+  - "{{lookup('file', '/ansible/secrets/id_rsa.operator.pub')}}"
 
 ##########################
 # proxy
