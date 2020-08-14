@@ -1,5 +1,3 @@
 ---
-# registry proxy
-
-registry_proxy_tag: latest
-registry_proxy_image: "{{ docker_registry }}/rpardini/docker-registry-proxy:{{ registry_proxy_tag }}"
+# file as a good configuration file when no variable in it.
+dummy:
