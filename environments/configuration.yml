@@ -43,12 +43,6 @@ operator_authorized_keys:
   - "{{lookup('file', '/ansible/secrets/id_rsa.operator.pub')}}"
 
 ##########################
-# proxy
-
-proxy_proxies:
-  http: http://192.168.50.5:3128
-
-##########################
 # resolvconf
 
 resolvconf_nameserver:

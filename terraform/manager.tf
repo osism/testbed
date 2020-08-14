@@ -175,9 +175,6 @@ write_files:
       sudo -iu dragon sh -c 'INTERACTIVE=false osism-run custom cronjobs'
       sudo -iu dragon sh -c 'INTERACTIVE=false osism-run custom facts'
 
-      # deploy proxy services
-      sudo -iu dragon sh -c '/opt/configuration/scripts/deploy_proxy_services.sh'
-
       sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic bootstrap'
       sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic operator'
 
