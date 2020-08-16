@@ -1,12 +1,11 @@
 ---
-- name: Apply role osism.docker
+- name: Apply role docker
   hosts: testbed-manager.osism.local
   connection: local
   gather_facts: true
 
   vars:
     ansible_python_interpreter: /usr/bin/python3
-    docker_compose_install_type: package
     docker_configure_repository: yes
     docker_configure_storage_driver: yes
     docker_kata_install: yes
@@ -17,10 +16,13 @@
   roles:
     - ansible-docker
 
-- name: Apply role osism.docker-compose
+- name: Apply role docker-compose
   hosts: testbed-manager.osism.local
   connection: local
   gather_facts: true
+
+  vars:
+    docker_compose_install_type: package
 
   roles:
     - ansible-docker-compose
