@@ -30,7 +30,7 @@
         - testbed_ceph_devices_all
         - testbed_network_devices
 
-- name: Apply role osism.manager
+- name: Apply role manager
   hosts: testbed-manager.osism.local
   connection: local
   gather_facts: true
