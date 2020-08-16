@@ -68,6 +68,8 @@ cleanup_services_common:
   - lxcfs
   - nscd
   - ntp
+  - networkd-dispatcher
+  - systemd-networkd
 
 install_microcode_package_common: yes
 rng_enable_common: yes
