@@ -138,6 +138,7 @@
         path: /opt/configuration/environments/kolla/configuration.yml
         regexp: '^octavia_amp_boot_network_list:'
         line: "octavia_amp_boot_network_list: {{ network.id }}"
+        mode: 0644
       delegate_to: testbed-manager
 
     - name: Set octavia_amp_secgroup_list in environments/kolla/configuration.yml
@@ -145,6 +146,7 @@
         path: /opt/configuration/environments/kolla/configuration.yml
         regexp: '^octavia_amp_secgroup_list:'
         line: "octavia_amp_secgroup_list: {{ secgrp.id }}"
+        mode: 0644
       delegate_to: testbed-manager
 
     - name: Set octavia_amp_flavor_id in environments/kolla/configuration.yml
@@ -152,6 +154,7 @@
         path: /opt/configuration/environments/kolla/configuration.yml
         regexp: '^octavia_amp_flavor_id:'
         line: "octavia_amp_flavor_id: {{ flavor.id }}"
+        mode: 0644
       delegate_to: testbed-manager
 
 - name: Prepare Octavia control nodes
