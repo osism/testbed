@@ -60,7 +60,7 @@ hosts_additional_entries:
 ##########################
 # common
 
-cleanup_services_common:
+cleanup_services:
   - NetworkManager
   - iscsid
   - lxcfs
@@ -68,10 +68,6 @@ cleanup_services_common:
   - ntp
   - networkd-dispatcher
   - systemd-networkd
-
-install_microcode_package_common: yes
-rng_enable_common: yes
-smartd_enable_common: no
 
 ##########################
 # kolla
