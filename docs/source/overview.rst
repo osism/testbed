@@ -64,7 +64,7 @@ Infrastructure
 * Netdata
 * Openvswitch
 * Patchman
-* Prometheus
+* Prometheus exporters
 * Rabbitmq
 * Redis
 * Skydive
