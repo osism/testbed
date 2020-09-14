@@ -79,7 +79,7 @@ Deploy services
 
      /opt/configuration/scripts/deploy_openstack_services_additional.sh
 
-* Monitoring services (Netdata, Prometheus, ..)
+* Monitoring services (Netdata, Prometheus exporters, ..)
 
   .. code-block:: console
 
@@ -136,7 +136,6 @@ Kibana           http://192.168.50.200:5601 kibana   k2ReobFEsoxNm3DyZnkZmFPadSn
 Netbox           http://192.168.40.5:8121   netbox   password
 Netdata          http://192.168.50.5:19999  -        -
 Patchman         http://192.168.50.5:8150   patchman aiB4aijiebeesiu0
-Prometheus       http://192.168.50.5:9091   -        -
 Skydive          http://192.168.50.5:8085   admin    pYV8bV749aDMXLPlYJwoJs4ouRPWezCIOXYAQP6v
 phpMyAdmin       http://192.168.50.5:8110   root     qNpdZmkKuUKBK3D5nZ08KMZ5MnYrGEe2hzH6XC0i
 Zabbix           http://192.168.50.5:8160   Admin    zabbix
@@ -241,8 +240,8 @@ The previous steps can also be done with a custom playbook.
 
 .. figure:: /images/patchman.png
 
-Prometheus
-----------
+Prometheus exporters
+--------------------
 
 Deploy `Clustered infrastructure services`, `Infrastructure services`, and
 `Basic OpenStack services` first.
@@ -250,8 +249,6 @@ Deploy `Clustered infrastructure services`, `Infrastructure services`, and
 .. code-block:: console
 
    osism-kolla deploy prometheus
-
-.. figure:: /images/prometheus.png
 
 Zabbix
 ------
