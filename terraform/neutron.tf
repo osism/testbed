@@ -279,6 +279,7 @@ data "openstack_networking_network_v2" "public" {
 }
 
 resource "openstack_networking_router_v2" "router" {
+  name                    = var.prefix
   external_network_id     = data.openstack_networking_network_v2.public.id
   availability_zone_hints = [var.network_availability_zone]
 }
