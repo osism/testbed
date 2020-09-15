@@ -15,7 +15,7 @@
   roles:
     - ansible-docker
 
-- name: Apply role docker-compose
+- name: Apply role docker_compose
   hosts: testbed-manager.osism.local
   connection: local
   gather_facts: true
@@ -23,5 +23,8 @@
   vars:
     docker_compose_install_type: package
 
+  collections:
+    - osism.commons
+
   roles:
-    - ansible-docker-compose
+    - role: docker_compose
