@@ -101,6 +101,6 @@
   gather_facts: false
 
   tasks:
-    - name: Add route to 192.168.60.0/24
-      command: ip route replace 192.168.60.0/24 via 192.168.50.5 # noqa 301
+    - name: Add route to 192.168.48.0/20
+      command: ip route replace 192.168.48.0/20 via 192.168.32.5 # noqa 301
       become: true

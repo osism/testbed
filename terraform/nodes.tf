@@ -4,7 +4,7 @@ resource "openstack_networking_port_v2" "node_port_management" {
   security_group_ids = [openstack_compute_secgroup_v2.security_group_management.id]
 
   fixed_ip {
-    ip_address = "192.168.40.1${count.index}"
+    ip_address = "192.168.16.1${count.index}"
     subnet_id  = openstack_networking_subnet_v2.subnet_management.id
   }
 }
@@ -15,12 +15,12 @@ resource "openstack_networking_port_v2" "node_port_internal" {
   security_group_ids = [openstack_compute_secgroup_v2.security_group_internal.id]
 
   fixed_ip {
-    ip_address = "192.168.50.1${count.index}"
+    ip_address = "192.168.32.1${count.index}"
     subnet_id  = openstack_networking_subnet_v2.subnet_internal.id
   }
 
   allowed_address_pairs {
-    ip_address = "192.168.50.200/32"
+    ip_address = "192.168.32.9/32"
   }
 }
 
@@ -30,12 +30,12 @@ resource "openstack_networking_port_v2" "node_port_external" {
   security_group_ids = [openstack_compute_secgroup_v2.security_group_external.id]
 
   fixed_ip {
-    ip_address = "192.168.90.1${count.index}"
+    ip_address = "192.168.96.1${count.index}"
     subnet_id  = openstack_networking_subnet_v2.subnet_external.id
   }
 
   allowed_address_pairs {
-    ip_address = "192.168.90.200/32"
+    ip_address = "192.168.96.9/32"
   }
 }
 
@@ -49,7 +49,7 @@ resource "openstack_networking_port_v2" "node_port_provider" {
   port_security_enabled = var.port_security_enabled
 
   fixed_ip {
-    ip_address = "192.168.100.1${count.index}"
+    ip_address = "192.168.112.1${count.index}"
     subnet_id  = openstack_networking_subnet_v2.subnet_provider.id
   }
 }
@@ -60,7 +60,7 @@ resource "openstack_networking_port_v2" "node_port_storage_frontend" {
   security_group_ids = [openstack_compute_secgroup_v2.security_group_storage_frontend.id]
 
   fixed_ip {
-    ip_address = "192.168.70.1${count.index}"
+    ip_address = "192.168.64.1${count.index}"
     subnet_id  = openstack_networking_subnet_v2.subnet_storage_frontend.id
   }
 }
@@ -127,7 +127,7 @@ write_files:
       for interface in netifaces.interfaces():
           mac_address = netifaces.ifaddresses(interface)[netifaces.AF_LINK][0]['addr']
           if mac_address in PORTS:
-              subprocess.run("ip addr add %s/24 dev %s" % (PORTS[mac_address], interface), shell=True)
+              subprocess.run("ip addr add %s/20 dev %s" % (PORTS[mac_address], interface), shell=True)
               subprocess.run("ip link set up dev %s" % interface, shell=True)
     path: /root/configure-network-devices.py
     permissions: 0600

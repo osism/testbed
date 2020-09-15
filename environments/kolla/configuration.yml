@@ -156,7 +156,7 @@ cinder_backup_driver: "ceph"
 glance_backend_file: "no"
 
 # NOTE: public_network from environments/ceph/configuration.yml
-ceph_public_network: 192.168.70.0/24
+ceph_public_network: 192.168.64.0/20
 
 ##########################################################
 # other

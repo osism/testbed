@@ -117,11 +117,11 @@
         state: present
         name: subnet-public
         network_name: public
-        cidr: 192.168.100.0/24
+        cidr: 192.168.112.0/20
         enable_dhcp: false
-        allocation_pool_start: 192.168.100.100
-        allocation_pool_end: 192.168.100.200
-        gateway_ip: 192.168.100.5
+        allocation_pool_start: 192.168.112.100
+        allocation_pool_end: 192.168.112.200
+        gateway_ip: 192.168.112.5
 
     - name: Create test network
       os_network:

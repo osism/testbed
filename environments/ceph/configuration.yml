@@ -18,8 +18,8 @@ dmcrypt: true
 ##########################
 # network
 
-public_network: 192.168.70.0/24
-cluster_network: 192.168.80.0/24
+public_network: 192.168.64.0/20
+cluster_network: 192.168.80.0/20
 
 ##########################
 # pools & keys

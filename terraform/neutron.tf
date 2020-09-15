@@ -156,13 +156,13 @@ resource "openstack_networking_network_v2" "net_management" {
 
 resource "openstack_networking_subnet_v2" "subnet_management" {
   network_id      = openstack_networking_network_v2.net_management.id
-  cidr            = "192.168.40.0/24"
+  cidr            = "192.168.16.0/20"
   ip_version      = 4
   dns_nameservers = ["8.8.8.8", "9.9.9.9"]
 
   allocation_pool {
-    start = "192.168.40.100"
-    end   = "192.168.40.110"
+    start = "192.168.31.200"
+    end   = "192.168.31.250"
   }
 }
 
@@ -173,14 +173,14 @@ resource "openstack_networking_network_v2" "net_internal" {
 
 resource "openstack_networking_subnet_v2" "subnet_internal" {
   network_id  = openstack_networking_network_v2.net_internal.id
-  cidr        = "192.168.50.0/24"
+  cidr        = "192.168.32.0/20"
   ip_version  = 4
   gateway_ip  = null
   enable_dhcp = false
 
   allocation_pool {
-    start = "192.168.50.100"
-    end   = "192.168.50.110"
+    start = "192.168.47.200"
+    end   = "192.168.47.250"
   }
 }
 
@@ -191,14 +191,14 @@ resource "openstack_networking_network_v2" "net_provider" {
 
 resource "openstack_networking_subnet_v2" "subnet_provider" {
   network_id  = openstack_networking_network_v2.net_provider.id
-  cidr        = "192.168.100.0/24"
+  cidr        = "192.168.112.0/20"
   ip_version  = 4
   gateway_ip  = null
   enable_dhcp = false
 
   allocation_pool {
-    start = "192.168.100.100"
-    end   = "192.168.100.110"
+    start = "192.168.127.200"
+    end   = "192.168.127.250"
   }
 }
 
@@ -209,14 +209,14 @@ resource "openstack_networking_network_v2" "net_external" {
 
 resource "openstack_networking_subnet_v2" "subnet_external" {
   network_id  = openstack_networking_network_v2.net_external.id
-  cidr        = "192.168.90.0/24"
+  cidr        = "192.168.96.0/20"
   ip_version  = 4
   gateway_ip  = null
   enable_dhcp = false
 
   allocation_pool {
-    start = "192.168.90.100"
-    end   = "192.168.90.110"
+    start = "192.168.111.200"
+    end   = "192.168.111.250"
   }
 }
 
@@ -224,7 +224,7 @@ resource "openstack_networking_port_v2" "vip_port_external" {
   network_id = openstack_networking_network_v2.net_external.id
 
   fixed_ip {
-    ip_address = "192.168.90.200"
+    ip_address = "192.168.96.9"
     subnet_id  = openstack_networking_subnet_v2.subnet_external.id
   }
 }
@@ -233,7 +233,7 @@ resource "openstack_networking_port_v2" "vip_port_internal" {
   network_id = openstack_networking_network_v2.net_internal.id
 
   fixed_ip {
-    ip_address = "192.168.50.200"
+    ip_address = "192.168.32.9"
     subnet_id  = openstack_networking_subnet_v2.subnet_internal.id
   }
 }
@@ -245,14 +245,14 @@ resource "openstack_networking_network_v2" "net_storage_frontend" {
 
 resource "openstack_networking_subnet_v2" "subnet_storage_frontend" {
   network_id  = openstack_networking_network_v2.net_storage_frontend.id
-  cidr        = "192.168.70.0/24"
+  cidr        = "192.168.64.0/20"
   ip_version  = 4
   gateway_ip  = null
   enable_dhcp = false
 
   allocation_pool {
-    start = "192.168.70.100"
-    end   = "192.168.70.110"
+    start = "192.168.79.200"
+    end   = "192.168.79.250"
   }
 }
 
@@ -263,14 +263,14 @@ resource "openstack_networking_network_v2" "net_storage_backend" {
 
 resource "openstack_networking_subnet_v2" "subnet_storage_backend" {
   network_id  = openstack_networking_network_v2.net_storage_backend.id
-  cidr        = "192.168.80.0/24"
+  cidr        = "192.168.80.0/20"
   ip_version  = 4
   gateway_ip  = null
   enable_dhcp = false
 
   allocation_pool {
-    start = "192.168.80.100"
-    end   = "192.168.80.110"
+    start = "192.168.95.200"
+    end   = "192.168.95.250"
   }
 }
 

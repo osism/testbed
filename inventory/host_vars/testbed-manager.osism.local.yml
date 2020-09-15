@@ -2,7 +2,7 @@
 ##########################################################
 # ansible
 
-ansible_host: 192.168.40.5
+ansible_host: 192.168.16.5
 
 ##########################################################
 # netbox
@@ -15,8 +15,8 @@ netbox_inventory_status: Active
 console_interface: "{{ ansible_local.testbed_network_devices.management }}"
 management_interface: "{{ ansible_local.testbed_network_devices.internal }}"
 
-internal_address: 192.168.50.5
-fluentd_host: 192.168.50.5
+internal_address: 192.168.32.5
+fluentd_host: 192.168.32.5
 
 ##########################################################
 # cockpit
@@ -41,9 +41,9 @@ network_interfaces:
     auto: true
     family: inet
     method: static
-    address: 192.168.40.5
-    netmask: 255.255.255.0
-    gateway: 192.168.40.1
+    address: 192.168.16.5
+    netmask: 255.255.240.0
+    gateway: 192.168.16.1
     mtu: 1450
     up:
       - "iptables -A FORWARD -i {{ ansible_local.testbed_network_devices.management }} -j ACCEPT"
@@ -54,32 +54,32 @@ network_interfaces:
     auto: true
     family: inet
     method: static
-    address: 192.168.50.5
-    netmask: 255.255.255.0
+    address: 192.168.32.5
+    netmask: 255.255.240.0
     mtu: 1450
 
   - device: "{{ ansible_local.testbed_network_devices.external }}"
     auto: true
     family: inet
     method: static
-    address: 192.168.90.5
-    netmask: 255.255.255.0
+    address: 192.168.96.5
+    netmask: 255.255.240.0
     mtu: 1450
 
   - device: "{{ ansible_local.testbed_network_devices.provider }}"
     auto: true
     family: inet
     method: static
-    address: 192.168.100.5
-    netmask: 255.255.255.0
+    address: 192.168.112.5
+    netmask: 255.255.240.0
     mtu: 1450
 
   - device: "{{ ansible_local.testbed_network_devices.storage_frontend }}"
     auto: true
     family: inet
     method: static
-    address: 192.168.70.5
-    netmask: 255.255.255.0
+    address: 192.168.64.5
+    netmask: 255.255.240.0
     mtu: 1450
 
 ##########################################################
