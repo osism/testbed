@@ -83,7 +83,7 @@
     docker_configure_storage_driver: yes
     docker_storage_driver: overlay2
     docker_user: dragon
-    docker_version: "5:19.03.5"
+    docker_version: "5:19.03.12"
 
   roles:
     - ansible-docker
