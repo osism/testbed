@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+echo "APT::Acquire::Retries \"3\";" > /etc/apt/apt.conf.d/80-retries
+
 echo '* libraries/restart-without-asking boolean true' | debconf-set-selections
 
 apt-get install --yes python3-netifaces
