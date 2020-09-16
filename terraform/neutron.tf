@@ -158,7 +158,7 @@ resource "openstack_networking_subnet_v2" "subnet_management" {
   network_id      = openstack_networking_network_v2.net_management.id
   cidr            = "192.168.40.0/24"
   ip_version      = 4
-  dns_nameservers = ["9.9.9.9", "149.112.112.112"]
+  dns_nameservers = ["8.8.8.8", "9.9.9.9"]
 
   allocation_pool {
     start = "192.168.40.100"
