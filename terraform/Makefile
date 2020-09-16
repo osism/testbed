@@ -1,9 +1,10 @@
 # Makefile
 
+CONFIGURATION = master
+CONSOLE = manager
 ENVIRONMENT = betacloud
 OPENSTACK = openstack
 SSH_USERNAME = dragon
-CONFIGURATION = master
 
 NEED_OSCLOUD := $(shell test -z "$$OS_PASSWORD" -a -z "$$OS_CLOUD" && echo 1 || echo 0)
 ifeq ($(NEED_OSCLOUD),1)
@@ -62,7 +63,7 @@ sshuttle: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
 	sshuttle --ssh-cmd "ssh -i .id_rsa.$(ENVIRONMENT) " -r $(SSH_USERNAME)@$$MANAGER_ADDRESS 192.168.16.0/20 192.168.32.0/20 192.168.96.0/20 192.168.112.0/20
 
 console: .deploy.$(ENVIRONMENT)
-	@$(OPENSTACK) console log show testbed-manager
+	@$(OPENSTACK) console log show testbed-$(CONSOLE)
 
 .deploy.$(ENVIRONMENT): init
 	@STAT=$$(terraform state list); \
