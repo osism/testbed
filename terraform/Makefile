@@ -1,8 +1,9 @@
 # Makefile
 
 ENVIRONMENT = betacloud
-SSH_USERNAME = dragon
 OPENSTACK = openstack
+SSH_USERNAME = dragon
+CONFIGURATION = master
 
 NEED_OSCLOUD := $(shell test -z "$$OS_PASSWORD" -a -z "$$OS_CLOUD" && echo 1 || echo 0)
 ifeq ($(NEED_OSCLOUD),1)
@@ -25,7 +26,7 @@ dry-run: init
 
 deploy: init
 	@touch .deploy.$(ENVIRONMENT)
-	@terraform apply -auto-approve -var-file="environment-$(ENVIRONMENT).tfvars" $(PARAMS)
+	@terraform apply -auto-approve -var-file="environment-$(ENVIRONMENT).tfvars" -var "configuration_version=$(CONFIGURATION)" $(PARAMS)
 
 deploy-infra: init
 	@touch .deploy.$(ENVIRONMENT)

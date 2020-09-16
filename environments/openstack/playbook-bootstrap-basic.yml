@@ -192,6 +192,7 @@
         flavor: 1C-512MB-1GB
         network: test
         delete_fip: true
+        key_name: test
         security_groups:
           - icmp
           - ssh
