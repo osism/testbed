@@ -24,7 +24,7 @@ docker_registry: index.docker.io
 docker_registry_ansible: quay.io
 
 ##########################
-# docker-compose
+# docker_compose
 
 docker_compose_install_type: package
 
