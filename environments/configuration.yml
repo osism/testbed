@@ -31,7 +31,7 @@ docker_compose_install_type: package
 ##########################
 # versions
 
-docker_version: "5:19.03.5"
+docker_version: "5:19.03.12"
 repository_version: latest
 
 ##########################
