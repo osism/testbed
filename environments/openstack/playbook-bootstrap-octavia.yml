@@ -107,7 +107,7 @@
         state: present
         name: lb-mgmt-subnet
         network_name: lb-mgmt-net
-        cidr: 192.168.110.0/24
+        cidr: 192.168.128.0/20
 
     - name: Create control ports in lb-mgmt-net network
       os_port:
@@ -118,7 +118,7 @@
         security_groups: lb-health-mgr-sec-grp
         device_owner: Octavia:health-mgr
         fixed_ips:
-          - ip_address: "192.168.110.1{{ item }}"
+          - ip_address: "192.168.128.1{{ item }}"
         mac_address: "02:00:00:00:00:1{{ item }}"
       loop:
         - 0
@@ -181,7 +181,7 @@
 
     # FIXME: Use clean solution!
     - name: Add ip address to device
-      shell: "ip addr add dev ohm0 192.168.110.1{{ node_id }}/24 || exit 0" # noqa 301
+      shell: "ip addr add dev ohm0 192.168.128.1{{ node_id }}/20 || exit 0" # noqa 301
       become: true
 
     - name: Set device mtu

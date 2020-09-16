@@ -12,7 +12,7 @@ resource "openstack_networking_port_v2" "manager_port_management" {
   ]
 
   fixed_ip {
-    ip_address = "192.168.40.5"
+    ip_address = "192.168.16.5"
     subnet_id  = openstack_networking_subnet_v2.subnet_management.id
   }
 }
@@ -22,12 +22,12 @@ resource "openstack_networking_port_v2" "manager_port_internal" {
   security_group_ids = [openstack_compute_secgroup_v2.security_group_internal.id]
 
   fixed_ip {
-    ip_address = "192.168.50.5"
+    ip_address = "192.168.32.5"
     subnet_id  = openstack_networking_subnet_v2.subnet_internal.id
   }
 
   allowed_address_pairs {
-    ip_address = "192.168.60.0/24"
+    ip_address = "192.168.48.0/20"
   }
 }
 
@@ -36,12 +36,12 @@ resource "openstack_networking_port_v2" "manager_port_external" {
   security_group_ids = [openstack_compute_secgroup_v2.security_group_external.id]
 
   fixed_ip {
-    ip_address = "192.168.90.5"
+    ip_address = "192.168.96.5"
     subnet_id  = openstack_networking_subnet_v2.subnet_external.id
   }
 
   allowed_address_pairs {
-    ip_address = "192.168.60.0/24"
+    ip_address = "192.168.48.0/20"
   }
 }
 
@@ -54,7 +54,7 @@ resource "openstack_networking_port_v2" "manager_port_provider" {
   port_security_enabled = var.port_security_enabled
 
   fixed_ip {
-    ip_address = "192.168.100.5"
+    ip_address = "192.168.112.5"
     subnet_id  = openstack_networking_subnet_v2.subnet_provider.id
   }
 }
@@ -64,7 +64,7 @@ resource "openstack_networking_port_v2" "manager_port_storage_frontend" {
   security_group_ids = [openstack_compute_secgroup_v2.security_group_storage_frontend.id]
 
   fixed_ip {
-    ip_address = "192.168.70.5"
+    ip_address = "192.168.64.5"
     subnet_id  = openstack_networking_subnet_v2.subnet_storage_frontend.id
   }
 }
@@ -107,7 +107,7 @@ write_files:
       for interface in netifaces.interfaces():
           mac_address = netifaces.ifaddresses(interface)[netifaces.AF_LINK][0]['addr']
           if mac_address in PORTS:
-              subprocess.run("ip addr add %s/24 dev %s" % (PORTS[mac_address], interface), shell=True)
+              subprocess.run("ip addr add %s/20 dev %s" % (PORTS[mac_address], interface), shell=True)
               subprocess.run("ip link set up dev %s" % interface, shell=True)
     path: /root/configure-network-devices.py
     permissions: 0600
