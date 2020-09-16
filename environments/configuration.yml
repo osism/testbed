@@ -44,8 +44,8 @@ operator_authorized_keys:
 # resolvconf
 
 resolvconf_nameserver:
+  - 8.8.8.8
   - 9.9.9.9
-  - 149.112.112.112
 resolvconf_search: osism.local
 resolvconf_package: ""
 
