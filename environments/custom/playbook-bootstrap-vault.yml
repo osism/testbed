@@ -1,0 +1,60 @@
+---
+- name: Bootstrap vault
+  hosts: localhost
+  gather_facts: false
+  become: false
+  connection: local
+
+  vars:
+    env_vault:
+      VAULT_ADDR: "http://{{ vault_host }}:{{ vault_port }}"
+      VAULT_TOKEN: "{{ vault_token }}"
+
+  tasks:
+    - name: Get status
+      hashivault_status:
+      register: vault_status
+      environment: "{{ env_vault }}"
+
+    - name: Enable PKI secret engine
+      hashivault_secret_engine:
+        name: pki
+        backend: pki
+        config:
+          default_lease_ttl: 8760h  # 1 year
+          force_no_cache: false
+          max_lease_ttl: 8760h  # 1 year
+      environment: "{{ env_vault }}"
+
+    - name: Generate internal root CA
+      hashivault_pki_ca:
+        common_name: osism.local
+        config:
+          ttl: 8760h  # 1 year
+      environment: "{{ env_vault }}"
+      register: authority
+
+    - name: Create PKI role
+      hashivault_pki_role:
+        name: osism-local
+        config:
+          max_ttl: 72h
+          allowed_domains:
+            - osism.local
+          allow_subdomains: true
+      environment: "{{ env_vault }}"
+
+    - name: Set PKI urls
+      hashivault_pki_url:
+        issuing_certificates:
+            - "http://{{ vault_host }}:{{ vault_port }}/v1/pki/ca"
+        crl_distribution_points:
+            - "http://{{ vault_host }}:{{ vault_port }}/v1/pki/crl"
+      environment: "{{ env_vault }}"
+
+    - name: Issue api.osism.local certificate
+      hashivault_pki_cert_issue:
+        role: osism-local
+        common_name: api.osism.local
+      environment: "{{ env_vault }}"
+      register: certificate

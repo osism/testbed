@@ -3,3 +3,9 @@
 # wireguard
 
 wireguard_peer_public_key: vYrE3ZMlN5Xa2d/s4IbFsiGNPN+dKqQ/L070hRC+Pjc=
+
+##########################
+# vault
+
+vault_host: "{{ hostvars['testbed-manager.osism.local']['ansible_' + hostvars['testbed-manager.osism.local']['console_interface']]['ipv4']['address'] }}"
+vault_port: 8200
