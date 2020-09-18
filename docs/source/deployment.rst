@@ -78,6 +78,13 @@ each supported cloud provider.
 
           {"NeutronError": {"message": "Invalid input for operation: Can not get vracks for tenant xxx from DB!.", "type": "InvalidInput", "detail": ""}}
 
+* `PlusServer <https://www.plusserver.com>`_
+
+  .. note::
+
+     * The credentials are stored in ``clouds.yaml`` and ``secure.yaml`` with the name ``pluscloudopen``.
+
+
 Preparations
 ============
 
