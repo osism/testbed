@@ -57,6 +57,7 @@ Infrastructure
 * Haproxy
 * Influxdb
 * Keepalived
+* Keycloak
 * Kibana
 * Mariadb
 * Memcached
