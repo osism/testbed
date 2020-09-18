@@ -132,6 +132,7 @@ AWX              http://192.168.16.5:8052   dragon   vaeh7eingix8ooPi
 Ceph             http://192.168.32.9:7000   admin    phoon7Chahvae6we
 Cockpit          https://192.168.16.5:8130  dragon   da5pahthaew2Pai2
 Horizon          http://192.168.32.9        admin    pYV8bV749aDMXLPlYJwoJs4ouRPWezCIOXYAQP6v
+Keycloak         http://192.168.32.5:8170   admin    password
 Kibana           http://192.168.32.9:5601   kibana   k2ReobFEsoxNm3DyZnkZmFPadSnCz6BjQhaLFoyB
 Netbox           http://192.168.16.5:8121   netbox   password
 Netdata          http://192.168.32.5:19999  -        -
@@ -171,6 +172,15 @@ Cockpit
    osism-run custom generate-ssh-known-hosts
 
 .. figure:: /images/cockpit.png
+
+Keycloak
+--------
+
+.. code-block:: console
+
+   osism-infrastructure keycloak
+
+.. figure:: /images/keycloak.png
 
 Netbox
 ------
