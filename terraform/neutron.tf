@@ -150,11 +150,12 @@ resource "openstack_compute_secgroup_v2" "security_group_external" {
 ############
 
 resource "openstack_networking_network_v2" "net_management" {
-  name                    = "${var.prefix}-management"
+  name                    = "net-${var.prefix}-management"
   availability_zone_hints = [var.network_availability_zone]
 }
 
 resource "openstack_networking_subnet_v2" "subnet_management" {
+  name            = "subnet-${var.prefix}-management"
   network_id      = openstack_networking_network_v2.net_management.id
   cidr            = "192.168.16.0/20"
   ip_version      = 4
@@ -167,11 +168,12 @@ resource "openstack_networking_subnet_v2" "subnet_management" {
 }
 
 resource "openstack_networking_network_v2" "net_internal" {
-  name                    = "${var.prefix}-internal"
+  name                    = "net-${var.prefix}-internal"
   availability_zone_hints = [var.network_availability_zone]
 }
 
 resource "openstack_networking_subnet_v2" "subnet_internal" {
+  name        = "subnet-${var.prefix}-internal"
   network_id  = openstack_networking_network_v2.net_internal.id
   cidr        = "192.168.32.0/20"
   ip_version  = 4
@@ -185,11 +187,12 @@ resource "openstack_networking_subnet_v2" "subnet_internal" {
 }
 
 resource "openstack_networking_network_v2" "net_provider" {
-  name                    = "${var.prefix}-provider"
+  name                    = "net-${var.prefix}-provider"
   availability_zone_hints = [var.network_availability_zone]
 }
 
 resource "openstack_networking_subnet_v2" "subnet_provider" {
+  name        = "subnet-${var.prefix}-provider"
   network_id  = openstack_networking_network_v2.net_provider.id
   cidr        = "192.168.112.0/20"
   ip_version  = 4
@@ -203,11 +206,12 @@ resource "openstack_networking_subnet_v2" "subnet_provider" {
 }
 
 resource "openstack_networking_network_v2" "net_external" {
-  name                    = "${var.prefix}-external"
+  name                    = "net-${var.prefix}-external"
   availability_zone_hints = [var.network_availability_zone]
 }
 
 resource "openstack_networking_subnet_v2" "subnet_external" {
+  name        = "subnet-${var.prefix}-external"
   network_id  = openstack_networking_network_v2.net_external.id
   cidr        = "192.168.96.0/20"
   ip_version  = 4
@@ -239,11 +243,12 @@ resource "openstack_networking_port_v2" "vip_port_internal" {
 }
 
 resource "openstack_networking_network_v2" "net_storage_frontend" {
-  name                    = "${var.prefix}-storage-frontend"
+  name                    = "net-${var.prefix}-storage-frontend"
   availability_zone_hints = [var.network_availability_zone]
 }
 
 resource "openstack_networking_subnet_v2" "subnet_storage_frontend" {
+  name        = "subnet-${var.prefix}-storage-frontend"
   network_id  = openstack_networking_network_v2.net_storage_frontend.id
   cidr        = "192.168.64.0/20"
   ip_version  = 4
@@ -257,11 +262,12 @@ resource "openstack_networking_subnet_v2" "subnet_storage_frontend" {
 }
 
 resource "openstack_networking_network_v2" "net_storage_backend" {
-  name                    = "${var.prefix}-storage-backend"
+  name                    = "net-${var.prefix}-storage-backend"
   availability_zone_hints = [var.network_availability_zone]
 }
 
 resource "openstack_networking_subnet_v2" "subnet_storage_backend" {
+  name        = "subnet-${var.prefix}-storage-backend"
   network_id  = openstack_networking_network_v2.net_storage_backend.id
   cidr        = "192.168.80.0/20"
   ip_version  = 4
