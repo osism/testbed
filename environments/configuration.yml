@@ -46,7 +46,7 @@ operator_authorized_keys:
 resolvconf_nameserver:
   - 8.8.8.8
   - 9.9.9.9
-resolvconf_search: osism.local
+resolvconf_search: osism.test
 resolvconf_package: ""
 
 ##########################
@@ -54,8 +54,8 @@ resolvconf_package: ""
 
 hosts_type: template
 hosts_additional_entries:
-  api-int.osism.local: 192.168.32.9
-  api.osism.local: 192.168.96.9
+  api-int.osism.test: 192.168.32.9
+  api.osism.test: 192.168.96.9
 
 ##########################
 # common

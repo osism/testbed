@@ -5,7 +5,7 @@
 NUMBER_OF_DOCUMENTS=${1:-100000}
 NUMBER_OF_INDICES=14
 
-ELASTICSEARCH_HOST=api-int.osism.local
+ELASTICSEARCH_HOST=api-int.osism.test
 ELASTICSEARCH_PORT=9200
 
 if [[ ! -e /usr/lib/python3/dist-packages/tornado ]]; then

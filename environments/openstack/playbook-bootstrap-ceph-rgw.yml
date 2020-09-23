@@ -36,7 +36,7 @@
         state: present
         service: swift
         endpoint_interface: "{{ item }}"
-        url: http://api.osism.local:8080/swift/v1/AUTH_%(tenant_id)s
+        url: http://api.osism.test:8080/swift/v1/AUTH_%(tenant_id)s
         region: RegionOne
       loop:
         - admin

@@ -23,7 +23,7 @@ Notes
 
      # NOTE: The node testbed-node-2 is commented to be able to test scaling
      #       in the testbed.
-     # testbed-node-2.osism.local
+     # testbed-node-2.osism.test
 
 * The third volume (``/dev/sdd``) is not enabled for Ceph by default. This is to test the
   scaling of Ceph.

@@ -56,6 +56,6 @@ Without these entries e.g. the VNC access to instances does not work.
 ========= =================== =======================
 Name      Address             Domain
 ========= =================== =======================
-external  ``192.168.96.9``    ``api.osism.local``
-internal  ``192.168.32.9``    ``api-int.osism.local``
+external  ``192.168.96.9``    ``api.osism.test``
+internal  ``192.168.32.9``    ``api-int.osism.test``
 ========= =================== =======================

@@ -1,6 +1,6 @@
 ---
 - name: Apply role configuration
-  hosts: testbed-manager.osism.local
+  hosts: testbed-manager.osism.test
   connection: local
   gather_facts: true
 
