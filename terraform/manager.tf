@@ -164,12 +164,12 @@ write_files:
       ( cd /tmp/ansible-collection-services; ansible-galaxy collection build; sudo -iu dragon ansible-galaxy collection install -v -f -p /usr/share/ansible/collections osism-services-*.tar.gz; )
       rm -rf /tmp/ansible-collection-services
 
-      sudo -iu dragon ansible-playbook -i testbed-manager.osism.local, /opt/manager-part-1.yml -e configuration_git_version=${var.configuration_version}
+      sudo -iu dragon ansible-playbook -i testbed-manager.osism.test, /opt/manager-part-1.yml -e configuration_git_version=${var.configuration_version}
       sudo -iu dragon sh -c 'cd /opt/configuration; ./scripts/set-ceph-version.sh ${var.ceph_version}'
       sudo -iu dragon sh -c 'cd /opt/configuration; ./scripts/set-openstack-version.sh ${var.openstack_version}'
 
-      sudo -iu dragon ansible-playbook -i testbed-manager.osism.local, /opt/manager-part-2.yml
-      sudo -iu dragon ansible-playbook -i testbed-manager.osism.local, /opt/manager-part-3.yml
+      sudo -iu dragon ansible-playbook -i testbed-manager.osism.test, /opt/manager-part-2.yml
+      sudo -iu dragon ansible-playbook -i testbed-manager.osism.test, /opt/manager-part-3.yml
 
       sudo -iu dragon cp /home/dragon/.ssh/id_rsa.pub /opt/ansible/secrets/id_rsa.operator.pub
 

@@ -4,7 +4,7 @@ clouds:
     auth:
       username: admin
       project_name: admin
-      auth_url: http://api.osism.local:5000/v3
+      auth_url: http://api.osism.test:5000/v3
       project_domain_name: default
       user_domain_name: default
     identity_api_version: 3
@@ -12,7 +12,7 @@ clouds:
     auth:
       username: test
       project_name: test
-      auth_url: http://api.osism.local:5000/v3
+      auth_url: http://api.osism.test:5000/v3
       project_domain_name: default
       user_domain_name: default
     identity_api_version: 3
@@ -20,7 +20,7 @@ clouds:
     auth:
       username: octavia
       project_name: admin
-      auth_url: http://api.osism.local:5000/v3
+      auth_url: http://api.osism.test:5000/v3
       project_domain_name: default
       user_domain_name: default
     identity_api_version: 3
@@ -28,7 +28,7 @@ clouds:
     auth:
       username: refstack-0
       project_name: refstack-0
-      auth_url: http://api.osism.local:5000/v3
+      auth_url: http://api.osism.test:5000/v3
       project_domain_name: default
       user_domain_name: default
     identity_api_version: 3
@@ -36,7 +36,7 @@ clouds:
     auth:
       username: refstack-1
       project_name: refstack-1
-      auth_url: http://api.osism.local:5000/v3
+      auth_url: http://api.osism.test:5000/v3
       project_domain_name: default
       user_domain_name: default
     identity_api_version: 3
@@ -44,7 +44,7 @@ clouds:
     auth:
       username: refstack-2
       project_name: refstack-2
-      auth_url: http://api.osism.local:5000/v3
+      auth_url: http://api.osism.test:5000/v3
       project_domain_name: default
       user_domain_name: default
     identity_api_version: 3

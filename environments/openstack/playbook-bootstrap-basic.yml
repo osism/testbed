@@ -43,7 +43,7 @@
         state: present
         name: test
         password: test
-        email: test@osism.local
+        email: test@osism.test
         domain: default
         default_project: test
       no_log: true

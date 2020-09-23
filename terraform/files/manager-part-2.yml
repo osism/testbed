@@ -1,6 +1,6 @@
 ---
 - name: Apply role docker
-  hosts: testbed-manager.osism.local
+  hosts: testbed-manager.osism.test
   connection: local
   gather_facts: true
 
@@ -16,7 +16,7 @@
     - ansible-docker
 
 - name: Apply role docker_compose
-  hosts: testbed-manager.osism.local
+  hosts: testbed-manager.osism.test
   connection: local
   gather_facts: true
 
