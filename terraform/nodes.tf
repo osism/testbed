@@ -130,30 +130,30 @@ write_files:
               subprocess.run("ip addr add %s/20 dev %s" % (PORTS[mac_address], interface), shell=True)
               subprocess.run("ip link set up dev %s" % interface, shell=True)
     path: /root/configure-network-devices.py
-    permissions: 0600
+    permissions: '0600'
   - content: ${openstack_compute_keypair_v2.key.public_key}
     path: /home/ubuntu/.ssh/id_rsa.pub
-    permissions: 0600
+    permissions: '0600'
   - content: |
       ${indent(6, openstack_compute_keypair_v2.key.private_key)}
     path: /home/ubuntu/.ssh/id_rsa
-    permissions: 0600
+    permissions: '0600'
   - content: |
       ${indent(6, file("files/node.yml"))}
     path: /opt/node.yml
-    permissions: 0644
+    permissions: '0644'
   - content: |
       ${indent(6, file("files/cleanup.yml"))}
     path: /opt/cleanup.yml
-    permissions: 0644
+    permissions: '0644'
   - content: |
       ${indent(6, file("files/cleanup.sh"))}
     path: /root/cleanup.sh
-    permissions: 0700
+    permissions: '0700'
   - content: |
       ${indent(6, file("files/node.sh"))}
     path: /root/node.sh
-    permissions: 0700
+    permissions: '0700'
 runcmd:
   - "echo 'network: {config: disabled}' > /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg"
   - "rm -f /etc/network/interfaces.d/50-cloud-init.cfg"
