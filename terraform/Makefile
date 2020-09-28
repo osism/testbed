@@ -15,14 +15,10 @@ endif
 
 init:
 	@if [ ! -d .terraform/plugins ]; then \
-		terraform init; \
-	fi
+		@terraform init; \
+	fi; \
 
-	@if [ -d "terraform.tfstate.d/${ENVIRONMENT}" ]; then \
-		terraform workspace select ${ENVIRONMENT}; \
-	else \
-		terraform workspace new ${ENVIRONMENT}; \
-	fi
+	@terraform workspace select ${ENVIRONMENT} || terraform workspace new ${ENVIRONMENT}
 
 attach: init
         @terraform import -var-file="environment-$(ENVIRONMENT).tfvars" $(RESOURCE) $(PARAMS)
