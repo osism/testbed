@@ -12,6 +12,27 @@ resource "openstack_compute_secgroup_v2" "security_group_manager" {
     from_port   = 51820
     to_port     = 51820
   }
+
+  rule {
+    cidr        = "0.0.0.0/0"
+    ip_protocol = "tcp"
+    from_port   = 8110
+    to_port     = 8110
+  }
+
+  rule {
+    cidr        = "0.0.0.0/0"
+    ip_protocol = "tcp"
+    from_port   = 8120
+    to_port     = 8120
+  }
+
+  rule {
+    cidr        = "0.0.0.0/0"
+    ip_protocol = "tcp"
+    from_port   = 8130
+    to_port     = 8130
+  }
 }
 
 resource "openstack_compute_secgroup_v2" "security_group_management" {
