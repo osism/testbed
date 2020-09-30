@@ -6,7 +6,7 @@ on:
     paths:
       - '.github/workflows/deploy-daily-citycloud.yml'
   schedule:
-    - cron: '0 4 * * *'
+    - cron: '0 3 * * *'
 
 jobs:
   cleanup:
@@ -79,5 +79,5 @@ jobs:
         run: make ENVIRONMENT=citycloud init
         working-directory: ./terraform
       - name: Deploy environment
-        run: make ENVIRONMENT=citycloud deploy-openstack PARAMS="-var run_refstack=true"
+        run: make ENVIRONMENT=citycloud deploy-openstack PARAMS="-var run_refstack=true -var run_rally=true"
         working-directory: ./terraform

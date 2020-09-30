@@ -1,0 +1,68 @@
+  Authenticate.keystone:
+    -
+      context:
+        {{ user_context(tenants_amount, users_amount, use_existing_users) }}
+      runner:
+        {{ rps_runner(rps=15*controllers_amount, times=20000*controllers_amount, is_smoke=smoke) }}
+      sla:
+        {{ no_failures_sla() }}
+{% if "cinder" in service_list %}
+  Authenticate.validate_cinder:
+    -
+      args:
+        repetitions: 1
+      context:
+        {{ user_context(tenants_amount, users_amount, use_existing_users) }}
+      runner:
+        {{ rps_runner(rps=15*controllers_amount, times=20000*controllers_amount, is_smoke=smoke) }}
+      sla:
+        {{ no_failures_sla() }}
+{% endif %}
+{% if "glance" in service_list %}
+  Authenticate.validate_glance:
+    -
+      args:
+        repetitions: 1
+      context:
+        {{ user_context(tenants_amount, users_amount, use_existing_users) }}
+      runner:
+        {{ rps_runner(rps=15*controllers_amount, times=20000*controllers_amount, is_smoke=smoke) }}
+      sla:
+        {{ no_failures_sla() }}
+{% endif %}
+{% if "neutron" in service_list %}
+  Authenticate.validate_neutron:
+    -
+      args:
+        repetitions: 1
+      context:
+        {{ user_context(tenants_amount, users_amount, use_existing_users) }}
+      runner:
+        {{ rps_runner(rps=15*controllers_amount, times=20000*controllers_amount, is_smoke=smoke) }}
+      sla:
+        {{ no_failures_sla() }}
+{% endif %}
+{% if "nova" in service_list %}
+  Authenticate.validate_nova:
+    -
+      args:
+        repetitions: 1
+      context:
+        {{ user_context(tenants_amount, users_amount, use_existing_users) }}
+      runner:
+        {{ rps_runner(rps=15*controllers_amount, times=20000*controllers_amount, is_smoke=smoke) }}
+      sla:
+        {{ no_failures_sla() }}
+{% endif %}
+{% if "heat" in service_list %}
+  Authenticate.validate_heat:
+    -
+      args:
+        repetitions: 1
+      context:
+        {{ user_context(tenants_amount, users_amount, use_existing_users) }}
+      runner:
+        {{ rps_runner(rps=15*controllers_amount, times=20000*controllers_amount, is_smoke=smoke) }}
+      sla:
+        {{ no_failures_sla() }}
+{% endif %}

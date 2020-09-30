@@ -228,6 +228,10 @@ write_files:
           else
               sudo -iu dragon sh -c '/opt/configuration/scripts/deploy_openstack_services_basic.sh'
 
+              if [[ "${var.run_rally}" == "true" ]]; then
+                  sudo -iu dragon sh -c '/opt/configuration/contrib/rally/rally.sh'
+              fi
+
               if [[ "${var.run_refstack}" == "true" ]]; then
                   sudo -iu dragon sh -c 'INTERACTIVE=false osism-run openstack bootstrap-refstack'
                   sudo -iu dragon sh -c '/opt/configuration/contrib/refstack/refstack.sh'
