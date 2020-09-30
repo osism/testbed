@@ -73,6 +73,11 @@ variable "deploy_monitoring" {
   type    = bool
 }
 
+variable "run_rally" {
+  default = false
+  type    = bool
+}
+
 variable "run_refstack" {
   default = false
   type    = bool

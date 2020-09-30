@@ -71,6 +71,18 @@
       os_nova_flavor:
         cloud: admin
         state: present
+        name: 1C-256MB-1GB
+        ram: 256
+        vcpus: 1
+        disk: 1
+        ephemeral: 0
+        extra_specs:
+          "hw_rng:allowed": "True"
+
+    - name: Create small flavor
+      os_nova_flavor:
+        cloud: admin
+        state: present
         name: 1C-512MB-1GB
         ram: 512
         vcpus: 1
