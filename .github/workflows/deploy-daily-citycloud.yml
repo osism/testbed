@@ -1,0 +1,83 @@
+---
+name: Daily deployment (citycloud)
+
+on:
+  push:
+    paths:
+      - '.github/workflows/deploy-daily-citycloud.yml'
+  schedule:
+    - cron: '0 4 * * *'
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        terraform-version:
+          - 0.13.3
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: ${{ matrix.terraform-version }}
+      - name: Prepare use of openstack
+        shell: bash
+        working-directory: ./terraform
+        env:
+          OPENSTACK: ${{ secrets.OPENSTACK }}
+        run: |
+          echo "$OPENSTACK" > clouds.yaml
+      - name: Prepare use of minio
+        shell: bash
+        working-directory: ./terraform
+        env:
+          MINIO: ${{ secrets.MINIO }}
+        run: |
+          echo "$MINIO" > minio.env
+          cp minio.tf.disabled minio.tf
+      - name: Initialization
+        run: make init
+        working-directory: ./terraform
+      - name: Remove existing environment
+        run: make ENVIRONMENT=citycloud clean || exit 0
+        working-directory: ./terraform
+
+  deploy:
+    needs: cleanup
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        terraform-version:
+          - 0.13.3
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: ${{ matrix.terraform-version }}
+      - name: Prepare use of openstack
+        shell: bash
+        working-directory: ./terraform
+        env:
+          OPENSTACK: ${{ secrets.OPENSTACK }}
+        run: |
+          echo "$OPENSTACK" > clouds.yaml
+      - name: Prepare use of minio
+        shell: bash
+        working-directory: ./terraform
+        env:
+          MINIO: ${{ secrets.MINIO }}
+        run: |
+          echo "$MINIO" > minio.env
+          cp minio.tf.disabled minio.tf
+      - name: Initialization
+        run: make ENVIRONMENT=citycloud init
+        working-directory: ./terraform
+      - name: Deploy environment
+        run: make ENVIRONMENT=citycloud deploy-openstack PARAMS="-var run_refstack=true"
+        working-directory: ./terraform
