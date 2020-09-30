@@ -104,4 +104,8 @@ watch: .id_rsa.$(ENVIRONMENT) .MANAGER_ADDRESS.$(ENVIRONMENT)
 openstack: init
 	@$(OPENSTACK)
 
-PHONY: clean console attach detach sshuttle ssh dry-run list deploy deploy-infra deploy-ceph deploy-openstack watch openstack
+create: deploy
+login: ssh
+log: console
+
+PHONY: clean console attach detach sshuttle ssh dry-run list deploy deploy-infra deploy-ceph deploy-openstack watch openstack create log login
