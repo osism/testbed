@@ -1,9 +1,11 @@
 output "manager_address" {
-  value = openstack_networking_floatingip_v2.manager_floating_ip.address
+  value     = openstack_networking_floatingip_v2.manager_floating_ip.address
+  sensitive = true
 }
 
 output "private_key" {
-  value = openstack_compute_keypair_v2.key.private_key
+  value     = openstack_compute_keypair_v2.key.private_key
+  sensitive = true
 }
 
 resource "local_file" "id_rsa" {

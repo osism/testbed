@@ -13,10 +13,12 @@ ifeq ($(NEED_OSCLOUD),1)
   export OS_CLOUD=$(ENVIRONMENT)
 endif
 
+ifneq (,$(wildcard ./minio.env))
+  include minio.env
+endif
+
 init:
-	@if [ ! -d .terraform/plugins ]; then \
-		@terraform init; \
-	fi; \
+	@if [ ! -d .terraform/plugins ]; then terraform init; fi
 
 	@terraform workspace select ${ENVIRONMENT} || terraform workspace new ${ENVIRONMENT}
 
