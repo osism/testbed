@@ -11,6 +11,8 @@ contrib/es_test_data.py
 contrib/mysql_random_data_load
 docs/build
 environments/**/ceph.client.*.keyring
+minio.env
+minio.tf
 roles
 secrets
 secure.yaml
