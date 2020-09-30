@@ -21,10 +21,10 @@ init:
 	@terraform workspace select ${ENVIRONMENT} || terraform workspace new ${ENVIRONMENT}
 
 attach: init
-        @terraform import -var-file="environment-$(ENVIRONMENT).tfvars" $(RESOURCE) $(PARAMS)
+	@terraform import -var-file="environment-$(ENVIRONMENT).tfvars" $(RESOURCE) $(PARAMS)
 
 detach: init
-        @terraform state rm $(RESOURCE) $(PARAMS)
+	@terraform state rm $(RESOURCE) $(PARAMS)
 
 dry-run: init
 	@terraform plan -var-file="environment-$(ENVIRONMENT).tfvars" $(PARAMS)
