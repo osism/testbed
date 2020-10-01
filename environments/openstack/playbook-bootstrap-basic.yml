@@ -143,6 +143,7 @@
         external: true
         provider_network_type: flat
         provider_physical_network: physnet1
+        mtu: 1400  # NOTE: necessary because Geneve/VxLAN in Geneve/VxLAN
 
     - name: Create public subnet
       os_subnet:
@@ -161,6 +162,7 @@
         cloud: test
         state: present
         name: test
+        mtu: 1400  # NOTE: necessary because Geneve/VxLAN in Geneve/VxLAN
 
     - name: Create test subnet
       os_subnet:
