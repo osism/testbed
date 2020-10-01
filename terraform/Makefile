@@ -7,6 +7,7 @@ OPENSTACK = openstack
 USERNAME = dragon
 
 RESOURCE = openstack_networking_floatingip_v2.manager_floating_ip
+STATE = errored.tfstate
 
 NEED_OSCLOUD := $(shell test -z "$$OS_PASSWORD" -a -z "$$OS_CLOUD" && echo 1 || echo 0)
 ifeq ($(NEED_OSCLOUD),1)
@@ -27,6 +28,9 @@ attach: init
 
 detach: init
 	@terraform state rm $(RESOURCE) $(PARAMS)
+
+state-push: init
+	@terraform state push $(STATE)
 
 dry-run: init
 	@terraform plan -var-file="environment-$(ENVIRONMENT).tfvars" $(PARAMS)
