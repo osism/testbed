@@ -25,7 +25,7 @@ Ceph
 ----
 
 * Luminous
-* Nautilus
+* Nautilus (**default**)
 * Octopus
 
 OpenStack
@@ -34,7 +34,7 @@ OpenStack
 * Rocky
 * Stein
 * Train
-* Ussuri
+* Ussuri (**default**)
 
 Services
 ========
