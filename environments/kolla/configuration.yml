@@ -116,6 +116,7 @@ neutron_fwaas_version: "v2"
 
 # nova
 nova_console: novnc
+nova_virt_type: kvm
 
 # octavia
 octavia_loadbalancer_topology: "ACTIVE_STANDBY"
