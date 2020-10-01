@@ -94,7 +94,7 @@ variable "ceph_version" {
 }
 
 variable "openstack_version" {
-  default = "train"
+  default = "ussuri"
   type    = string
 }
 

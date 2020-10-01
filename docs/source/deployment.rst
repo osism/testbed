@@ -112,7 +112,7 @@ flavor_manager            2C-4GB-20GB
 flavor_node               4C-16GB-40GB
 image                     Ubuntu 18.04
 network_availability_zone south-2
-openstack_version         train
+openstack_version         ussuri
 public                    external
 volume_availability_zone  south-2
 volume_size_storage       10
