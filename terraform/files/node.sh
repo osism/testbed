@@ -10,7 +10,7 @@ python3 /root/configure-network-devices.py
 chown -R ubuntu:ubuntu /home/ubuntu/.ssh
 
 add-apt-repository --yes ppa:ansible/ansible
-apt-get install --yes ansible
+apt-get install --yes ansible python-netaddr
 
 ansible-galaxy install git+https://github.com/osism/ansible-docker
 
