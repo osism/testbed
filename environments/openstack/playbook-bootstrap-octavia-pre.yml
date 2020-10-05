@@ -39,13 +39,6 @@
     - name: Add amphora tag to amphora image
       command: openstack --os-cloud admin image set --tag amphora 'Octavia Amphora'  # noqa 301
 
-    - name: Create octavia_ssh_key ssh keypair
-      os_keypair:
-        cloud: octavia
-        state: present
-        name: octavia_ssh_key
-        public_key_file: /opt/configuration/environments/kolla/files/overlays/octavia/octavia_ssh_key.pub
-
     - name: Create lb-health-mgr-sec-grp security group
       os_security_group:
         cloud: admin
