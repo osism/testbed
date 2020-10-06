@@ -13,6 +13,7 @@ add-apt-repository --yes ppa:ansible/ansible
 apt-get install --yes ansible python-netaddr
 
 ansible-galaxy install git+https://github.com/osism/ansible-docker
+ansible-galaxy collection install ansible.netcommon
 
 git clone https://github.com/osism/ansible-collection-commons.git /tmp/ansible-collection-commons
 ( cd /tmp/ansible-collection-commons; ansible-galaxy collection build; ansible-galaxy collection install -v -f -p /usr/share/ansible/collections osism-commons-*.tar.gz; )
