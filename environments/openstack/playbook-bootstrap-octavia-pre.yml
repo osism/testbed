@@ -202,7 +202,7 @@
       become: true
 
     - name: Set device mtu
-      command: ip link set mtu 1450 dev ohm0  # noqa 301
+      command: ip link set mtu 1300 dev ohm0  # noqa 301
       become: true
 
     - name: Set device up
