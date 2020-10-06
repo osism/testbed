@@ -5,7 +5,7 @@
 
   tasks:
     - name: Run patchman-update
-      command: /usr/local/bin/patchman-update # noqa 301
+      command: /usr/local/bin/patchman-update  # noqa 301
       async: 1800
       poll: 0
       register: command_sleeper
