@@ -126,11 +126,35 @@
         - 1
         - 2
 
+    # NOTE: This is a bit improvised. Since /opt/configuration is read-only in
+    #       the container we store the IDs as facts for localhost and then read
+    #       and write them to the testbed-manager.
+
+    - name: Set octavia_amp_boot_network fact
+      set_fact:
+        cacheable: true
+        octavia_amp_boot_network: "{{ network.id }}"
+
+    - name: Set octavia_amp_secgroup fact
+      set_fact:
+        cacheable: true
+        octavia_amp_secgroup: "{{ secgrp.id }}"
+
+    - name: Set octavia_amp_flavor fact
+      set_fact:
+        cacheable: true
+        octavia_amp_flavor: "{{ flavor.id }}"
+
+- name: Prepare manager nodes
+  hosts: manager
+  gather_facts: false
+
+  tasks:
     - name: Set octavia_amp_boot_network_list in environments/kolla/configuration.yml
       lineinfile:
         path: /opt/configuration/environments/kolla/configuration.yml
         regexp: '^octavia_amp_boot_network_list:'
-        line: "octavia_amp_boot_network_list: {{ network.id }}"
+        line: "octavia_amp_boot_network_list: {{ hostvars['localhost']['octavia_amp_boot_network'] }}"
         mode: 0644
       delegate_to: testbed-manager
 
@@ -138,7 +162,7 @@
       lineinfile:
         path: /opt/configuration/environments/kolla/configuration.yml
         regexp: '^octavia_amp_secgroup_list:'
-        line: "octavia_amp_secgroup_list: {{ secgrp.id }}"
+        line: "octavia_amp_secgroup_list: {{ hostvars['localhost']['octavia_amp_secgroup'] }}"
         mode: 0644
       delegate_to: testbed-manager
 
@@ -146,7 +170,7 @@
       lineinfile:
         path: /opt/configuration/environments/kolla/configuration.yml
         regexp: '^octavia_amp_flavor_id:'
-        line: "octavia_amp_flavor_id: {{ flavor.id }}"
+        line: "octavia_amp_flavor_id: {{ hostvars['localhost']['octavia_amp_flavor'] }}"
         mode: 0644
       delegate_to: testbed-manager
 
