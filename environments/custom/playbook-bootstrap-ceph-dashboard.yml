@@ -5,17 +5,17 @@
 
   tasks:
     - name: Set mgr/dashboard/ssl to false
-      command: ceph config set mgr mgr/dashboard/ssl false # noqa 301
+      command: ceph config set mgr mgr/dashboard/ssl false  # noqa 301
       environment:
         INTERACTIVE: false
 
     - name: Set mgr/dashboard/server_port to 7000
-      command: ceph config set mgr mgr/dashboard/server_port 7000 # noqa 301
+      command: ceph config set mgr mgr/dashboard/server_port 7000  # noqa 301
       environment:
         INTERACTIVE: false
 
     - name: Create admin user
-      command: "ceph dashboard ac-user-create {{ ceph_dashboard_username }} {{ ceph_dashboard_password }} administrator" # noqa 301
+      command: "ceph dashboard ac-user-create {{ ceph_dashboard_username }} {{ ceph_dashboard_password }} administrator"  # noqa 301
       register: result
       changed_when: "'already exists' not in result.stderr"
       failed_when: ( result.rc not in [ 0, 17 ] )
