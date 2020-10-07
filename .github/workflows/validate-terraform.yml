@@ -17,8 +17,7 @@ jobs:
     strategy:
       matrix:
         terraform-version:
-          - 0.12.29
-          - 0.13.3
+          - 0.13.4
 
     steps:
       - name: Checkout
