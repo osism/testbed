@@ -7,7 +7,4 @@ testbed-manager.osism.test
 [testbed-nodes]
 testbed-node-0.osism.test
 testbed-node-1.osism.test
-
-# NOTE: The node testbed-node-2 is commented to be able to test scaling
-#       in the testbed.
-# testbed-node-2.osism.test
+testbed-node-2.osism.test
