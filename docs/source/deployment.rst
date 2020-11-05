@@ -85,6 +85,18 @@ each supported cloud provider.
      * The credentials are stored in ``clouds.yaml`` and ``secure.yaml`` with the name ``pluscloudopen``.
 
 
+* `SCS Demonstrator <https://gx-scs.okeanos.dev>`_
+
+  .. note::
+     * The credentials are stored in ``clouds.yaml`` and ``secure.yaml`` with the name ``scs-demo``.
+
+     * The SCS-Demonstrator use the Ussuri Release with OVN SDN, but there is an issue with Network Availability Zones.
+       OVN is seperate in Network- and Router Availability Zones. to make it work, it depends to remove  availability_zone_hints
+       in the terrafrom environment you will find neutron.patch file
+       .. code-block:: console
+
+          patch -p0   < neutron.patch
+
 Preparations
 ============
 
