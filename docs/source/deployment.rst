@@ -125,7 +125,7 @@ cloud_provider            betacloud
 configuration_version     master
 flavor_manager            2C-4GB-20GB
 flavor_node               4C-16GB-40GB
-image                     Ubuntu 18.04
+image                     Ubuntu 20.04
 network_availability_zone south-2
 openstack_version         ussuri
 public                    external
