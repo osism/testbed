@@ -96,7 +96,11 @@ resource "openstack_compute_instance_v2" "node_server" {
   image_name        = var.image
   flavor_name       = var.flavor_node
   key_pair          = openstack_compute_keypair_v2.key.name
-  depends_on        = [openstack_networking_router_interface_v2.router_interface]
+  config_drive      = true
+
+  depends_on = [
+    openstack_networking_router_interface_v2.router_interface
+  ]
 
   network { port = openstack_networking_port_v2.node_port_management[count.index].id }
   network { port = openstack_networking_port_v2.node_port_internal[count.index].id }
@@ -107,6 +111,8 @@ resource "openstack_compute_instance_v2" "node_server" {
 
   user_data = <<-EOT
 #cloud-config
+network:
+   config: disabled
 package_update: true
 package_upgrade: false
 packages:

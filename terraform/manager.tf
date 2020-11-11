@@ -79,6 +79,7 @@ resource "openstack_compute_instance_v2" "manager_server" {
   image_name        = var.image
   flavor_name       = var.flavor_manager
   key_pair          = openstack_compute_keypair_v2.key.name
+  config_drive      = true
 
   depends_on = [
     openstack_compute_instance_v2.node_server
@@ -92,6 +93,8 @@ resource "openstack_compute_instance_v2" "manager_server" {
 
   user_data = <<-EOT
 #cloud-config
+network:
+   config: disabled
 package_update: true
 package_upgrade: false
 packages:
