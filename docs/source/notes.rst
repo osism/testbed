@@ -16,15 +16,6 @@ Notes
   there are separate networks. This is because in larger productive HCI environments, dedicated
   control nodes and network nodes are usually provided. It is also common to place storage
   frontend and storage backend on an independent/additional network infrastructure.
-* The third node (``testbed-node-2``) is not enabled for services by default. This is to
-  test the scaling of the services.
-
-  .. code-block:: ini
-
-     # NOTE: The node testbed-node-2 is commented to be able to test scaling
-     #       in the testbed.
-     # testbed-node-2.osism.local
-
 * The third volume (``/dev/sdd``) is not enabled for Ceph by default. This is to test the
   scaling of Ceph.
 * Ansible errors that have something to do with undefined variables (e.g. AnsibleUndefined)

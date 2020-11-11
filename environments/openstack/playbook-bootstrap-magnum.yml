@@ -31,7 +31,7 @@
     # NOTE: is_public from os_image is not working like expected
 
     - name: Make coreos image visible
-      command: openstack --os-cloud admin image set --public 'Fedora CoreOS 31' # noqa 301
+      command: openstack --os-cloud admin image set --public 'Fedora CoreOS 31'  # noqa 301
 
     - name: Create coreos flavor
       os_nova_flavor:

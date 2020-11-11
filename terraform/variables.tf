@@ -73,6 +73,11 @@ variable "deploy_monitoring" {
   type    = bool
 }
 
+variable "run_rally" {
+  default = false
+  type    = bool
+}
+
 variable "run_refstack" {
   default = false
   type    = bool
@@ -89,7 +94,7 @@ variable "ceph_version" {
 }
 
 variable "openstack_version" {
-  default = "train"
+  default = "ussuri"
   type    = string
 }
 

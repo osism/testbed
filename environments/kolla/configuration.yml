@@ -11,7 +11,7 @@ ansible_become_user: root
 docker_registry: quay.io
 kolla_base_distro: ubuntu
 kolla_install_type: source
-openstack_release: train
+openstack_release: ussuri
 
 ##########################################################
 # kolla
@@ -24,8 +24,8 @@ kolla_enable_sanity_checks: "yes"
 ##########################################################
 # haproxy
 
-kolla_internal_fqdn: api-int.osism.local
-kolla_external_fqdn: api.osism.local
+kolla_internal_fqdn: api-int.osism.test
+kolla_external_fqdn: api.osism.test
 
 kolla_enable_tls_external: "no"
 kolla_enable_tls_internal: "no"
@@ -116,6 +116,7 @@ neutron_fwaas_version: "v2"
 
 # nova
 nova_console: novnc
+nova_virt_type: kvm
 
 # octavia
 octavia_loadbalancer_topology: "ACTIVE_STANDBY"
@@ -129,7 +130,7 @@ ceilometer_database_type: gnocchi
 ceilometer_event_type: panko
 
 # designate
-designate_ns_record: openstack.osism.local
+designate_ns_record: openstack.osism.test
 
 # magnum
 enable_cluster_user_trust: "yes"

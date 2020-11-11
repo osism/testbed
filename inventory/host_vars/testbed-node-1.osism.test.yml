@@ -94,6 +94,7 @@ network_interfaces:
     method: static
     address: 192.168.128.11
     netmask: 255.255.240.0
+    mtu: 1300
     up:
       - ip link set dev ohm0 address 02:00:00:00:00:11
       - iptables -I INPUT -i ohm0 -p udp --dport 5555 -j ACCEPT

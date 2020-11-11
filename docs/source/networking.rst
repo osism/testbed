@@ -7,11 +7,9 @@ Networking
 
 .. figure:: /images/network-topology.png
 
-The networks ``net-to-public-testbed`` and ``net-to-betacloud-public`` are not part of the testbed.
-They are standard networks on the Betacloud.
-
-``public`` and ``betacloud`` are external networks on the Betacloud. These are also not part of
-the testbed.
+The network ``net-to-external-testbed`` is not part of the testbed.
+It is a standard network on the Betacloud. ``external`` is an external network on the Betacloud.
+This network is also not part of the testbed.
 
 Networks
 ========
@@ -56,6 +54,6 @@ Without these entries e.g. the VNC access to instances does not work.
 ========= =================== =======================
 Name      Address             Domain
 ========= =================== =======================
-external  ``192.168.96.9``    ``api.osism.local``
-internal  ``192.168.32.9``    ``api-int.osism.local``
+external  ``192.168.96.9``    ``api.osism.test``
+internal  ``192.168.32.9``    ``api-int.osism.test``
 ========= =================== =======================

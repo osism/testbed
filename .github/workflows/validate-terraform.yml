@@ -1,15 +1,15 @@
 ---
-name: Verify terraform
+name: Validate terraform
 
 on:
   push:
     paths:
       - 'terraform/**'
-      - '.github/workflows/terraform.yml'
+      - '.github/workflows/validate-terraform.yml'
   pull_request:
     paths:
       - 'terraform/**'
-      - '.github/workflows/terraform.yml'
+      - '.github/workflows/validate-terraform.yml'
 
 jobs:
   default:
@@ -17,8 +17,7 @@ jobs:
     strategy:
       matrix:
         terraform-version:
-          - 0.12.29
-          - 0.13.3
+          - 0.13.5
 
     steps:
       - name: Checkout

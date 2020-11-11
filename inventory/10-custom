@@ -2,12 +2,9 @@
 # custom host groups
 
 [testbed-manager]
-testbed-manager.osism.local
+testbed-manager.osism.test
 
 [testbed-nodes]
-testbed-node-0.osism.local
-testbed-node-1.osism.local
-
-# NOTE: The node testbed-node-2 is commented to be able to test scaling
-#       in the testbed.
-# testbed-node-2.osism.local
+testbed-node-0.osism.test
+testbed-node-1.osism.test
+testbed-node-2.osism.test

@@ -43,7 +43,7 @@
         state: present
         name: test
         password: test
-        email: test@osism.local
+        email: test@osism.test
         domain: default
         default_project: test
       no_log: true
@@ -71,10 +71,34 @@
       os_nova_flavor:
         cloud: admin
         state: present
+        name: 1C-256MB-1GB
+        ram: 256
+        vcpus: 1
+        disk: 1
+        ephemeral: 0
+        extra_specs:
+          "hw_rng:allowed": "True"
+
+    - name: Create small flavor
+      os_nova_flavor:
+        cloud: admin
+        state: present
         name: 1C-512MB-1GB
         ram: 512
         vcpus: 1
         disk: 1
+        ephemeral: 0
+        extra_specs:
+          "hw_rng:allowed": "True"
+
+    - name: Create medium flavor
+      os_nova_flavor:
+        cloud: admin
+        state: present
+        name: 1C-1GB-5GB
+        ram: 1024
+        vcpus: 1
+        disk: 5
         ephemeral: 0
         extra_specs:
           "hw_rng:allowed": "True"
@@ -98,9 +122,30 @@
           hw_rng_model: virtio
 
     # NOTE: is_public from os_image is not working like expected
-
     - name: Make cirros image visible
-      command: openstack --os-cloud admin image set --public cirros # noqa 301
+      command: openstack --os-cloud admin image set --public cirros  # noqa 301
+
+    - name: Download ubuntu minimal 20.04 image
+      get_url:
+        url: http://cloud-images.ubuntu.com/minimal/releases/focal/release/ubuntu-20.04-minimal-cloudimg-amd64.img
+        dest: /tmp/ubuntu.img
+
+    - name: Upload ubuntu minimal 20.04 image
+      os_image:
+        cloud: admin
+        state: present
+        name: ubuntu
+        container_format: bare
+        disk_format: qcow2
+        filename: /tmp/ubuntu.img
+        properties:
+          cpu_arch: x86_64
+          distro: ubuntu
+          hw_rng_model: virtio
+
+    # NOTE: is_public from os_image is not working like expected
+    - name: Make ubuntu minimal 20.04 image visible
+      command: openstack --os-cloud admin image set --public ubuntu  # noqa 301
 
     - name: Create public network
       os_network:
@@ -110,6 +155,7 @@
         external: true
         provider_network_type: flat
         provider_physical_network: physnet1
+        mtu: 1300  # NOTE: necessary because Geneve/VxLAN in Geneve/VxLAN
 
     - name: Create public subnet
       os_subnet:
@@ -128,6 +174,7 @@
         cloud: test
         state: present
         name: test
+        mtu: 1300  # NOTE: necessary because Geneve/VxLAN in Geneve/VxLAN
 
     - name: Create test subnet
       os_subnet:

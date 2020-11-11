@@ -132,6 +132,7 @@ AWX              http://192.168.16.5:8052   dragon   vaeh7eingix8ooPi
 Ceph             http://192.168.32.9:7000   admin    phoon7Chahvae6we
 Cockpit          https://192.168.16.5:8130  dragon   da5pahthaew2Pai2
 Horizon          http://192.168.32.9        admin    pYV8bV749aDMXLPlYJwoJs4ouRPWezCIOXYAQP6v
+Keycloak         http://192.168.32.5:8170   admin    password
 Kibana           http://192.168.32.9:5601   kibana   k2ReobFEsoxNm3DyZnkZmFPadSnCz6BjQhaLFoyB
 Netbox           http://192.168.16.5:8121   netbox   password
 Netdata          http://192.168.32.5:19999  -        -
@@ -171,6 +172,15 @@ Cockpit
    osism-run custom generate-ssh-known-hosts
 
 .. figure:: /images/cockpit.png
+
+Keycloak
+--------
+
+.. code-block:: console
+
+   osism-infrastructure keycloak
+
+.. figure:: /images/keycloak.png
 
 Netbox
 ------
@@ -262,6 +272,27 @@ Zabbix
 
 Tools
 =====
+
+Rally
+-----
+
+.. code-block:: console
+
+   /opt/configuration/contrib/rally/rally.sh
+   [...]
+   Full duration: 6.30863
+
+   HINTS:
+   * To plot HTML graphics with this data, run:
+       rally task report 002a01cd-46e7-4976-940f-943586771629 --out output.html
+
+   * To generate a JUnit report, run:
+       rally task export 002a01cd-46e7-4976-940f-943586771629 --type junit-xml --to output.xml
+
+   * To get raw JSON output of task results, run:
+       rally task report 002a01cd-46e7-4976-940f-943586771629 --json --out output.json
+
+   At least one workload did not pass SLA criteria.
 
 Refstack
 --------
