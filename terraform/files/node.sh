@@ -1,5 +1,23 @@
 #!/usr/bin/env bash
 
+source /etc/os-release
+
+if [[ $UBUNTU_CODENAME == "focal" ]]; then
+    # FIXME: Find better/prettier solution for it.
+
+    # NOTE: Cloud Init may set a wrong default route. This is repaired manually here.
+
+    ip route del default via 192.168.16.1 || exit 0
+    ip route del default via 192.168.32.1 || exit 0
+    ip route del default via 192.168.48.1 || exit 0
+    ip route del default via 192.168.64.1 || exit 0
+    ip route del default via 192.168.80.1 || exit 0
+    ip route del default via 192.168.96.1 || exit 0
+    ip route del default via 192.168.112.1 || exit 0
+
+    ip route add default via 192.168.16.1 || exit 0
+fi
+
 echo "APT::Acquire::Retries \"3\";" > /etc/apt/apt.conf.d/80-retries
 
 echo '* libraries/restart-without-asking boolean true' | debconf-set-selections
