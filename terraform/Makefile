@@ -73,6 +73,9 @@ sshuttle: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
 	sshuttle --ssh-cmd "ssh -o StrictHostKeyChecking=no -i .id_rsa.$(ENVIRONMENT) " -r $(USERNAME)@$$MANAGER_ADDRESS 192.168.16.0/20 192.168.32.0/20 192.168.96.0/20 192.168.112.0/20
 
 console: .deploy.$(ENVIRONMENT)
+	@$(OPENSTACK) console url show testbed-$(CONSOLE)
+
+log: .deploy.$(ENVIRONMENT)
 	@$(OPENSTACK) console log show testbed-$(CONSOLE)
 
 .deploy.$(ENVIRONMENT): init
@@ -118,7 +121,6 @@ endpoints: init
 
 create: deploy
 login: ssh
-log: console
 tunnel: sshuttle
 
 PHONY: clean console attach detach sshuttle ssh dry-run list deploy deploy-infra deploy-ceph deploy-openstack watch openstack create log login
