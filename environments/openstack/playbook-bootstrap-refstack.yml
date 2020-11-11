@@ -125,7 +125,7 @@
     # NOTE: is_public from os_image is not working like expected
 
     - name: Make ubuntu images visible
-      command: "openstack --os-cloud admin image set --public {{ item }}" # noqa 301
+      command: "openstack --os-cloud admin image set --public {{ item }}"  # noqa 301
       loop:
         - refstack-0
         - refstack-1
@@ -142,6 +142,7 @@
         section: compute
         option: image_ref
         value: "{{ images.results.0.id }}"
+        mode: 0644
       delegate_to: testbed-manager
 
     - name: Set image_ref_alt in tempest.conf
@@ -150,6 +151,7 @@
         section: compute
         option: image_ref_alt
         value: "{{ images.results.1.id }}"
+        mode: 0644
       delegate_to: testbed-manager
 
     - name: Set flavor_ref in tempest.conf
@@ -158,6 +160,7 @@
         section: compute
         option: flavor_ref
         value: "{{ flavors.results.0.id }}"
+        mode: 0644
       delegate_to: testbed-manager
 
     - name: Set flavor_ref_alt in tempest.conf
@@ -166,6 +169,7 @@
         section: compute
         option: flavor_ref_alt
         value: "{{ flavors.results.1.id }}"
+        mode: 0644
       delegate_to: testbed-manager
 
     - name: Set public_network_id in tempest.conf
@@ -174,10 +178,11 @@
         section: network
         option: public_network_id
         value: "{{ public.openstack_networks.0.id }}"
+        mode: 0644
       delegate_to: testbed-manager
 
     - name: Check swift endpoint
-      command: openstack --os-cloud admin endpoint list --service swift # noqa 301
+      command: openstack --os-cloud admin endpoint list --service swift  # noqa 301
       register: result
       delegate_to: testbed-manager
 
@@ -187,5 +192,6 @@
         section: service_available
         option: swift
         value: "true"
+        mode: 0644
       delegate_to: testbed-manager
       when: "'object-store' in result.stdout"

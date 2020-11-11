@@ -1,31 +1,43 @@
 # Makefile
 
+CONFIGURATION = master
+CONSOLE = manager
 ENVIRONMENT = betacloud
-SSH_USERNAME = dragon
 OPENSTACK = openstack
+USERNAME = dragon
+
+RESOURCE = openstack_networking_floatingip_v2.manager_floating_ip
+STATE = errored.tfstate
 
 NEED_OSCLOUD := $(shell test -z "$$OS_PASSWORD" -a -z "$$OS_CLOUD" && echo 1 || echo 0)
 ifeq ($(NEED_OSCLOUD),1)
   export OS_CLOUD=$(ENVIRONMENT)
 endif
 
-init:
-	@if [ ! -d .terraform/plugins ]; then \
-		terraform init; \
-	fi
+ifneq (,$(wildcard ./minio.env))
+  include minio.env
+endif
 
-	@if [ -d "terraform.tfstate.d/${ENVIRONMENT}" ]; then \
-		terraform workspace select ${ENVIRONMENT}; \
-	else \
-		terraform workspace new ${ENVIRONMENT}; \
-	fi
+init:
+	@if [ ! -d .terraform/plugins ]; then terraform init; fi
+
+	@terraform workspace select ${ENVIRONMENT} || terraform workspace new ${ENVIRONMENT}
+
+attach: init
+	@terraform import -var-file="environment-$(ENVIRONMENT).tfvars" $(RESOURCE) $(PARAMS)
+
+detach: init
+	@terraform state rm $(RESOURCE) $(PARAMS)
+
+state-push: init
+	@terraform state push $(STATE)
 
 dry-run: init
 	@terraform plan -var-file="environment-$(ENVIRONMENT).tfvars" $(PARAMS)
 
 deploy: init
 	@touch .deploy.$(ENVIRONMENT)
-	@terraform apply -auto-approve -var-file="environment-$(ENVIRONMENT).tfvars" $(PARAMS)
+	@terraform apply -auto-approve -var-file="environment-$(ENVIRONMENT).tfvars" -var "configuration_version=$(CONFIGURATION)" $(PARAMS)
 
 deploy-infra: init
 	@touch .deploy.$(ENVIRONMENT)
@@ -54,14 +66,14 @@ list: init
 
 ssh: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
 	@source ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
-	ssh -i .id_rsa.$(ENVIRONMENT) $(SSH_USERNAME)@$$MANAGER_ADDRESS
+	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(ENVIRONMENT) $(USERNAME)@$$MANAGER_ADDRESS
 
 sshuttle: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
 	@source ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
-	sshuttle --ssh-cmd "ssh -i .id_rsa.$(ENVIRONMENT) " -r $(SSH_USERNAME)@$$MANAGER_ADDRESS 192.168.40.0/24 192.168.50.0/24 192.168.90.0/24 192.168.100.0/24
+	sshuttle --ssh-cmd "ssh -o StrictHostKeyChecking=no -i .id_rsa.$(ENVIRONMENT) " -r $(USERNAME)@$$MANAGER_ADDRESS 192.168.16.0/20 192.168.32.0/20 192.168.96.0/20 192.168.112.0/20
 
 console: .deploy.$(ENVIRONMENT)
-	@$(OPENSTACK) console log show testbed-manager
+	@$(OPENSTACK) console log show testbed-$(CONSOLE)
 
 .deploy.$(ENVIRONMENT): init
 	@STAT=$$(terraform state list); \
@@ -98,4 +110,15 @@ watch: .id_rsa.$(ENVIRONMENT) .MANAGER_ADDRESS.$(ENVIRONMENT)
 openstack: init
 	@$(OPENSTACK)
 
-PHONY: clean console sshuttle ssh dry-run list deploy deploy-infra deploy-ceph deploy-openstack watch openstack
+endpoints: init
+	@source ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
+	echo "| ARA        | http://$$MANAGER_ADDRESS:8120  |"; \
+	echo "| Cockpit    | https://$$MANAGER_ADDRESS:8130 |"; \
+	echo "| phpMyAdmin | http://$$MANAGER_ADDRESS:8110  |";
+
+create: deploy
+login: ssh
+log: console
+tunnel: sshuttle
+
+PHONY: clean console attach detach sshuttle ssh dry-run list deploy deploy-infra deploy-ceph deploy-openstack watch openstack create log login

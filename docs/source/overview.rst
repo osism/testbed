@@ -25,7 +25,7 @@ Ceph
 ----
 
 * Luminous
-* Nautilus
+* Nautilus (**default**)
 * Octopus
 
 OpenStack
@@ -34,7 +34,7 @@ OpenStack
 * Rocky
 * Stein
 * Train
-* Ussuri
+* Ussuri (**default**)
 
 Services
 ========
@@ -57,13 +57,15 @@ Infrastructure
 * Haproxy
 * Influxdb
 * Keepalived
+* Keycloak
 * Kibana
 * Mariadb
 * Memcached
+* Netbox
 * Netdata
 * Openvswitch
 * Patchman
-* Prometheus
+* Prometheus exporters
 * Rabbitmq
 * Redis
 * Skydive

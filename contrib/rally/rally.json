@@ -1,0 +1,15 @@
+{
+    "openstack": {
+        "auth_url": "http://api.osism.test:5000/v3",
+        "region_name": "RegionOne",
+        "endpoint_type": "public",
+        "admin": {
+            "username": "admin",
+            "user_domain_name": "Default",
+            "password": "pYV8bV749aDMXLPlYJwoJs4ouRPWezCIOXYAQP6v",
+            "project_name": "admin",
+            "project_domain_name": "Default"
+        },
+        "https_insecure": true
+    }
+}

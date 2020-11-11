@@ -3,7 +3,7 @@
 # versions
 
 ceph_version: nautilus
-openstack_version: train
+openstack_version: ussuri
 
 ceph_manager_version: latest
 kolla_manager_version: latest
@@ -20,3 +20,9 @@ ara_server_host: "{{ hostvars[inventory_hostname]['ansible_' + console_interface
 
 awx_enable: yes
 awx_host: "{{ hostvars[inventory_hostname]['ansible_' + console_interface]['ipv4']['address'] }}"
+
+awx_vault_type: vault
+vault_host: "{{ hostvars[inventory_hostname]['ansible_' + console_interface]['ipv4']['address'] }}"
+
+netbox_enable: no
+netbox_host: "{{ hostvars[inventory_hostname]['ansible_' + console_interface]['ipv4']['address'] }}"

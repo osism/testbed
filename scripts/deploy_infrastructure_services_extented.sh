@@ -2,7 +2,7 @@
 
 export INTERACTIVE=false
 
-osism-infrastructure helper --tags phpmyadmin
+osism-infrastructure phpmyadmin
 osism-generic osquery
 osism-generic cockpit
 

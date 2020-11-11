@@ -33,10 +33,10 @@
 
   tasks:
     - name: Fetch ceph keys from the first monitor node
-      command: "osism-ceph fetch-keys" # noqa 301
+      command: "osism-ceph fetch-keys"  # noqa 301
       environment:
         INTERACTIVE: false
 
     - name: Copy ceph keys to the configuration repository
-      command: "docker cp manager_ceph-ansible_1:/share/{{ ceph_cluster_fsid }}/etc/ceph/{{ item.src }} {{ item.dest }}" # noqa 301
-      with_items: "{{ ceph_keys }}"
+      command: "docker cp manager_ceph-ansible_1:/share/{{ ceph_cluster_fsid }}/etc/ceph/{{ item.src }} {{ item.dest }}"  # noqa 301
+      loop: "{{ ceph_keys }}"

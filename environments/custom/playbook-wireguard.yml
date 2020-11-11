@@ -8,6 +8,7 @@
     - name: Add wireguard repository
       apt_repository:
         repo: ppa:wireguard/wireguard
+        mode: 0600
       become: true
       when: "ansible_distribution_release == 'bionic'"
 
@@ -29,7 +30,7 @@
         - wireguard-dkms
 
     - name: Build wireguard kernel module
-      command: dpkg-reconfigure wireguard-dkms # noqa 301
+      command: dpkg-reconfigure wireguard-dkms  # noqa 301
       become: true
 
     - name: Create public and private key
@@ -100,6 +101,6 @@
   gather_facts: false
 
   tasks:
-    - name: Add route to 192.168.60.0/24
-      command: ip route replace 192.168.60.0/24 via 192.168.50.5 # noqa 301
+    - name: Add route to 192.168.48.0/20
+      command: ip route replace 192.168.48.0/20 via 192.168.32.5  # noqa 301
       become: true

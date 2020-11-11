@@ -51,26 +51,53 @@
       - name: "{{ ansible_distribution_release }}-updates"
         repository: "deb [arch=amd64] http://de.archive.ubuntu.com/ubuntu/ {{ ansible_distribution_release }}-updates main restricted universe multiverse"
 
-  roles:
-    - ansible-resolvconf
-    - ansible-chrony
-    - ansible-repository
-    - ansible-common
-    - ansible-operator
+  collections:
+    - osism.commons
+    - osism.services
 
-- name: Apply role osism.docker
+  roles:
+    - role: resolvconf
+    - role: chrony
+    - role: repository
+    - role: systohc
+    - role: configfs
+    - role: packages
+    - role: sysctl
+    - role: services
+    - role: facts
+    - role: motd
+    - role: hddtemp
+    - role: rng
+    - role: smartd
+    - role: cleanup
+    - role: operator
+
+- name: Apply role docker
   hosts: localhost
   connection: local
   gather_facts: true
 
   vars:
     ansible_python_interpreter: /usr/bin/python3
-    docker_compose_install_type: package
     docker_configure_repository: yes
     docker_configure_storage_driver: yes
     docker_storage_driver: overlay2
     docker_user: dragon
-    docker_version: "5:19.03.5"
+    docker_version: "5:19.03.12"
 
   roles:
     - ansible-docker
+
+- name: Apply role docker_compose
+  hosts: localhost
+  connection: local
+  gather_facts: true
+
+  vars:
+    docker_compose_install_type: package
+
+  collections:
+    - osism.commons
+
+  roles:
+    - role: docker_compose

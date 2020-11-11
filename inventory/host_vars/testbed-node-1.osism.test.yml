@@ -2,28 +2,23 @@
 ##########################################################
 # ansible
 
-ansible_host: 192.168.40.12
+ansible_host: 192.168.16.11
 
 ##########################################################
-# docker
+# netbox
 
-docker_configure_proxy: yes
-docker_proxy_http: "http://192.168.50.5:8000"
-docker_proxy_no_proxy:
-  - localhost
-  - 127.0.0.1
-  - 192.168.0.0/16
+netbox_inventory_status: Active
 
 ##########################################################
 # generic
 
-node_id: 2
+node_id: 1
 
 console_interface: "{{ ansible_local.testbed_network_devices.management }}"
 management_interface: "{{ ansible_local.testbed_network_devices.internal }}"
 
-internal_address: 192.168.50.12
-fluentd_host: 192.168.50.12
+internal_address: 192.168.32.11
+fluentd_host: 192.168.32.11
 
 ##########################################################
 # cockpit
@@ -48,29 +43,29 @@ network_interfaces:
     auto: true
     family: inet
     method: static
-    address: 192.168.40.12
-    netmask: 255.255.255.0
-    gateway: 192.168.40.1
+    address: 192.168.16.11
+    netmask: 255.255.240.0
+    gateway: 192.168.16.1
     mtu: 1450
     up:
-      - ip route add 192.168.60.0/24 via 192.168.50.5
+      - ip route add 192.168.48.0/20 via 192.168.32.5
     down:
-      - ip route del 192.168.60.0/24 via 192.168.50.5
+      - ip route del 192.168.48.0/20 via 192.168.32.5
 
   - device: "{{ ansible_local.testbed_network_devices.internal }}"
     auto: true
     family: inet
     method: static
-    address: 192.168.50.12
-    netmask: 255.255.255.0
+    address: 192.168.32.11
+    netmask: 255.255.240.0
     mtu: 1450
 
   - device: "{{ ansible_local.testbed_network_devices.external }}"
     auto: true
     family: inet
     method: static
-    address: 192.168.90.12
-    netmask: 255.255.255.0
+    address: 192.168.96.11
+    netmask: 255.255.240.0
     mtu: 1450
 
   - device: "{{ ansible_local.testbed_network_devices.provider }}"
@@ -83,24 +78,25 @@ network_interfaces:
     auto: true
     family: inet
     method: static
-    address: 192.168.70.12
-    netmask: 255.255.255.0
+    address: 192.168.64.11
+    netmask: 255.255.240.0
     mtu: 1450
 
   - device: "{{ ansible_local.testbed_network_devices.storage_backend }}"
     auto: true
     family: inet
     method: static
-    address: 192.168.80.12
-    netmask: 255.255.255.0
+    address: 192.168.80.11
+    netmask: 255.255.240.0
     mtu: 1450
 
   - device: ohm0
     method: static
-    address: 192.168.110.12
-    netmask: 255.255.255.0
+    address: 192.168.128.11
+    netmask: 255.255.240.0
+    mtu: 1300
     up:
-      - ip link set dev ohm0 address 02:00:00:00:00:12
+      - ip link set dev ohm0 address 02:00:00:00:00:11
       - iptables -I INPUT -i ohm0 -p udp --dport 5555 -j ACCEPT
 
 ##########################################################
@@ -121,9 +117,9 @@ storage_interface: "{{ ansible_local.testbed_network_devices.storage_frontend }}
 # ceph
 
 # monitor_interface:
-monitor_address: 192.168.70.12
+monitor_address: 192.168.64.11
 # radosgw_interface:
-radosgw_address: 192.168.70.12
+radosgw_address: 192.168.64.11
 
 devices: "{{ ansible_local.testbed_ceph_devices }}"
 

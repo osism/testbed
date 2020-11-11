@@ -20,12 +20,12 @@ Wireguard
 
      [Interface]
      PrivateKey = eFvxE9jOhSRg4drIUBEO1xqHP9cpV0bQiGASFqvGMkU=
-     Address = 192.168.60.4/24
+     Address = 192.168.48.4/24
 
      [Peer]
      PublicKey = MANAGER_CONTENTS_OF_/etc/wireguard/osism.pub
      PresharedKey = MANAGER_CONTENTS_OF_/etc/wireguard/osism.psk
-     AllowedIPs = 192.168.40.0/24, 192.168.50.0/24, 192.168.60.0/24, 192.168.90.0/24, 192.168.100.0/24
+     AllowedIPs = 192.168.16.0/20, 192.168.32.0/20, 192.168.48.0/20, 192.168.96.0/20, 192.168.112.0/20
      Endpoint = MANAGER_PUBLIC_IP_ADDRESS:51820
 
 Change versions
@@ -79,7 +79,7 @@ Deploy services
 
      /opt/configuration/scripts/deploy_openstack_services_additional.sh
 
-* Monitoring services (Netdata, Prometheus, ..)
+* Monitoring services (Netdata, Prometheus exporters, ..)
 
   .. code-block:: console
 
@@ -127,17 +127,19 @@ Webinterfaces
 ================ ========================== ======== ========================================
 Name             URL                        Username Password
 ================ ========================== ======== ========================================
-ARA              http://192.168.40.5:8120   ara      S6JE2yJUwvraiX57
-AWX              http://192.168.40.5:8052   dragon   vaeh7eingix8ooPi
-Ceph             http://192.168.50.200:7000 admin    phoon7Chahvae6we
-Cockpit          https://192.168.40.5:8130  dragon   da5pahthaew2Pai2
-Horizon          http://192.168.50.200      admin    pYV8bV749aDMXLPlYJwoJs4ouRPWezCIOXYAQP6v
-Kibana           http://192.168.50.200:5601 kibana   k2ReobFEsoxNm3DyZnkZmFPadSnCz6BjQhaLFoyB
-Netdata          http://192.168.50.5:19999  -        -
-Patchman         http://192.168.50.5:8150   patchman aiB4aijiebeesiu0
-Prometheus       http://192.168.50.5:9091   -        -
-Skydive          http://192.168.50.5:8085   admin    pYV8bV749aDMXLPlYJwoJs4ouRPWezCIOXYAQP6v
-phpMyAdmin       http://192.168.40.5:8110   root     qNpdZmkKuUKBK3D5nZ08KMZ5MnYrGEe2hzH6XC0i
+ARA              http://192.168.16.5:8120   ara      S6JE2yJUwvraiX57
+AWX              http://192.168.16.5:8052   dragon   vaeh7eingix8ooPi
+Ceph             http://192.168.32.9:7000   admin    phoon7Chahvae6we
+Cockpit          https://192.168.16.5:8130  dragon   da5pahthaew2Pai2
+Horizon          http://192.168.32.9        admin    pYV8bV749aDMXLPlYJwoJs4ouRPWezCIOXYAQP6v
+Keycloak         http://192.168.32.5:8170   admin    password
+Kibana           http://192.168.32.9:5601   kibana   k2ReobFEsoxNm3DyZnkZmFPadSnCz6BjQhaLFoyB
+Netbox           http://192.168.16.5:8121   netbox   password
+Netdata          http://192.168.32.5:19999  -        -
+Patchman         http://192.168.32.5:8150   patchman aiB4aijiebeesiu0
+Skydive          http://192.168.32.5:8085   admin    pYV8bV749aDMXLPlYJwoJs4ouRPWezCIOXYAQP6v
+phpMyAdmin       http://192.168.32.5:8110   root     qNpdZmkKuUKBK3D5nZ08KMZ5MnYrGEe2hzH6XC0i
+Zabbix           http://192.168.32.5:8160   Admin    zabbix
 ================ ========================== ======== ========================================
 
 ARA
@@ -170,6 +172,22 @@ Cockpit
    osism-run custom generate-ssh-known-hosts
 
 .. figure:: /images/cockpit.png
+
+Keycloak
+--------
+
+.. code-block:: console
+
+   osism-infrastructure keycloak
+
+.. figure:: /images/keycloak.png
+
+Netbox
+------
+
+Netbox is part of the manager and does not need to be deployed individually.
+
+.. figure:: /images/netbox.png
 
 Netdata
 -------
@@ -232,8 +250,8 @@ The previous steps can also be done with a custom playbook.
 
 .. figure:: /images/patchman.png
 
-Prometheus
-----------
+Prometheus exporters
+--------------------
 
 Deploy `Clustered infrastructure services`, `Infrastructure services`, and
 `Basic OpenStack services` first.
@@ -242,10 +260,39 @@ Deploy `Clustered infrastructure services`, `Infrastructure services`, and
 
    osism-kolla deploy prometheus
 
-.. figure:: /images/prometheus.png
+Zabbix
+------
+
+.. code-block:: console
+
+   osism-monitoring zabbix-agent
+   osism-monitoring zabbix
+
+.. figure:: /images/zabbix.png
 
 Tools
 =====
+
+Rally
+-----
+
+.. code-block:: console
+
+   /opt/configuration/contrib/rally/rally.sh
+   [...]
+   Full duration: 6.30863
+
+   HINTS:
+   * To plot HTML graphics with this data, run:
+       rally task report 002a01cd-46e7-4976-940f-943586771629 --out output.html
+
+   * To generate a JUnit report, run:
+       rally task export 002a01cd-46e7-4976-940f-943586771629 --type junit-xml --to output.xml
+
+   * To get raw JSON output of task results, run:
+       rally task report 002a01cd-46e7-4976-940f-943586771629 --json --out output.json
+
+   At least one workload did not pass SLA criteria.
 
 Refstack
 --------
@@ -281,7 +328,7 @@ configuration is so that two nodes are already sufficient.
 
    RabbitMQ        RABBITMQ_CLUSTER OK - nb_running_node OK (2) nb_running_disc_node OK (2) nb_running_ram_node OK (0)
 
-   Redis           TCP OK - 0.002 second response time on 192.168.50.10 port 6379|time=0.001901s;;;0.000000;10.000000
+   Redis           TCP OK - 0.002 second response time on 192.168.32.10 port 6379|time=0.001901s;;;0.000000;10.000000
 
 Random data
 -----------

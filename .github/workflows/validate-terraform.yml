@@ -1,18 +1,23 @@
 ---
-name: Verify terraform
+name: Validate terraform
 
 on:
   push:
     paths:
       - 'terraform/**'
+      - '.github/workflows/validate-terraform.yml'
   pull_request:
     paths:
       - 'terraform/**'
+      - '.github/workflows/validate-terraform.yml'
 
 jobs:
   default:
-
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        terraform-version:
+          - 0.13.5
 
     steps:
       - name: Checkout
@@ -20,7 +25,7 @@ jobs:
       - name: Setup terraform
         uses: hashicorp/setup-terraform@v1
         with:
-          terraform_version: 0.12.28
+          terraform_version: ${{ matrix.terraform-version }}
       - name: Terraform init
         run: terraform init
         working-directory: ./terraform

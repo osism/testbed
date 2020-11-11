@@ -1,6 +1,6 @@
 ---
 - name: Copy custom facts
-  hosts: testbed-manager.osism.local
+  hosts: testbed-manager.osism.test
   connection: local
   gather_facts: false
 
@@ -25,13 +25,13 @@
         group: root
         mode: 0755
       become: true
-      with_items:
+      loop:
         - testbed_ceph_devices
         - testbed_ceph_devices_all
         - testbed_network_devices
 
-- name: Apply role osism.manager
-  hosts: testbed-manager.osism.local
+- name: Apply role manager
+  hosts: testbed-manager.osism.test
   connection: local
   gather_facts: true
 
@@ -40,7 +40,7 @@
     docker_registry_ansible: quay.io
 
   vars_files:
-    - /opt/configuration/inventory/host_vars/testbed-manager.osism.local.yml
+    - /opt/configuration/inventory/host_vars/testbed-manager.osism.test.yml
     - /opt/configuration/environments/manager/configuration.yml
     - /opt/configuration/environments/manager/images.yml
     - /opt/configuration/environments/manager/secrets.yml

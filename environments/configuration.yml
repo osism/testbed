@@ -1,16 +1,5 @@
 ---
 ##########################
-# debops
-
-# apt
-
-apt__enabled: no
-
-# grub
-
-grub_hidden_timeout: false
-
-##########################
 # configuration
 
 configuration_directory: /opt/configuration
@@ -27,8 +16,6 @@ configuration_git_protocol: https
 
 docker_user: "{{ operator_user }}"
 
-docker_kata_install: yes
-
 docker_configure_storage_driver: yes
 docker_storage_driver: overlay2
 
@@ -37,70 +24,29 @@ docker_registry: index.docker.io
 docker_registry_ansible: quay.io
 
 ##########################
-# docker-compose
+# docker_compose
 
 docker_compose_install_type: package
 
 ##########################
 # versions
 
-docker_version: "5:19.03.5"
+docker_version: "5:19.03.12"
 repository_version: latest
-
-##########################
-# repositories
-
-repository_keys: {}
-repository_key_ids: {}
-
-repositories:
-  - name: "{{ ansible_distribution_release }}"
-    repository: "deb [arch=amd64] http://de.archive.ubuntu.com/ubuntu/ {{ ansible_distribution_release }} main restricted universe multiverse"
-  - name: "{{ ansible_distribution_release }}-backports"
-    repository: "deb [arch=amd64] http://de.archive.ubuntu.com/ubuntu/ {{ ansible_distribution_release }}-backports main restricted universe multiverse"
-  - name: "{{ ansible_distribution_release }}-security"
-    repository: "deb [arch=amd64] http://de.archive.ubuntu.com/ubuntu/ {{ ansible_distribution_release }}-security main restricted universe multiverse"
-  - name: "{{ ansible_distribution_release }}-updates"
-    repository: "deb [arch=amd64] http://de.archive.ubuntu.com/ubuntu/ {{ ansible_distribution_release }}-updates main restricted universe multiverse"
-
-docker_configure_repository: yes
-netdata_configure_repository: yes
-osquery_configure_repository: yes
-sysdig_configure_repository: yes
-zabbix_agent_configure_repository: yes
-
-##########################
-# timezone
-
-timezone_zone: UTC
 
 ##########################
 # operator
 
-operator_user: dragon
-operator_group: dragon
-
-operator_authorized_keys: "{{lookup('file', '/share/id_rsa.pub')}}"
-
-##########################
-# network
-
-network_allow_service_restart: no
-network_restart_method: nothing
-
-##########################
-# proxy
-
-proxy_proxies:
-  http: http://192.168.50.5:3128
+operator_authorized_keys:
+  - "{{lookup('file', '/ansible/secrets/id_rsa.operator.pub')}}"
 
 ##########################
 # resolvconf
 
 resolvconf_nameserver:
+  - 8.8.8.8
   - 9.9.9.9
-  - 149.112.112.112
-resolvconf_search: osism.local
+resolvconf_search: osism.test
 resolvconf_package: ""
 
 ##########################
@@ -108,28 +54,26 @@ resolvconf_package: ""
 
 hosts_type: template
 hosts_additional_entries:
-  api-int.osism.local: 192.168.50.200
-  api.osism.local: 192.168.90.200
+  api-int.osism.test: 192.168.32.9
+  api.osism.test: 192.168.96.9
 
 ##########################
 # common
 
-cleanup_services_common:
+cleanup_services:
   - NetworkManager
   - iscsid
   - lxcfs
   - nscd
   - ntp
-
-install_microcode_package_common: yes
-rng_enable_common: yes
-smartd_enable_common: no
+  - networkd-dispatcher
+  - systemd-networkd
 
 ##########################
 # kolla
 
-kolla_internal_vip_address: 192.168.50.200
-kolla_external_vip_address: 192.168.90.200
+kolla_internal_vip_address: 192.168.32.9
+kolla_external_vip_address: 192.168.96.9
 
 ##########################
 # serial
@@ -155,44 +99,7 @@ osism_serial:
   utilities: 100%
 
 ##########################
-# chrony
-
-chrony_servers:
-  - 1.de.pool.ntp.org
-  - 2.de.pool.ntp.org
-  - 3.de.pool.ntp.org
-  - 4.de.pool.ntp.org
-chrony_allowed_subnets:
-  - 127.0.0.1/32
-
-##########################
-# hardening
-
-stig_version: rhel7
-
-# NOTE: osism.chrony is used instead of this integration
-security_rhel7_enable_chrony: no
-
-# NOTE: http://docs.openstack.org/developer/kolla-ansible/security.html#selinux
-security_rhel7_enable_linux_security_module: no
-
-security_rhel7_remove_shosts_files: yes
-security_package_clean_on_remove: yes
-
-security_rhel7_session_timeout: 3600
-
-# NOTE(berendt): allow hmac-sha1 to make cockpit usable
-#                https://github.com/cockpit-project/cockpit/issues/8733
-security_sshd_allowed_macs: hmac-sha2-256,hmac-sha2-512,hmac-sha1
-
-##########################
 # ceph
 
 ceph_share_directory: /share
-ceph_cluster_fsid: ce766f84-6dde-4ba0-9c57-ddb62431f1cd
-
-##########################
-# cockpit
-
-configure_cockpit: yes
-cockpit_ssh_interface: "{{ console_interface }}"
+ceph_cluster_fsid: 11111111-1111-1111-1111-111111111111

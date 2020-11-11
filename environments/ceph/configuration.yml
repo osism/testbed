@@ -5,7 +5,7 @@
 containerized_deployment: true
 
 generate_fsid: false
-fsid: ce766f84-6dde-4ba0-9c57-ddb62431f1cd
+fsid: 11111111-1111-1111-1111-111111111111
 
 ##########################
 # osd
@@ -18,8 +18,8 @@ dmcrypt: true
 ##########################
 # network
 
-public_network: 192.168.70.0/24
-cluster_network: 192.168.80.0/24
+public_network: 192.168.64.0/20
+cluster_network: 192.168.80.0/20
 
 ##########################
 # pools & keys
@@ -230,7 +230,7 @@ ceph_conf_overrides:
     "rgw keystone admin user": "swift"
     "rgw keystone api version": "3"
     "rgw keystone revocation interval": "900"
-    "rgw keystone url": "http://api-int.osism.local:35357"
+    "rgw keystone url": "http://api-int.osism.test:35357"
     "rgw keystone implicit tenants": "true"
     "rgw s3 auth use keystone": "true"
     "rgw swift account in url": "true"

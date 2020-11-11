@@ -78,10 +78,32 @@ each supported cloud provider.
 
           {"NeutronError": {"message": "Invalid input for operation: Can not get vracks for tenant xxx from DB!.", "type": "InvalidInput", "detail": ""}}
 
+* `PlusServer <https://www.plusserver.com>`_
+
+  .. note::
+
+     * The credentials are stored in ``clouds.yaml`` and ``secure.yaml`` with the name ``pluscloudopen``.
+
+.. note::
+
+   If the name of the cloud provider in ``clouds.yaml`` differs from the intended default, e.g.
+   ``betacloud`` for Betacloud, this can be adjusted as follows.
+
+   .. code-block:: console
+
+      PARAMS="-var 'cloudprovider=the-name-of-the-entry'"
+
+   A complete example with the environment for the Betacloud and a cloud provider with the name
+   ``the-name-of-the-entry`` looks like this:
+
+   .. code-block:: console
+
+      make deploy ENVIRONMENT=betacloud PARAMS="-var 'cloudprovider=the-name-of-the-entry'"
+
 Preparations
 ============
 
-* `Terraform <https://www.terraform.io>`_ must be installed (https://learn.hashicorp.com/terraform/getting-started/install.html)
+* `Terraform <https://www.terraform.io>`_ must be installed (https://learn.hashicorp.com/tutorials/terraform/install-cli)
 * ``clouds.yaml`` and ``secure.yaml`` files must be created
   (https://docs.openstack.org/python-openstackclient/latest/configuration/index.html#clouds-yaml)
 
@@ -105,7 +127,7 @@ flavor_manager            2C-4GB-20GB
 flavor_node               4C-16GB-40GB
 image                     Ubuntu 18.04
 network_availability_zone south-2
-openstack_version         train
+openstack_version         ussuri
 public                    external
 volume_availability_zone  south-2
 volume_size_storage       10
