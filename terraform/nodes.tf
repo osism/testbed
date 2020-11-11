@@ -113,10 +113,8 @@ resource "openstack_compute_instance_v2" "node_server" {
 #cloud-config
 network:
    config: disabled
-package_update: true
+package_update: false
 package_upgrade: false
-packages:
-  - ifupdown
 write_files:
   - content: |
       import subprocess

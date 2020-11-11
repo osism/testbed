@@ -40,7 +40,6 @@ fi
 
 chown -R ubuntu:ubuntu /home/ubuntu/.ssh
 
-add-apt-repository --yes ppa:ansible/ansible
 apt-get install --yes ansible ifupdown python-netaddr
 
 ansible-galaxy install git+https://github.com/osism/ansible-docker
