@@ -3,7 +3,7 @@ provider "openstack" {
 }
 
 terraform {
-  required_version = ">= 0.12"
+  required_version = ">= 0.13"
 
   # The "hashicorp" namespace is the new home for the HashiCorp-maintained
   # provider plugins.
