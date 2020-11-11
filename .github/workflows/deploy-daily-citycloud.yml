@@ -5,6 +5,8 @@ on:
   push:
     paths:
       - '.github/workflows/deploy-daily-citycloud.yml'
+    branches:
+      - master
   schedule:
     - cron: '0 3 * * *'
 
