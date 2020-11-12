@@ -44,16 +44,8 @@ apt-get install --yes ansible ifupdown python-netaddr
 
 ansible-galaxy install git+https://github.com/osism/ansible-docker
 ansible-galaxy collection install ansible.netcommon
-
-# FIXME: With Ansible 2.10 it is possible to install collections via Git directly
-git clone https://github.com/osism/ansible-collection-commons.git /tmp/ansible-collection-commons
-( cd /tmp/ansible-collection-commons; ansible-galaxy collection build; ansible-galaxy collection install -v -f -p /usr/share/ansible/collections osism-commons-*.tar.gz; )
-rm -rf /tmp/ansible-collection-commons
-
-# FIXME: With Ansible 2.10 it is possible to install collections via Git directly
-git clone https://github.com/osism/ansible-collection-services.git /tmp/ansible-collection-services
-( cd /tmp/ansible-collection-services; ansible-galaxy collection build; ansible-galaxy collection install -v -f -p /usr/share/ansible/collections osism-services-*.tar.gz; )
-rm -rf /tmp/ansible-collection-services
+ansible-galaxy collection install -v git+https://github.com/osism/ansible-collection-commons.git
+ansible-galaxy collection install -v git+https://github.com/osism/ansible-collection-services.git
 
 chmod -R +r /usr/share/ansible/collections/ansible_collections
 
