@@ -6,4 +6,4 @@ Hyperconverged infrastructure (HCI) testbed based on OpenStack and Ceph, deploye
 
 ## Author information
 
-This testbed was created by [Betacloud Solutions GmbH](https://www.betacloud-solutions.de).
+This testbed was initially created by [Betacloud Solutions GmbH](https://www.betacloud-solutions.de).
