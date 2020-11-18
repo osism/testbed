@@ -69,11 +69,11 @@ list: init
 	@terraform state list
 
 ssh: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
-	@source ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
+	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
 	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(ENVIRONMENT) $(USERNAME)@$$MANAGER_ADDRESS
 
 sshuttle: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
-	@source ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
+	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
 	sshuttle --ssh-cmd "ssh -o StrictHostKeyChecking=no -i .id_rsa.$(ENVIRONMENT) " -r $(USERNAME)@$$MANAGER_ADDRESS 192.168.16.0/20 192.168.32.0/20 192.168.96.0/20 192.168.112.0/20
 
 console: .deploy.$(ENVIRONMENT)
@@ -96,7 +96,7 @@ log: .deploy.$(ENVIRONMENT)
         chmod 0600 $@
 
 watch: .id_rsa.$(ENVIRONMENT) .MANAGER_ADDRESS.$(ENVIRONMENT)
-	@source ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
+	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
 	DISP=0; \
 	if test "$$COLORTERM" = "1"; then \
 	  GREEN=$$(echo -e "\e[0;32m"); GREENBOLD=$$(echo -e "\e[1;32m"); BOLD=$$(echo -e "\e[0;1m"); RED=$$(echo -e "\e[0;31m"); YELLOW=$$(echo -e "\e[0;33m"); NORM=$$(echo -e "\e[0;0m"); \
@@ -118,7 +118,7 @@ openstack: init
 	@$(OPENSTACK)
 
 endpoints: init
-	@source ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
+	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
 	echo "| ARA        | http://$$MANAGER_ADDRESS:8120  |"; \
 	echo "| Cockpit    | https://$$MANAGER_ADDRESS:8130 |"; \
 	echo "| phpMyAdmin | http://$$MANAGER_ADDRESS:8110  |";
