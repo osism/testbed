@@ -9,7 +9,7 @@ variable "prefix" {
 }
 
 variable "image" {
-  default = "Ubuntu 18.04"
+  default = "Ubuntu 20.04"
   type    = string
 }
 

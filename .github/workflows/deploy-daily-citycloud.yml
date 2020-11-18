@@ -5,6 +5,8 @@ on:
   push:
     paths:
       - '.github/workflows/deploy-daily-citycloud.yml'
+    branches:
+      - master
   schedule:
     - cron: '0 3 * * *'
 
@@ -51,7 +53,7 @@ jobs:
     strategy:
       matrix:
         terraform-version:
-          - 0.13.3
+          - 0.13.5
 
     steps:
       - name: Checkout

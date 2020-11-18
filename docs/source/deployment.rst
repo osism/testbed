@@ -84,6 +84,21 @@ each supported cloud provider.
 
      * The credentials are stored in ``clouds.yaml`` and ``secure.yaml`` with the name ``pluscloudopen``.
 
+.. note::
+
+   If the name of the cloud provider in ``clouds.yaml`` differs from the intended default, e.g.
+   ``betacloud`` for Betacloud, this can be adjusted as follows.
+
+   .. code-block:: console
+
+      PARAMS="-var 'cloudprovider=the-name-of-the-entry'"
+
+   A complete example with the environment for the Betacloud and a cloud provider with the name
+   ``the-name-of-the-entry`` looks like this:
+
+   .. code-block:: console
+
+      make deploy ENVIRONMENT=betacloud PARAMS="-var 'cloudprovider=the-name-of-the-entry'"
 
 * `SCS Demonstrator <https://gx-scs.okeanos.dev>`_
 
@@ -122,7 +137,7 @@ cloud_provider            betacloud
 configuration_version     master
 flavor_manager            2C-4GB-20GB
 flavor_node               4C-16GB-40GB
-image                     Ubuntu 18.04
+image                     Ubuntu 20.04
 network_availability_zone south-2
 openstack_version         ussuri
 public                    external
@@ -170,11 +185,32 @@ Initialization
 Usage
 =====
 
+Get the URL for the VNC console from an instance (by default from the manager):
+
 .. code-block:: console
 
    make console ENVIRONMENT=betacloud
-   make ssh ENVIRONMENT=betacloud
-   make sshuttle ENVIRONMENT=betacloud
+   make console ENVIRONMENT=betacloud CONSOLE=node-0
+
+Get the console log from an instance (by default from the manager):
+
+.. code-block:: console
+
+   make log ENVIRONMENT=betacloud
+   make log ENVIRONMENT=betacloud CONSOLE=node-0
+
+Open a login shell on the manager via SSH:
+
+.. code-block:: console
+
+   make login ENVIRONMENT=betacloud
+
+Create a tunnel for the internal networks (``192.168.16.0/20``, ``192.168.32.0/20``,
+``192.168.96.0/20`` ``192.168.112.0/20``) via sshuttle (https://github.com/sshuttle/sshuttle):
+
+.. code-block:: console
+
+   make tunnel ENVIRONMENT=betacloud
 
 Decommissioning
 ===============
