@@ -9,8 +9,10 @@ clouds.yaml
 clouds.yml
 contrib/es_test_data.py
 contrib/mysql_random_data_load
+local.env
 docs/build
 environments/**/ceph.client.*.keyring
+environment-local.tfvars
 errored.tfstate
 minio.env
 minio.tf
