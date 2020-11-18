@@ -9,6 +9,10 @@ USERNAME = dragon
 RESOURCE = openstack_networking_floatingip_v2.manager_floating_ip
 STATE = errored.tfstate
 
+ifneq (,$(wildcard ./local.env))
+  include local.env
+endif
+
 NEED_OSCLOUD := $(shell test -z "$$OS_PASSWORD" -a -z "$$OS_CLOUD" && echo 1 || echo 0)
 ifeq ($(NEED_OSCLOUD),1)
   export OS_CLOUD=$(ENVIRONMENT)
