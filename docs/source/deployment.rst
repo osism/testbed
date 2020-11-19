@@ -156,7 +156,8 @@ With the file ``environment-CLOUDPROVIDER.tfvars`` the parameters of the environ
 Local Environment
 =================
 
-For local overrides local.env + environment-local.tfvars can be used. Remember to also add a "local" entry to clouds.yaml
+For local overrides local.env + environment-local.tfvars can be used. Remember to also add a
+"local" entry to clouds.yaml.
 
 .. code-block:: console
 
