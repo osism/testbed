@@ -141,6 +141,17 @@ With the file ``environment-CLOUDPROVIDER.tfvars`` the parameters of the environ
    image       = "OSISM base"
    flavor_node = "8C-32GB-40GB"
 
+Local Environment
+=================
+
+For local overrides local.env + environment-local.tfvars can be used. Remember to also add a "local" entry to clouds.yaml
+
+.. code-block:: console
+
+   cp environment-local.tfvars.sample environment-local.tfvars
+   echo ENVIRONMENT=local >> local.env
+
+
 Initialization
 ==============
 
