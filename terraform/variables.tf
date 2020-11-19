@@ -1,5 +1,5 @@
 variable "cloud_provider" {
-  type    = string
+  type = string
 }
 
 variable "prefix" {
