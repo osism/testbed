@@ -18,6 +18,8 @@ ifeq ($(NEED_OSCLOUD),1)
   export OS_CLOUD=$(ENVIRONMENT)
 endif
 
+export TF_VAR_cloud_provider=$(ENVIRONMENT)
+
 ifneq (,$(wildcard ./minio.env))
   include minio.env
 endif
