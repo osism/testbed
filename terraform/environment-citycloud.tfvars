@@ -1,4 +1,3 @@
-cloud_provider            = "citycloud"
 availability_zone         = "nova"
 volume_availability_zone  = "nova"
 network_availability_zone = "nova"
