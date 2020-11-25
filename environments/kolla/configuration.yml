@@ -12,6 +12,7 @@ docker_registry: quay.io
 kolla_base_distro: ubuntu
 kolla_install_type: source
 openstack_release: ussuri
+kolla_image_version: "{{ openstack_release }}"
 
 ##########################################################
 # kolla
