@@ -34,16 +34,35 @@ else
     apt-get update
 fi
 
-apt-get install --yes ifupdown python-netaddr python3-pip
+apt-get install --yes \
+  ifupdown \
+  python3-pip \
+  python3-argcomplete \
+  python3-crypto \
+  python3-dnspython \
+  python3-jmespath \
+  python3-kerberos \
+  python3-libcloud \
+  python3-lockfile \
+  python3-netaddr \
+  python3-ntlm-auth \
+  python3-requests-kerberos \
+  python3-requests-ntlm \
+  python3-selinux \
+  python3-winrm \
+  python3-xmltodict
+
 pip3 install --no-cache-dir 'ansible>=2.10'
 
 chown -R ubuntu:ubuntu /home/ubuntu/.ssh
 
-ansible-galaxy install git+https://github.com/osism/ansible-docker
-ansible-galaxy collection install ansible.netcommon
-ansible-galaxy collection install -v git+https://github.com/osism/ansible-collection-commons.git
-ansible-galaxy collection install -v git+https://github.com/osism/ansible-collection-services.git
+mkdir -p /usr/share/ansible
 
-chmod -R +r /usr/share/ansible/collections/ansible_collections
+ansible-galaxy install --roles-path /usr/share/ansible/roles git+https://github.com/osism/ansible-docker
+ansible-galaxy collection install --collections-path /usr/share/ansible/collections ansible.netcommon
+ansible-galaxy collection install --collections-path /usr/share/ansible/collections git+https://github.com/osism/ansible-collection-commons.git
+ansible-galaxy collection install --collections-path /usr/share/ansible/collections git+https://github.com/osism/ansible-collection-services.git
+
+chmod -R +r /usr/share/ansible
 
 ansible-playbook -i localhost, /opt/node.yml
