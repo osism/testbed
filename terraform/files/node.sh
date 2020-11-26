@@ -30,17 +30,14 @@ if [[ $UBUNTU_CODENAME == "bionic" ]]; then
     #       all NICs.
     apt-get install --yes python3-netifaces
     python3 /root/configure-network-devices.py
-
-    # NOTE: Ansible PPA is currently only needed on Bionic. At the moment Focal
-    #       delivers a current enough Ansible.
-    add-apt-repository --yes ppa:ansible/ansible
 else
     apt-get update
 fi
 
-chown -R ubuntu:ubuntu /home/ubuntu/.ssh
+apt-get install --yes ifupdown python-netaddr python3-pip
+pip3 install --no-cache-dir 'ansible>=2.10'
 
-apt-get install --yes ansible ifupdown python-netaddr
+chown -R ubuntu:ubuntu /home/ubuntu/.ssh
 
 ansible-galaxy install git+https://github.com/osism/ansible-docker
 ansible-galaxy collection install ansible.netcommon
