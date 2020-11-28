@@ -1,4 +1,6 @@
 ---
+ceph_image_version: nautilus
+
 ##########################
 # generic
 
