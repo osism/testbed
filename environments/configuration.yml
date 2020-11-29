@@ -78,25 +78,9 @@ kolla_external_vip_address: 192.168.96.9
 ##########################
 # serial
 
-osism_serial_default: 30%
+osism_serial_default: 100%
 osism_serial:
-  chrony: 100%
-  cockpit: 100%
-  common: 100%
   docker: 1
-  grub: 100%
-  hardening: 100%
-  hostname: 100%
-  hosts: 100%
-  network: 100%
-  operator: 100%
-  pipelining: 100%
-  proxy: 100%
-  python: 100%
-  repository: 100%
-  resolvconf: 100%
-  timezone: 100%
-  utilities: 100%
 
 ##########################
 # ceph
