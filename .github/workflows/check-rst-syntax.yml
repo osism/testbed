@@ -1,16 +1,18 @@
 ---
 name: Check rst syntax
 
-on:
+on:  # yamllint disable-line rule:truthy
   push:
     paths:
       - '**.rst'
+      - '.github/workflows/check-rst-syntax.yml'
   pull_request:
     paths:
       - '**.rst'
+      - '.github/workflows/check-rst-syntax.yml'
 
 jobs:
-  default:
+  check-rst-syntax:
 
     runs-on: ubuntu-latest
 

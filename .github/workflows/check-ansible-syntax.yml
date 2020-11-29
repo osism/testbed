@@ -1,18 +1,20 @@
 ---
 name: Check ansible syntax
 
-on:
+on:  # yamllint disable-line rule:truthy
   push:
     paths:
       - 'environments/**.yml'
       - 'playbooks/**.yml'
+      - '.github/workflows/check-ansible-syntax.yml'
   pull_request:
     paths:
       - 'environments/**.yml'
       - 'playbooks/**.yml'
+      - '.github/workflows/check-ansible-syntax.yml'
 
 jobs:
-  default:
+  check-ansible-syntax:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2

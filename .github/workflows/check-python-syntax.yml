@@ -1,16 +1,18 @@
 ---
 name: Check python syntax
 
-on:
+on:  # yamllint disable-line rule:truthy
   push:
     paths:
       - '**.py'
+      - '.github/workflows/check-python-syntax.yml'
   pull_request:
     paths:
       - '**.py'
+      - '.github/workflows/check-python-syntax.yml'
 
 jobs:
-  default:
+  check-python-syntax:
 
     runs-on: ubuntu-latest
 

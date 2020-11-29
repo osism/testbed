@@ -1,18 +1,20 @@
 ---
 name: Check yaml syntax
 
-on:
+on:  # yamllint disable-line rule:truthy
   push:
     paths:
       - '**.yml'
       - '**.yaml'
+      - '.github/workflows/check-yaml-syntax.yml'
   pull_request:
     paths:
       - '**.yml'
       - '**.yaml'
+      - '.github/workflows/check-yaml-syntax.yml'
 
 jobs:
-  default:
+  check-yaml-syntax:
 
     runs-on: ubuntu-latest
 

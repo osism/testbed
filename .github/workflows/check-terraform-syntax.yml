@@ -1,18 +1,18 @@
 ---
-name: Validate terraform
+name: Check terraform syntax
 
-on:
+on:  # yamllint disable-line rule:truthy
   push:
     paths:
       - 'terraform/**'
-      - '.github/workflows/validate-terraform.yml'
+      - '.github/workflows/check-terraform-syntax.yml'
   pull_request:
     paths:
       - 'terraform/**'
-      - '.github/workflows/validate-terraform.yml'
+      - '.github/workflows/check-terraform.yml'
 
 jobs:
-  default:
+  check-terraform-syntax:
     runs-on: ubuntu-latest
     strategy:
       matrix:
