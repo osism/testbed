@@ -212,16 +212,16 @@ write_files:
       done;
 
       # deploy helper services
-      sudo -iu dragon sh -c '/opt/configuration/scripts/deploy_helper_services.sh'
+      sudo -iu dragon sh -c '/opt/configuration/scripts/001-helper_services.sh'
 
       # deploy infrastructure services
       if [[ "${var.deploy_infrastructure}" == "true" ]]; then
-          sudo -iu dragon sh -c '/opt/configuration/scripts/deploy_infrastructure_services_basic.sh'
+          sudo -iu dragon sh -c '/opt/configuration/scripts/002-infrastructure-services-basic.sh'
       fi
 
       # deploy ceph services
       if [[ "${var.deploy_ceph}" == "true" ]]; then
-          sudo -iu dragon sh -c '/opt/configuration/scripts/deploy_ceph_services.sh'
+          sudo -iu dragon sh -c '/opt/configuration/scripts/003-ceph-services.sh'
       fi
 
       # deploy openstack services
@@ -229,7 +229,7 @@ write_files:
           if [[ "${var.deploy_infrastructure}" != "true" ]]; then
               echo "infrastructure services are necessary for the deployment of OpenStack"
           else
-              sudo -iu dragon sh -c '/opt/configuration/scripts/deploy_openstack_services_basic.sh'
+              sudo -iu dragon sh -c '/opt/configuration/scripts/004-openstack-services-basic.sh'
 
               if [[ "${var.run_rally}" == "true" ]]; then
                   sudo -iu dragon sh -c '/opt/configuration/contrib/rally/rally.sh'
@@ -244,7 +244,7 @@ write_files:
 
       # deploy monitoring services
       if [[ "${var.deploy_monitoring}" == "true" ]]; then
-          sudo -iu dragon sh -c '/opt/configuration/scripts/deploy_monitoring_services.sh'
+          sudo -iu dragon sh -c '/opt/configuration/scripts/005-monitoring-services.sh'
       fi
     path: /root/manager.sh
     permissions: 0700

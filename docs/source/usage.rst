@@ -47,43 +47,43 @@ Deploy services
 
   .. code-block:: console
 
-     /opt/configuration/scripts/deploy_infrastructure_services_basic.sh
+     /opt/configuration/scripts/002-infrastructure-services-basic.sh
 
 * Extented infrastructure services (Patchman, phpMyAdmin, Cockpit, ..)
 
   .. code-block:: console
 
-     /opt/configuration/scripts/deploy_infrastructure_services_extented.sh
+     /opt/configuration/scripts/006-infrastructure-services-extented.sh
 
 * Ceph services
 
   .. code-block:: console
 
-     /opt/configuration/scripts/deploy_ceph_services.sh
+     /opt/configuration/scripts/003-ceph-services.sh
 
 * Basic OpenStack services (Compute, Storage, ..)
 
   .. code-block:: console
 
-     /opt/configuration/scripts/deploy_openstack_services_basic.sh
+     /opt/configuration/scripts/004-openstack-services-basic.sh
 
-* Extented OpenStack services (Telemetry, Loadbalancer, Kubernetes, ..)
+* Extented OpenStack services (Telemetry, Kubernetes, ..)
 
   .. code-block:: console
 
-     /opt/configuration/scripts/deploy_openstack_services_extented.sh
+     /opt/configuration/scripts/007-openstack-services-extented.sh
 
 * Additional OpenStack services (Rating, Container, ..)
 
   .. code-block:: console
 
-     /opt/configuration/scripts/deploy_openstack_services_additional.sh
+     /opt/configuration/scripts/008-openstack-services-additional.sh
 
 * Monitoring services (Netdata, Prometheus exporters, ..)
 
   .. code-block:: console
 
-     /opt/configuration/scripts/deploy_monitoring_services.sh
+     /opt/configuration/scripts/005-monitoring-services.sh
 
 Purge services
 ==============
