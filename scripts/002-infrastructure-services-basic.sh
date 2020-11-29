@@ -3,4 +3,4 @@
 export INTERACTIVE=false
 
 osism-infrastructure openstackclient
-osism-kolla deploy testbed --tags infrastructure
+osism-kolla deploy testbed --tags infrastructure --skip-tags openstack

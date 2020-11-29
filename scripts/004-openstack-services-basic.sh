@@ -2,7 +2,7 @@
 
 export INTERACTIVE=false
 
-osism-kolla deploy testbed --tags openstack
+osism-kolla deploy testbed --tags openstack --skip-tags infrastructure
 
 osism-run openstack bootstrap-octavia-pre
 osism-kolla deploy octavia
