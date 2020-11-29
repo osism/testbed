@@ -1,16 +1,18 @@
 ---
-name: Sphinx
+name: Build documentation
 
-on:
+on:  # yamllint disable-line rule:truthy
   push:
     paths:
       - 'docs/**'
+      - '.github/workflows/build-documentation.yml'
   pull_request:
     paths:
       - 'docs/**'
+      - '.github/workflows/build-documentation.yml'
 
 jobs:
-  default:
+  build-documentation:
 
     runs-on: ubuntu-latest
 

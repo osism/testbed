@@ -1,16 +1,18 @@
 ---
-name: Verify ansible inventory
+name: Check ansible inventory
 
-on:
+on:  # yamllint disable-line rule:truthy
   push:
     paths:
       - 'inventory/hosts'
+      - '.github/workflows/check-ansible-inventory.yml'
   pull_request:
     paths:
       - 'inventory/hosts'
+      - '.github/workflows/check-ansible-inventory.yml'
 
 jobs:
-  default:
+  check-ansible-inventory:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
