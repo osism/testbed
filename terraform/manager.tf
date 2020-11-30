@@ -212,7 +212,7 @@ write_files:
       done;
 
       # deploy helper services
-      sudo -iu dragon sh -c '/opt/configuration/scripts/001-helper_services.sh'
+      sudo -iu dragon sh -c '/opt/configuration/scripts/001-helper-services.sh'
 
       # deploy infrastructure services
       if [[ "${var.deploy_infrastructure}" == "true" ]]; then
