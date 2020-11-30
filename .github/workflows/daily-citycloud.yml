@@ -13,10 +13,11 @@ on:  # yamllint disable-line rule:truthy
 jobs:
   daily-citycloud-cleanup:
     runs-on: ubuntu-latest
+
     strategy:
       matrix:
-        terraform-version:
-          - 0.13.5
+        openstack-version:
+          - ussuri
 
     steps:
       - name: Checkout
@@ -24,7 +25,7 @@ jobs:
       - name: Setup terraform
         uses: hashicorp/setup-terraform@v1
         with:
-          terraform_version: ${{ matrix.terraform-version }}
+          terraform_version: 0.13.5
       - name: Prepare use of openstack
         shell: bash
         working-directory: ./terraform
@@ -50,10 +51,11 @@ jobs:
   daily-citycloud-deploy:
     needs: cleanup
     runs-on: ubuntu-latest
+
     strategy:
       matrix:
-        terraform-version:
-          - 0.13.5
+        openstack-version:
+          - ussuri
 
     steps:
       - name: Checkout
@@ -61,7 +63,7 @@ jobs:
       - name: Setup terraform
         uses: hashicorp/setup-terraform@v1
         with:
-          terraform_version: ${{ matrix.terraform-version }}
+          terraform_version: 0.13.5
       - name: Prepare use of openstack
         shell: bash
         working-directory: ./terraform
@@ -81,5 +83,5 @@ jobs:
         run: make ENVIRONMENT=citycloud init
         working-directory: ./terraform
       - name: Deploy environment
-        run: make ENVIRONMENT=citycloud deploy-openstack PARAMS="-var run_refstack=true -var run_rally=true"
+        run: make ENVIRONMENT=citycloud deploy-openstack PARAMS="-var openstack_version=${{ matrix.openstack-version }} -var run_refstack=true -var run_rally=true"
         working-directory: ./terraform
