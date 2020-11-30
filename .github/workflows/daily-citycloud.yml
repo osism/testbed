@@ -1,5 +1,5 @@
 ---
-name: Daily deployment (citycloud)
+name: Daily citycloud
 
 on:  # yamllint disable-line rule:truthy
   push:
@@ -11,7 +11,7 @@ on:  # yamllint disable-line rule:truthy
     - cron: '0 3 * * *'
 
 jobs:
-  cleanup:
+  daily-citycloud-cleanup:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -47,7 +47,7 @@ jobs:
         run: make ENVIRONMENT=citycloud clean || exit 0
         working-directory: ./terraform
 
-  deploy:
+  daily-citycloud-deploy:
     needs: cleanup
     runs-on: ubuntu-latest
     strategy:
