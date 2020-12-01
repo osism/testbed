@@ -4,7 +4,7 @@ name: Daily citycloud
 on:  # yamllint disable-line rule:truthy
   push:
     paths:
-      - '.github/workflows/deploy-daily-citycloud.yml'
+      - '.github/workflows/daily-citycloud.yml'
     branches:
       - master
   schedule:
@@ -48,7 +48,7 @@ jobs:
         working-directory: ./terraform
 
   daily-citycloud-deploy:
-    needs: cleanup
+    needs: daily-citycloud-cleanup
     runs-on: ubuntu-latest
     strategy:
       matrix:
