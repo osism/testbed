@@ -34,7 +34,8 @@ OpenStack
 * Rocky
 * Stein
 * Train
-* Ussuri (**default**)
+* Ussuri
+* Victoria (**default**)
 
 Services
 ========

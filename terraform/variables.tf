@@ -93,7 +93,7 @@ variable "ceph_version" {
 }
 
 variable "openstack_version" {
-  default = "ussuri"
+  default = "victoria"
   type    = string
 }
 

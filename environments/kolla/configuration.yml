@@ -11,7 +11,7 @@ ansible_become_user: root
 docker_registry: quay.io
 kolla_base_distro: ubuntu
 kolla_install_type: source
-openstack_release: ussuri
+openstack_release: victoria
 kolla_image_version: "{{ openstack_release }}"
 
 ##########################################################
@@ -106,7 +106,7 @@ horizon_backend_database: "yes"
 keystone_token_provider: "fernet"
 
 # neutron
-neutron_plugin_agent: "{{ 'ovn' if openstack_release in ['ussuri'] else 'openvswitch' }}"
+neutron_plugin_agent: "{{ 'ovn' if openstack_release in ['ussuri', 'victoria'] else 'openvswitch' }}"
 
 enable_neutron_agent_ha: "yes"
 enable_neutron_dvr: "no"

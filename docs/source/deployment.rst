@@ -106,7 +106,7 @@ each supported cloud provider.
 
      * The credentials are stored in ``clouds.yaml`` and ``secure.yaml`` with the name ``scs-demo``.
 
-     * The SCS-Demonstrator use the Ussuri Release with OVN SDN, but there is an issue with Network Availability Zones.
+     * The SCS-Demonstrator use the Victoria Release with OVN SDN, but there is an issue with Network Availability Zones.
        OVN is seperate in Network- and Router Availability Zones. to make it work, it depends to remove  availability_zone_hints
        in the terrafrom environment you will find neutron.patch file
 
@@ -141,7 +141,7 @@ flavor_manager            2C-4GB-20GB
 flavor_node               4C-16GB-40GB
 image                     Ubuntu 20.04
 network_availability_zone south-2
-openstack_version         ussuri
+openstack_version         victoria
 public                    external
 volume_availability_zone  south-2
 volume_size_storage       10

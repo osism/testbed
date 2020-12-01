@@ -3,7 +3,7 @@
 # versions
 
 ceph_version: nautilus
-openstack_version: ussuri
+openstack_version: victoria
 
 ##########################
 # cephclient
