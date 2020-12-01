@@ -17,7 +17,7 @@ jobs:
     strategy:
       matrix:
         openstack-version:
-          - ussuri
+          - victoria
 
     steps:
       - name: Checkout
@@ -55,7 +55,7 @@ jobs:
     strategy:
       matrix:
         openstack-version:
-          - ussuri
+          - victoria
 
     steps:
       - name: Checkout
