@@ -3,11 +3,8 @@
 # versions
 
 ceph_version: nautilus
+manager_version: latest
 openstack_version: victoria
-
-ceph_manager_version: latest
-kolla_manager_version: latest
-osism_manager_version: latest
 
 ##########################
 # manager
