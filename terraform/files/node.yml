@@ -85,8 +85,11 @@
     docker_user: dragon
     docker_version: "5:19.03.13"
 
+  collections:
+    - osism.services
+
   roles:
-    - ansible-docker
+    - docker
 
 - name: Apply role docker_compose
   hosts: localhost

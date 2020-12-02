@@ -58,7 +58,6 @@ chown -R ubuntu:ubuntu /home/ubuntu/.ssh
 
 mkdir -p /usr/share/ansible
 
-ansible-galaxy install --roles-path /usr/share/ansible/roles git+https://github.com/osism/ansible-docker
 ansible-galaxy collection install --collections-path /usr/share/ansible/collections ansible.netcommon
 ansible-galaxy collection install --collections-path /usr/share/ansible/collections git+https://github.com/osism/ansible-collection-commons.git
 ansible-galaxy collection install --collections-path /usr/share/ansible/collections git+https://github.com/osism/ansible-collection-services.git

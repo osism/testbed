@@ -46,5 +46,8 @@
     - /opt/configuration/environments/manager/secrets.yml
     - /opt/configuration/environments/secrets.yml
 
+  collections:
+    - osism.services
+
   roles:
-    - ansible-manager
+    - manager
