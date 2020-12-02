@@ -26,7 +26,7 @@ phpmyadmin_tag: "5.0"
 phpmyadmin_image: "{{ docker_registry }}/phpmyadmin/phpmyadmin:{{ phpmyadmin_tag }}"
 
 postgres_tag: "13-alpine"
-postgres_image: "{{ docker_postgres }}/library/postgres:{{ postgres_tag }}"
+postgres_image: "{{ docker_registry }}/library/postgres:{{ postgres_tag }}"
 
 redis_tag: "6-alpine"
 redis_image: "{{ docker_registry }}/library/redis:{{ redis_tag }}"
