@@ -24,6 +24,14 @@ clouds:
       project_domain_name: default
       user_domain_name: default
     identity_api_version: 3
+  openstack_health_monitor:
+    auth:
+      username: test
+      project_name: test
+      auth_url: http://api.osism.test:5000/v3
+      project_domain_name: default
+      user_domain_name: default
+    identity_api_version: 3
   refstack-0:
     auth:
       username: refstack-0

@@ -134,7 +134,7 @@
       os_image:
         cloud: admin
         state: present
-        name: ubuntu
+        name: "Ubuntu 20.04"
         container_format: bare
         disk_format: qcow2
         filename: /tmp/ubuntu.img
