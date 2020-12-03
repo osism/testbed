@@ -145,7 +145,7 @@
 
     # NOTE: is_public from os_image is not working like expected
     - name: Make ubuntu minimal 20.04 image visible
-      command: openstack --os-cloud admin image set --public ubuntu  # noqa 301
+      command: openstack --os-cloud admin image set --public 'Ubuntu 20.04'  # noqa 301
 
     - name: Create public network
       os_network:
