@@ -116,6 +116,7 @@
         container_format: bare
         disk_format: qcow2
         filename: /tmp/cirros.img
+        min_disk: 1
         properties:
           cpu_arch: x86_64
           distro: ubuntu
@@ -138,6 +139,7 @@
         container_format: bare
         disk_format: qcow2
         filename: /tmp/ubuntu.img
+        min_disk: 3
         properties:
           cpu_arch: x86_64
           distro: ubuntu
