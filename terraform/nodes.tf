@@ -159,7 +159,8 @@ write_files:
     path: /root/node.sh
     permissions: '0700'
 packages:
-  - docker.io
+  - docker-ce-cli
+  - docker-compose
 runcmd:
   - "dpkg -r ansible || true"
   - "echo 'network: {config: disabled}' > /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg"
