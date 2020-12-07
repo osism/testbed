@@ -158,6 +158,8 @@ write_files:
       ${indent(6, file("files/node.sh"))}
     path: /root/node.sh
     permissions: '0700'
+packages:
+  - docker
 runcmd:
   - "echo 'network: {config: disabled}' > /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg"
   - "rm -f /etc/network/interfaces.d/50-cloud-init.cfg"
