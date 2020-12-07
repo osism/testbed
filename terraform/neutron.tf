@@ -83,7 +83,8 @@ resource "openstack_compute_secgroup_v2" "security_group_internal" {
 resource "openstack_networking_secgroup_rule_v2" "security_group_internal_vrrp" {
   direction         = "ingress"
   ethertype         = "IPv4"
-  protocol          = "vrrp"
+  #protocol          = "vrrp"
+  protocol          = "112"
   remote_ip_prefix  = "0.0.0.0/0"
   security_group_id = openstack_compute_secgroup_v2.security_group_internal.id
 }
