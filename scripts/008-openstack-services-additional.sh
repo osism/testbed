@@ -4,7 +4,6 @@ export INTERACTIVE=false
 
 osism-kolla deploy influxdb
 
-osism-kolla deploy cloudkitty
 osism-kolla deploy kuryr
 osism-kolla deploy manila
 osism-kolla deploy zun
