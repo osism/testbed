@@ -106,3 +106,8 @@ variable "number_of_volumes" {
   default = 3
   type    = number
 }
+
+variable "enable_dhcp" {
+  default = false
+  type    = bool
+}
