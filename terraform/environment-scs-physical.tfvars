@@ -1,0 +1,8 @@
+availability_zone         = "eu-de-02"
+volume_availability_zone  = "eu-de-02"
+network_availability_zone = "eu-de-02"
+flavor_node               = "physical.o2.medium"
+flavor_manager            = "s2.4xlarge.4"
+image                     = "Standard_Ubuntu_18.04_BMS_latest"
+volume_size_storage       = "100"
+public                    = "admin_external_net"
