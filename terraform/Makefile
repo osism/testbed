@@ -22,7 +22,7 @@ ifneq (,$(wildcard ./minio.env))
 endif
 
 init:
-	@if [ ! -d .terraform/plugins ]; then terraform init; fi
+	@if [ ! -d .terraform/providers ]; then terraform init; fi
 
 	@terraform workspace select ${ENVIRONMENT} || terraform workspace new ${ENVIRONMENT}
 
