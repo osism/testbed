@@ -1,0 +1,135 @@
+From: Kurt Garloff <kurt@garloff.de>
+Subject: Tweak neutron.tf to work on OTC
+
+On OTC, we need to disable the availability_zone_hints (as on many other
+OpenStack clouds). Unfortunately, these are not treated as ignorable hints
+by neutron if no network AZs are implemented.
+OTC in addition needs to leave dhcp enabled (enable_dhcp is disallowed).
+OTC also requires SNAT to be explicitly enabled on the router to allow
+for outgoing traffic in absence of floating IPs.
+Finally, we tweak dns_nameservers to use the well-known OTC internal
+one, which should help performance and also allow us to use the internal
+endpoints when talking to the OpenStack APIs.
+
+Signed-off-by: Kurt Garloff <kurt@garloff.de>
+
+--- a/terraform/neutron.tf
++++ b/terraform/neutron.tf
+@@ -172,7 +172,7 @@ resource "openstack_compute_secgroup_v2" "security_group_external" {
+ 
+ resource "openstack_networking_network_v2" "net_management" {
+   name                    = "net-${var.prefix}-management"
+-  availability_zone_hints = [var.network_availability_zone]
++  #availability_zone_hints = [var.network_availability_zone]
+ }
+ 
+ resource "openstack_networking_subnet_v2" "subnet_management" {
+@@ -180,7 +180,7 @@ resource "openstack_networking_subnet_v2" "subnet_management" {
+   network_id      = openstack_networking_network_v2.net_management.id
+   cidr            = "192.168.16.0/20"
+   ip_version      = 4
+-  dns_nameservers = ["8.8.8.8", "9.9.9.9"]
++  dns_nameservers = ["100.125.4.25", "9.9.9.9"]
+ 
+   allocation_pool {
+     start = "192.168.31.200"
+@@ -190,7 +190,7 @@ resource "openstack_networking_subnet_v2" "subnet_management" {
+ 
+ resource "openstack_networking_network_v2" "net_internal" {
+   name                    = "net-${var.prefix}-internal"
+-  availability_zone_hints = [var.network_availability_zone]
++  #availability_zone_hints = [var.network_availability_zone]
+ }
+ 
+ resource "openstack_networking_subnet_v2" "subnet_internal" {
+@@ -199,7 +199,7 @@ resource "openstack_networking_subnet_v2" "subnet_internal" {
+   cidr        = "192.168.32.0/20"
+   ip_version  = 4
+   gateway_ip  = null
+-  enable_dhcp = false
++  #enable_dhcp = false
+ 
+   allocation_pool {
+     start = "192.168.47.200"
+@@ -209,7 +209,7 @@ resource "openstack_networking_subnet_v2" "subnet_internal" {
+ 
+ resource "openstack_networking_network_v2" "net_provider" {
+   name                    = "net-${var.prefix}-provider"
+-  availability_zone_hints = [var.network_availability_zone]
++  #availability_zone_hints = [var.network_availability_zone]
+ }
+ 
+ resource "openstack_networking_subnet_v2" "subnet_provider" {
+@@ -218,7 +218,7 @@ resource "openstack_networking_subnet_v2" "subnet_provider" {
+   cidr        = "192.168.112.0/20"
+   ip_version  = 4
+   gateway_ip  = null
+-  enable_dhcp = false
++  #enable_dhcp = false
+ 
+   allocation_pool {
+     start = "192.168.127.200"
+@@ -228,7 +228,7 @@ resource "openstack_networking_subnet_v2" "subnet_provider" {
+ 
+ resource "openstack_networking_network_v2" "net_external" {
+   name                    = "net-${var.prefix}-external"
+-  availability_zone_hints = [var.network_availability_zone]
++  #availability_zone_hints = [var.network_availability_zone]
+ }
+ 
+ resource "openstack_networking_subnet_v2" "subnet_external" {
+@@ -237,7 +237,7 @@ resource "openstack_networking_subnet_v2" "subnet_external" {
+   cidr        = "192.168.96.0/20"
+   ip_version  = 4
+   gateway_ip  = null
+-  enable_dhcp = false
++  #enable_dhcp = false
+ 
+   allocation_pool {
+     start = "192.168.111.200"
+@@ -265,7 +265,7 @@ resource "openstack_networking_port_v2" "vip_port_internal" {
+ 
+ resource "openstack_networking_network_v2" "net_storage_frontend" {
+   name                    = "net-${var.prefix}-storage-frontend"
+-  availability_zone_hints = [var.network_availability_zone]
++  #availability_zone_hints = [var.network_availability_zone]
+ }
+ 
+ resource "openstack_networking_subnet_v2" "subnet_storage_frontend" {
+@@ -274,7 +274,7 @@ resource "openstack_networking_subnet_v2" "subnet_storage_frontend" {
+   cidr        = "192.168.64.0/20"
+   ip_version  = 4
+   gateway_ip  = null
+-  enable_dhcp = false
++  #enable_dhcp = false
+ 
+   allocation_pool {
+     start = "192.168.79.200"
+@@ -284,7 +284,7 @@ resource "openstack_networking_subnet_v2" "subnet_storage_frontend" {
+ 
+ resource "openstack_networking_network_v2" "net_storage_backend" {
+   name                    = "net-${var.prefix}-storage-backend"
+-  availability_zone_hints = [var.network_availability_zone]
++  #availability_zone_hints = [var.network_availability_zone]
+ }
+ 
+ resource "openstack_networking_subnet_v2" "subnet_storage_backend" {
+@@ -293,7 +293,7 @@ resource "openstack_networking_subnet_v2" "subnet_storage_backend" {
+   cidr        = "192.168.80.0/20"
+   ip_version  = 4
+   gateway_ip  = null
+-  enable_dhcp = false
++  #enable_dhcp = false
+ 
+   allocation_pool {
+     start = "192.168.95.200"
+@@ -308,7 +308,8 @@ data "openstack_networking_network_v2" "public" {
+ resource "openstack_networking_router_v2" "router" {
+   name                    = var.prefix
+   external_network_id     = data.openstack_networking_network_v2.public.id
+-  availability_zone_hints = [var.network_availability_zone]
++  #availability_zone_hints = [var.network_availability_zone]
++  enable_snat             = true
+ }
+ 
+ resource "openstack_networking_router_interface_v2" "router_interface" {
