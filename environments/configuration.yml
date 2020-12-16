@@ -60,7 +60,7 @@ hosts_additional_entries:
 ##########################
 # common
 
-cleanup_services:
+cleanup_services_extra:
   - NetworkManager
   - iscsid
   - lxcfs
