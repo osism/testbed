@@ -22,6 +22,7 @@ docker_storage_driver: overlay2
 ceph_docker_registry: quay.io
 docker_registry: index.docker.io
 docker_registry_ansible: quay.io
+docker_registry_service: quay.io
 
 ##########################
 # docker_compose
