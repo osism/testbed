@@ -4,14 +4,8 @@
 adminer_tag: "4.7"
 adminer_image: "{{ docker_registry }}/library/adminer:{{ adminer_tag }}"
 
-aptly_tag: "1.4.0"
-aptly_image: "{{ docker_registry }}/osism/aptly:{{ aptly_tag }}"
-
 ara_server_tag: "1.5.3"
 ara_server_image: "{{ docker_registry }}/osism/ara-server:{{ ara_server_tag }}"
-
-installer_tag: "latest"
-installer_image: "{{ docker_registry }}/osism/installer:{{ installer_tag }}"
 
 mariadb_tag: "10.5"
 mariadb_image: "{{ docker_registry }}/library/mariadb:{{ mariadb_tag }}"
