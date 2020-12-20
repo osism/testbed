@@ -1,7 +1,7 @@
 ---
 - name: Bootstraph ceph dashboard
   hosts: manager
-  gather_facts: no
+  gather_facts: false
 
   tasks:
     - name: Set mgr/dashboard/ssl to false
@@ -24,7 +24,7 @@
 
 - name: Restart ceph manager services
   hosts: ceph-mon
-  gather_facts: no
+  gather_facts: false
   serial: 1
 
   tasks:

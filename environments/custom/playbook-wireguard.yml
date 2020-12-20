@@ -83,7 +83,7 @@
       systemd:
         name: wg-quick@wg0.service
         state: started
-        enabled: yes
+        enabled: true
       become: true
       ignore_errors: true
 
