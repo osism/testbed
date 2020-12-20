@@ -31,10 +31,10 @@ registry_image: "{{ docker_registry }}/library/registry:{{ registry_tag }}"
 # image tag depends on CEPH_VERSION or OPENSTACK_VERSION
 
 cephclient_tag: "{{ ceph_version }}"
-cephclient_image: "{{ docker_registry_ansible|default('quay.io') }}/osism/cephclient:{{ cephclient_tag }}"
+cephclient_image: "{{ docker_registry_cephclient|default('quay.io') }}/osism/cephclient:{{ cephclient_tag }}"
 
 openstackclient_tag: "{{ openstack_version }}"
-openstackclient_image: "{{ docker_registry_ansible|default('quay.io') }}/osism/openstackclient:{{ openstackclient_tag }}"
+openstackclient_image: "{{ docker_registry_openstackclient|default('quay.io') }}/osism/openstackclient:{{ openstackclient_tag }}"
 
 awx_tag: "{{ ceph_version }}-{{ openstack_version }}"
 awx_image: "{{ docker_registry_ansible|default('quay.io') }}/osism/manager:{{ awx_tag }}"
