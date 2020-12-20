@@ -58,9 +58,9 @@
       - telnet
       - ubuntu-server
       - xauth
-    rng_enable_common: yes
-    smartd_enable_common: no
-    upgrade_packages_common: no
+    rng_enable_common: true
+    smartd_enable_common: false
+    upgrade_packages_common: false
 
     # operator
     operator_user: dragon
@@ -94,8 +94,8 @@
 
   vars:
     ansible_python_interpreter: /usr/bin/python3
-    docker_configure_repository: yes
-    docker_configure_storage_driver: yes
+    docker_configure_repository: true
+    docker_configure_storage_driver: true
     docker_storage_driver: overlay2
     docker_user: dragon
     docker_version: "5:20.10.0"

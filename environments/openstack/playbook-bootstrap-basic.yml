@@ -4,26 +4,26 @@
 
   tasks:
     - name: Accpet FORWARD on the management interface (incoming)
+      become: true
       iptables:
         chain: FORWARD
         in_interface: "{{ ansible_local.testbed_network_devices.management }}"
         jump: ACCEPT
-      become: yes
 
     - name: Accept FORWARD on the management interface (outgoing)
+      become: true
       iptables:
         chain: FORWARD
         out_interface: "{{ ansible_local.testbed_network_devices.management }}"
         jump: ACCEPT
-      become: yes
 
     - name: Masquerade traffic on the management interface
+      become: true
       iptables:
         table: nat
         chain: POSTROUTING
         out_interface: "{{ ansible_local.testbed_network_devices.management }}"
         jump: MASQUERADE
-      become: yes
 
 - name: Bootstrap basic OpenStack services
   hosts: localhost
