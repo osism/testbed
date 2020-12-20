@@ -36,31 +36,22 @@
   vars:
     ansible_python_interpreter: /usr/bin/python3
 
-    # common
-    cleanup_services_common:
+    # cleanup
+    cleanup_services_extra:
       - NetworkManager
       - iscsid
       - lxcfs
       - nscd
       - ntp
-    cleanup_packages_common:
-      - apport
-      - apport-symptoms
+    cleanup_packages_extra:
       - dosfstools
-      - libvirt-bin
-      - lxc
-      - lxd
       - ntfs-3g
-      - open-iscsi
       - popularity-contest
-      - python3-apport
-      - snapd
       - telnet
-      - ubuntu-server
       - xauth
-    rng_enable_common: true
-    smartd_enable_common: false
-    upgrade_packages_common: false
+
+    # packages
+    upgrade_packages: false
 
     # operator
     operator_user: dragon
@@ -83,7 +74,6 @@
     - role: motd
     - role: hddtemp
     - role: rng
-    - role: smartd
     - role: cleanup
     - role: operator
 
