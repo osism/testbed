@@ -33,9 +33,6 @@ netdata_host_type: client
 ##########################################################
 # network
 
-network_allow_service_restart: false
-network_restart_method: nothing
-
 network_interfaces:
   - device: "{{ ansible_local.testbed_network_devices.management }}"
     auto: true
