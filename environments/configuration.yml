@@ -48,7 +48,6 @@ resolvconf_nameserver:
   - 8.8.8.8
   - 9.9.9.9
 resolvconf_search: osism.test
-resolvconf_package: ""
 
 ##########################
 # hosts
