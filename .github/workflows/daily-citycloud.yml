@@ -12,6 +12,7 @@ on:  # yamllint disable-line rule:truthy
 
 jobs:
   daily-citycloud-cleanup:
+    if: github.repository == 'osism/testbed'
     runs-on: ubuntu-latest
 
     strategy:
@@ -49,6 +50,7 @@ jobs:
         working-directory: ./terraform
 
   daily-citycloud-deploy:
+    if: github.repository == 'osism/testbed'
     needs: daily-citycloud-cleanup
     runs-on: ubuntu-latest
 
