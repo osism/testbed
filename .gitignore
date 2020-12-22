@@ -1,3 +1,4 @@
+.*.swp
 .MANAGER_ADDRESS.*
 .deploy.*
 .id_rsa.*
@@ -9,11 +10,11 @@ clouds.yaml
 clouds.yml
 contrib/es_test_data.py
 contrib/mysql_random_data_load
-local.env
 docs/build
-environments/**/ceph.client.*.keyring
 environment-local.tfvars
+environments/**/ceph.client.*.keyring
 errored.tfstate
+local.env
 minio.env
 minio.tf
 roles
