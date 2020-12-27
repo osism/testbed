@@ -43,7 +43,6 @@ enable_magnum: "yes"
 enable_manila: "yes"
 enable_octavia: "yes"
 enable_panko: "yes"
-enable_watcher: "no"
 enable_zun: "yes"
 
 enable_etcd: "yes"
@@ -53,19 +52,13 @@ enable_redis: "yes"
 enable_skydive: "yes"
 
 # disable services
-enable_chrony: "no"
 
 # generic
 
-# NOTE: This has to be "False", not "false"!
-openstack_logging_debug: "False"
 openstack_service_workers: 5
 
 # profiling
 enable_osprofiler: "no"
-
-# logging
-enable_central_logging: "yes"
 
 # elasticsearch
 
