@@ -9,16 +9,11 @@ ansible_become_user: root
 # images
 
 docker_registry: quay.io
-kolla_base_distro: ubuntu
-kolla_install_type: source
 openstack_release: victoria
 kolla_image_version: "{{ openstack_release }}"
 
 ##########################################################
 # kolla
-
-config_strategy: COPY_ALWAYS
-node_custom_config: "{{ configuration_directory }}/environments/kolla/files/overlays"
 
 kolla_enable_sanity_checks: "yes"
 
@@ -30,20 +25,6 @@ kolla_external_fqdn: api.osism.test
 
 kolla_enable_tls_external: "no"
 kolla_enable_tls_internal: "no"
-
-haproxy_client_timeout: 5m
-haproxy_server_timeout: 5m
-
-##########################################################
-# networking
-
-# NOTE: The configuration of the network interfaces to be used should be done via the inventory.
-
-##########################################################
-# docker
-
-docker_namespace: osism
-docker_restart_policy_retry: 0
 
 ##########################################################
 # openstack
