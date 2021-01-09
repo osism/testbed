@@ -54,6 +54,10 @@ deploy-openstack: init
 	@touch .deploy.$(ENVIRONMENT)
 	@terraform apply -auto-approve -var-file="environment-$(ENVIRONMENT).tfvars" -var 'deploy_infrastructure=true' -var 'deploy_ceph=true' -var 'deploy_openstack=true' $(PARAMS)
 
+deploy-full: init
+	@touch .deploy.$(ENVIRONMENT)
+	@terraform apply -auto-approve -var-file="environment-$(ENVIRONMENT).tfvars" -var 'deploy_infrastructure=true' -var 'deploy_ceph=true' -var 'deploy_openstack=true' -var 'deploy_monitoring=true' $(PARAMS)
+
 show: init
 	@terraform show
 
