@@ -1,7 +1,7 @@
 ##########################################################
 # custom host groups
 
-[testbed-manager]
+[testbed-managers]
 testbed-manager.osism.test
 
 [testbed-nodes]

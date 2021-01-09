@@ -5,14 +5,14 @@
 #       the netbox (when using netbox).
 
 [generic:children]
-testbed-manager
+testbed-managers
 testbed-nodes
 
 [manager:children]
-testbed-manager
+testbed-managers
 
 [monitoring:children]
-testbed-manager
+testbed-managers
 
 [control:children]
 testbed-nodes
