@@ -8,10 +8,10 @@
       shell: ssh-keyscan {{ item }}  >> ~/.ssh/known_hosts  # noqa 301
       loop: "{{ groups['all'] }}"
 
-    - name: Run ssh-keyscan for all internal IP addresses
-      shell: ssh-keyscan {{ hostvars[item]['ansible_' + hostvars[item]['console_interface']]['ipv4']['address'] }}  >> ~/.ssh/known_hosts  # noqa 301
-      loop: "{{ groups['all'] }}"
+    # - name: Run ssh-keyscan for all internal IP addresses
+    #   shell: ssh-keyscan {{ hostvars[item]['ansible_' + hostvars[item]['console_interface']]['ipv4']['address'] }}  >> ~/.ssh/known_hosts  # noqa 301
+    #   loop: "{{ groups['all'] }}"
 
-    - name: Run ssh-keyscan for all management IP addresses
-      shell: ssh-keyscan {{ hostvars[item]['ansible_' + hostvars[item]['management_interface']]['ipv4']['address'] }}  >> ~/.ssh/known_hosts  # noqa 301
-      loop: "{{ groups['all'] }}"
+    # - name: Run ssh-keyscan for all management IP addresses
+    #   shell: ssh-keyscan {{ hostvars[item]['ansible_' + hostvars[item]['management_interface']]['ipv4']['address'] }}  >> ~/.ssh/known_hosts  # noqa 301
+    #   loop: "{{ groups['all'] }}"
