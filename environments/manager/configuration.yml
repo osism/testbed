@@ -9,6 +9,8 @@ openstack_version: victoria
 ##########################
 # manager
 
+ara_server_database_type: sqlite3
+
 configure_cockpit: true
 cockpit_host: "{{ hostvars[inventory_hostname]['ansible_' + console_interface]['ipv4']['address'] }}"
 
