@@ -1,2 +1,8 @@
 [cephclient]
 testbed-manager
+
+[ceph-mds:children]
+ceph-resource
+
+[ceph-rgw:children]
+ceph-resource
