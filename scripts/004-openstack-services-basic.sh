@@ -8,6 +8,7 @@ osism-run openstack bootstrap-octavia-pre
 osism-kolla deploy octavia
 osism-run openstack bootstrap-octavia-post
 
+osism-kolla deploy barbican
 osism-kolla deploy designate
 
 osism-run openstack bootstrap-basic
