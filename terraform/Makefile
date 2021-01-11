@@ -117,6 +117,10 @@ watch: .id_rsa.$(ENVIRONMENT) .MANAGER_ADDRESS.$(ENVIRONMENT)
 	done;
 	#@$(OPENSTACK) server list
 
+ping: .MANAGER_ADDRESS.$(ENVIRONMENT)
+	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
+	ping -c3 $$MANAGER_ADDRESS
+
 openstack: init
 	@$(OPENSTACK)
 
