@@ -77,7 +77,7 @@ kolla_external_vip_address: 192.168.96.9
 
 osism_serial_default: 100%
 osism_serial:
-  docker: 1
+  docker: 100%
 
 ##########################
 # ceph
