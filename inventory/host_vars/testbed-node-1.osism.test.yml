@@ -2,7 +2,7 @@
 ##########################################################
 # ansible
 
-ansible_host: "{{ '192.168.16.0/20' | ansible.netcommon.ipaddr('net') | ansible.netcommon.ipaddr(11) | ansible.netcommon.ipaddr('address') }}"
+ansible_host: "{{ '192.168.16.0/20' | ipaddr('net') | ipaddr(11) | ipaddr('address') }}"
 
 ##########################################################
 # netbox
@@ -15,8 +15,8 @@ netbox_inventory_status: Active
 console_interface: "{{ ansible_local.testbed_network_devices.management }}"
 management_interface: "{{ ansible_local.testbed_network_devices.internal }}"
 
-internal_address: "{{ '192.168.32.0/20' | ansible.netcommon.ipaddr('net') | ansible.netcommon.ipaddr(11) | ansible.netcommon.ipaddr('address') }}"
-fluentd_host: "{{ '192.168.32.0/20' | ansible.netcommon.ipaddr('net') | ansible.netcommon.ipaddr(11) | ansible.netcommon.ipaddr('address') }}"
+internal_address: "{{ '192.168.32.0/20' | ipaddr('net') | ipaddr(11) | ipaddr('address') }}"
+fluentd_host: "{{ '192.168.32.0/20' | ipaddr('net') | ipaddr(11) | ipaddr('address') }}"
 
 ##########################################################
 # cockpit
@@ -33,28 +33,25 @@ netdata_host_type: client
 ##########################################################
 # network
 
-network_allow_service_restart: false
-network_restart_method: nothing
-
 network_interfaces:
   - device: "{{ ansible_local.testbed_network_devices.management }}"
     auto: true
     family: inet
     method: static
-    address: "{{ '192.168.16.0/20' | ansible.netcommon.ipaddr('net') | ansible.netcommon.ipaddr(11) | ansible.netcommon.ipaddr('address') }}"
+    address: "{{ '192.168.16.0/20' | ipaddr('net') | ipaddr(11) | ipaddr('address') }}"
     netmask: 255.255.240.0
-    gateway: "{{ '192.168.16.0/20' | ansible.netcommon.ipaddr('net') | ansible.netcommon.ipaddr('1') | ansible.netcommon.ipaddr('address') }}"
+    gateway: "{{ '192.168.16.0/20' | ipaddr('net') | ipaddr('1') | ipaddr('address') }}"
     mtu: 1450
     up:
-      - "ip route add 192.168.48.0/20 via {{ '192.168.32.0/20' | ansible.netcommon.ipaddr('net') | ansible.netcommon.ipaddr('5') | ansible.netcommon.ipaddr('address') }}"
+      - "ip route add 192.168.48.0/20 via {{ '192.168.32.0/20' | ipaddr('net') | ipaddr('5') | ipaddr('address') }}"
     down:
-      - "ip route del 192.168.48.0/20 via {{ '192.168.32.0/20' | ansible.netcommon.ipaddr('net') | ansible.netcommon.ipaddr('5') | ansible.netcommon.ipaddr('address') }}"
+      - "ip route del 192.168.48.0/20 via {{ '192.168.32.0/20' | ipaddr('net') | ipaddr('5') | ipaddr('address') }}"
 
   - device: "{{ ansible_local.testbed_network_devices.internal }}"
     auto: true
     family: inet
     method: static
-    address: "{{ '192.168.32.0/20' | ansible.netcommon.ipaddr('net') | ansible.netcommon.ipaddr(11) | ansible.netcommon.ipaddr('address') }}"
+    address: "{{ '192.168.32.0/20' | ipaddr('net') | ipaddr(11) | ipaddr('address') }}"
     netmask: 255.255.240.0
     mtu: 1450
 
@@ -62,7 +59,7 @@ network_interfaces:
     auto: true
     family: inet
     method: static
-    address: "{{ '192.168.96.0/20' | ansible.netcommon.ipaddr('net') | ansible.netcommon.ipaddr(11) | ansible.netcommon.ipaddr('address') }}"
+    address: "{{ '192.168.96.0/20' | ipaddr('net') | ipaddr(11) | ipaddr('address') }}"
     netmask: 255.255.240.0
     mtu: 1450
 
@@ -76,7 +73,7 @@ network_interfaces:
     auto: true
     family: inet
     method: static
-    address: "{{ '192.168.64.0/20' | ansible.netcommon.ipaddr('net') | ansible.netcommon.ipaddr(11) | ansible.netcommon.ipaddr('address') }}"
+    address: "{{ '192.168.64.0/20' | ipaddr('net') | ipaddr(11) | ipaddr('address') }}"
     netmask: 255.255.240.0
     mtu: 1450
 
@@ -84,13 +81,13 @@ network_interfaces:
     auto: true
     family: inet
     method: static
-    address: "{{ '192.168.80.0/20' | ansible.netcommon.ipaddr('net') | ansible.netcommon.ipaddr(11) | ansible.netcommon.ipaddr('address') }}"
+    address: "{{ '192.168.80.0/20' | ipaddr('net') | ipaddr(11) | ipaddr('address') }}"
     netmask: 255.255.240.0
     mtu: 1450
 
   - device: ohm0
     method: static
-    address: "{{ '192.168.128.0/20' | ansible.netcommon.ipaddr('net') | ansible.netcommon.ipaddr(11) | ansible.netcommon.ipaddr('address') }}"
+    address: "{{ '192.168.128.0/20' | ipaddr('net') | ipaddr(11) | ipaddr('address') }}"
     netmask: 255.255.240.0
     mtu: 1300
     up:
@@ -115,9 +112,9 @@ storage_interface: "{{ ansible_local.testbed_network_devices.storage_frontend }}
 # ceph
 
 # monitor_interface:
-monitor_address: "{{ '192.168.64.0/20' | ansible.netcommon.ipaddr('net') | ansible.netcommon.ipaddr(11) | ansible.netcommon.ipaddr('address') }}"
+monitor_address: "{{ '192.168.64.0/20' | ipaddr('net') | ipaddr(11) | ipaddr('address') }}"
 # radosgw_interface:
-radosgw_address: "{{ '192.168.64.0/20' | ansible.netcommon.ipaddr('net') | ansible.netcommon.ipaddr(11) | ansible.netcommon.ipaddr('address') }}"
+radosgw_address: "{{ '192.168.64.0/20' | ipaddr('net') | ipaddr(11) | ipaddr('address') }}"
 
 devices: "{{ ansible_local.testbed_ceph_devices }}"
 

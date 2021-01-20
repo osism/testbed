@@ -2,7 +2,7 @@
 
 CONFIGURATION = master
 CONSOLE = manager
-ENVIRONMENT = betacloud
+ENVIRONMENT ?= betacloud
 OPENSTACK = openstack
 USERNAME = dragon
 
@@ -13,10 +13,7 @@ ifneq (,$(wildcard ./local.env))
   include local.env
 endif
 
-NEED_OSCLOUD := $(shell test -z "$$OS_PASSWORD" -a -z "$$OS_CLOUD" && echo 1 || echo 0)
-ifeq ($(NEED_OSCLOUD),1)
-  export OS_CLOUD=$(ENVIRONMENT)
-endif
+export OS_CLOUD ?= $(ENVIRONMENT)
 
 export TF_VAR_cloud_provider=$(ENVIRONMENT)
 
@@ -25,7 +22,7 @@ ifneq (,$(wildcard ./minio.env))
 endif
 
 init:
-	@if [ ! -d .terraform/plugins ]; then terraform init; fi
+	@if [ ! -d .terraform/providers ]; then terraform init; fi
 
 	@terraform workspace select ${ENVIRONMENT} || terraform workspace new ${ENVIRONMENT}
 
@@ -56,6 +53,10 @@ deploy-ceph: init
 deploy-openstack: init
 	@touch .deploy.$(ENVIRONMENT)
 	@terraform apply -auto-approve -var-file="environment-$(ENVIRONMENT).tfvars" -var 'deploy_infrastructure=true' -var 'deploy_ceph=true' -var 'deploy_openstack=true' $(PARAMS)
+
+deploy-full: init
+	@touch .deploy.$(ENVIRONMENT)
+	@terraform apply -auto-approve -var-file="environment-$(ENVIRONMENT).tfvars" -var 'deploy_infrastructure=true' -var 'deploy_ceph=true' -var 'deploy_openstack=true' -var 'deploy_monitoring=true' $(PARAMS)
 
 show: init
 	@terraform show
@@ -115,6 +116,10 @@ watch: .id_rsa.$(ENVIRONMENT) .MANAGER_ADDRESS.$(ENVIRONMENT)
 		fi; \
 	done;
 	#@$(OPENSTACK) server list
+
+ping: .MANAGER_ADDRESS.$(ENVIRONMENT)
+	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
+	ping -c3 $$MANAGER_ADDRESS
 
 openstack: init
 	@$(OPENSTACK)

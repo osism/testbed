@@ -61,7 +61,7 @@
         docker_storage_driver: overlay
         docker_volume_size: 5
         network_driver: flannel
-        public: no
+        public: false
         volume_driver: cinder
         external_network_id: "{{ network.openstack_networks[0].id }}"
         flavor_id: "{{ flavor.flavor.id }}"

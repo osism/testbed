@@ -7,7 +7,7 @@
     - name: Run helper scripts non-interactive
       cron:
         name: INTERACTIVE
-        env: yes
+        env: true
         value: "false"
         cron_file: osism
         user: "{{ operator_user }}"

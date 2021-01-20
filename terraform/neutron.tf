@@ -83,7 +83,7 @@ resource "openstack_compute_secgroup_v2" "security_group_internal" {
 resource "openstack_networking_secgroup_rule_v2" "security_group_internal_vrrp" {
   direction         = "ingress"
   ethertype         = "IPv4"
-  protocol          = "vrrp"
+  protocol          = "112" # vrrp
   remote_ip_prefix  = "0.0.0.0/0"
   security_group_id = openstack_compute_secgroup_v2.security_group_internal.id
 }
@@ -180,7 +180,7 @@ resource "openstack_networking_subnet_v2" "subnet_management" {
   network_id      = openstack_networking_network_v2.net_management.id
   cidr            = "192.168.16.0/20"
   ip_version      = 4
-  dns_nameservers = ["8.8.8.8", "9.9.9.9"]
+  dns_nameservers = var.dns_nameservers
 
   allocation_pool {
     start = "192.168.31.200"
@@ -199,7 +199,7 @@ resource "openstack_networking_subnet_v2" "subnet_internal" {
   cidr        = "192.168.32.0/20"
   ip_version  = 4
   gateway_ip  = null
-  enable_dhcp = false
+  enable_dhcp = var.enable_dhcp
 
   allocation_pool {
     start = "192.168.47.200"
@@ -218,7 +218,7 @@ resource "openstack_networking_subnet_v2" "subnet_provider" {
   cidr        = "192.168.112.0/20"
   ip_version  = 4
   gateway_ip  = null
-  enable_dhcp = false
+  enable_dhcp = var.enable_dhcp
 
   allocation_pool {
     start = "192.168.127.200"
@@ -237,7 +237,7 @@ resource "openstack_networking_subnet_v2" "subnet_external" {
   cidr        = "192.168.96.0/20"
   ip_version  = 4
   gateway_ip  = null
-  enable_dhcp = false
+  enable_dhcp = var.enable_dhcp
 
   allocation_pool {
     start = "192.168.111.200"
@@ -274,7 +274,7 @@ resource "openstack_networking_subnet_v2" "subnet_storage_frontend" {
   cidr        = "192.168.64.0/20"
   ip_version  = 4
   gateway_ip  = null
-  enable_dhcp = false
+  enable_dhcp = var.enable_dhcp
 
   allocation_pool {
     start = "192.168.79.200"
@@ -293,7 +293,7 @@ resource "openstack_networking_subnet_v2" "subnet_storage_backend" {
   cidr        = "192.168.80.0/20"
   ip_version  = 4
   gateway_ip  = null
-  enable_dhcp = false
+  enable_dhcp = var.enable_dhcp
 
   allocation_pool {
     start = "192.168.95.200"

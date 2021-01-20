@@ -85,7 +85,7 @@ resource "openstack_blockstorage_volume_v3" "node_volume" {
 
 resource "openstack_compute_volume_attach_v2" "node_volume_attachment" {
   count       = var.number_of_nodes * var.number_of_volumes
-  instance_id = openstack_compute_instance_v2.node_server["${count.index % var.number_of_nodes}"].id
+  instance_id = openstack_compute_instance_v2.node_server[count.index % var.number_of_nodes].id
   volume_id   = openstack_blockstorage_volume_v3.node_volume[count.index].id
 }
 

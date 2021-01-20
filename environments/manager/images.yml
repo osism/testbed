@@ -4,14 +4,11 @@
 adminer_tag: "4.7"
 adminer_image: "{{ docker_registry }}/library/adminer:{{ adminer_tag }}"
 
-aptly_tag: "1.4.0"
-aptly_image: "{{ docker_registry }}/osism/aptly:{{ aptly_tag }}"
-
 ara_server_tag: "1.5.3"
-ara_server_image: "{{ docker_registry }}/osism/ara-server:{{ ara_server_tag }}"
+ara_server_image: "{{ docker_registry_ansible|default('quay.io') }}/osism/ara-server:{{ ara_server_tag }}"
 
-installer_tag: "latest"
-installer_image: "{{ docker_registry }}/osism/installer:{{ installer_tag }}"
+awxclient_tag: "16.0.0"
+awxclient_image: "{{ docker_registry_ansible|default('quay.io') }}/osism/awxclient:{{ awxclient_tag }}"
 
 mariadb_tag: "10.5"
 mariadb_image: "{{ docker_registry }}/library/mariadb:{{ mariadb_tag }}"
@@ -37,19 +34,19 @@ registry_image: "{{ docker_registry }}/library/registry:{{ registry_tag }}"
 # image tag depends on CEPH_VERSION or OPENSTACK_VERSION
 
 cephclient_tag: "{{ ceph_version }}"
-cephclient_image: "{{ docker_registry }}/osism/cephclient:{{ cephclient_tag }}"
+cephclient_image: "{{ docker_registry_cephclient|default('quay.io') }}/osism/cephclient:{{ cephclient_tag }}"
 
 openstackclient_tag: "{{ openstack_version }}"
-openstackclient_image: "{{ docker_registry }}/osism/openstackclient:{{ openstackclient_tag }}"
+openstackclient_image: "{{ docker_registry_openstackclient|default('quay.io') }}/osism/openstackclient:{{ openstackclient_tag }}"
 
 awx_tag: "{{ ceph_version }}-{{ openstack_version }}"
-awx_image: "{{ docker_registry_ansible }}/osism/manager:{{ awx_tag }}"
+awx_image: "{{ docker_registry_ansible|default('quay.io') }}/osism/manager:{{ awx_tag }}"
 
 ceph_ansible_tag: "{{ ceph_version }}"
-ceph_ansible_image: "{{ docker_registry_ansible }}/osism/ceph-ansible:{{ ceph_ansible_tag }}"
+ceph_ansible_image: "{{ docker_registry_ansible|default('quay.io') }}/osism/ceph-ansible:{{ ceph_ansible_tag }}"
 
 kolla_ansible_tag: "{{ openstack_version }}"
-kolla_ansible_image: "{{ docker_registry_ansible }}/osism/kolla-ansible:{{ kolla_ansible_tag }}"
+kolla_ansible_image: "{{ docker_registry_ansible|default('quay.io') }}/osism/kolla-ansible:{{ kolla_ansible_tag }}"
 
 osism_ansible_tag: "{{ manager_version }}"
-osism_ansible_image: "{{ docker_registry_ansible }}/osism/osism-ansible:{{ osism_ansible_tag }}"
+osism_ansible_image: "{{ docker_registry_ansible|default('quay.io') }}/osism/osism-ansible:{{ osism_ansible_tag }}"

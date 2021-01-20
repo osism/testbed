@@ -17,6 +17,10 @@ osd_scenario: lvm
 
 dmcrypt: true
 
+# NOTE: It is common to place more than 1 OSD on flash devices. To simulate
+#       upgrades etc. with this approach this is also used here.
+osds_per_device: 2
+
 ##########################
 # network
 
@@ -106,7 +110,7 @@ openstack_cinder_backup_pool:
   application: "rbd"
   size: "{{ openstack_pool_default_size }}"
   min_size: "{{ openstack_pool_default_min_size }}"
-  pg_autoscale_mode: False
+  pg_autoscale_mode: false
 
 openstack_cinder_pool:
   name: "volumes"
@@ -119,7 +123,7 @@ openstack_cinder_pool:
   application: "rbd"
   size: "{{ openstack_pool_default_size }}"
   min_size: "{{ openstack_pool_default_min_size }}"
-  pg_autoscale_mode: False
+  pg_autoscale_mode: false
 
 openstack_glance_pool:
   name: "images"
@@ -132,7 +136,7 @@ openstack_glance_pool:
   application: "rbd"
   size: "{{ openstack_pool_default_size }}"
   min_size: "{{ openstack_pool_default_min_size }}"
-  pg_autoscale_mode: False
+  pg_autoscale_mode: false
 
 openstack_gnocchi_pool:
   name: "metrics"
@@ -145,7 +149,7 @@ openstack_gnocchi_pool:
   application: "rbd"
   size: "{{ openstack_pool_default_size }}"
   min_size: "{{ openstack_pool_default_min_size }}"
-  pg_autoscale_mode: False
+  pg_autoscale_mode: false
 
 openstack_nova_pool:
   name: "vms"
@@ -158,7 +162,7 @@ openstack_nova_pool:
   application: "rbd"
   size: "{{ openstack_pool_default_size }}"
   min_size: "{{ openstack_pool_default_min_size }}"
-  pg_autoscale_mode: False
+  pg_autoscale_mode: false
 
 openstack_pools:
   - "{{ openstack_cinder_backup_pool }}"

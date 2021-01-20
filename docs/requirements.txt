@@ -1,5 +1,5 @@
-Sphinx==3.3.1
-sphinx-rtd-theme==0.5.0
+Sphinx==3.4.3
+sphinx-rtd-theme==0.5.1
 sphinx_fontawesome==0.0.6
 sphinxcontrib-blockdiag==2.0.0
 sphinxcontrib-nwdiag==2.0.0

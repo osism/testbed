@@ -6,11 +6,11 @@
 
   vars:
     ansible_python_interpreter: /usr/bin/python3
-    docker_configure_repository: yes
-    docker_configure_storage_driver: yes
+    docker_configure_repository: true
+    docker_configure_storage_driver: true
     docker_storage_driver: overlay2
     docker_user: dragon
-    docker_version: "5:19.03.13"
+    docker_version: "5:20.10.0"
 
   collections:
     - osism.services

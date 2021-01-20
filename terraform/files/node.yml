@@ -1,44 +1,13 @@
 ---
-- hosts: localhost
+- name: Bootstrap node - pt. 1
+  hosts: localhost
   connection: local
   gather_facts: true
 
   vars:
     ansible_python_interpreter: /usr/bin/python3
 
-    # ansible-common
-    cleanup_services_common:
-      - NetworkManager
-      - iscsid
-      - lxcfs
-      - nscd
-      - ntp
-    cleanup_packages_common:
-      - apport
-      - apport-symptoms
-      - dosfstools
-      - libvirt-bin
-      - lxc
-      - lxd
-      - ntfs-3g
-      - open-iscsi
-      - popularity-contest
-      - python3-apport
-      - snapd
-      - telnet
-      - ubuntu-server
-      - xauth
-    rng_enable_common: yes
-    smartd_enable_common: no
-    upgrade_packages_common: no
-
-    # ansible-operator
-    operator_user: dragon
-    operator_group: dragon
-    operator_authorized_keys:
-      - "{{ lookup('file', '/home/ubuntu/.ssh/id_rsa.pub') }}"
-
-    # ansible-repository
+    # repository
     repository_cache_valid_time: 0
     repository_key_ids: {}
     repositories:
@@ -57,8 +26,45 @@
 
   roles:
     - role: resolvconf
-    - role: chrony
     - role: repository
+
+- name: Bootstrap node - pt. 2
+  hosts: localhost
+  connection: local
+  gather_facts: true
+
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+
+    # cleanup
+    cleanup_services_extra:
+      - NetworkManager
+      - iscsid
+      - lxcfs
+      - nscd
+      - ntp
+    cleanup_packages_extra:
+      - dosfstools
+      - ntfs-3g
+      - popularity-contest
+      - telnet
+      - xauth
+
+    # packages
+    upgrade_packages: false
+
+    # operator
+    operator_user: dragon
+    operator_group: dragon
+    operator_authorized_keys:
+      - "{{ lookup('file', '/home/ubuntu/.ssh/id_rsa.pub') }}"
+
+  collections:
+    - osism.commons
+    - osism.services
+
+  roles:
+    - role: chrony
     - role: systohc
     - role: configfs
     - role: packages
@@ -68,7 +74,6 @@
     - role: motd
     - role: hddtemp
     - role: rng
-    - role: smartd
     - role: cleanup
     - role: operator
 
@@ -79,11 +84,11 @@
 
   vars:
     ansible_python_interpreter: /usr/bin/python3
-    docker_configure_repository: yes
-    docker_configure_storage_driver: yes
+    docker_configure_repository: true
+    docker_configure_storage_driver: true
     docker_storage_driver: overlay2
     docker_user: dragon
-    docker_version: "5:19.03.13"
+    docker_version: "5:20.10.0"
 
   collections:
     - osism.services

@@ -3,106 +3,116 @@ variable "cloud_provider" {
 }
 
 variable "prefix" {
-  default = "testbed"
   type    = string
+  default = "testbed"
 }
 
 variable "image" {
-  default = "Ubuntu 20.04"
   type    = string
+  default = "Ubuntu 20.04"
 }
 
 variable "volume_size_storage" {
-  default = 10
   type    = number
+  default = 10
 }
 
 variable "flavor_node" {
-  default = "4C-16GB-40GB"
   type    = string
+  default = "4C-16GB-40GB"
 }
 
 variable "flavor_manager" {
-  default = "4C-8GB-20GB"
   type    = string
+  default = "4C-8GB-20GB"
 }
 
 variable "availability_zone" {
-  default = "south-2"
   type    = string
+  default = "south-2"
 }
 
 variable "volume_availability_zone" {
-  default = "south-2"
   type    = string
+  default = "south-2"
 }
 
 variable "network_availability_zone" {
-  default = "south-2"
   type    = string
+  default = "south-2"
 }
 
 variable "public" {
-  default = "external"
   type    = string
+  default = "external"
 }
 
 variable "port_security_enabled" {
-  default = false
   type    = bool
+  default = false
 }
 
 variable "deploy_infrastructure" {
-  default = false
   type    = bool
+  default = false
 }
 
 variable "deploy_openstack" {
-  default = false
   type    = bool
+  default = false
 }
 
 variable "deploy_ceph" {
-  default = false
   type    = bool
+  default = false
 }
 
 variable "deploy_monitoring" {
-  default = false
   type    = bool
+  default = false
 }
 
 variable "run_rally" {
-  default = false
   type    = bool
+  default = false
 }
 
 variable "run_refstack" {
-  default = false
   type    = bool
+  default = false
 }
 
 variable "configuration_version" {
-  default = "master"
   type    = string
+  default = "master"
 }
 
 variable "ceph_version" {
-  default = "nautilus"
   type    = string
+  default = "nautilus"
 }
 
 variable "openstack_version" {
-  default = "victoria"
   type    = string
+  default = "victoria"
 }
 
 variable "number_of_nodes" {
-  default = 3
   type    = number
+  default = 3
 }
 
 variable "number_of_volumes" {
-  default = 3
   type    = number
+  default = 3
+}
+
+variable "enable_dhcp" {
+  type    = bool
+  default = false
+}
+
+variable "dns_nameservers" {
+  type    = list(string)
+  default = ["8.8.8.8", "9.9.9.9"]
 }
