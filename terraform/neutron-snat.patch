@@ -1,0 +1,10 @@
+--- neutron.tf.orig	2021-01-21 22:07:29.297255408 +0000
++++ neutron.tf	2021-01-21 22:08:05.765699686 +0000
+@@ -309,6 +309,7 @@ resource "openstack_networking_router_v2
+   name                    = var.prefix
+   external_network_id     = data.openstack_networking_network_v2.public.id
+   # availability_zone_hints = [var.network_availability_zone]
++  enable_snat             = true
+ }
+ 
+ resource "openstack_networking_router_interface_v2" "router_interface" {
