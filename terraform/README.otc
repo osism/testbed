@@ -7,7 +7,7 @@ Hints how to get SCS/OSISM testbed working on OTC
 - As on many other clouds, you need to apply neutron.patch to disable
   network AZ hints
 - You need to add "enable_snat = true" to the router in neutron.tf.
-- I created an image Ubuntu 20.04. The ones from the OTC 
+- I created an image Ubuntu 20.04. The ones from the OTC
   (Standard_Ubuntu_20.04_latest) would be fine except that they have a too
   small min_disk. So I created a volume from the OTC image, took an image
   from it and reregistered with --min-disk 20. On KVM flavors, you can also
