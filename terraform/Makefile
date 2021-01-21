@@ -2,7 +2,7 @@
 
 CONFIGURATION = master
 CONSOLE = manager
-ENVIRONMENT = betacloud
+ENVIRONMENT ?= betacloud
 OPENSTACK = openstack
 USERNAME = dragon
 
@@ -13,10 +13,7 @@ ifneq (,$(wildcard ./local.env))
   include local.env
 endif
 
-NEED_OSCLOUD := $(shell test -z "$$OS_PASSWORD" -a -z "$$OS_CLOUD" && echo 1 || echo 0)
-ifeq ($(NEED_OSCLOUD),1)
-  export OS_CLOUD=$(ENVIRONMENT)
-endif
+export OS_CLOUD ?= $(ENVIRONMENT)
 
 export TF_VAR_cloud_provider=$(ENVIRONMENT)
 
