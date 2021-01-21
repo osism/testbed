@@ -7,5 +7,5 @@ flavor_manager            = "s2.xlarge.2"
 image                     = "Ubuntu 20.04"
 volume_size_storage       = "10"
 public                    = "admin_external_net"
-enable_dhcp		  = "true"
-dns_nameservers		  = [ "100.125.4.25", "9.9.9.9" ]
+enable_dhcp               = "true"
+dns_nameservers           = [ "100.125.4.25", "9.9.9.9" ]

@@ -1,0 +1,22 @@
+Hints how to get SCS/OSISM testbed working on OTC
+=================================================
+
+- Use ENVIRONMENT=otc, referencing the included environment-otc.tfvars.
+  dhcp needs to be enabled and the DNS nameserver is set to the OTC
+  DNS (with quad9 fallback).
+- As on many other clouds, you need to apply neutron.patch to disable
+  network AZ hints
+- You need to add "enable_snat = true" to the router in neutron.tf.
+- I created an image Ubuntu 20.04. The ones from the OTC 
+  (Standard_Ubuntu_20.04_latest) would be fine except that they have a too
+  small min_disk. So I created a volume from the OTC image, took an image
+  from it and reregistered with --min-disk 20. On KVM flavors, you can also
+  register Ubuntu images downloaded from upstream, but I have not recently
+  tested it. I'm using the OTC images as I know that the team does a good job
+  in maintaining and optimizing them and I have the flexibility to use Xen
+  flavors (OK, irrelevant by now) and BMS flavors (very relevant).
+- In case you have spotted environment-otc-physical.tfvars: This is for
+  deploying SCS/OSISM testbed on Bare Metal flavors (BMS). It does not yet
+  work, though.
+- Like on any other platform, you need terraform with the OpenStack provider.
+  Optionally, you can use the OTC terraform provider.
