@@ -4,9 +4,11 @@ Hints how to get SCS/OSISM testbed working on OTC
 - Use ENVIRONMENT=otc, referencing the included environment-otc.tfvars.
   dhcp needs to be enabled and the DNS nameserver is set to the OTC
   DNS (with quad9 fallback).
-- As on many other clouds, you need to apply neutron.patch to disable
+- As on many other clouds, you need to apply neutron-az.patch to disable
   network AZ hints
-- You need to add "enable_snat = true" to the router in neutron.tf.
+- You need to add "enable_snat = true" to the router in neutron.tf, you
+  can do so by applying the patch neutron-snat.patch (after the above-
+  mentioned patch).
 - I created an image Ubuntu 20.04. The ones from the OTC
   (Standard_Ubuntu_20.04_latest) would be fine except that they have a too
   small min_disk. So I created a volume from the OTC image, took an image
