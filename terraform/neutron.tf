@@ -171,8 +171,7 @@ resource "openstack_compute_secgroup_v2" "security_group_external" {
 ############
 
 resource "openstack_networking_network_v2" "net_management" {
-  name                    = "net-${var.prefix}-management"
-  availability_zone_hints = [var.network_availability_zone]
+  name = "net-${var.prefix}-management"
 }
 
 resource "openstack_networking_subnet_v2" "subnet_management" {
@@ -189,8 +188,7 @@ resource "openstack_networking_subnet_v2" "subnet_management" {
 }
 
 resource "openstack_networking_network_v2" "net_internal" {
-  name                    = "net-${var.prefix}-internal"
-  availability_zone_hints = [var.network_availability_zone]
+  name = "net-${var.prefix}-internal"
 }
 
 resource "openstack_networking_subnet_v2" "subnet_internal" {
@@ -208,8 +206,7 @@ resource "openstack_networking_subnet_v2" "subnet_internal" {
 }
 
 resource "openstack_networking_network_v2" "net_provider" {
-  name                    = "net-${var.prefix}-provider"
-  availability_zone_hints = [var.network_availability_zone]
+  name = "net-${var.prefix}-provider"
 }
 
 resource "openstack_networking_subnet_v2" "subnet_provider" {
@@ -227,8 +224,7 @@ resource "openstack_networking_subnet_v2" "subnet_provider" {
 }
 
 resource "openstack_networking_network_v2" "net_external" {
-  name                    = "net-${var.prefix}-external"
-  availability_zone_hints = [var.network_availability_zone]
+  name = "net-${var.prefix}-external"
 }
 
 resource "openstack_networking_subnet_v2" "subnet_external" {
@@ -264,8 +260,7 @@ resource "openstack_networking_port_v2" "vip_port_internal" {
 }
 
 resource "openstack_networking_network_v2" "net_storage_frontend" {
-  name                    = "net-${var.prefix}-storage-frontend"
-  availability_zone_hints = [var.network_availability_zone]
+  name = "net-${var.prefix}-storage-frontend"
 }
 
 resource "openstack_networking_subnet_v2" "subnet_storage_frontend" {
@@ -283,8 +278,7 @@ resource "openstack_networking_subnet_v2" "subnet_storage_frontend" {
 }
 
 resource "openstack_networking_network_v2" "net_storage_backend" {
-  name                    = "net-${var.prefix}-storage-backend"
-  availability_zone_hints = [var.network_availability_zone]
+  name = "net-${var.prefix}-storage-backend"
 }
 
 resource "openstack_networking_subnet_v2" "subnet_storage_backend" {
@@ -301,14 +295,17 @@ resource "openstack_networking_subnet_v2" "subnet_storage_backend" {
   }
 }
 
+###################
+# Router          #
+###################
+
 data "openstack_networking_network_v2" "public" {
   name = var.public
 }
 
 resource "openstack_networking_router_v2" "router" {
-  name                    = var.prefix
-  external_network_id     = data.openstack_networking_network_v2.public.id
-  availability_zone_hints = [var.network_availability_zone]
+  name                = var.prefix
+  external_network_id = data.openstack_networking_network_v2.public.id
 }
 
 resource "openstack_networking_router_interface_v2" "router_interface" {
