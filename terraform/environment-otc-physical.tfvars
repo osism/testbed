@@ -7,4 +7,4 @@ image                     = "Standard_Ubuntu_20.04_BMS_latest"
 volume_size_storage       = "100"
 public                    = "admin_external_net"
 enable_dhcp               = "true"
-dns_nameservers           = [ "100.125.4.25", "9.9.9.9" ]
+dns_nameservers           = ["100.125.4.25", "9.9.9.9"]
