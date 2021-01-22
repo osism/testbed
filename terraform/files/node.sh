@@ -52,6 +52,10 @@ apt-get install --yes \
   python3-winrm \
   python3-xmltodict
 
+
+# NOTE: There are cloud images on which Ansible is pre-installed.
+apt-get remove --yes ansible
+
 pip3 install --no-cache-dir 'ansible>=2.10'
 
 chown -R ubuntu:ubuntu /home/ubuntu/.ssh
