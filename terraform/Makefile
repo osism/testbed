@@ -27,22 +27,10 @@ init:
 	@terraform workspace select ${ENVIRONMENT} || terraform workspace new ${ENVIRONMENT}
 
 	@rm -f *_override.tf
-
-	@if test "$$ENVIRONMENT" = "betacloud"; then \
-	  cp overrides/neutron_availability_zone_hints_override.tf neutron_availability_zone_hints_override.tf; \
-	fi
-
-	@if test "$$ENVIRONMENT" = "citycloud"; then \
-	  cp overrides/neutron_availability_zone_hints_override.tf neutron_availability_zone_hints_override.tf; \
-	fi
-
-	@if test "$$ENVIRONMENT" = "otc"; then \
-	  cp overrides/neutron_router_enable_snat_override.tf neutron_router_enable_snat_override.tf; \
-	fi
-
-	@if test "$$ENVIRONMENT" = "otc-physical"; then \
-	  cp overrides/neutron_router_enable_snat_override.tf neutron_router_enable_snat_override.tf; \
-	fi
+	@for over in `grep '^# *override:' "environments/${ENVIRONMENT}.tfvars" | sed 's/^# *override://'`; do \
+		echo $$over; \
+		cp -p overrides/$${over}_override.tf .; \
+	done
 
 attach: init
 	@terraform import -var-file="environments/$(ENVIRONMENT).tfvars" $(RESOURCE) $(PARAMS)
