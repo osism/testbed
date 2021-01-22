@@ -45,7 +45,7 @@ init:
 	fi
 
 attach: init
-	@terraform import -var-file="environment-$(ENVIRONMENT).tfvars" $(RESOURCE) $(PARAMS)
+	@terraform import -var-file="environments/$(ENVIRONMENT).tfvars" $(RESOURCE) $(PARAMS)
 
 detach: init
 	@terraform state rm $(RESOURCE) $(PARAMS)
@@ -54,33 +54,33 @@ state-push: init
 	@terraform state push $(STATE)
 
 dry-run: init
-	@terraform plan -var-file="environment-$(ENVIRONMENT).tfvars" $(PARAMS)
+	@terraform plan -var-file="environments/$(ENVIRONMENT).tfvars" $(PARAMS)
 
 deploy: init
 	@touch .deploy.$(ENVIRONMENT)
-	@terraform apply -auto-approve -var-file="environment-$(ENVIRONMENT).tfvars" -var "configuration_version=$(CONFIGURATION)" $(PARAMS)
+	@terraform apply -auto-approve -var-file="environments/$(ENVIRONMENT).tfvars" -var "configuration_version=$(CONFIGURATION)" $(PARAMS)
 
 deploy-infra: init
 	@touch .deploy.$(ENVIRONMENT)
-	@terraform apply -auto-approve -var-file="environment-$(ENVIRONMENT).tfvars" -var 'deploy_infrastructure=true' $(PARAMS)
+	@terraform apply -auto-approve -var-file="environments/$(ENVIRONMENT).tfvars" -var 'deploy_infrastructure=true' $(PARAMS)
 
 deploy-ceph: init
 	@touch .deploy.$(ENVIRONMENT)
-	@terraform apply -auto-approve -var-file="environment-$(ENVIRONMENT).tfvars" -var 'deploy_ceph=true' $(PARAMS)
+	@terraform apply -auto-approve -var-file="environments/$(ENVIRONMENT).tfvars" -var 'deploy_ceph=true' $(PARAMS)
 
 deploy-openstack: init
 	@touch .deploy.$(ENVIRONMENT)
-	@terraform apply -auto-approve -var-file="environment-$(ENVIRONMENT).tfvars" -var 'deploy_infrastructure=true' -var 'deploy_ceph=true' -var 'deploy_openstack=true' $(PARAMS)
+	@terraform apply -auto-approve -var-file="environments/$(ENVIRONMENT).tfvars" -var 'deploy_infrastructure=true' -var 'deploy_ceph=true' -var 'deploy_openstack=true' $(PARAMS)
 
 deploy-full: init
 	@touch .deploy.$(ENVIRONMENT)
-	@terraform apply -auto-approve -var-file="environment-$(ENVIRONMENT).tfvars" -var 'deploy_infrastructure=true' -var 'deploy_ceph=true' -var 'deploy_openstack=true' -var 'deploy_monitoring=true' $(PARAMS)
+	@terraform apply -auto-approve -var-file="environments/$(ENVIRONMENT).tfvars" -var 'deploy_infrastructure=true' -var 'deploy_ceph=true' -var 'deploy_openstack=true' -var 'deploy_monitoring=true' $(PARAMS)
 
 show: init
 	@terraform show
 
 clean: init
-	@terraform destroy -auto-approve -var-file="environment-$(ENVIRONMENT).tfvars" $(PARAMS)
+	@terraform destroy -auto-approve -var-file="environments/$(ENVIRONMENT).tfvars" $(PARAMS)
 	@rm -f .deploy.$(ENVIRONMENT) .MANAGER_ADDRESS.$(ENVIRONMENT)
 	@rm -f .id_rsa.$(ENVIRONMENT)
 	@terraform workspace select default
