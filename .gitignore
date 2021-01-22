@@ -17,11 +17,11 @@ errored.tfstate
 local.env
 minio.env
 minio.tf
-neutron/neutron_availability_zone_hints_override.tf
-neutron/neutron_router_enable_snat_override.tf
 roles
 secrets
 secure.yaml
 secure.yml
 terraform.tfstate*
 terraform.tfstate.d
+terraform/neutron_availability_zone_hints_override.tf
+terraform/neutron_router_enable_snat_override.tf
