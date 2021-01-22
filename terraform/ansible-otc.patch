@@ -2,13 +2,10 @@ diff --git a/terraform/manager.tf b/terraform/manager.tf
 index f75ddc1..09a4965 100644
 --- a/terraform/manager.tf
 +++ b/terraform/manager.tf
-@@ -235,7 +235,11 @@ write_files:
+@@ -235,7 +235,8 @@ write_files:
        fi
      path: /root/manager.sh
      permissions: 0700
-+packages:
-+  - docker-ce-cli
-+  - docker-compose
  runcmd:
 +  - "dpkg -r ansible || true"
    - "echo 'network: {config: disabled}' > /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg"
@@ -18,13 +15,10 @@ diff --git a/terraform/nodes.tf b/terraform/nodes.tf
 index 1cb8863..3aff2f2 100644
 --- a/terraform/nodes.tf
 +++ b/terraform/nodes.tf
-@@ -158,7 +158,11 @@ write_files:
+@@ -158,7 +158,8 @@ write_files:
        ${indent(6, file("files/node.sh"))}
      path: /root/node.sh
      permissions: '0700'
-+packages:
-+  - docker-ce-cli
-+  - docker-compose
  runcmd:
 +  - "dpkg -r ansible || true"
    - "echo 'network: {config: disabled}' > /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg"

@@ -18,8 +18,9 @@ Hints how to get SCS/OSISM testbed working on OTC
   in maintaining and optimizing them, they use local package/update mirrors
   and I have the flexibility to use Xen flavors (OK, irrelevant by now) and
   BMS flavors (very relevant).
-  If you use OTC images, apply the patch docker-ansible.patch to ensure the
-  right packages are installed. (This adds docker and removes ansible-2.9.6.)
+  If you use OTC images, apply the patch ansible-otc.patch to ensure the
+  ansible-2.9 from the image is removed so the bootstrapping scripts can
+  successfully deploy the right version of ansible.
 - In case you have spotted environment-otc-physical.tfvars: This is for
   deploying SCS/OSISM testbed on Bare Metal flavors (BMS). It does not yet
   work, though.
