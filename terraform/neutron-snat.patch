@@ -1,3 +1,16 @@
+From: Kurt Garloff <scs@garloff.de>
+Subject: Enable SNAT on the router (for OTC)
+
+Unlike most OpenStack clouds, on OTC a router is always required and does always
+connect to the external network. However, SNAT is disabled by default, so outgoing
+traffic without Floating IP still does not work. OTC allows users to enable SNAT
+though (unlike most OpenStack clouds), so use it to create the expected behavior.
+This is required to make OTC work, but can not be unconditionally enabled; most
+clouds to enable SNAT by default, but do NOT allow users to tweak the setting,
+so we get API errors ...
+
+Signed-off-by: Kurt Garloff <kurt@garloff.de>
+
 --- neutron.tf.orig	2021-01-21 22:07:29.297255408 +0000
 +++ neutron.tf	2021-01-21 22:08:05.765699686 +0000
 @@ -309,6 +309,7 @@ resource "openstack_networking_router_v2

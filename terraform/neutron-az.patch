@@ -1,3 +1,14 @@
+From: Kurt Garloff <scs@garloff.de>
+Subject: Disable all availability zone hints for networking resources
+
+Many OpenStack clouds do not use network availability zones.
+Unfortunately, still passing hints will result in API errors.
+Thus we need to patch them out (short of making terraform clever
+enough to detect it).
+
+Co-authored-by: Mathias Fechner <mathias.fechner@plusserver.com>
+Signed-off-by: Kurt Garloff <kurt@garloff.de>
+
 --- neutron.tf	2020-11-05 05:20:18.670617087 +0100
 +++ neutron.tf.patch	2020-11-05 05:24:34.377334696 +0100
 @@ -172,7 +172,7 @@ resource "openstack_compute_secgroup_v2"
