@@ -45,7 +45,7 @@ Supported cloud providers
 
 **Works**
 
-There is a separate environment file, e.g. ``environment-betacloud.tfvars``, for
+There is a separate environment file, e.g. ``environments/betacloud.tfvars``, for
 each supported cloud provider.
 
 * `Betacloud <https://www.betacloud.de>`_
@@ -139,7 +139,7 @@ volume_availability_zone  south-2
 volume_size_storage       10
 ========================= ===========
 
-With the file ``environment-CLOUDPROVIDER.tfvars`` the parameters of the environment
+With the file ``environments/CLOUDPROVIDER.tfvars`` the parameters of the environment
 ``CLOUDPROVIDER`` can be adjusted.
 
 .. code-block:: json
@@ -150,12 +150,12 @@ With the file ``environment-CLOUDPROVIDER.tfvars`` the parameters of the environ
 Local Environment
 =================
 
-For local overrides local.env + environment-local.tfvars can be used. Remember to also add a
-"local" entry to clouds.yaml.
+For local overrides ``local.env`` and ``environments/local.tfvars`` can be used. Remember to
+also add a ``local`` entry to clouds.yaml.
 
 .. code-block:: console
 
-   cp environment-local.tfvars.sample environment-local.tfvars
+   cp environments/local.tfvars.sample environments/local.tfvars
    echo ENVIRONMENT=local >> local.env
 
 
