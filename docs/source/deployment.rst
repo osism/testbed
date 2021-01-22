@@ -147,6 +147,18 @@ With the file ``environments/CLOUDPROVIDER.tfvars`` the parameters of the enviro
    image       = "OSISM base"
    flavor_node = "8C-32GB-40GB"
 
+Beyond the terraform variables, you can enable special overrides by adding special
+comments into the .tfvars files. The syntax is ``# override:XXXX``. This will
+include the file ``overrides/XXXX_override.tf`` into the terraform deployment.
+
+Currently two such overrides exist:
+
+* ``neutron_availability_zone_hints``: This enables using network availability zone hints.
+  betacloud and citycloud benefit from this.
+* ``neutron_router_enable_snat``: This passes ``enable_snat: true`` for the router. This is
+  required by OTC.
+
+
 Local Environment
 =================
 
