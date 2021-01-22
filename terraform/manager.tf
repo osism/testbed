@@ -236,7 +236,7 @@ write_files:
     path: /root/manager.sh
     permissions: 0700
 runcmd:
-  - "dpkg -r ansible || true"	# remove potentially preinstalled ansible (wrong version) 
+  - "dpkg -r ansible || true"
   - "echo 'network: {config: disabled}' > /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg"
   - "rm -f /etc/network/interfaces.d/50-cloud-init.cfg"
   - "mv /etc/netplan/50-cloud-init.yaml /etc/netplan/50-cloud-init.yaml.unused"
