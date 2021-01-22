@@ -1,0 +1,32 @@
+From: Kurt Garloff <scs@garloff.de>
+Subject: Adjust terraform to work with version 0.13
+
+We don't use any new features from 0.14 yet, so we can easily change
+the syntax to work with 0.13. The way providers are specified has changed,
+thus this is only a patch and not integrated into the main branch.
+
+Signed-off-by: Kurt Garloff <kurt@garloff.de>
+
+diff --git a/terraform/main.tf b/terraform/main.tf
+index 25e6313..4a6f621 100644
+--- a/terraform/main.tf
++++ b/terraform/main.tf
+@@ -3,7 +3,7 @@ provider "openstack" {
+ }
+ 
+ terraform {
+-  required_version = ">= 0.14"
++  required_version = ">= 0.13"
+ 
+   required_providers {
+     local = {
+@@ -11,7 +11,8 @@ terraform {
+     }
+ 
+     openstack = {
+-      source = "terraform-provider-openstack/openstack"
++      #source = "terraform-provider-openstack/openstack"
++      source = "terraform-providers/openstack"
+     }
+   }
+ }
