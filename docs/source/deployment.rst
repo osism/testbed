@@ -84,6 +84,23 @@ each supported cloud provider.
 
      * The credentials are stored in ``clouds.yaml`` and ``secure.yaml`` with the name ``pluscloudopen``.
 
+* `Open Telekom Cloud (OTC) <https://open-telekom-cloud.com/>`_
+
+  .. note::
+
+     * You will need to create your own Ubuntu 20.04 image to make sure that you have a larger
+       min-disk (20GB recommended). You can base it on the OTC Ubuntu images by creating a volume
+       from the OTC Ubuntu image and then create an image from it again (with ``--min-disk 20``).
+       This has the advantage of having all the drivers and settings needed for all kind of
+       flavors on OTC and using the local repository mirrors. For the KVM based flavors, you can
+       also use downloaded images from upstream and register them. Note the ``__os_distro``
+       property that you need to set on OTC.
+
+     * The otc-physical environment is for an SCS/OSISM testbed deployment, which would be a really
+       nice test environment. We don't have it working yet, unfortunately, so this is work in
+       progress.
+
+
 .. note::
 
    If the name of the cloud provider in ``clouds.yaml`` differs from the intended default, e.g.
@@ -100,6 +117,10 @@ each supported cloud provider.
 
       make deploy ENVIRONMENT=betacloud PARAMS="-var 'cloudprovider=the-name-of-the-entry'"
 
+   Alternatively, you can also just set the ``OS_CLOUD`` environment
+   (``export OS_CLOUD=the-name-of-the-entry`` in bash), so your ``openstack`` command line
+   client works without passing ``--os-cloud=``.
+
 * `SCS Demonstrator <https://gx-scs.okeanos.dev>`_
 
   .. note::
@@ -111,7 +132,9 @@ Preparations
 
 * `Terraform <https://www.terraform.io>`_ must be installed (https://learn.hashicorp.com/tutorials/terraform/install-cli)
 * ``clouds.yaml`` and ``secure.yaml`` files must be created
-  (https://docs.openstack.org/python-openstackclient/latest/configuration/index.html#clouds-yaml)
+  (https://docs.openstack.org/python-openstackclient/latest/configuration/index.html#clouds-yaml).
+  If available, check that your openstack client tools work to validate the settings with
+  e.g. ``openstack --os-cloud=the-name-of-the-entry availability zone list``.
 
   .. warning::
 
@@ -199,6 +222,12 @@ Initialization
    * Use ``deploy-ceph`` to deploy Ceph when building the environment.
    * Use ``deploy-openstack`` to deploy OpenStack when building the environment. This also
      includes Ceph and infrastructure services.
+
+.. note::
+
+   You can also set the ``ENVIRONMENT`` environment variable (``export ENVIRONMENT=betacloud``
+   in bash) to avoid having to pass it manually all the time.
+
 
 Usage
 =====
