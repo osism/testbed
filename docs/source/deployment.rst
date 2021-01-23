@@ -88,16 +88,17 @@ each supported cloud provider.
 
   .. note::
 
-     * You will need to create your own Ubuntu 20.04 image to make sure that you have a larger min-disk
-       (20GB recommended). You can base it on the OTC Ubuntu images by creating a volume from the OTC 
-       Ubuntu image and then create an image from it again (with ``--min-disk 20``). This has the
-       advantage of having all the drivers and settings needed for all kind of flavors on OTC and
-       using the local repository mirrors. For the KVM based flavors, you can also use downloaded
-       images from upstream and register them. Note the ``__os_distro`` property that you need to
-       set on OTC.
+     * You will need to create your own Ubuntu 20.04 image to make sure that you have a larger
+       min-disk (20GB recommended). You can base it on the OTC Ubuntu images by creating a volume
+       from the OTC Ubuntu image and then create an image from it again (with ``--min-disk 20``).
+       This has the advantage of having all the drivers and settings needed for all kind of
+       flavors on OTC and using the local repository mirrors. For the KVM based flavors, you can
+       also use downloaded images from upstream and register them. Note the ``__os_distro``
+       property that you need to set on OTC.
 
      * The otc-physical environment is for an SCS/OSISM testbed deployment, which would be a really
-       nice test environment. We don't have it working yet, unforunately, so this is work in progress.
+       nice test environment. We don't have it working yet, unfortunately, so this is work in
+       progress.
 
 
 .. note::
