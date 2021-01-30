@@ -3,8 +3,10 @@
 CONFIGURATION = master
 CONSOLE = manager
 ENVIRONMENT ?= betacloud
-OPENSTACK = openstack
 USERNAME = dragon
+
+OPENSTACK = openstack
+TERRAFORM = terraform
 
 RESOURCE = openstack_networking_floatingip_v2.manager_floating_ip
 STATE = errored.tfstate
@@ -22,9 +24,9 @@ ifneq (,$(wildcard ./minio.env))
 endif
 
 init:
-	@if [ ! -d .terraform/providers ]; then terraform init; fi
+	@if [ ! -d .terraform/providers ]; then $(TERRAFORM) init; fi
 
-	@terraform workspace select ${ENVIRONMENT} || terraform workspace new ${ENVIRONMENT}
+	@$(TERRAFORM) workspace select ${ENVIRONMENT} || $(TERRAFORM) workspace new ${ENVIRONMENT}
 
 	@rm -f *_override.tf
 	@for over in `grep '^# *override:' "environments/${ENVIRONMENT}.tfvars" | sed 's/^# *override://'`; do \
@@ -33,50 +35,50 @@ init:
 	done
 
 attach: init
-	@terraform import -var-file="environments/$(ENVIRONMENT).tfvars" $(RESOURCE) $(PARAMS)
+	@$(TERRAFORM) import -var-file="environments/$(ENVIRONMENT).tfvars" $(RESOURCE) $(PARAMS)
 
 detach: init
-	@terraform state rm $(RESOURCE) $(PARAMS)
+	@$(TERRAFORM) state rm $(RESOURCE) $(PARAMS)
 
 state-push: init
-	@terraform state push $(STATE)
+	@$(TERRAFORM) state push $(STATE)
 
 dry-run: init
-	@terraform plan -var-file="environments/$(ENVIRONMENT).tfvars" $(PARAMS)
+	@$(TERRAFORM) plan -var-file="environments/$(ENVIRONMENT).tfvars" $(PARAMS)
 
 deploy: init
 	@touch .deploy.$(ENVIRONMENT)
-	@terraform apply -auto-approve -var-file="environments/$(ENVIRONMENT).tfvars" -var "configuration_version=$(CONFIGURATION)" $(PARAMS)
+	@$(TERRAFORM) apply -auto-approve -var-file="environments/$(ENVIRONMENT).tfvars" -var "configuration_version=$(CONFIGURATION)" $(PARAMS)
 
 deploy-infra: init
 	@touch .deploy.$(ENVIRONMENT)
-	@terraform apply -auto-approve -var-file="environments/$(ENVIRONMENT).tfvars" -var 'deploy_infrastructure=true' $(PARAMS)
+	@$(TERRAFORM) apply -auto-approve -var-file="environments/$(ENVIRONMENT).tfvars" -var 'deploy_infrastructure=true' $(PARAMS)
 
 deploy-ceph: init
 	@touch .deploy.$(ENVIRONMENT)
-	@terraform apply -auto-approve -var-file="environments/$(ENVIRONMENT).tfvars" -var 'deploy_ceph=true' $(PARAMS)
+	@$(TERRAFORM) apply -auto-approve -var-file="environments/$(ENVIRONMENT).tfvars" -var 'deploy_ceph=true' $(PARAMS)
 
 deploy-openstack: init
 	@touch .deploy.$(ENVIRONMENT)
-	@terraform apply -auto-approve -var-file="environments/$(ENVIRONMENT).tfvars" -var 'deploy_infrastructure=true' -var 'deploy_ceph=true' -var 'deploy_openstack=true' $(PARAMS)
+	@$(TERRAFORM) apply -auto-approve -var-file="environments/$(ENVIRONMENT).tfvars" -var 'deploy_infrastructure=true' -var 'deploy_ceph=true' -var 'deploy_openstack=true' $(PARAMS)
 
 deploy-full: init
 	@touch .deploy.$(ENVIRONMENT)
-	@terraform apply -auto-approve -var-file="environments/$(ENVIRONMENT).tfvars" -var 'deploy_infrastructure=true' -var 'deploy_ceph=true' -var 'deploy_openstack=true' -var 'deploy_monitoring=true' $(PARAMS)
+	@$(TERRAFORM) apply -auto-approve -var-file="environments/$(ENVIRONMENT).tfvars" -var 'deploy_infrastructure=true' -var 'deploy_ceph=true' -var 'deploy_openstack=true' -var 'deploy_monitoring=true' $(PARAMS)
 
 show: init
-	@terraform show
+	@$(TERRAFORM) show
 
 clean: init
-	@terraform destroy -auto-approve -var-file="environments/$(ENVIRONMENT).tfvars" $(PARAMS)
+	@$(TERRAFORM) destroy -auto-approve -var-file="environments/$(ENVIRONMENT).tfvars" $(PARAMS)
 	@rm -f .deploy.$(ENVIRONMENT) .MANAGER_ADDRESS.$(ENVIRONMENT)
 	@rm -f .id_rsa.$(ENVIRONMENT)
-	@terraform workspace select default
-	@terraform workspace delete $(ENVIRONMENT)
+	@$(TERRAFORM) workspace select default
+	@$(TERRAFORM) workspace delete $(ENVIRONMENT)
 	@rm -f *_override.tf
 
 list: init
-	@terraform state list
+	@$(TERRAFORM) state list
 
 ssh: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
 	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
@@ -93,15 +95,15 @@ log: .deploy.$(ENVIRONMENT)
 	@$(OPENSTACK) console log show testbed-$(CONSOLE)
 
 .deploy.$(ENVIRONMENT): init
-	@STAT=$$(terraform state list); \
+	@STAT=$$($(TERRAFORM) state list); \
 	if test -n "$$STAT"; then touch .deploy.$(ENVIRONMENT); else echo "use make deploy or deploy-infra or ...."; exit 1; fi
 
 .MANAGER_ADDRESS.$(ENVIRONMENT): .deploy.$(ENVIRONMENT)
-	@MANAGER_ADDRESS=$$(terraform output manager_address); \
+	@MANAGER_ADDRESS=$$($(TERRAFORM) output manager_address); \
 	echo "MANAGER_ADDRESS=$$MANAGER_ADDRESS" > $@;
 
 .id_rsa.$(ENVIRONMENT): .deploy.$(ENVIRONMENT)
-	@PRIVATE_KEY=$$(terraform output private_key); \
+	@PRIVATE_KEY=$$($(TERRAFORM) output private_key); \
 	echo "$$PRIVATE_KEY" > $@; \
         chmod 0600 $@
 
