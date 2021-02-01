@@ -23,6 +23,11 @@ if test -n "$SERVER"; then
   done
 fi
 echo 
+KEYPAIRS=$(openstack keypair list -f value -c Name | grep testbed)
+if test -n "$KEYPAIRS"; then
+  echo Delete keypairs $KEYPAIRS
+  openstack keypair delete $KEYPAIRS
+fi
 ROUTERS=$(openstack router list -f value -c Name | grep testbed)
 SUBNETS=$(openstack subnet list -f value -c "ID" -c "Name" | grep testbed)
 SUBNETFILT=$(echo "$SUBNETS" | awk '{ print $1; }')
