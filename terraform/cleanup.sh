@@ -1,14 +1,16 @@
 #!/bin/bash
 # Cleanup OSISM Testbed
-# Usage: cleanup.sh [STACKNAME]
-# STACKNAME defaults to the only deployed stack by default
+# Usage: cleanup.sh [STACK_NM]
+# STACK_NA defaults to the environment variable ENVIRONMENT
 # Sometimes terraform does not know the state and we need to force a cleanup.
-# (c) Kurt Garloff <scs@garloff.de>, 2/2020, CC-BY-SA 3.0
-STACK_NM=${STACK_NM:-$ENVIRONMENT}
+# (c) Kurt Garloff <scs@garloff.de>, 2/2021, CC-BY-SA 4.0
+STACK_NM="${STACK_NM:-$ENVIRONMENT}"
+STACK_NM="${1:-$STACK_NM}"
 if test -z "$STACK_NM"; then echo "Usage: ENVIRONMENT=XXX ./cleanup.sh"; exit 1; fi
 echo "Cleaning $STACK_NM"
-echo terraform destroy -auto-approve -var-file="environments/${STACK_NM}.tfvars"
-echo make clean ENVIRONMENT="$STACK_NM"
+echo "Trying make clean ENVIRONMENT=\"$STACK_NM\" first"
+make clean ENVIRONMENT="$STACK_NM"
+#terraform destroy -auto-approve -var-file="environments/${STACK_NM}.tfvars"
 SERVER=$(openstack server list -f value -c ID -c Name | grep testbed-)
 if test -n "$SERVER"; then
   echo Delete Servers: $SERVER
@@ -28,9 +30,10 @@ if test -n "$KEYPAIRS"; then
   echo Delete keypairs $KEYPAIRS
   openstack keypair delete $KEYPAIRS
 fi
-VOLUMES=$(openstack volume list -f value -c Name | grep testbed)
+VOLUMES=$(openstack volume list -f value -c ID -c Name | grep testbed)
 if test -n "$VOLUMES"; then
   echo Delete volumes $VOLUMES
+  VOLUMES=$(echo "$VOLUMES" | awk '{ print $1; }')
   openstack volume delete $VOLUMES
 fi
 ROUTERS=$(openstack router list -f value -c Name | grep testbed)
@@ -67,7 +70,7 @@ if test -n "$SUBNETS"; then
   openstack subnet delete $SUBNETS
 fi
 SGS=$(openstack security group list -f value -c Name | grep testbed)
-echo Deleting security groups $SGS
+if test -n "$SGS"; then echo Deleting security groups $SGS; fi
 for sg in $SGS; do
    openstack security group delete $sg
 done
@@ -84,4 +87,4 @@ if test -n "$ROUTERS"; then
   done
 fi
 
-#rm -f .deploy.$STACK_NM .MANAGER_ADDRESS.$STACK_NM .id_rsa.$STACK_NM
+#rm -f .deploy.$STACK_NM .MANAGER_ADDRESS.$STACK_NM .id_rsa.$STACK_NM *_override.tf
