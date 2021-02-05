@@ -43,7 +43,7 @@ def cleanup_routers(conn):
 
 def cleanup_networks(conn):
     logging.info("clean up networks")
-    networks = list(conn.network.networks())
+    networks = list(conn.network.networks(shared = False))
     for network in networks:
         network_name = network.to_dict()["name"]
         if not network_name.startswith("net-testbed"):
@@ -67,7 +67,8 @@ def cleanup_subnets(conn):
 
 def cleanup_ports(conn):
     logging.info("clean up ports")
-    ports = list(conn.network.ports(status="DOWN"))
+    # FIXME: We can't filter for device_owner = '' unfortunately
+    ports = list(conn.network.ports(status = "DOWN"))
     for port in ports:
         port_dict = port.to_dict()
         assert(port_dict["status"] == "DOWN")
@@ -80,7 +81,8 @@ def cleanup_ports(conn):
 
 def cleanup_volumes(conn):
     logging.info("clean up volumes")
-    volumes = list(conn.block_storage.volumes())
+    # cinder supports regex filtering
+    volumes = list(conn.block_storage.volumes(name = "^testbed"))
     for volume in volumes:
         volume_name = volume.to_dict()["name"]
         if not volume_name.startswith("testbed"):
@@ -92,7 +94,8 @@ def cleanup_volumes(conn):
 
 def cleanup_servers(conn):
     logging.info("clean up servers")
-    servers = list(conn.compute.servers())
+    # nova supports regex filtering
+    servers = list(conn.compute.servers(name = "^testbed"))
     for server in servers:
         server_name = server.to_dict()["name"]
         if not server_name.startswith("testbed"):
@@ -111,7 +114,8 @@ def wait_servers_gone(conn):
     found = []
     while count < 100:
         found = []
-        servers = list(conn.compute.servers())
+        # nova supports regex filtering
+        servers = list(conn.compute.servers(name = "^testbed"))
         for server in servers:
             server_name = server.to_dict()["name"]
             if server_name.startswith("testbed"):
