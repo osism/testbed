@@ -42,7 +42,7 @@ def cleanup_routers(conn):
 
 def cleanup_networks(conn):
     logging.info("clean up networks")
-    networks = list(conn.network.networks(shared = False))
+    networks = list(conn.network.networks(shared=False))
     for network in networks:
         network_name = network.to_dict()["name"]
         if not network_name.startswith("net-testbed"):
@@ -67,7 +67,7 @@ def cleanup_subnets(conn):
 def cleanup_ports(conn):
     logging.info("clean up ports")
     # FIXME: We can't filter for device_owner = '' unfortunately
-    ports = list(conn.network.ports(status = "DOWN"))
+    ports = list(conn.network.ports(status="DOWN"))
     for port in ports:
         port_dict = port.to_dict()
         assert(port_dict["status"] == "DOWN")
@@ -81,7 +81,7 @@ def cleanup_ports(conn):
 def cleanup_volumes(conn):
     logging.info("clean up volumes")
     # cinder supports regex filtering
-    volumes = list(conn.block_storage.volumes(name = "^testbed"))
+    volumes = list(conn.block_storage.volumes(name="^testbed"))
     for volume in volumes:
         volume_name = volume.to_dict()["name"]
         if not volume_name.startswith("testbed"):
@@ -94,7 +94,7 @@ def cleanup_volumes(conn):
 def cleanup_servers(conn):
     logging.info("clean up servers")
     # nova supports regex filtering
-    servers = list(conn.compute.servers(name = "^testbed"))
+    servers = list(conn.compute.servers(name="^testbed"))
     for server in servers:
         server_name = server.to_dict()["name"]
         if not server_name.startswith("testbed"):
@@ -103,7 +103,7 @@ def cleanup_servers(conn):
         logging.info(server_name)
         try:
             conn.compute.delete_server(server, force=True)
-        except:
+        except openstack.exceptions.HttpException:
             conn.compute.delete_server(server)
 
 
@@ -114,7 +114,7 @@ def wait_servers_gone(conn):
     while count < 100:
         found = []
         # nova supports regex filtering
-        servers = list(conn.compute.servers(name = "^testbed"))
+        servers = list(conn.compute.servers(name="^testbed"))
         for server in servers:
             server_name = server.to_dict()["name"]
             if server_name.startswith("testbed"):
@@ -159,7 +159,7 @@ def cleanup_floating_ips(conn):
     for floating_ip in floating_ips:
         floating_ip_dict = dict(floating_ip)
         floating_ip_name = floating_ip["floating_ip_address"]
-        assert(floating_ip_dict["attached"] == False)
+        assert(not floating_ip_dict["attached"])
         logging.info(floating_ip_name)
         conn.delete_floating_ip(floating_ip_dict["id"])
 
