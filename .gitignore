@@ -3,6 +3,7 @@
 .deploy.*
 .id_rsa.*
 .terraform
+.terraform.lock.hcl
 .tox
 .venv
 Pipfile.lock
