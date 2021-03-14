@@ -50,6 +50,10 @@ deploy: init
 	@touch .deploy.$(ENVIRONMENT)
 	@$(TERRAFORM) apply -auto-approve -var-file="environments/$(ENVIRONMENT).tfvars" -var "configuration_version=$(CONFIGURATION)" $(PARAMS)
 
+deploy-identity: init
+	@touch .deploy.$(ENVIRONMENT)
+	@$(TERRAFORM) apply -auto-approve -var-file="environments/$(ENVIRONMENT).tfvars" -var 'deploy_identity=true' $(PARAMS)
+
 deploy-infra: init
 	@touch .deploy.$(ENVIRONMENT)
 	@$(TERRAFORM) apply -auto-approve -var-file="environments/$(ENVIRONMENT).tfvars" -var 'deploy_infrastructure=true' $(PARAMS)
