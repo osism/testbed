@@ -72,6 +72,11 @@ variable "deploy_monitoring" {
   default = false
 }
 
+variable "deploy_identity" {
+  type    = bool
+  default = false
+}
+
 variable "run_rally" {
   type    = bool
   default = false

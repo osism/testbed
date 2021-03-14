@@ -201,6 +201,12 @@ write_files:
       # deploy helper services
       sudo -iu dragon sh -c '/opt/configuration/scripts/001-helper-services.sh'
 
+      # deploy identity services
+      # NOTE: All necessary infrastructure services are also deployed.
+      if [[ "${var.deploy_identity}" == "true" ]]; then
+          sudo -iu dragon sh -c '/opt/configuration/scripts/999-identity-services.sh'
+      fi
+
       # deploy infrastructure services
       if [[ "${var.deploy_infrastructure}" == "true" ]]; then
           sudo -iu dragon sh -c '/opt/configuration/scripts/002-infrastructure-services-basic.sh'
