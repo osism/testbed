@@ -119,14 +119,14 @@ each supported cloud provider.
 
    .. code-block:: console
 
-      PARAMS="-var 'cloudprovider=the-name-of-the-entry'"
+      PARAMS="-var 'cloud_provider=the-name-of-the-entry'"
 
    A complete example with the environment for the Betacloud and a cloud provider with the name
    ``the-name-of-the-entry`` looks like this:
 
    .. code-block:: console
 
-      make deploy ENVIRONMENT=betacloud PARAMS="-var 'cloudprovider=the-name-of-the-entry'"
+      make deploy ENVIRONMENT=betacloud PARAMS="-var 'cloud_provider=the-name-of-the-entry'"
 
    Alternatively, you can also just set the ``OS_CLOUD`` environment
    (``export OS_CLOUD=the-name-of-the-entry`` in bash), so your ``openstack`` command line
