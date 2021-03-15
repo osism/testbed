@@ -20,6 +20,9 @@ Deployment
 Requirements
 ============
 
+Cloud resources
+---------------
+
 To use this testbed, a project on an OpenStack cloud environment is required. Cinder
 must be usable there as additional service.
 
@@ -39,6 +42,14 @@ The testbed requires the following resources When using the default flavors.
 
    When deploying all additional OpenStack services, the use of nodes with at least
    32 GByte memory is recommended. Then 104 GByte memory are required.
+
+Software
+--------
+
+Terraform in a current version must be installed and usable.
+
+Information on installing Terraform can be found in the Terraform
+documentation: https://learn.hashicorp.com/tutorials/terraform/install-cli
 
 Supported cloud providers
 =========================
