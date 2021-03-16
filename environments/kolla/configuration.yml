@@ -53,7 +53,7 @@ enable_skydive: "yes"
 
 # generic
 
-openstack_service_workers: 5
+openstack_service_workers: 2
 
 # profiling
 enable_osprofiler: "no"
