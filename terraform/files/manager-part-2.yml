@@ -10,7 +10,7 @@
     docker_configure_storage_driver: true
     docker_storage_driver: overlay2
     docker_user: dragon
-    docker_version: "5:20.10.0"
+    docker_version: "5:20.10.5"
 
   collections:
     - osism.services
