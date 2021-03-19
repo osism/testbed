@@ -1,5 +1,10 @@
 ---
 ##########################
+# testbed specific parameters
+
+testbed_mtu: 1400
+
+##########################
 # configuration
 
 configuration_directory: /opt/configuration
