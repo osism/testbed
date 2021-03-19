@@ -41,7 +41,7 @@ network_interfaces:
     address: "{{ '192.168.16.0/20' | ipaddr('net') | ipaddr(11) | ipaddr('address') }}"
     netmask: 255.255.240.0
     gateway: "{{ '192.168.16.0/20' | ipaddr('net') | ipaddr('1') | ipaddr('address') }}"
-    mtu: 1450
+    mtu: "{{ testbed_mtu }}"
     up:
       - "ip route add 192.168.48.0/20 via {{ '192.168.32.0/20' | ipaddr('net') | ipaddr('5') | ipaddr('address') }}"
     down:
@@ -53,7 +53,7 @@ network_interfaces:
     method: static
     address: "{{ '192.168.32.0/20' | ipaddr('net') | ipaddr(11) | ipaddr('address') }}"
     netmask: 255.255.240.0
-    mtu: 1450
+    mtu: "{{ testbed_mtu }}"
 
   - device: "{{ ansible_local.testbed_network_devices.external }}"
     auto: true
@@ -61,13 +61,13 @@ network_interfaces:
     method: static
     address: "{{ '192.168.96.0/20' | ipaddr('net') | ipaddr(11) | ipaddr('address') }}"
     netmask: 255.255.240.0
-    mtu: 1450
+    mtu: "{{ testbed_mtu }}"
 
   - device: "{{ ansible_local.testbed_network_devices.provider }}"
     auto: true
     family: inet
     method: manual
-    mtu: 1450
+    mtu: "{{ testbed_mtu }}"
 
   - device: "{{ ansible_local.testbed_network_devices.storage_frontend }}"
     auto: true
@@ -75,7 +75,7 @@ network_interfaces:
     method: static
     address: "{{ '192.168.64.0/20' | ipaddr('net') | ipaddr(11) | ipaddr('address') }}"
     netmask: 255.255.240.0
-    mtu: 1450
+    mtu: "{{ testbed_mtu }}"
 
   - device: "{{ ansible_local.testbed_network_devices.storage_backend }}"
     auto: true
@@ -83,7 +83,7 @@ network_interfaces:
     method: static
     address: "{{ '192.168.80.0/20' | ipaddr('net') | ipaddr(11) | ipaddr('address') }}"
     netmask: 255.255.240.0
-    mtu: 1450
+    mtu: "{{ testbed_mtu }}"
 
   - device: ohm0
     method: static
