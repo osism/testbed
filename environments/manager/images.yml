@@ -4,7 +4,7 @@
 adminer_tag: "4.7"
 adminer_image: "{{ docker_registry }}/library/adminer:{{ adminer_tag }}"
 
-ara_server_tag: "1.5.3"
+ara_server_tag: "1.5.5"
 ara_server_image: "{{ docker_registry_ansible|default('quay.io') }}/osism/ara-server:{{ ara_server_tag }}"
 
 awxclient_tag: "16.0.0"
@@ -13,13 +13,13 @@ awxclient_image: "{{ docker_registry_ansible|default('quay.io') }}/osism/awxclie
 mariadb_tag: "10.5"
 mariadb_image: "{{ docker_registry }}/library/mariadb:{{ mariadb_tag }}"
 
-netbox_tag: "v2.8"
+netbox_tag: "v2.10"
 netbox_image: "{{ docker_registry }}/netboxcommunity/netbox:{{ netbox_tag }}"
 
 nginx_tag: "1.19-alpine"
 nginx_image: "{{ docker_registry }}/library/nginx:{{ nginx_tag }}"
 
-phpmyadmin_tag: "5.0"
+phpmyadmin_tag: "5.1"
 phpmyadmin_image: "{{ docker_registry }}/phpmyadmin/phpmyadmin:{{ phpmyadmin_tag }}"
 
 postgres_tag: "13-alpine"
