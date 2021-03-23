@@ -1,3 +1,9 @@
+# NOTE: Groups listed in this file are removed from all
+#       other files in the inventory at runtime.
+#
+#       This applies to both the form with :children and
+#       without.
+
 [ceph-mds:children]
 ceph-resource
 
