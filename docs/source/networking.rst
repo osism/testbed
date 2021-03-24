@@ -28,7 +28,6 @@ storage frontend ``192.168.64.0/20``  For access of the compute nodes to the sto
 storage backend  ``192.168.80.0/20``  For synchronization between storage nodes.
 external         ``192.168.96.0/20``  Is used to emulate an external network.
 provider         ``192.168.112.0/20`` Is used to emulate an provider network.
-octavia          ``192.168.128.0/20`` Internal Octavia management network.
 ================ ==================== ======================================================
 
 Nodes

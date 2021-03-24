@@ -85,15 +85,6 @@ network_interfaces:
     netmask: 255.255.240.0
     mtu: "{{ testbed_mtu }}"
 
-  - device: ohm0
-    method: static
-    address: "{{ '192.168.128.0/20' | ipaddr('net') | ipaddr(10) | ipaddr('address') }}"
-    netmask: 255.255.240.0
-    mtu: 1300
-    up:
-      - "ip link set dev ohm0 address 02:00:00:00:00:{{ 10 }}"
-      - iptables -I INPUT -i ohm0 -p udp --dport 5555 -j ACCEPT
-
 ##########################################################
 # kolla
 
