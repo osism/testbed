@@ -15,7 +15,7 @@ NETWORKS = {
 result = {}
 
 for interface in netifaces.interfaces():
-    if interface in ['lo', 'docker0', 'ohm0']:
+    if interface in ['lo', 'docker0', 'ohm0', 'o-hm0']:
         continue
     elif interface.startswith('br'):
         continue
