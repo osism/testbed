@@ -1,6 +1,6 @@
 ---
 - name: Prepare masquerading on the manager node
-  hosts: testbed-manager
+  hosts: testbed-managers
 
   tasks:
     - name: Accpet FORWARD on the management interface (incoming)
