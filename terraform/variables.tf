@@ -117,6 +117,11 @@ variable "enable_dhcp" {
   default = false
 }
 
+variable "enable_config_drive" {
+  type    = bool
+  default = true
+}
+
 variable "dns_nameservers" {
   type    = list(string)
   default = ["8.8.8.8", "9.9.9.9"]
