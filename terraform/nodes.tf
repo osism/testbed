@@ -96,7 +96,7 @@ resource "openstack_compute_instance_v2" "node_server" {
   image_name        = var.image
   flavor_name       = var.flavor_node
   key_pair          = openstack_compute_keypair_v2.key.name
-  config_drive      = true
+  config_drive      = var.enable_config_drive
 
   depends_on = [
     openstack_networking_router_interface_v2.router_interface
