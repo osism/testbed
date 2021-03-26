@@ -25,9 +25,6 @@
       - src: ceph.client.glance.keyring
         dest: "{{ configuration_directory }}/environments/kolla/files/overlays/glance/ceph.client.glance.keyring"
 
-      - src: ceph.client.glance.keyring
-        dest: "{{ configuration_directory }}/environments/kolla/files/overlays/glance-api/ceph.client.glance.keyring"
-
       - src: ceph.client.gnocchi.keyring
         dest: "{{ configuration_directory }}/environments/kolla/files/overlays/gnocchi/ceph.client.gnocchi.keyring"
 
