@@ -107,10 +107,19 @@ each supported cloud provider.
        also use downloaded images from upstream and register them. Note the ``__os_distro``
        property that you need to set on OTC.
 
-     * The otc-physical environment is for an SCS/OSISM testbed deployment, which would be a really
-       nice test environment. We don't have it working yet, unfortunately, so this is work in
-       progress.
+       The management console is accessible at https://auth.otc.t-systems.com/authui/login.action.
 
+       Due to a few characteristics of the OTC, the deployment of the testbed there currently
+       takes significantly longer than on other OpenStack-based clouds.
+
+  .. warning::
+
+     The OTC has strange rate limits on their API servers. Therefore it is required to limit
+     the number of concurrent operations by setting ``PARALLELISM=1``.
+
+     .. code-block:: console
+
+        make deploy ENVIRONMENT=otc PARALLELISM=1
 
 .. note::
 

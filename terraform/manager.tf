@@ -43,17 +43,19 @@ resource "openstack_networking_port_v2" "manager_port_provider" {
   #
   # {"NeutronError": {"message": "Unrecognized attribute(s) 'port_security_enabled'", "type": "HTTPBadRequest", "detail": ""}}
   port_security_enabled = var.port_security_enabled
+}
 
-  fixed_ip {
-    ip_address = "192.168.112.5"
-    subnet_id  = openstack_networking_subnet_v2.subnet_provider.id
-  }
+resource "openstack_blockstorage_volume_v3" "manager_base_volume" {
+  count             = 0
+  image_id          = data.openstack_images_image_v2.image.id
+  name              = "${var.prefix}-volume-manager-base"
+  size              = var.volume_size_base
+  availability_zone = var.volume_availability_zone
 }
 
 resource "openstack_compute_instance_v2" "manager_server" {
   name              = "${var.prefix}-manager"
   availability_zone = var.availability_zone
-  image_name        = var.image
   flavor_name       = var.flavor_manager
   key_pair          = openstack_compute_keypair_v2.key.name
   config_drive      = var.enable_config_drive
@@ -72,21 +74,6 @@ network:
 package_update: false
 package_upgrade: false
 write_files:
-  - content: |
-      import subprocess
-      import netifaces
-
-      PORTS = {
-          "${openstack_networking_port_v2.manager_port_provider.mac_address}": "${openstack_networking_port_v2.manager_port_provider.all_fixed_ips[0]}"
-      }
-
-      for interface in netifaces.interfaces():
-          mac_address = netifaces.ifaddresses(interface)[netifaces.AF_LINK][0]['addr']
-          if mac_address in PORTS:
-              subprocess.run("ip addr add %s/20 dev %s" % (PORTS[mac_address], interface), shell=True)
-              subprocess.run("ip link set up dev %s" % interface, shell=True)
-    path: /root/configure-network-devices.py
-    permissions: '0600'
   - content: ${openstack_compute_keypair_v2.key.public_key}
     path: /home/ubuntu/.ssh/id_rsa.pub
     permissions: '0600'
