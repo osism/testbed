@@ -13,10 +13,10 @@ netbox_inventory_status: Active
 # generic
 
 console_interface: "{{ ansible_local.testbed_network_devices.management }}"
-management_interface: "{{ ansible_local.testbed_network_devices.internal }}"
+management_interface: "{{ ansible_local.testbed_network_devices.management }}"
 
-internal_address: "{{ '192.168.32.0/20' | ipaddr('net') | ipaddr(10) | ipaddr('address') }}"
-fluentd_host: "{{ '192.168.32.0/20' | ipaddr('net') | ipaddr(10) | ipaddr('address') }}"
+internal_address: "{{ '192.168.16.0/20' | ipaddr('net') | ipaddr(10) | ipaddr('address') }}"
+fluentd_host: "{{ '192.168.16.0/20' | ipaddr('net') | ipaddr(10) | ipaddr('address') }}"
 
 ##########################################################
 # cockpit
@@ -43,25 +43,15 @@ network_interfaces:
     gateway: "{{ '192.168.16.0/20' | ipaddr('net') | ipaddr('1') | ipaddr('address') }}"
     mtu: "{{ testbed_mtu }}"
     up:
-      - "ip route add 192.168.48.0/20 via {{ '192.168.32.0/20' | ipaddr('net') | ipaddr('5') | ipaddr('address') }}"
+      - "ip addr add {{ '192.168.64.0/20' | ipaddr('net') | ipaddr('10') | ipaddr('address') }}/20 dev {{ ansible_local.testbed_network_devices.management }}"
+      - "ip addr add {{ '192.168.80.0/20' | ipaddr('net') | ipaddr('10') | ipaddr('address') }}/20 dev {{ ansible_local.testbed_network_devices.management }}"
+      - "ip addr add {{ '192.168.96.0/20' | ipaddr('net') | ipaddr('10') | ipaddr('address') }}/20 dev {{ ansible_local.testbed_network_devices.management }}"
+      - "ip route add 192.168.48.0/20 via {{ '192.168.16.0/20' | ipaddr('net') | ipaddr('5') | ipaddr('address') }}"
     down:
-      - "ip route del 192.168.48.0/20 via {{ '192.168.32.0/20' | ipaddr('net') | ipaddr('5') | ipaddr('address') }}"
-
-  - device: "{{ ansible_local.testbed_network_devices.internal }}"
-    auto: true
-    family: inet
-    method: static
-    address: "{{ '192.168.32.0/20' | ipaddr('net') | ipaddr(10) | ipaddr('address') }}"
-    netmask: 255.255.240.0
-    mtu: "{{ testbed_mtu }}"
-
-  - device: "{{ ansible_local.testbed_network_devices.external }}"
-    auto: true
-    family: inet
-    method: static
-    address: "{{ '192.168.96.0/20' | ipaddr('net') | ipaddr(10) | ipaddr('address') }}"
-    netmask: 255.255.240.0
-    mtu: "{{ testbed_mtu }}"
+      - "ip route del 192.168.48.0/20 via {{ '192.168.16.0/20' | ipaddr('net') | ipaddr('5') | ipaddr('address') }}"
+      - "ip addr del {{ '192.168.64.0/20' | ipaddr('net') | ipaddr('12') | ipaddr('address') }}/20 dev {{ ansible_local.testbed_network_devices.management }}"
+      - "ip addr del {{ '192.168.80.0/20' | ipaddr('net') | ipaddr('12') | ipaddr('address') }}/20 dev {{ ansible_local.testbed_network_devices.management }}"
+      - "ip addr del {{ '192.168.96.0/20' | ipaddr('net') | ipaddr('12') | ipaddr('address') }}/20 dev {{ ansible_local.testbed_network_devices.management }}"
 
   - device: "{{ ansible_local.testbed_network_devices.provider }}"
     auto: true
@@ -69,34 +59,18 @@ network_interfaces:
     method: manual
     mtu: "{{ testbed_mtu }}"
 
-  - device: "{{ ansible_local.testbed_network_devices.storage_frontend }}"
-    auto: true
-    family: inet
-    method: static
-    address: "{{ '192.168.64.0/20' | ipaddr('net') | ipaddr(10) | ipaddr('address') }}"
-    netmask: 255.255.240.0
-    mtu: "{{ testbed_mtu }}"
-
-  - device: "{{ ansible_local.testbed_network_devices.storage_backend }}"
-    auto: true
-    family: inet
-    method: static
-    address: "{{ '192.168.80.0/20' | ipaddr('net') | ipaddr(10) | ipaddr('address') }}"
-    netmask: 255.255.240.0
-    mtu: "{{ testbed_mtu }}"
-
 ##########################################################
 # kolla
 
-network_interface: "{{ ansible_local.testbed_network_devices.internal }}"
+network_interface: "{{ ansible_local.testbed_network_devices.management }}"
 
 # api_interface:
 # dns_interface:
-kolla_external_vip_interface: "{{ ansible_local.testbed_network_devices.external }}"
+# kolla_external_vip_interface:
 # migration_interface:
 neutron_external_interface: "{{ ansible_local.testbed_network_devices.provider }}"
 # octavia_network_interface:
-storage_interface: "{{ ansible_local.testbed_network_devices.storage_frontend }}"
+# storage_interface:
 # tunnel_interface:
 
 ##########################################################

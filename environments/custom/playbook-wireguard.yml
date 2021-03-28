@@ -102,5 +102,5 @@
 
   tasks:
     - name: Add route to 192.168.48.0/20
-      command: ip route replace 192.168.48.0/20 via 192.168.32.5  # noqa 301
+      command: ip route replace 192.168.48.0/20 via 192.168.16.5  # noqa 301
       become: true

@@ -25,7 +25,7 @@ Wireguard
      [Peer]
      PublicKey = MANAGER_CONTENTS_OF_/etc/wireguard/osism.pub
      PresharedKey = MANAGER_CONTENTS_OF_/etc/wireguard/osism.psk
-     AllowedIPs = 192.168.16.0/20, 192.168.32.0/20, 192.168.48.0/20, 192.168.96.0/20, 192.168.112.0/20
+     AllowedIPs = 192.168.16.0/20, 192.168.48.0/20, 192.168.96.0/20, 192.168.112.0/20
      Endpoint = MANAGER_PUBLIC_IP_ADDRESS:51820
 
 Change versions
@@ -129,17 +129,17 @@ Name             URL                        Username Password
 ================ ========================== ======== ========================================
 ARA              http://192.168.16.5:8120   ara      S6JE2yJUwvraiX57
 AWX              http://192.168.16.5:8052   dragon   vaeh7eingix8ooPi
-Ceph             http://192.168.32.9:7000   admin    phoon7Chahvae6we
+Ceph             http://192.168.16.9:7000   admin    phoon7Chahvae6we
 Cockpit          https://192.168.16.5:8130  dragon   da5pahthaew2Pai2
-Horizon          http://192.168.32.9        admin    pYV8bV749aDMXLPlYJwoJs4ouRPWezCIOXYAQP6v
-Keycloak         http://192.168.32.5:8170   admin    password
-Kibana           http://192.168.32.9:5601   kibana   k2ReobFEsoxNm3DyZnkZmFPadSnCz6BjQhaLFoyB
+Horizon          http://192.168.16.9        admin    pYV8bV749aDMXLPlYJwoJs4ouRPWezCIOXYAQP6v
+Keycloak         http://192.168.16.5:8170   admin    password
+Kibana           http://192.168.16.9:5601   kibana   k2ReobFEsoxNm3DyZnkZmFPadSnCz6BjQhaLFoyB
 Netbox           http://192.168.16.5:8121   netbox   password
-Netdata          http://192.168.32.5:19999  -        -
-Patchman         http://192.168.32.5:8150   patchman aiB4aijiebeesiu0
-Skydive          http://192.168.32.5:8085   admin    pYV8bV749aDMXLPlYJwoJs4ouRPWezCIOXYAQP6v
-phpMyAdmin       http://192.168.32.5:8110   root     qNpdZmkKuUKBK3D5nZ08KMZ5MnYrGEe2hzH6XC0i
-Zabbix           http://192.168.32.5:8160   Admin    zabbix
+Netdata          http://192.168.16.5:19999  -        -
+Patchman         http://192.168.16.5:8150   patchman aiB4aijiebeesiu0
+Skydive          http://192.168.16.5:8085   admin    pYV8bV749aDMXLPlYJwoJs4ouRPWezCIOXYAQP6v
+phpMyAdmin       http://192.168.16.5:8110   root     qNpdZmkKuUKBK3D5nZ08KMZ5MnYrGEe2hzH6XC0i
+Zabbix           http://192.168.16.5:8160   Admin    zabbix
 ================ ========================== ======== ========================================
 
 ARA
@@ -328,7 +328,7 @@ configuration is so that two nodes are already sufficient.
 
    RabbitMQ        RABBITMQ_CLUSTER OK - nb_running_node OK (2) nb_running_disc_node OK (2) nb_running_ram_node OK (0)
 
-   Redis           TCP OK - 0.002 second response time on 192.168.32.10 port 6379|time=0.001901s;;;0.000000;10.000000
+   Redis           TCP OK - 0.002 second response time on 192.168.16.10 port 6379|time=0.001901s;;;0.000000;10.000000
 
 Random data
 -----------

@@ -265,7 +265,7 @@ Open a login shell on the manager via SSH:
 
    make login ENVIRONMENT=betacloud
 
-Create a tunnel for the internal networks (``192.168.16.0/20``, ``192.168.32.0/20``,
+Create a tunnel for the internal networks (``192.168.16.0/20``,
 ``192.168.96.0/20`` ``192.168.112.0/20``) via sshuttle (https://github.com/sshuttle/sshuttle):
 
 .. code-block:: console
