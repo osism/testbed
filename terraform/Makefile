@@ -79,7 +79,7 @@ show: init
 	@$(TERRAFORM) show
 
 clean: init
-	@$(TERRAFORM) destroy -auto-approve -var-file="environments/$(ENVIRONMENT).tfvars" $(PARAMS)
+	@$(TERRAFORM) destroy $(APPLY_PARAMS) -var-file="environments/$(ENVIRONMENT).tfvars" $(PARAMS)
 	@rm -f .deploy.$(ENVIRONMENT) .MANAGER_ADDRESS.$(ENVIRONMENT)
 	@rm -f .id_rsa.$(ENVIRONMENT)
 	@$(TERRAFORM) workspace select default
