@@ -80,8 +80,7 @@ def cleanup_ports(conn):
 
 def cleanup_volumes(conn):
     logging.info("clean up volumes")
-    # cinder supports regex filtering
-    volumes = list(conn.block_storage.volumes(name="^testbed"))
+    volumes = list(conn.block_storage.volumes())
     for volume in volumes:
         volume_name = volume.to_dict()["name"]
         if not volume_name.startswith("testbed"):
