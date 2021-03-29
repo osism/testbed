@@ -6,47 +6,34 @@ resource "openstack_networking_floatingip_v2" "manager_floating_ip" {
 resource "openstack_networking_port_v2" "manager_port_management" {
   network_id = openstack_networking_network_v2.net_management.id
   security_group_ids = [
-    openstack_compute_secgroup_v2.security_group_management.id,
-    openstack_compute_secgroup_v2.security_group_manager.id
+    openstack_compute_secgroup_v2.security_group_management.id
   ]
 
   fixed_ip {
     ip_address = "192.168.16.5"
     subnet_id  = openstack_networking_subnet_v2.subnet_management.id
   }
+
+  allowed_address_pairs {
+    ip_address = "192.168.48.0/20"
+  }
+
+  allowed_address_pairs {
+    ip_address = "192.168.64.0/20"
+  }
+
+  allowed_address_pairs {
+    ip_address = "192.168.80.0/20"
+  }
+
+  allowed_address_pairs {
+    ip_address = "192.168.96.0/20"
+  }
 }
 
 resource "openstack_networking_floatingip_associate_v2" "manager_floating_ip_association" {
   floating_ip = openstack_networking_floatingip_v2.manager_floating_ip.address
   port_id     = openstack_networking_port_v2.manager_port_management.id
-}
-
-resource "openstack_networking_port_v2" "manager_port_internal" {
-  network_id         = openstack_networking_network_v2.net_internal.id
-  security_group_ids = [openstack_compute_secgroup_v2.security_group_internal.id]
-
-  fixed_ip {
-    ip_address = "192.168.32.5"
-    subnet_id  = openstack_networking_subnet_v2.subnet_internal.id
-  }
-
-  allowed_address_pairs {
-    ip_address = "192.168.48.0/20"
-  }
-}
-
-resource "openstack_networking_port_v2" "manager_port_external" {
-  network_id         = openstack_networking_network_v2.net_external.id
-  security_group_ids = [openstack_compute_secgroup_v2.security_group_external.id]
-
-  fixed_ip {
-    ip_address = "192.168.96.5"
-    subnet_id  = openstack_networking_subnet_v2.subnet_external.id
-  }
-
-  allowed_address_pairs {
-    ip_address = "192.168.48.0/20"
-  }
 }
 
 resource "openstack_networking_port_v2" "manager_port_provider" {
@@ -63,16 +50,6 @@ resource "openstack_networking_port_v2" "manager_port_provider" {
   }
 }
 
-resource "openstack_networking_port_v2" "manager_port_storage_frontend" {
-  network_id         = openstack_networking_network_v2.net_storage_frontend.id
-  security_group_ids = [openstack_compute_secgroup_v2.security_group_storage_frontend.id]
-
-  fixed_ip {
-    ip_address = "192.168.64.5"
-    subnet_id  = openstack_networking_subnet_v2.subnet_storage_frontend.id
-  }
-}
-
 resource "openstack_compute_instance_v2" "manager_server" {
   name              = "${var.prefix}-manager"
   availability_zone = var.availability_zone
@@ -86,10 +63,7 @@ resource "openstack_compute_instance_v2" "manager_server" {
   ]
 
   network { port = openstack_networking_port_v2.manager_port_management.id }
-  network { port = openstack_networking_port_v2.manager_port_internal.id }
-  network { port = openstack_networking_port_v2.manager_port_external.id }
   network { port = openstack_networking_port_v2.manager_port_provider.id }
-  network { port = openstack_networking_port_v2.manager_port_storage_frontend.id }
 
   user_data = <<-EOT
 #cloud-config
@@ -103,10 +77,7 @@ write_files:
       import netifaces
 
       PORTS = {
-          "${openstack_networking_port_v2.manager_port_internal.mac_address}": "${openstack_networking_port_v2.manager_port_internal.all_fixed_ips[0]}",
-          "${openstack_networking_port_v2.manager_port_external.mac_address}": "${openstack_networking_port_v2.manager_port_external.all_fixed_ips[0]}",
-          "${openstack_networking_port_v2.manager_port_provider.mac_address}": "${openstack_networking_port_v2.manager_port_provider.all_fixed_ips[0]}",
-          "${openstack_networking_port_v2.manager_port_storage_frontend.mac_address}": "${openstack_networking_port_v2.manager_port_storage_frontend.all_fixed_ips[0]}",
+          "${openstack_networking_port_v2.manager_port_provider.mac_address}": "${openstack_networking_port_v2.manager_port_provider.all_fixed_ips[0]}"
       }
 
       for interface in netifaces.interfaces():

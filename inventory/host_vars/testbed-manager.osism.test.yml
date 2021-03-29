@@ -13,10 +13,10 @@ netbox_inventory_status: Active
 # generic
 
 console_interface: "{{ ansible_local.testbed_network_devices.management }}"
-management_interface: "{{ ansible_local.testbed_network_devices.internal }}"
+management_interface: "{{ ansible_local.testbed_network_devices.management }}"
 
-internal_address: "{{ '192.168.32.0/20' | ipaddr('net') | ipaddr('5') | ipaddr('address') }}"
-fluentd_host: "{{ '192.168.32.0/20' | ipaddr('net') | ipaddr('5') | ipaddr('address') }}"
+internal_address: "{{ '192.168.16.0/20' | ipaddr('net') | ipaddr('5') | ipaddr('address') }}"
+fluentd_host: "{{ '192.168.16.0/20' | ipaddr('net') | ipaddr('5') | ipaddr('address') }}"
 
 ##########################################################
 # cockpit
@@ -46,22 +46,11 @@ network_interfaces:
       - "iptables -A FORWARD -i {{ ansible_local.testbed_network_devices.management }} -j ACCEPT"
       - "iptables -A FORWARD -o {{ ansible_local.testbed_network_devices.management }} -j ACCEPT"
       - "iptables -t nat -A POSTROUTING -o {{ ansible_local.testbed_network_devices.management }} -j MASQUERADE"
-
-  - device: "{{ ansible_local.testbed_network_devices.internal }}"
-    auto: true
-    family: inet
-    method: static
-    address: "{{ '192.168.32.0/20' | ipaddr('net') | ipaddr('5') | ipaddr('address') }}"
-    netmask: 255.255.240.0
-    mtu: "{{ testbed_mtu }}"
-
-  - device: "{{ ansible_local.testbed_network_devices.external }}"
-    auto: true
-    family: inet
-    method: static
-    address: "{{ '192.168.96.0/20' | ipaddr('net') | ipaddr('5') | ipaddr('address') }}"
-    netmask: 255.255.240.0
-    mtu: "{{ testbed_mtu }}"
+      - "ip addr add {{ '192.168.64.0/20' | ipaddr('net') | ipaddr('5') | ipaddr('address') }}/20 dev {{ ansible_local.testbed_network_devices.management }}"
+      - "ip addr add {{ '192.168.96.0/20' | ipaddr('net') | ipaddr('5') | ipaddr('address') }}/20 dev {{ ansible_local.testbed_network_devices.management }}"
+    down:
+      - "ip addr del {{ '192.168.64.0/20' | ipaddr('net') | ipaddr('5') | ipaddr('address') }}/20 dev {{ ansible_local.testbed_network_devices.management }}"
+      - "ip addr del {{ '192.168.96.0/20' | ipaddr('net') | ipaddr('5') | ipaddr('address') }}/20 dev {{ ansible_local.testbed_network_devices.management }}"
 
   - device: "{{ ansible_local.testbed_network_devices.provider }}"
     auto: true
@@ -71,15 +60,7 @@ network_interfaces:
     netmask: 255.255.240.0
     mtu: "{{ testbed_mtu }}"
 
-  - device: "{{ ansible_local.testbed_network_devices.storage_frontend }}"
-    auto: true
-    family: inet
-    method: static
-    address: "{{ '192.168.64.0/20' | ipaddr('net') | ipaddr('5') | ipaddr('address') }}"
-    netmask: 255.255.240.0
-    mtu: "{{ testbed_mtu }}"
-
 ##########################################################
 # kolla
 
-network_interface: "{{ ansible_local.testbed_network_devices.internal }}"
+network_interface: "{{ ansible_local.testbed_network_devices.management }}"
