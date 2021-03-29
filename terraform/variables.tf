@@ -12,6 +12,11 @@ variable "image" {
   default = "Ubuntu 20.04"
 }
 
+variable "volume_size_base" {
+  type    = number
+  default = 20
+}
+
 variable "volume_size_storage" {
   type    = number
   default = 10

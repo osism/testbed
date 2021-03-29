@@ -1,13 +1,9 @@
 #!/usr/bin/env bash
 
-source /etc/os-release
-
-if [[ $UBUNTU_CODENAME == "focal" ]]; then
-    # NOTE: cloud-init may set a wrong default route. This is repaired manually here.
-    ip route del default via 192.168.16.1 || true
-    ip route del default via 192.168.112.1 || true
-    ip route add default via 192.168.16.1 || true
-fi
+# NOTE: cloud-init may set a wrong default route. This is repaired manually here.
+ip route del default via 192.168.16.1 || true
+ip route del default via 192.168.112.1 || true
+ip route add default via 192.168.16.1 || true
 
 # NOTE: Because DNS queries don't always work directly at the beginning a
 #       retry for APT.
@@ -15,16 +11,7 @@ echo "APT::Acquire::Retries \"3\";" > /etc/apt/apt.conf.d/80-retries
 
 echo '* libraries/restart-without-asking boolean true' | debconf-set-selections
 
-if [[ $UBUNTU_CODENAME == "bionic" ]]; then
-
-    # NOTE: Script is only needed for Bionic, the cloud-init on Focal initializes
-    #       all NICs.
-    apt-get install --yes python3-netifaces
-    python3 /root/configure-network-devices.py
-else
-    apt-get update
-fi
-
+apt-get update
 apt-get install --yes \
   ifupdown \
   python3-pip \
@@ -42,7 +29,6 @@ apt-get install --yes \
   python3-selinux \
   python3-winrm \
   python3-xmltodict
-
 
 # NOTE: There are cloud images on which Ansible is pre-installed.
 apt-get remove --yes ansible
