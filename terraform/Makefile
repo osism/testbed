@@ -8,8 +8,11 @@ USERNAME = dragon
 OPENSTACK = openstack
 TERRAFORM = terraform
 
+PARALLELISM = 10
 RESOURCE = openstack_networking_floatingip_v2.manager_floating_ip
 STATE = errored.tfstate
+
+APPLY_PARAMS = -auto-approve -parallelism=$(PARALLELISM)
 
 ifneq (,$(wildcard ./local.env))
   include local.env
@@ -47,27 +50,27 @@ dry-run: init
 
 deploy: init
 	@touch .deploy.$(ENVIRONMENT)
-	@$(TERRAFORM) apply -auto-approve -var-file="environments/$(ENVIRONMENT).tfvars" -var "configuration_version=$(CONFIGURATION)" $(PARAMS)
+	@$(TERRAFORM) apply $(APPLY_PARAMS) -var-file="environments/$(ENVIRONMENT).tfvars" -var "configuration_version=$(CONFIGURATION)" $(PARAMS)
 
 deploy-identity: init
 	@touch .deploy.$(ENVIRONMENT)
-	@$(TERRAFORM) apply -auto-approve -var-file="environments/$(ENVIRONMENT).tfvars" -var 'deploy_identity=true' $(PARAMS)
+	@$(TERRAFORM) apply $(APPLY_PARAMS) -var-file="environments/$(ENVIRONMENT).tfvars" -var 'deploy_identity=true' $(PARAMS)
 
 deploy-infra: init
 	@touch .deploy.$(ENVIRONMENT)
-	@$(TERRAFORM) apply -auto-approve -var-file="environments/$(ENVIRONMENT).tfvars" -var 'deploy_infrastructure=true' $(PARAMS)
+	@$(TERRAFORM) apply $(APPLY_PARAMS) -var-file="environments/$(ENVIRONMENT).tfvars" -var 'deploy_infrastructure=true' $(PARAMS)
 
 deploy-ceph: init
 	@touch .deploy.$(ENVIRONMENT)
-	@$(TERRAFORM) apply -auto-approve -var-file="environments/$(ENVIRONMENT).tfvars" -var 'deploy_ceph=true' $(PARAMS)
+	@$(TERRAFORM) apply $(APPLY_PARAMS) -var-file="environments/$(ENVIRONMENT).tfvars" -var 'deploy_ceph=true' $(PARAMS)
 
 deploy-openstack: init
 	@touch .deploy.$(ENVIRONMENT)
-	@$(TERRAFORM) apply -auto-approve -var-file="environments/$(ENVIRONMENT).tfvars" -var 'deploy_infrastructure=true' -var 'deploy_ceph=true' -var 'deploy_openstack=true' $(PARAMS)
+	@$(TERRAFORM) apply $(APPLY_PARAMS) -approve -var-file="environments/$(ENVIRONMENT).tfvars" -var 'deploy_infrastructure=true' -var 'deploy_ceph=true' -var 'deploy_openstack=true' $(PARAMS)
 
 deploy-full: init
 	@touch .deploy.$(ENVIRONMENT)
-	@$(TERRAFORM) apply -auto-approve -var-file="environments/$(ENVIRONMENT).tfvars" -var 'deploy_infrastructure=true' -var 'deploy_ceph=true' -var 'deploy_openstack=true' -var 'deploy_monitoring=true' $(PARAMS)
+	@$(TERRAFORM) apply $(APPLY_PARAMS) -var-file="environments/$(ENVIRONMENT).tfvars" -var 'deploy_infrastructure=true' -var 'deploy_ceph=true' -var 'deploy_openstack=true' -var 'deploy_monitoring=true' $(PARAMS)
 
 graph: init
 	@$(TERRAFORM) graph
