@@ -43,15 +43,30 @@ network_interfaces:
     gateway: "{{ '192.168.16.0/20' | ipaddr('net') | ipaddr('1') | ipaddr('address') }}"
     mtu: "{{ testbed_mtu }}"
     up:
-      - "ip addr add {{ '192.168.64.0/20' | ipaddr('net') | ipaddr('10') | ipaddr('address') }}/20 dev {{ ansible_local.testbed_network_devices.management }}"
-      - "ip addr add {{ '192.168.80.0/20' | ipaddr('net') | ipaddr('10') | ipaddr('address') }}/20 dev {{ ansible_local.testbed_network_devices.management }}"
-      - "ip addr add {{ '192.168.96.0/20' | ipaddr('net') | ipaddr('10') | ipaddr('address') }}/20 dev {{ ansible_local.testbed_network_devices.management }}"
       - "ip route add 192.168.48.0/20 via {{ '192.168.16.0/20' | ipaddr('net') | ipaddr('5') | ipaddr('address') }}"
     down:
       - "ip route del 192.168.48.0/20 via {{ '192.168.16.0/20' | ipaddr('net') | ipaddr('5') | ipaddr('address') }}"
-      - "ip addr del {{ '192.168.64.0/20' | ipaddr('net') | ipaddr('12') | ipaddr('address') }}/20 dev {{ ansible_local.testbed_network_devices.management }}"
-      - "ip addr del {{ '192.168.80.0/20' | ipaddr('net') | ipaddr('12') | ipaddr('address') }}/20 dev {{ ansible_local.testbed_network_devices.management }}"
-      - "ip addr del {{ '192.168.96.0/20' | ipaddr('net') | ipaddr('12') | ipaddr('address') }}/20 dev {{ ansible_local.testbed_network_devices.management }}"
+
+  - device: "{{ ansible_local.testbed_network_devices.management }}:0"
+    family: inet
+    method: static
+    address: "{{ '192.168.64.0/20' | ipaddr('net') | ipaddr('5') | ipaddr('address') }}"
+    netmask: 255.255.240.0
+    mtu: "{{ testbed_mtu }}"
+
+  - device: "{{ ansible_local.testbed_network_devices.management }}:1"
+    family: inet
+    method: static
+    address: "{{ '192.168.80.0/20' | ipaddr('net') | ipaddr('5') | ipaddr('address') }}"
+    netmask: 255.255.240.0
+    mtu: "{{ testbed_mtu }}"
+
+  - device: "{{ ansible_local.testbed_network_devices.management }}:2"
+    family: inet
+    method: static
+    address: "{{ '192.168.96.0/20' | ipaddr('net') | ipaddr('5') | ipaddr('address') }}"
+    netmask: 255.255.240.0
+    mtu: "{{ testbed_mtu }}"
 
   - device: "{{ ansible_local.testbed_network_devices.provider }}"
     auto: true
