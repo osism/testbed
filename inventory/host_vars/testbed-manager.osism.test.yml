@@ -46,11 +46,20 @@ network_interfaces:
       - "iptables -A FORWARD -i {{ ansible_local.testbed_network_devices.management }} -j ACCEPT"
       - "iptables -A FORWARD -o {{ ansible_local.testbed_network_devices.management }} -j ACCEPT"
       - "iptables -t nat -A POSTROUTING -o {{ ansible_local.testbed_network_devices.management }} -j MASQUERADE"
-      - "ip addr add {{ '192.168.64.0/20' | ipaddr('net') | ipaddr('5') | ipaddr('address') }}/20 dev {{ ansible_local.testbed_network_devices.management }}"
-      - "ip addr add {{ '192.168.96.0/20' | ipaddr('net') | ipaddr('5') | ipaddr('address') }}/20 dev {{ ansible_local.testbed_network_devices.management }}"
-    down:
-      - "ip addr del {{ '192.168.64.0/20' | ipaddr('net') | ipaddr('5') | ipaddr('address') }}/20 dev {{ ansible_local.testbed_network_devices.management }}"
-      - "ip addr del {{ '192.168.96.0/20' | ipaddr('net') | ipaddr('5') | ipaddr('address') }}/20 dev {{ ansible_local.testbed_network_devices.management }}"
+
+  - device: "{{ ansible_local.testbed_network_devices.management }}:0"
+    family: inet
+    method: static
+    address: "{{ '192.168.64.0/20' | ipaddr('net') | ipaddr('5') | ipaddr('address') }}"
+    netmask: 255.255.240.0
+    mtu: "{{ testbed_mtu }}"
+
+  - device: "{{ ansible_local.testbed_network_devices.management }}:1"
+    family: inet
+    method: static
+    address: "{{ '192.168.96.0/20' | ipaddr('net') | ipaddr('5') | ipaddr('address') }}"
+    netmask: 255.255.240.0
+    mtu: "{{ testbed_mtu }}"
 
   - device: "{{ ansible_local.testbed_network_devices.provider }}"
     auto: true
