@@ -74,6 +74,27 @@ network:
 package_update: false
 package_upgrade: false
 write_files:
+  - content: |
+      import subprocess
+      import netifaces
+
+      PORTS = {
+          "${openstack_networking_port_v2.manager_port_management.mac_address}": [
+              "192.168.64.5/20",
+              "192.168.96.5/20"
+          ]
+      }
+
+      for interface in netifaces.interfaces():
+          try:
+              mac_address = netifaces.ifaddresses(interface)[netifaces.AF_LINK][0]['addr']
+              if mac_address in PORTS:
+                  for address in PORTS[mac_address]:
+                      subprocess.run("ip addr add %s dev %s" % (address, interface), shell=True)
+          except:
+              pass
+    path: /root/configure-network-devices.py
+    permissions: '0600'
   - content: ${openstack_compute_keypair_v2.key.public_key}
     path: /home/ubuntu/.ssh/id_rsa.pub
     permissions: '0600'
@@ -111,6 +132,9 @@ write_files:
     permissions: 0700
   - content: |
       #!/usr/bin/env bash
+
+      apt-get install --yes python3-netifaces
+      python3 /root/configure-network-devices.py
 
       cp /home/ubuntu/.ssh/id_rsa /home/dragon/.ssh/id_rsa
       cp /home/ubuntu/.ssh/id_rsa.pub /home/dragon/.ssh/id_rsa.pub
