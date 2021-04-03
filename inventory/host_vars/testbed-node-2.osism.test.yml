@@ -47,17 +47,17 @@ network_interfaces:
       - "ip addr add {{ '192.168.80.0/20' | ipaddr('net') | ipaddr('12') | ipaddr('address') }}/20 dev {{ ansible_local.testbed_network_devices.management }}"
       - "ip addr add {{ '192.168.96.0/20' | ipaddr('net') | ipaddr('12') | ipaddr('address') }}/20 dev {{ ansible_local.testbed_network_devices.management }}"
       - "ip route add 192.168.48.0/20 via {{ '192.168.16.0/20' | ipaddr('net') | ipaddr('5') | ipaddr('address') }}"
+      - "ip link add vxlan0 type vxlan id 42 group 239.1.1.1 dstport 4789 dev {{ ansible_local.testbed_network_devices.management }}"
+      - "ip addr add {{ '192.168.112.0/20' | ipaddr('net') | ipaddr('12') | ipaddr('address') }}/20 dev vxlan0"
+      - "ip link set up dev vxlan0"
     down:
       - "ip route del 192.168.48.0/20 via {{ '192.168.16.0/20' | ipaddr('net') | ipaddr('5') | ipaddr('address') }}"
       - "ip addr del {{ '192.168.64.0/20' | ipaddr('net') | ipaddr('12') | ipaddr('address') }}/20 dev {{ ansible_local.testbed_network_devices.management }}"
       - "ip addr del {{ '192.168.80.0/20' | ipaddr('net') | ipaddr('12') | ipaddr('address') }}/20 dev {{ ansible_local.testbed_network_devices.management }}"
       - "ip addr del {{ '192.168.96.0/20' | ipaddr('net') | ipaddr('12') | ipaddr('address') }}/20 dev {{ ansible_local.testbed_network_devices.management }}"
-
-  - device: "{{ ansible_local.testbed_network_devices.provider }}"
-    auto: true
-    family: inet
-    method: manual
-    mtu: "{{ testbed_mtu }}"
+      - "ip link set down dev vxlan0"
+      - "ip addr del {{ '192.168.112.0/20' | ipaddr('net') | ipaddr('12') | ipaddr('address') }}/20 dev vxlan0"
+      - "ip link del vxlan0"
 
 ##########################################################
 # kolla
@@ -68,7 +68,7 @@ network_interface: "{{ ansible_local.testbed_network_devices.management }}"
 # dns_interface:
 # kolla_external_vip_interface:
 # migration_interface:
-neutron_external_interface: "{{ ansible_local.testbed_network_devices.provider }}"
+neutron_external_interface: vxlan0
 # octavia_network_interface:
 # storage_interface:
 # tunnel_interface:

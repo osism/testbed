@@ -29,20 +29,15 @@ resource "openstack_networking_port_v2" "manager_port_management" {
   allowed_address_pairs {
     ip_address = "192.168.96.0/20"
   }
+
+  allowed_address_pairs {
+    ip_address = "192.168.112.0/20"
+  }
 }
 
 resource "openstack_networking_floatingip_associate_v2" "manager_floating_ip_association" {
   floating_ip = openstack_networking_floatingip_v2.manager_floating_ip.address
   port_id     = openstack_networking_port_v2.manager_port_management.id
-}
-
-resource "openstack_networking_port_v2" "manager_port_provider" {
-  network_id = openstack_networking_network_v2.net_provider.id
-
-  # NOTE: port_security_enabled not usable with OVH
-  #
-  # {"NeutronError": {"message": "Unrecognized attribute(s) 'port_security_enabled'", "type": "HTTPBadRequest", "detail": ""}}
-  port_security_enabled = var.port_security_enabled
 }
 
 resource "openstack_blockstorage_volume_v3" "manager_base_volume" {
@@ -65,7 +60,6 @@ resource "openstack_compute_instance_v2" "manager_server" {
   ]
 
   network { port = openstack_networking_port_v2.manager_port_management.id }
-  network { port = openstack_networking_port_v2.manager_port_provider.id }
 
   user_data = <<-EOT
 #cloud-config

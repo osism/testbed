@@ -6,10 +6,6 @@ resource "openstack_networking_network_v2" "net_management" {
   availability_zone_hints = [var.network_availability_zone]
 }
 
-resource "openstack_networking_network_v2" "net_provider" {
-  availability_zone_hints = [var.network_availability_zone]
-}
-
 ###################
 # Router          #
 ###################
