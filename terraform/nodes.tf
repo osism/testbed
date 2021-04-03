@@ -27,16 +27,10 @@ resource "openstack_networking_port_v2" "node_port_management" {
   allowed_address_pairs {
     ip_address = "192.168.96.0/20"
   }
-}
 
-resource "openstack_networking_port_v2" "node_port_provider" {
-  count      = var.number_of_nodes
-  network_id = openstack_networking_network_v2.net_provider.id
-
-  # NOTE: port_security_enabled not usable with OVH
-  #
-  # {"NeutronError": {"message": "Unrecognized attribute(s) 'port_security_enabled'", "type": "HTTPBadRequest", "detail": ""}}
-  port_security_enabled = var.port_security_enabled
+  allowed_address_pairs {
+    ip_address = "192.168.112.0/20"
+  }
 }
 
 resource "openstack_blockstorage_volume_v3" "node_volume" {
@@ -73,7 +67,6 @@ resource "openstack_compute_instance_v2" "node_server" {
   ]
 
   network { port = openstack_networking_port_v2.node_port_management[count.index].id }
-  network { port = openstack_networking_port_v2.node_port_provider[count.index].id }
 
   user_data = <<-EOT
 #cloud-config

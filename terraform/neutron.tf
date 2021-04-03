@@ -57,24 +57,6 @@ resource "openstack_networking_subnet_v2" "subnet_management" {
   }
 }
 
-resource "openstack_networking_network_v2" "net_provider" {
-  name = "net-${var.prefix}-provider"
-}
-
-resource "openstack_networking_subnet_v2" "subnet_provider" {
-  name        = "subnet-${var.prefix}-provider"
-  network_id  = openstack_networking_network_v2.net_provider.id
-  cidr        = "192.168.112.0/20"
-  ip_version  = 4
-  gateway_ip  = null
-  enable_dhcp = var.enable_dhcp
-
-  allocation_pool {
-    start = "192.168.127.200"
-    end   = "192.168.127.250"
-  }
-}
-
 ###################
 # Router          #
 ###################
