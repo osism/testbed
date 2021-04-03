@@ -151,6 +151,7 @@ endpoints: init
 create: deploy
 login: ssh
 plan: dry-run
+push: state-push
 tunnel: sshuttle
 
 PHONY: clean console attach detach sshuttle ssh dry-run list deploy deploy-infra deploy-ceph deploy-openstack watch openstack create log login
