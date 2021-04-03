@@ -160,6 +160,7 @@ write_files:
 
       # copy network configuration
       sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic network'
+      sudo -iu dragon sh -c 'INTERACTIVE=false osism-run custom workarounds'
 
       # reboot nodes
       sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic reboot -l testbed-nodes -e ireallymeanit=yes'
