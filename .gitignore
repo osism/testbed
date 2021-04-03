@@ -25,3 +25,4 @@ secure.yml
 terraform.tfstate*
 terraform.tfstate.d
 terraform/*_override.tf
+terraform/*_custom.tf

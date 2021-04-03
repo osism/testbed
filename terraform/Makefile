@@ -39,6 +39,14 @@ init:
 		cp -p overrides/$${over}_override.tf .; \
 	done
 
+	@rm -f *_custom.tf
+	@for custom in `grep '^# *customisation:' "environments/${ENVIRONMENT}.tfvars" | sed 's/^# *customisation://'`; do \
+		cp -p customisations/$${custom}_custom.tf .; \
+	done
+
+validate: init
+	@$(TERRAFORM) validate $(PARAMS)
+
 attach: init
 	@$(TERRAFORM) import -var-file="environments/$(ENVIRONMENT).tfvars" $(RESOURCE) $(PARAMS)
 
