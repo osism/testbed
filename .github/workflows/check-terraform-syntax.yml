@@ -26,12 +26,11 @@ jobs:
         uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: ${{ matrix.terraform-version }}
-      - name: Terraform init
-        run: terraform init
+      - name: Terraform validate
+        run: make validate
         working-directory: ./terraform
+        with:
+          ENVIRONMENT: default
       - name: Terraform format
         run: terraform fmt -check
-        working-directory: ./terraform
-      - name: Terraform validate
-        run: terraform validate
         working-directory: ./terraform

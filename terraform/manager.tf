@@ -56,7 +56,7 @@ resource "openstack_compute_instance_v2" "manager_server" {
   config_drive      = var.enable_config_drive
 
   depends_on = [
-    openstack_compute_instance_v2.node_server
+    null_resource.node_semaphore
   ]
 
   network { port = openstack_networking_port_v2.manager_port_management.id }
