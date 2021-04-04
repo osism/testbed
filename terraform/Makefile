@@ -26,6 +26,9 @@ ifneq (,$(wildcard ./minio.env))
   include minio.env
 endif
 
+reset:
+	@rm -rf .terraform/providers
+
 init:
 	@if [ ! -d .terraform/providers ]; then $(TERRAFORM) init; fi
 
