@@ -174,7 +174,6 @@ def main():
             raise(e)
     conn = openstack.connect(cloud=OSENV)
     cleanup_servers(conn)
-    cleanup_floating_ips(conn)
     cleanup_keypairs(conn)
     wait_servers_gone(conn)
     cleanup_ports(conn)
@@ -184,6 +183,7 @@ def main():
     cleanup_networks(conn)
     cleanup_security_groups(conn)
     cleanup_routers(conn)
+    cleanup_floating_ips(conn)
 
 
 if __name__ == '__main__':
