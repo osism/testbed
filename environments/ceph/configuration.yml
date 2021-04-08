@@ -1,5 +1,5 @@
 ---
-ceph_image_version: nautilus
+ceph_image_version: octopus
 
 ##########################
 # generic
