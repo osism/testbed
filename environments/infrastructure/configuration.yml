@@ -2,7 +2,7 @@
 ##########################
 # versions
 
-ceph_version: nautilus
+ceph_version: octopus
 openstack_version: victoria
 
 ##########################

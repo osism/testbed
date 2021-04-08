@@ -104,7 +104,7 @@ variable "configuration_version" {
 
 variable "ceph_version" {
   type    = string
-  default = "nautilus"
+  default = "octopus"
 }
 
 variable "openstack_version" {
