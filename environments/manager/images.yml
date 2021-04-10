@@ -39,7 +39,7 @@ cephclient_image: "{{ docker_registry_cephclient|default('quay.io') }}/osism/cep
 openstackclient_tag: "{{ openstack_version }}"
 openstackclient_image: "{{ docker_registry_openstackclient|default('quay.io') }}/osism/openstackclient:{{ openstackclient_tag }}"
 
-awx_tag: "{{ ceph_version }}-{{ openstack_version }}"
+awx_tag: "{{ awx_version }}"
 awx_image: "{{ docker_registry_ansible|default('quay.io') }}/osism/manager:{{ awx_tag }}"
 
 ceph_ansible_tag: "{{ ceph_version }}"
