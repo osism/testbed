@@ -42,6 +42,7 @@ enable_magnum: "yes"
 enable_manila: "yes"
 enable_octavia: "yes"
 enable_panko: "yes"
+enable_senlin: "yes"
 
 enable_etcd: "yes"
 enable_grafana: "yes"
