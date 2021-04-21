@@ -88,3 +88,4 @@ OpenStack
 * Nova (with KVM)
 * Octavia
 * Panko
+* Senlin
