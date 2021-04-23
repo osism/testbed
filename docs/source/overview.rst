@@ -84,6 +84,7 @@ OpenStack
 * Keystone
 * Magnum
 * Manila
+* Monasca
 * Neutron
 * Nova (with KVM)
 * Octavia
