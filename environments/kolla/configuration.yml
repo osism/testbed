@@ -76,6 +76,35 @@ horizon_backend_database: "yes"
 
 # keystone
 keystone_token_provider: "fernet"
+keystone_public_url: "http://api.osism.test:5000"
+enable_keystone_federation: "yes"
+keystone_identity_providers:
+  - name: "gx-scs"
+    openstack_domain: "default"
+    protocol: "openid"
+    identifier: "http://api.osism.test:8170/auth/realms/gx-scs"
+    public_name: "Authenticate via gx-scs"
+    attribute_mapping: "mappingId1"
+    metadata_folder: "/var/lib/kolla/config_files/metadata_folder"
+    certificate_file: "/var/lib/kolla/config_files/XsKLq7AkttlFsul9ccGnY92Xi_Y7D9AoQ9SSGldL_f0.pem"
+keystone_trusted_dashboards:
+  - "http://api.osism.test/auth/websso/"
+keystone_remote_id_attribute_oidc: "HTTP_OIDC_ISS"
+keystone_enable_federation_openid: "yes"
+# keystone_enable_federation_openid: "{{ enable_keystone_federation | bool and keystone_identity_providers | selectattr('protocol','equalto','openid') | list | count > 0 }}"
+keystone_federation_openid_crypto_password: "openstack"
+keystone_federation_oidc_scopes: "openid email profile"
+keystone_container_federation_oidc_metadata_url: "http://testbed-manager.osism.test:8170/auth/realms/gx-scs/.well-known/openid-configuration"
+keystone_container_federation_oidc_client_id: "keystone"
+## The next line is just an example from a manual Keycloak installation in the testbed and needs to be fixed.
+## See the openstack wallaby commit https://github.com/openstack/kolla-ansible/commit/f3fbe8370
+## for how it should be done properly:
+keystone_federation_openid_certificate_key_ids: "XsKLq7AkttlFsul9ccGnY92Xi_Y7D9AoQ9SSGldL_f0#/etc/apache2/cert/gx-scs-keystone.pem"
+
+keystone_identity_mappings:
+  - name: "mappingId1"
+    file: "/var/lib/kolla/config_files/keystone/federation/oidc/attribute_maps/oidc_attribute_mappingId1.json"
+
 
 # neutron
 neutron_plugin_agent: "{{ 'ovn' if openstack_release in ['ussuri', 'victoria'] else 'openvswitch' }}"

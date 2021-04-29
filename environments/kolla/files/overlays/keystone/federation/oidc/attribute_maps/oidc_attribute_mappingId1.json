@@ -1,0 +1,22 @@
+[
+    {
+        "local": [
+            {
+                "user": {
+                    "name": "{0}"
+                },
+                "group": {
+                    "domain": {
+                        "name": "Default"
+                    },
+                    "name": "federated_users"
+                }
+            }
+        ],
+        "remote": [
+            {
+                "type": "REMOTE_USER"
+            }
+        ]
+    }
+]
