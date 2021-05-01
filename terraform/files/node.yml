@@ -70,7 +70,6 @@
     - role: packages
     - role: sysctl
     - role: services
-    - role: facts
     - role: motd
     - role: hddtemp
     - role: rng
@@ -109,3 +108,19 @@
 
   roles:
     - role: docker_compose
+
+# NOTE: The 3rd part is for roles which are based on Docker, for example.
+
+- name: Bootstrap node - pt. 3
+  hosts: localhost
+  connection: local
+  gather_facts: true
+
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+
+  collections:
+    - osism.commons
+
+  roles:
+    - role: facts
