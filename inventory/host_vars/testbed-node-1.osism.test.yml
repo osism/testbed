@@ -1,8 +1,10 @@
 ---
+node_id: 11
+
 ##########################################################
 # ansible
 
-ansible_host: "{{ '192.168.16.0/20' | ipaddr('net') | ipaddr(11) | ipaddr('address') }}"
+ansible_host: "{{ '192.168.16.0/20' | ipaddr('net') | ipaddr(node_id) | ipaddr('address') }}"
 
 ##########################################################
 # netbox
@@ -15,8 +17,8 @@ netbox_inventory_status: Active
 console_interface: "{{ ansible_local.testbed_network_devices.management }}"
 management_interface: "{{ ansible_local.testbed_network_devices.management }}"
 
-internal_address: "{{ '192.168.16.0/20' | ipaddr('net') | ipaddr(11) | ipaddr('address') }}"
-fluentd_host: "{{ '192.168.16.0/20' | ipaddr('net') | ipaddr(11) | ipaddr('address') }}"
+internal_address: "{{ '192.168.16.0/20' | ipaddr('net') | ipaddr(node_id) | ipaddr('address') }}"
+fluentd_host: "{{ '192.168.16.0/20' | ipaddr('net') | ipaddr(node_id) | ipaddr('address') }}"
 
 ##########################################################
 # cockpit
@@ -37,10 +39,10 @@ network_type: netplan
 network_ethernets:
   "{{ ansible_local.testbed_network_devices.management }}":
     addresses:
-      - "{{ '192.168.16.0/20' | ipaddr('net') | ipaddr('11') | ipaddr('address') }}/20"
-      - "{{ '192.168.64.0/20' | ipaddr('net') | ipaddr('11') | ipaddr('address') }}/20"
-      - "{{ '192.168.80.0/20' | ipaddr('net') | ipaddr('11') | ipaddr('address') }}/20"
-      - "{{ '192.168.96.0/20' | ipaddr('net') | ipaddr('11') | ipaddr('address') }}/20"
+      - "{{ '192.168.16.0/20' | ipaddr('net') | ipaddr(node_id) | ipaddr('address') }}/20"
+      - "{{ '192.168.64.0/20' | ipaddr('net') | ipaddr(node_id) | ipaddr('address') }}/20"
+      - "{{ '192.168.80.0/20' | ipaddr('net') | ipaddr(node_id) | ipaddr('address') }}/20"
+      - "{{ '192.168.96.0/20' | ipaddr('net') | ipaddr(node_id) | ipaddr('address') }}/20"
     gateway4: "{{ '192.168.16.0/20' | ipaddr('net') | ipaddr('1') | ipaddr('address') }}"
     mtu: "{{ testbed_mtu }}"
 network_dispatcher_scripts:
@@ -65,9 +67,9 @@ neutron_external_interface: vxlan0
 # ceph
 
 # monitor_interface:
-monitor_address: "{{ '192.168.64.0/20' | ipaddr('net') | ipaddr(11) | ipaddr('address') }}"
+monitor_address: "{{ '192.168.64.0/20' | ipaddr('net') | ipaddr(node_id) | ipaddr('address') }}"
 # radosgw_interface:
-radosgw_address: "{{ '192.168.64.0/20' | ipaddr('net') | ipaddr(11) | ipaddr('address') }}"
+radosgw_address: "{{ '192.168.64.0/20' | ipaddr('net') | ipaddr(node_id) | ipaddr('address') }}"
 
 devices: "{{ ansible_local.testbed_ceph_devices }}"
 
