@@ -33,31 +33,19 @@ netdata_host_type: client
 ##########################################################
 # network
 
-network_interfaces:
-  - device: "{{ ansible_local.testbed_network_devices.management }}"
-    auto: true
-    family: inet
-    method: static
-    address: "{{ '192.168.16.0/20' | ipaddr('net') | ipaddr(12) | ipaddr('address') }}"
-    netmask: 255.255.240.0
-    gateway: "{{ '192.168.16.0/20' | ipaddr('net') | ipaddr('1') | ipaddr('address') }}"
+network_type: netplan
+network_ethernets:
+  "{{ ansible_local.testbed_network_devices.management }}":
+    addresses:
+      - "{{ '192.168.16.0/20' | ipaddr('net') | ipaddr('12') | ipaddr('address') }}/20"
+      - "{{ '192.168.64.0/20' | ipaddr('net') | ipaddr('12') | ipaddr('address') }}/20"
+      - "{{ '192.168.80.0/20' | ipaddr('net') | ipaddr('12') | ipaddr('address') }}/20"
+      - "{{ '192.168.96.0/20' | ipaddr('net') | ipaddr('12') | ipaddr('address') }}/20"
+    gateway4: "{{ '192.168.16.0/20' | ipaddr('net') | ipaddr('1') | ipaddr('address') }}"
     mtu: "{{ testbed_mtu }}"
-    post-up:
-      - "ip addr add {{ '192.168.64.0/20' | ipaddr('net') | ipaddr('12') | ipaddr('address') }}/20 dev {{ ansible_local.testbed_network_devices.management }}"
-      - "ip addr add {{ '192.168.80.0/20' | ipaddr('net') | ipaddr('12') | ipaddr('address') }}/20 dev {{ ansible_local.testbed_network_devices.management }}"
-      - "ip addr add {{ '192.168.96.0/20' | ipaddr('net') | ipaddr('12') | ipaddr('address') }}/20 dev {{ ansible_local.testbed_network_devices.management }}"
-      - "ip route add 192.168.48.0/20 via {{ '192.168.16.0/20' | ipaddr('net') | ipaddr('5') | ipaddr('address') }}"
-      - "ip link add vxlan0 type vxlan id 42 group 239.1.1.1 dstport 4789 dev {{ ansible_local.testbed_network_devices.management }}"
-      - "ip addr add {{ '192.168.112.0/20' | ipaddr('net') | ipaddr('12') | ipaddr('address') }}/20 dev vxlan0"
-      - "ip link set up dev vxlan0"
-    pre-down:
-      - "ip route del 192.168.48.0/20 via {{ '192.168.16.0/20' | ipaddr('net') | ipaddr('5') | ipaddr('address') }}"
-      - "ip addr del {{ '192.168.64.0/20' | ipaddr('net') | ipaddr('12') | ipaddr('address') }}/20 dev {{ ansible_local.testbed_network_devices.management }}"
-      - "ip addr del {{ '192.168.80.0/20' | ipaddr('net') | ipaddr('12') | ipaddr('address') }}/20 dev {{ ansible_local.testbed_network_devices.management }}"
-      - "ip addr del {{ '192.168.96.0/20' | ipaddr('net') | ipaddr('12') | ipaddr('address') }}/20 dev {{ ansible_local.testbed_network_devices.management }}"
-      - "ip link set down dev vxlan0"
-      - "ip addr del {{ '192.168.112.0/20' | ipaddr('net') | ipaddr('12') | ipaddr('address') }}/20 dev vxlan0"
-      - "ip link del vxlan0"
+network_dispatcher_scripts:
+  - src: /opt/configuration/network/vxlan.sh
+    dest: routable.d/vxlan.sh
 
 ##########################################################
 # kolla
