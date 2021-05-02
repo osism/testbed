@@ -33,40 +33,20 @@ netdata_host_type: server
 ##########################################################
 # network
 
-network_interfaces:
-  - device: "{{ ansible_local.testbed_network_devices.management }}"
-    auto: true
-    family: inet
-    method: static
-    address: "{{ '192.168.16.0/20' | ipaddr('net') | ipaddr('5') | ipaddr('address') }}"
-    netmask: 255.255.240.0
-    gateway: "{{ '192.168.16.0/20' | ipaddr('net') | ipaddr('1') | ipaddr('address') }}"
+network_type: netplan
+network_ethernets:
+  "{{ ansible_local.testbed_network_devices.management }}":
+    addresses:
+      - "{{ '192.168.16.0/20' | ipaddr('net') | ipaddr('5') | ipaddr('address') }}/20"
+      - "{{ '192.168.64.0/20' | ipaddr('net') | ipaddr('5') | ipaddr('address') }}/20"
+      - "{{ '192.168.96.0/20' | ipaddr('net') | ipaddr('5') | ipaddr('address') }}/20"
+    gateway4: "{{ '192.168.16.0/20' | ipaddr('net') | ipaddr('1') | ipaddr('address') }}"
     mtu: "{{ testbed_mtu }}"
-    post-up:
-      - "iptables -A FORWARD -i {{ ansible_local.testbed_network_devices.management }} -j ACCEPT"
-      - "iptables -A FORWARD -o {{ ansible_local.testbed_network_devices.management }} -j ACCEPT"
-      - "iptables -t nat -A POSTROUTING -o {{ ansible_local.testbed_network_devices.management }} -j MASQUERADE"
-      - "ip link add vxlan0 type vxlan id 42 group 239.1.1.1 dstport 4789 dev {{ ansible_local.testbed_network_devices.management }}"
-      - "ip addr add {{ '192.168.112.0/20' | ipaddr('net') | ipaddr('5') | ipaddr('address') }}/20 dev vxlan0"
-      - "ip link set up dev vxlan0"
-    pre-down:
-      - "ip link set down dev vxlan0"
-      - "ip addr del {{ '192.168.112.0/20' | ipaddr('net') | ipaddr('5') | ipaddr('address') }}/20 dev vxlan0"
-      - "ip link del vxlan0"
-
-  - device: "{{ ansible_local.testbed_network_devices.management }}:0"
-    family: inet
-    method: static
-    address: "{{ '192.168.64.0/20' | ipaddr('net') | ipaddr('5') | ipaddr('address') }}"
-    netmask: 255.255.240.0
-    mtu: "{{ testbed_mtu }}"
-
-  - device: "{{ ansible_local.testbed_network_devices.management }}:1"
-    family: inet
-    method: static
-    address: "{{ '192.168.96.0/20' | ipaddr('net') | ipaddr('5') | ipaddr('address') }}"
-    netmask: 255.255.240.0
-    mtu: "{{ testbed_mtu }}"
+network_dispatcher_scripts:
+  - src: /opt/configuration/network/vxlan.sh
+    dest: routable.d/vxlan.sh
+  - src: /opt/configuration/network/iptables.sh
+    dest: routable.d/iptables.sh
 
 ##########################################################
 # kolla
