@@ -25,21 +25,14 @@
       environment:
         INTERACTIVE: false
 
-    - name: Create temporary file for ceph_dashboard_password
-      ansible.builtin.tempfile:
-        path: /opt/cephclient/data
-        state: file
-        suffix: temp
-      register: tempfile
-
     - name: Write ceph_dashboard_password to temporary file
       ansible.builtin.copy:
         content: "{{ ceph_dashboard_password }}"
-        dest: "{{ tempfile.path }}"
+        dest: /opt/cephclient/data/ceph_dashboard_password
       no_log: true
 
     - name: Create admin user
-      command: "ceph dashboard ac-user-create {{ ceph_dashboard_username }} administrator -i /data/{{ tempfile.path|basename }}"  # noqa 301
+      command: "ceph dashboard ac-user-create {{ ceph_dashboard_username }} administrator -i /data/ceph_dashboard_password"  # noqa 301
       register: result
       changed_when: "'already exists' not in result.stderr"
       failed_when: ( result.rc not in [ 0, 17 ] )
@@ -48,7 +41,7 @@
 
     - name: Remove temporary file for ceph_dashboard_password
       ansible.builtin.file:
-        path: "{{ tempfile.path }}"
+        path: /opt/cephclient/data/ceph_dashboard_password
         state: absent
       when: tempfile.path is defined
 
@@ -59,7 +52,7 @@
 
   tasks:
     - name: Restart ceph manager service
+      become: true
       service:
         name: "ceph-mgr@{{ inventory_hostname_short }}"
         state: restarted
-      become: true
