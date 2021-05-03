@@ -8,7 +8,7 @@
     ansible_python_interpreter: /usr/bin/python3
     configuration_git_host: github.com
     configuration_git_port: 443
-    configuration_git_repository: osism/testbed.git
+    configuration_git_repository: Ferenc-/testbed.git
     configuration_git_protocol: https
 
   collections:

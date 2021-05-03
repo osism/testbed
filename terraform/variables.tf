@@ -99,7 +99,7 @@ variable "run_refstack" {
 
 variable "configuration_version" {
   type    = string
-  default = "master"
+  default = "ferenc_fork_master"
 }
 
 variable "ceph_version" {
