@@ -4,7 +4,7 @@ node_id: 10
 ##########################################################
 # ansible
 
-ansible_host: "{{ '192.168.16.0/20' | ipaddr('net') | ipaddr(node_id) | ipaddr('address') }}"
+ansible_host: "{{ '192.168.16.0/20' | ipaddr('net') | ipaddr(10) | ipaddr('address') }}"
 
 ##########################################################
 # netbox
