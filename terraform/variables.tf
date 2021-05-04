@@ -136,3 +136,12 @@ variable "dns_nameservers" {
   type    = list(string)
   default = ["8.8.8.8", "9.9.9.9"]
 }
+
+variable "block_device_source_type" {
+  type    = string
+  default = "volume"
+}
+variable "block_device_dest_type" {
+  type    = string
+  default = "volume"
+}
