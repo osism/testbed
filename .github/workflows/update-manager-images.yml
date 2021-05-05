@@ -1,0 +1,30 @@
+---
+name: Update manager images
+
+"on":
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  update-manager-images:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Create PR
+        uses: technote-space/create-pr-action@v2
+        with:
+          EXECUTE_COMMANDS: |
+            curl -o environments/manager/images.yml https://raw.githubusercontent.com/osism/cfg-generics/master/environments/manager/images.yml
+          COMMIT_EMAIL: 'bot@osism.io'
+          COMMIT_MESSAGE: |
+            chore: update versions in environments/manager/images.yml
+
+            Signed-off-by: OSISM Bot <bot@osism.io>
+          COMMIT_NAME: 'OSISM Bot'
+          ONLY_DEFAULT_BRANCH: true
+          PR_BRANCH_NAME: 'update-manager-images'
+          PR_BRANCH_PREFIX: 'chore/'
+          PR_TITLE: 'chore: update versions in environments/manager/images.yml'
