@@ -1,7 +1,7 @@
 ---
 name: Daily citycloud
 
-on:  # yamllint disable-line rule:truthy
+"on":
   push:
     paths:
       - '.github/workflows/daily-citycloud.yml'
