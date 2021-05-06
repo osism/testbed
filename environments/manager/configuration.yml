@@ -8,12 +8,15 @@ manager_version: latest
 openstack_version: victoria
 
 ##########################
-# manager
-
-ara_server_database_type: sqlite3
+# cockpit
 
 configure_cockpit: true
 cockpit_host: "{{ hostvars[inventory_hostname]['ansible_' + console_interface]['ipv4']['address'] }}"
+
+##########################
+# manager
+
+ara_server_database_type: sqlite3
 
 ara_enable: true
 ara_server_host: "{{ hostvars[inventory_hostname]['ansible_' + console_interface]['ipv4']['address'] }}"
@@ -24,4 +27,9 @@ awx_host: "{{ hostvars[inventory_hostname]['ansible_' + console_interface]['ipv4
 awx_vault_type: vault
 vault_host: "{{ hostvars[inventory_hostname]['ansible_' + console_interface]['ipv4']['address'] }}"
 
+##########################
+# netbox
+
+netbox_enable: true
 netbox_host: "{{ hostvars[inventory_hostname]['ansible_' + console_interface]['ipv4']['address'] }}"
+netbox_api_url: "http://{{ netbox_host }}:8121"
