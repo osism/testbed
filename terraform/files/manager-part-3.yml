@@ -30,7 +30,7 @@
         - testbed_ceph_devices_all
         - testbed_network_devices
 
-- name: Apply role manager
+- name: Apply role manager & netbox
   hosts: testbed-manager.osism.test
   connection: local
   gather_facts: true
@@ -50,4 +50,5 @@
     - osism.services
 
   roles:
+    - netbox
     - manager
