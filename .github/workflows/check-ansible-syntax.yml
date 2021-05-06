@@ -1,7 +1,7 @@
 ---
 name: Check ansible syntax
 
-on:  # yamllint disable-line rule:truthy
+"on":
   push:
     paths:
       - 'environments/**.yml'

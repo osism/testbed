@@ -1,7 +1,7 @@
 ---
 name: Build documentation
 
-on:  # yamllint disable-line rule:truthy
+"on":
   push:
     paths:
       - 'docs/**'
