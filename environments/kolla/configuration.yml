@@ -80,7 +80,7 @@ keystone_identity_providers:
   - name: "gx-scs"
     openstack_domain: "default"
     protocol: "openid"
-    identifier: "http://api.osism.test:8170/auth/realms/gx-scs"
+    identifier: "http://192.168.16.5:8170/auth/realms/gx-scs"
     public_name: "Authenticate via gx-scs"
     attribute_mapping: "mappingId1"
     metadata_folder: "{{ node_custom_config }}/keystone/federation/oidc/metadata"
