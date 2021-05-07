@@ -11,6 +11,7 @@
     kcadm: "/opt/jboss/keycloak/bin/kcadm.sh"
     keystone_client_id: "keystone"
     keystone_public_url: "http://api.osism.test"
+    keystone_ip_url: "http://192.168.16.10"
     private_key_data: "{{ lookup('file', private_key_file_path)| regex_replace('\n', '\\\\n') }}"
     certificate_data: "{{ lookup('file', certificate_file_path)| regex_replace('\n', '\\\\n') }}"
 
@@ -69,7 +70,7 @@
           create clients --target-realm "{{ keycloak_realm }}"
             --set clientId={{ keystone_client_id }}
             --set protocol=openid-connect
-            --set 'redirectUris=["{{ keystone_public_url }}:5000/redirect_uri", "{{ keystone_public_url }}"]'
+            --set 'redirectUris=["{{ keystone_public_url }}:5000/redirect_uri", "{{ keystone_public_url }}", "{{ keystone_ip_url }}:5000/redirect_uri", "{{ keystone_ip_url }}"]'
             --set standardFlowEnabled=true
             --set implicitFlowEnabled=true
             --set directAccessGrantsEnabled=true
