@@ -12,3 +12,8 @@ cephclient_mons:
   - 192.168.64.10
   - 192.168.64.11
   - 192.168.64.12
+
+##########################
+# heimdall
+
+heimdall_host: "{{ hostvars[inventory_hostname]['ansible_' + console_interface]['ipv4']['address'] }}"
