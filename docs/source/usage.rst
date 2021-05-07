@@ -127,7 +127,7 @@ Webinterfaces
 ================ ========================== ======== ========================================
 Name             URL                        Username Password
 ================ ========================== ======== ========================================
-ARA              http://192.168.16.5:8120   ara      S6JE2yJUwvraiX57
+ARA              http://192.168.16.5:8120   ara      password
 AWX              http://192.168.16.5:8052   dragon   vaeh7eingix8ooPi
 Ceph             http://192.168.16.9:7000   admin    phoon7Chahvae6we
 Cockpit          https://192.168.16.5:8130  dragon   da5pahthaew2Pai2
@@ -136,7 +136,7 @@ Keycloak         http://192.168.16.5:8170   admin    password
 Kibana           http://192.168.16.9:5601   kibana   k2ReobFEsoxNm3DyZnkZmFPadSnCz6BjQhaLFoyB
 Netbox           http://192.168.16.5:8121   netbox   password
 Netdata          http://192.168.16.5:19999  -        -
-Patchman         http://192.168.16.5:8150   patchman aiB4aijiebeesiu0
+Patchman         http://192.168.16.5:8150   patchman password
 Skydive          http://192.168.16.5:8085   admin    pYV8bV749aDMXLPlYJwoJs4ouRPWezCIOXYAQP6v
 phpMyAdmin       http://192.168.16.5:8110   root     qNpdZmkKuUKBK3D5nZ08KMZ5MnYrGEe2hzH6XC0i
 Zabbix           http://192.168.16.5:8160   Admin    zabbix
