@@ -3,19 +3,35 @@
         "local": [
             {
                 "user": {
-                    "name": "{0}"
-                },
-                "group": {
+                    "name": "{0}",
                     "domain": {
-                        "name": "Default"
+                        "name": "{1}"
+                    }
+                },
+                "domain": {
+                        "name": "{1}"
                     },
-                    "name": "federated_users"
-                }
+                "projects": [
+                    {
+                        "name": "{2}",
+                        "roles": [
+                            {
+                                "name": "member"
+                            }
+                        ]
+                    }
+                ]
             }
         ],
         "remote": [
             {
-                "type": "REMOTE_USER"
+                "type": "OIDC-preferred_username"
+            },
+            {
+                "type": "OIDC-openstack-user-domain"
+            },
+            {
+                "type": "OIDC-openstack-default-project"
             }
         ]
     }
