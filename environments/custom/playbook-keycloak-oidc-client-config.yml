@@ -16,6 +16,15 @@
     certificate_data: "{{ lookup('file', certificate_file_path)| regex_replace('\n', '\\\\n') }}"
 
   tasks:
+    - name: Wait until service is available
+      command: >-
+        docker exec {{ keycloak_service_container_name }} bash -c
+          'until echo > "/dev/tcp/127.0.0.1/8080"
+          do
+            echo "Waiting until Keycloak service is available" && sleep 5;
+          done'
+      run_once: true
+
     - name: Log in to Keycloak
       command: >-
         docker exec {{ keycloak_service_container_name }} {{ kcadm }}
