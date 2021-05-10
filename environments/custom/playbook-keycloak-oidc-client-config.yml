@@ -1,6 +1,6 @@
 ---
 - name: keycloak - configure OIDC Client for Keystone
-  hosts: testbed-manager.osism.test
+  hosts: manager
   gather_facts: false
 
   vars:
