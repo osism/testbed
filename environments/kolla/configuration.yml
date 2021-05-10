@@ -1,11 +1,5 @@
 ---
 ##########################################################
-# ansible
-
-ansible_become: true
-ansible_become_user: root
-
-##########################################################
 # images
 
 docker_registry: quay.io
