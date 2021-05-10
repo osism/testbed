@@ -1,8 +1,3 @@
-# customer specific configuration
-
-# SESSION_TIMEOUT = 7200
-# OPENSTACK_ENABLE_PASSWORD_RETRIEVE = True
-
 WEBSSO_ENABLED = True
 
 WEBSSO_KEYSTONE_URL = "http://192.168.16.10:5000/v3"
