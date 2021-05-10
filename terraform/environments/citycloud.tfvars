@@ -1,6 +1,7 @@
 # customisation:default
 # override:neutron_availability_zone_hints
 # override:manager_boot_from_image
+# override:monitor_boot_from_image
 # override:nodes_boot_from_image
 availability_zone         = "nova"
 volume_availability_zone  = "nova"

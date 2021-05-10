@@ -4,6 +4,9 @@
 [testbed-managers]
 testbed-manager.osism.test
 
+[testbed-monitors]
+testbed-monitor.osism.test
+
 [testbed-nodes]
 testbed-node-0.osism.test
 testbed-node-1.osism.test

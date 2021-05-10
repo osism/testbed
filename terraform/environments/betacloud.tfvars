@@ -1,6 +1,7 @@
 # customisation:default
 # override:neutron_availability_zone_hints
 # override:manager_boot_from_image
+# override:monitor_boot_from_image
 # override:nodes_boot_from_image
 image       = "Ubuntu 20.04"
 image_node  = "Ubuntu 20.04"

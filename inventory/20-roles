@@ -6,13 +6,14 @@
 
 [generic:children]
 testbed-managers
+testbed-monitors
 testbed-nodes
 
 [manager:children]
 testbed-managers
 
 [monitoring:children]
-testbed-managers
+testbed-monitors
 
 [control:children]
 testbed-nodes
