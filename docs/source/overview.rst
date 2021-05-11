@@ -27,6 +27,7 @@ Ceph
 * Luminous
 * Nautilus
 * Octopus (**default**)
+* Pacific
 
 OpenStack
 ---------
