@@ -141,7 +141,7 @@ each supported cloud provider.
    (``export OS_CLOUD=the-name-of-the-entry`` in bash), so your ``openstack`` command line
    client works without passing ``--os-cloud=``.
 
-* `SCS Demonstrator <https://gx-scs.okeanos.dev>`_
+* `SCS Demonstrator <https://ui.gx-scs.sovereignit.cloud/>`_
 
   .. note::
 
