@@ -17,3 +17,8 @@ cephclient_mons:
 # heimdall
 
 heimdall_host: "{{ hostvars[inventory_hostname]['ansible_' + console_interface]['ipv4']['address'] }}"
+
+##########################
+# jenkins
+
+jenkins_host: "{{ hostvars[inventory_hostname]['ansible_' + console_interface]['ipv4']['address'] }}"
