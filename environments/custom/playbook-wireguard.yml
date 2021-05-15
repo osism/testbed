@@ -14,14 +14,14 @@
 
     # NOTE: required by wireguard-dkms
     - name: Install kernel headers
-      package:
+      apt:
         name: linux-headers-generic
         state: present
       become: true
       when: "ansible_distribution_release == 'bionic'"
 
     - name: Install wireguard packages
-      package:
+      apt:
         name: "{{ item }}"
         state: present
       become: true
