@@ -1,26 +1,30 @@
 #!/usr/bin/env bash
 
-INTERACTIVE=false osism-run openstack bootstrap-basic
-INTERACTIVE=false osism-run openstack bootstrap-refstack
-
-# NOTE: create RGW user accounts
-for username in refstack-0 refstack-1 refstack-2; do
-    openstack --os-cloud $username container list
-done
-
-# NOTE: enable quota management on RGW user accounts
-for username in $(radosgw-admin user list | grep \\$ | awk -F\" '{ print $2 }'); do
-    radosgw-admin quota enable --uid "$username" --quota-scope=user
-done
+INSTALL_LOG=/opt/refstack/refstack-install-$(date +%Y-%m-%d).log
 
 sudo mkdir -p /opt/refstack
 sudo chown dragon: /opt/refstack
 
-git clone https://opendev.org/osf/refstack-client.git /opt/refstack/client
+INTERACTIVE=false osism-run openstack bootstrap-basic >>$INSTALL_LOG 2>&1
+INTERACTIVE=false osism-run openstack bootstrap-refstack >>$INSTALL_LOG 2>&1
 
-pushd /opt/refstack/client
-./setup_env
-popd
+# NOTE: create RGW user accounts
+for username in refstack-0 refstack-1 refstack-2; do
+    openstack --os-cloud $username container list >>$INSTALL_LOG 2>&1
+done
+
+# NOTE: enable quota management on RGW user accounts
+for username in $(radosgw-admin user list | grep \\$ | awk -F\" '{ print $2 }'); do
+    radosgw-admin quota enable --uid "$username" --quota-scope=user >>$INSTALL_LOG 2>&1
+done
+
+git clone https://opendev.org/osf/refstack-client.git /opt/refstack/client >>$INSTALL_LOG 2>&1
+
+if [[ ! -e /opt/refstack/client/.venv ]]; then
+    pushd /opt/refstack/client >>$INSTALL_LOG 2>&1
+    ./setup_env >>$INSTALL_LOG 2>&1
+    popd >>$INSTALL_LOG 2>&1
+fi
 
 GUIDELINE=${1:-2020.06}
 TARGET=${2:-platform}
