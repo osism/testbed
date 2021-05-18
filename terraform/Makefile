@@ -83,6 +83,11 @@ deploy-full: init
 	@touch .deploy.$(ENVIRONMENT)
 	@$(TERRAFORM) apply $(APPLY_PARAMS) -var-file="environments/$(ENVIRONMENT).tfvars" -var 'deploy_infrastructure=true' -var 'deploy_ceph=true' -var 'deploy_openstack=true' -var 'deploy_monitoring=true' $(PARAMS)
 
+check: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
+	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
+	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(ENVIRONMENT) $(USERNAME)@$$MANAGER_ADDRESS /opt/configuration/contrib/check_openstack_services.sh; \
+	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(ENVIRONMENT) $(USERNAME)@$$MANAGER_ADDRESS /opt/configuration/contrib/check_infrastructure_services.sh
+
 graph: init
 	@$(TERRAFORM) graph
 
@@ -174,4 +179,4 @@ plan: dry-run
 push: state-push
 tunnel: sshuttle
 
-PHONY: clean console attach detach sshuttle ssh dry-run list deploy deploy-infra deploy-ceph deploy-openstack watch openstack create log login scp copy address
+PHONY: clean console attach detach sshuttle ssh dry-run list deploy deploy-infra deploy-ceph deploy-openstack watch openstack create log login scp copy address check

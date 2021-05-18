@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+echo
+echo "# OpenStack endpoints"
+echo
+
 openstack --os-cloud admin endpoint list
 
 echo
