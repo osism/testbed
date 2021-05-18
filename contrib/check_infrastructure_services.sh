@@ -31,4 +31,10 @@ echo
 
 /usr/lib/nagios/plugins/check_tcp -H 192.168.16.10 -p 6379 -A -E -s 'AUTH QHNA1SZRlOKzLADhUd5ZDgpHfQe6dNfr3bwEdY24\r\nPING\r\nINFO replication\r\nQUIT\r\n' -e 'PONG' -e 'role:master' -e 'slave0:ip=192.168.16.11,port=6379' -j
 
+echo
+echo "# Ceph"
+echo
+
+ceph -s
+
 popd > /dev/null
