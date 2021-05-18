@@ -151,7 +151,6 @@
         network_create_args: {}
         network_update_args:
           admin_state_up: false
-          name: "_updated"
       context:
         {% call user_context(tenants_amount, users_amount, use_existing_users) %}
         quotas:
@@ -172,7 +171,6 @@
           admin_state_up: false
           device_id: "dummy_id"
           device_owner: "dummy_owner"
-          name: "_port_updated"
         ports_per_network: 1
       context:
         {% call user_context(tenants_amount, users_amount, use_existing_users) %}
@@ -193,7 +191,6 @@
         router_create_args: {}
         router_update_args:
           admin_state_up: false
-          name: "_router_updated"
         subnet_cidr_start: "1.1.0.0/30"
         subnet_create_args: {}
         subnets_per_network: 1
@@ -219,7 +216,6 @@
         subnet_create_args: {}
         subnet_update_args:
           enable_dhcp: false
-          name: "_subnet_updated"
         subnets_per_network: 1
       context:
         {% call user_context(tenants_amount, users_amount, use_existing_users) %}
@@ -227,6 +223,125 @@
           neutron:
             network: -1
             subnet: -1
+        {% endcall %}
+      runner:
+        {{ constant_runner(concurrency=2*controllers_amount, times=8*controllers_amount, is_smoke=smoke) }}
+      sla:
+        {{ no_failures_sla() }}
+
+  Quotas.neutron_update:
+    -
+      args:
+        max_quota: 1024
+      context:
+        {{ user_context(tenants_amount, users_amount, use_existing_users) }}
+      runner:
+        {{ constant_runner(concurrency=2*controllers_amount, times=8*controllers_amount, is_smoke=smoke) }}
+      sla:
+        {{ no_failures_sla() }}
+
+  NeutronSubnets.delete_subnets:
+    -
+      runner:
+        type: "constant"
+        times: {{ users_amount }}
+        concurrency: {{ users_amount }}
+      context:
+        {{ user_context(tenants_amount, users_amount, use_existing_users, True) }}
+        quotas:
+          neutron:
+            network: -1
+            subnet: -1
+        network:
+          subnets_per_network: {{ users_amount }}
+          dualstack: True
+          router: {}
+
+  NeutronTrunks.create_and_list_trunks:
+    -
+      args:
+        network_create_args: {}
+        subport_count: 10
+      context:
+        {% call user_context(tenants_amount, users_amount, use_existing_users) %}
+        quotas:
+          neutron:
+            network: -1
+            port: -1
+            trunk: -1
+        {% endcall %}
+      runner:
+        {{ constant_runner(concurrency=2*controllers_amount, times=8*controllers_amount, is_smoke=smoke) }}
+      sla:
+        {{ no_failures_sla() }}
+
+  NeutronTrunks.boot_server_with_subports:
+    -
+      args:
+        {{ vm_params(image_name, flavor_name) }}
+        network_create_args: {}
+        subport_count: 10
+      context:
+        {% call user_context(tenants_amount, users_amount, use_existing_users) %}
+        quotas:
+          neutron:
+            network: -1
+            subnet: -1
+            port: -1
+            trunk: -1
+          nova:
+            instances: -1
+            cores: -1
+            ram: -1
+        {% endcall %}
+      runner:
+        {{ constant_runner(concurrency=2*controllers_amount, times=8*controllers_amount, is_smoke=smoke) }}
+      sla:
+        {{ no_failures_sla() }}
+
+  NeutronTrunks.boot_server_and_add_subports:
+    -
+      args:
+        {{ vm_params(image_name, flavor_name) }}
+        network_create_args: {}
+        subport_count: 10
+      context:
+        {% call user_context(tenants_amount, users_amount, use_existing_users) %}
+        quotas:
+          neutron:
+            network: -1
+            subnet: -1
+            port: -1
+            trunk: -1
+          nova:
+            instances: -1
+            cores: -1
+            ram: -1
+        {% endcall %}
+      runner:
+        {{ constant_runner(concurrency=2*controllers_amount, times=8*controllers_amount, is_smoke=smoke) }}
+      sla:
+        {{ no_failures_sla() }}
+
+  NeutronTrunks.boot_server_and_batch_add_subports:
+    -
+      args:
+        {{ vm_params(image_name, flavor_name) }}
+        network_create_args: {}
+        subports_per_batch: 10
+        batches: 5
+      context:
+        {% call user_context(tenants_amount, users_amount, use_existing_users) %}
+        quotas:
+          neutron:
+            network: -1
+            subnet: -1
+            port: -1
+            trunk: -1
+          nova:
+            instances: -1
+            cores: -1
+            ram: -1
         {% endcall %}
       runner:
         {{ constant_runner(concurrency=2*controllers_amount, times=8*controllers_amount, is_smoke=smoke) }}
