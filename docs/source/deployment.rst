@@ -220,10 +220,12 @@ Initialization
 .. code-block:: console
 
    make dry-run ENVIRONMENT=betacloud
+   make plan ENVIRONMENT=betacloud  # this is just an alias for "make dry-run"
 
 .. code-block:: console
 
    make deploy ENVIRONMENT=betacloud
+   make create ENVIRONMENT=betacloud  # this is just an alias for "make deploy"
 
 .. raw:: html
    :file: html/asciinema-tf-deployment.html
@@ -242,8 +244,10 @@ Initialization
      This also includes all required infrastructure services.
    * Use ``deploy-infra`` to deploy infrastructure services when building the environment.
    * Use ``deploy-ceph`` to deploy Ceph when building the environment.
-   * Use ``deploy-openstack`` to deploy OpenStack when building the environment. This also
-     includes Ceph and infrastructure services.
+   * Use ``deploy-openstack`` to deploy OpenStack when building the environment.
+     This also includes Ceph and infrastructure services.
+   * Use ``deploy-full`` to deploy OpenStack including Ceph and infrastructure services as
+     well as monitoring.
 
 .. note::
 
@@ -272,14 +276,144 @@ Open a login shell on the manager via SSH:
 
 .. code-block:: console
 
-   make login ENVIRONMENT=betacloud
+   make ssh ENVIRONMENT=betacloud
+   make login ENVIRONMENT=betacloud  # this is just an alias for "make ssh"
 
 Create a tunnel for the internal networks (``192.168.16.0/20``,
 ``192.168.96.0/20`` ``192.168.112.0/20``) via sshuttle (https://github.com/sshuttle/sshuttle):
 
 .. code-block:: console
 
-   make tunnel ENVIRONMENT=betacloud
+   make sshuttle ENVIRONMENT=betacloud
+   make tunnel ENVIRONMENT=betacloud  # this is just an alias for "make sshuttle"
+
+
+Checks
+======
+
+Check the installation via ping:
+
+.. code-block:: console
+
+   make ping
+
+Run check script for openstack and infrastructure components:
+
+.. code-block:: console
+
+   make check
+
+Run rally script (benchmark openstack):
+
+.. code-block:: console
+
+   make rally
+
+Run refstack script:
+
+.. code-block:: console
+
+   make refstack
+
+
+General Management
+==================
+
+Show endpoint URLs (ara, cockpit, phpmyadmin):
+
+.. code-block:: console
+
+   make endpoints
+
+Show manager address:
+
+.. code-block:: console
+
+   make address
+
+Open an Openstack Client Console:
+
+.. code-block:: console
+
+   make openstack
+
+Copy a file to the manager:
+
+.. code-block:: console
+
+   make scp PARAMS=/file/to/be/copied SOURCE=/path/to/destination
+   make copy PARAMS=/file/to/be/copied SOURCE=/path/to/destination # this is just an alias for "make scp"
+
+
+Terraform Management
+====================
+
+Delete providers:
+
+.. code-block:: console
+
+   make reset
+
+Init terraform, select workspace and copy override and custom files:
+
+.. code-block:: console
+
+   make init
+
+Init terraform and validate:
+
+.. code-block:: console
+
+   make validate
+
+Init terraform and import a resource:
+
+.. code-block:: console
+
+   make attach
+
+Init terraform and remove a resource:
+
+.. code-block:: console
+
+   make detach
+
+Init terraform and push a state to a remote backend:
+
+.. code-block:: console
+
+   make state-push
+   make push # this is just an alias for "make state-push"
+
+Init terraform and generate a graph in DOT format:
+
+.. code-block:: console
+
+   make graph
+
+Init terraform and show the current state:
+
+.. code-block:: console
+
+   make show
+
+Init terraform and show the configuration of a specific resource:
+
+.. code-block:: console
+
+   make list
+
+
+Internals
+=========
+
+These are used for make internal functions and not supposed to be used by a user:
+
+.. code-block:: console
+
+   make .deploy.$(ENVIRONMENT) # check if a deployment is present
+   make .MANAGER_ADDRESS.$(ENVIRONMENT) # return manager address
+   make .id_rsa.$(ENVIRONMENT) # write private key
 
 Decommissioning
 ===============
