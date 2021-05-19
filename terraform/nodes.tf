@@ -33,13 +33,6 @@ resource "openstack_networking_port_v2" "node_port_management" {
   }
 }
 
-resource "openstack_blockstorage_volume_v3" "node_volume" {
-  count             = var.number_of_nodes * var.number_of_volumes
-  name              = "${var.prefix}-volume-${count.index}-node-${count.index % var.number_of_nodes}"
-  size              = var.volume_size_storage
-  availability_zone = var.volume_availability_zone
-}
-
 resource "openstack_blockstorage_volume_v3" "node_base_volume" {
   image_id          = data.openstack_images_image_v2.image_node.id
   count             = 0
