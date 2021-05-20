@@ -3,6 +3,12 @@
 import json
 import os
 from subprocess import PIPE, run
+import sys
+
+# NOTE: An NVMe device is available on OTC BMS nodes of type physical.o2.medium. This is used there.
+if os.path.isfile("/etc/is_bms"):
+    print(json.dumps(["/dev/nvme0n1"]))
+    sys.exit(0)
 
 result = run("df -hT | grep /$ | awk '{print $1}'", stdout=PIPE, stderr=PIPE, universal_newlines=True, shell=True)
 partition = os.path.basename(result.stdout.strip())
