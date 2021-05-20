@@ -2,9 +2,9 @@
 # override:manager_boot_from_volume
 # override:nodes_boot_from_image_otcbms
 # customisation:otcbms
-availability_zone         = "eu-de-02"
-volume_availability_zone  = "eu-de-02"
-network_availability_zone = "eu-de-02"
+availability_zone         = "eu-de-01"
+volume_availability_zone  = "eu-de-01"
+network_availability_zone = "eu-de-01"
 flavor_node               = "physical.o2.medium"
 flavor_manager            = "s2.4xlarge.4"
 image                     = "Standard_Ubuntu_20.04_latest"

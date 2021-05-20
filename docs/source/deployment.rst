@@ -112,6 +112,25 @@ each supported cloud provider.
        Due to a few characteristics of the OTC, the deployment of the testbed there currently
        takes significantly longer than on other OpenStack-based clouds.
 
+  .. note::
+
+     When using OTC BMS, the following error may occur when creating BMS nodes. Experience shows
+     that changing the zone (``eu-de-01`` to ``eu-de-02``) can solve the problem. It is likely that
+     the zones do not always have a sufficient number of BMS nodes available for use.
+
+     .. code::
+
+        │ Error: Error waiting for instance (920e5587-0d4b-417d-a4ad-5f0584dda43b) to become ready: unexpected state 'ERROR', wanted target 'ACTIVE'. last error: %!s(<nil>)
+        │
+        │   with opentelekomcloud_compute_bms_server_v2.node_server[1],
+        │   on otcbms_custom.tf line 11, in resource "opentelekomcloud_compute_bms_server_v2" "node_server":
+        │   11: resource "opentelekomcloud_compute_bms_server_v2" "node_server" {
+
+  .. note::
+
+     When using OTC BMS, take into care that the necessary Ubuntu 20.04 image is currently only
+     supported on BMS nodes of type ``physical.o2.medium``.
+
   .. warning::
 
      The OTC has strange rate limits on their API servers. Therefore it is required to limit
