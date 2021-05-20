@@ -44,7 +44,7 @@
 
     - name: Filter available realms
       set_fact:
-       available_realms: "{{ available_realms_json.stdout|from_json|map(attribute='id')|list }}"
+        available_realms: "{{ available_realms_json.stdout|from_json|map(attribute='id')|list }}"
       run_once: true
 
     - name: Create target realm if it doesn't exist
@@ -69,7 +69,7 @@
 
     - name: Filter available clients in realm
       set_fact:
-       available_clients: "{{ available_clients_json.stdout|from_json|map(attribute='clientId')|list }}"
+        available_clients: "{{ available_clients_json.stdout|from_json|map(attribute='clientId')|list }}"
       run_once: true
 
 
@@ -102,7 +102,7 @@
 
     - name: "Filter internal ID for {{ keystone_client_id }} client"
       set_fact:
-       internal_client_id: "{{ internal_client_id_json.stdout }}"
+        internal_client_id: "{{ internal_client_id_json.stdout }}"
       run_once: true
 
     - name: Get available mappers for client
@@ -116,7 +116,7 @@
 
     - name: Filter available mappers for client
       set_fact:
-       available_mappers: "{{ available_mappers_json.stdout|from_json|map(attribute='name')|list }}"
+        available_mappers: "{{ available_mappers_json.stdout|from_json|map(attribute='name')|list }}"
       run_once: true
 
     - debug:
@@ -154,7 +154,7 @@
 
     - name: Filter available components in realm
       set_fact:
-       available_components: "{{ available_components_json.stdout|from_json|map(attribute='name')|list }}"
+        available_components: "{{ available_components_json.stdout|from_json|map(attribute='name')|list }}"
       run_once: true
 
     - name: Add privateKey and certificate to realm
