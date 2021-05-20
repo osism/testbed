@@ -1,5 +1,64 @@
 ---
-- hosts: all:!manager
+- name: Group hosts based on configuration
+  hosts: all
+  gather_facts: false
+
+  tasks:
+    - name: Group hosts based on virtualization_role
+      group_by:
+        key: "{{ item }}"
+      with_items:
+        - virtualization_role_{{ ansible_virtualization_role }}
+      tags: always
+
+# NOTE: On OTC BMS nodes it is necessary to extend the automatically generated Netplan configuration
+#       by the additionally required addresses. Furthermore the service bms-network-setup must be
+#       deactivated to not overwrite the modified network configuration after a reboot of the nodes.
+
+- name: Expand existing network configuration on OTC BMS nodes
+  hosts: virtualization_role_host
+  gather_facts: false
+
+  tasks:
+    - name: Slurp /etc/netplan/61-ifcfg-bond0.yaml
+      slurp:
+        path: /etc/netplan/61-ifcfg-bond0.yaml
+      register: fp
+
+    - name: Transfer slurped /etc/netplan/61-ifcfg-bond0.yaml to dictionary
+      set_fact:
+        configuration: "{{ fp['content'] | b64decode | from_yaml }}"
+
+    - name: Patch /etc/netplan/61-ifcfg-bond0.yaml dictionary
+      set_fact:
+        configuration: "{{ configuration | combine(patch, recursive=True) }}"
+      vars:
+        patch:
+          network:
+            bonds:
+              bond0:
+                addresses:
+                  - "{{ '192.168.64.0/20' | ipaddr('net') | ipaddr(node_id) | ipaddr('address') }}/20"
+                  - "{{ '192.168.80.0/20' | ipaddr('net') | ipaddr(node_id) | ipaddr('address') }}/20"
+                  - "{{ '192.168.96.0/20' | ipaddr('net') | ipaddr(node_id) | ipaddr('address') }}/20"
+
+    - name: Write back /etc/netplan/61-ifcfg-bond0.yaml
+      become: true
+      copy:
+        content: "{{ configuration | to_nice_yaml }}"
+        dest: /etc/netplan/61-ifcfg-bond0.yaml
+        mode: 0644
+        owner: root
+        group: root
+
+    - name: Disable the bms-network-setup service
+      become: true
+      service:
+        name: bms-network-setup
+        enabled: false
+
+- name: Add a workaround service to non-manager nodes
+  hosts: all:!manager
   gather_facts: false
 
   tasks:
