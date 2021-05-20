@@ -1,6 +1,6 @@
 # override:neutron_router_enable_snat
 # override:manager_boot_from_volume
-# override:nodes_boot_from_volume_otcbms
+# override:nodes_boot_from_image_otcbms
 # customisation:otcbms
 availability_zone         = "eu-de-02"
 volume_availability_zone  = "eu-de-02"
