@@ -36,7 +36,8 @@ netdata_host_type: client
 # network
 
 network_type: netplan
-network_ethernets:
+
+network_ethernets_virtual:
   "{{ ansible_local.testbed_network_devices.management }}":
     addresses:
       - "{{ '192.168.16.0/20' | ipaddr('net') | ipaddr(node_id) | ipaddr('address') }}/20"
@@ -45,6 +46,12 @@ network_ethernets:
       - "{{ '192.168.96.0/20' | ipaddr('net') | ipaddr(node_id) | ipaddr('address') }}/20"
     gateway4: "{{ '192.168.16.0/20' | ipaddr('net') | ipaddr('1') | ipaddr('address') }}"
     mtu: "{{ testbed_mtu_node }}"
+
+# NOTE: On OTC BMS nodes, the virtualization_role is set to host. On these nodes we want to
+#       use the existing Netplan configuration. Therefore, an empty Netplan configuration is
+#       used for nodes with the virtualization role host.
+network_ethernets: "{{ (hostvars[inventory_hostname]['ansible_virtualization_role'] == 'host') | ternary({}, network_ethernets_virtual) }}"
+
 network_dispatcher_scripts:
   - src: /opt/configuration/network/vxlan.sh
     dest: routable.d/vxlan.sh
