@@ -60,17 +60,3 @@ runcmd:
 final_message: "The system is finally up, after $UPTIME seconds"
 EOT
 }
-
-resource "openstack_compute_volume_attach_v2" "node_volume_attachment" {
-  count       = var.number_of_nodes * var.number_of_volumes
-  instance_id = opentelekomcloud_compute_bms_server_v2.node_server[count.index % var.number_of_nodes].id
-  volume_id   = opentelekomcloud_blockstorage_volume_v2.node_volume[count.index].id
-}
-
-resource "opentelekomcloud_blockstorage_volume_v2" "node_volume" {
-  count             = var.number_of_nodes * var.number_of_volumes
-  name              = "${var.prefix}-volume-${count.index}-node-${count.index % var.number_of_nodes}"
-  size              = var.volume_size_storage
-  availability_zone = var.volume_availability_zone
-  device_type       = "SCSI"
-}

@@ -32,11 +32,10 @@ for interface in netifaces.interfaces():
 
     addrs = netifaces.ifaddresses(interface)
     if netifaces.AF_INET in addrs:
-        addr = addrs[netifaces.AF_INET][0]['addr']
-
-        for network in NETWORKS:
-            if addr.startswith(NETWORKS[network]):
-                result[network] = interface
+        for addr in addrs[netifaces.AF_INET]:
+            for network in NETWORKS:
+                if addr['addr'].startswith(NETWORKS[network]):
+                    result[network] = interface
 
     # NOTE: After a reboot of the nodes the provider network has
     #       no more IP configuration.
