@@ -1,3 +1,7 @@
 #!/usr/bin/env bash
 
-ifdown {{ ansible_local.testbed_network_devices.management }} && ifup {{ ansible_local.testbed_network_devices.management }}
+if [[ -e /usr/sbin/ifup ]]; then
+    ifdown {{ ansible_local.testbed_network_devices.management }} && ifup {{ ansible_local.testbed_network_devices.management }}
+else
+    netplan apply
+fi
