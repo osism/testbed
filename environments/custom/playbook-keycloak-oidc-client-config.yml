@@ -10,8 +10,11 @@
     keycloak_realm: "gx-scs"
     kcadm: "/opt/jboss/keycloak/bin/kcadm.sh"
     keystone_client_id: "keystone"
-    keystone_public_url: "http://api.osism.test"
-    keystone_ip_url: "http://192.168.16.10"
+    keystone_redirect_uris:
+      - "http://api.osism.test:5000/redirect_uri"
+      - "http://api.osism.test"
+      - "http://192.168.16.10:5000/redirect_uri"
+      - "http://192.168.16.10"
     private_key_data: "{{ lookup('file', private_key_file_path)| regex_replace('\n', '\\\\n') }}"
     certificate_data: "{{ lookup('file', certificate_file_path)| regex_replace('\n', '\\\\n') }}"
 
@@ -23,6 +26,7 @@
           do
             echo "Waiting until Keycloak service is available" && sleep 5;
           done'
+      changed_when: false
       run_once: true
 
     - name: Log in to Keycloak
@@ -32,6 +36,7 @@
                              --realm master
                              --user "{{ keycloak_admin_id }}"
                              --password "{{ keycloak_admin_secret }}"
+      changed_when: false
       run_once: true
       no_log: true
 
@@ -40,6 +45,7 @@
         docker exec {{ keycloak_service_container_name }} {{ kcadm }}
           get realms --fields id
       register: available_realms_json
+      changed_when: false
       run_once: true
 
     - name: Filter available realms
@@ -65,6 +71,7 @@
                 --query clientId={{ keystone_client_id }}
                 --fields id,clientId
       register: available_clients_json
+      changed_when: false
       run_once: true
 
     - name: Filter available clients in realm
@@ -79,7 +86,7 @@
           create clients --target-realm "{{ keycloak_realm }}"
             --set clientId={{ keystone_client_id }}
             --set protocol=openid-connect
-            --set 'redirectUris=["{{ keystone_public_url }}:5000/redirect_uri", "{{ keystone_public_url }}", "{{ keystone_ip_url }}:5000/redirect_uri", "{{ keystone_ip_url }}"]'
+            --set 'redirectUris={{ keystone_redirect_uris|tojson }}'
             --set standardFlowEnabled=true
             --set implicitFlowEnabled=true
             --set directAccessGrantsEnabled=true
@@ -98,6 +105,7 @@
                 --format csv
                 --noquotes
       register: internal_client_id_json
+      changed_when: false
       run_once: true
 
     - name: "Filter internal ID for {{ keystone_client_id }} client"
@@ -112,15 +120,13 @@
                  --target-realm {{ keycloak_realm }}
                  --fields name
       register: available_mappers_json
+      changed_when: false
       run_once: true
 
     - name: Filter available mappers for client
       set_fact:
         available_mappers: "{{ available_mappers_json.stdout|from_json|map(attribute='name')|list }}"
       run_once: true
-
-    - debug:
-        msg: "available mappers: {{ available_mappers }}"
 
     - name: Create mappers for client
       command: >-
@@ -150,6 +156,7 @@
                 --query name="{{ keycloak_key_provider_component_name }}"
                 --fields name
       register: available_components_json
+      changed_when: false
       run_once: true
 
     - name: Filter available components in realm
