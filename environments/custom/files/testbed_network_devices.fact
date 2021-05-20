@@ -29,6 +29,8 @@ for interface in netifaces.interfaces():
         continue
     elif interface.startswith('qg'):
         continue
+    elif interface.startswith('genev'):
+        continue
 
     addrs = netifaces.ifaddresses(interface)
     if netifaces.AF_INET in addrs:
