@@ -1,11 +1,11 @@
 [Interface]
 Address = 192.168.48.5/20
 ListenPort = 51820
-PrivateKey = {{ private_key['content']|b64decode }}
+PrivateKey = {{ private_key_server['content']|b64decode }}
 PostUp   = iptables -A FORWARD -i %i -j ACCEPT; iptables -A FORWARD -o %i -j ACCEPT
 PostDown = iptables -D FORWARD -i %i -j ACCEPT; iptables -D FORWARD -o %i -j ACCEPT
 
 [Peer]
-PublicKey = {{ wireguard_peer_public_key }}
+PublicKey = {{ public_key_client['content']|b64decode }}
 PresharedKey = {{ preshared_key['content']|b64decode }}
 AllowedIPs = 192.168.48.0/20
