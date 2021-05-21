@@ -1,5 +1,4 @@
 ---
-##########################
-# wireguard
-
-wireguard_peer_public_key: vYrE3ZMlN5Xa2d/s4IbFsiGNPN+dKqQ/L070hRC+Pjc=
+# Dummy variable to avoid error because ansible does not recognize the
+# file as a good configuration file when no variable in it.
+dummy:

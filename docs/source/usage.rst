@@ -14,19 +14,9 @@ Wireguard
 
      osism-run custom wireguard
 
-* client configuration
-
-  .. code-block:: console
-
-     [Interface]
-     PrivateKey = eFvxE9jOhSRg4drIUBEO1xqHP9cpV0bQiGASFqvGMkU=
-     Address = 192.168.48.4/24
-
-     [Peer]
-     PublicKey = MANAGER_CONTENTS_OF_/etc/wireguard/osism.pub
-     PresharedKey = MANAGER_CONTENTS_OF_/etc/wireguard/osism.psk
-     AllowedIPs = 192.168.16.0/20, 192.168.48.0/20, 192.168.96.0/20, 192.168.112.0/20
-     Endpoint = MANAGER_PUBLIC_IP_ADDRESS:51820
+* client configuration can be found in ``/home/dragon/wireguard-client.conf`` on
+  ``testbed-manager``, ``MANAGER_PUBLIC_IP_ADDRESS`` has to be replaced by the
+  public address of ``testbed-manager``
 
 Change versions
 ===============
