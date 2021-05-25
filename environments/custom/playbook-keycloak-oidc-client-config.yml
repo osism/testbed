@@ -13,8 +13,8 @@
     keystone_redirect_uris:
       - "http://api.osism.test:5000/redirect_uri"
       - "http://api.osism.test"
-      - "http://192.168.16.10:5000/redirect_uri"
-      - "http://192.168.16.10"
+      - "http://192.168.96.9:5000/redirect_uri"
+      - "http://192.168.96.9"
     private_key_data: "{{ lookup('file', private_key_file_path)| regex_replace('\n', '\\\\n') }}"
     certificate_data: "{{ lookup('file', certificate_file_path)| regex_replace('\n', '\\\\n') }}"
 
