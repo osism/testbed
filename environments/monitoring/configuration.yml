@@ -2,15 +2,15 @@
 ##########################
 # netdata
 
-netdata_api_host: "{{ hostvars['testbed-manager.osism.test']['ansible_' + management_interface]['ipv4']['address'] }}"
+netdata_api_host: "{{ hostvars['testbed-manager.osism.test']['ansible_' + hostvars['testbed-manager.osism.test']['management_interface']]['ipv4']['address'] }}"
 
 ##########################
 # zabbix-agent
 
-zabbix_agent_server: "{{ hostvars['testbed-manager.osism.test']['ansible_' + management_interface]['ipv4']['address'] }}"
+zabbix_agent_server: "{{ hostvars['testbed-manager.osism.test']['ansible_' + hostvars['testbed-manager.osism.test']['management_interface']]['ipv4']['address'] }}"
 
 ##########################
 # zabbix
 
-zabbix_server_host: "{{ hostvars['testbed-manager.osism.test']['ansible_' + management_interface]['ipv4']['address'] }}"
-zabbix_web_host: "{{ hostvars['testbed-manager.osism.test']['ansible_' + management_interface]['ipv4']['address'] }}"
+zabbix_server_host: "{{ hostvars['testbed-manager.osism.test']['ansible_' + hostvars['testbed-manager.osism.test']['management_interface']]['ipv4']['address'] }}"
+zabbix_web_host: "{{ hostvars['testbed-manager.osism.test']['ansible_' + hostvars['testbed-manager.osism.test']['management_interface']]['ipv4']['address'] }}"
