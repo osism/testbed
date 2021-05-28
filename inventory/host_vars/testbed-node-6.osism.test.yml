@@ -1,0 +1,84 @@
+---
+node_id: 16
+
+##########################################################
+# ansible
+
+ansible_host: "{{ '192.168.16.0/20' | ipaddr('net') | ipaddr(16) | ipaddr('address') }}"
+
+##########################################################
+# netbox
+
+netbox_inventory_status: Active
+
+##########################################################
+# generic
+
+console_interface: "{{ ansible_local.testbed_network_devices.management }}"
+management_interface: "{{ ansible_local.testbed_network_devices.management }}"
+
+internal_address: "{{ '192.168.16.0/20' | ipaddr('net') | ipaddr(16) | ipaddr('address') }}"
+fluentd_host: "{{ '192.168.16.0/20' | ipaddr('net') | ipaddr(16) | ipaddr('address') }}"
+
+##########################################################
+# cockpit
+
+configure_cockpit_server: true
+cockpit_host: "{{ hostvars[inventory_hostname]['ansible_' + console_interface]['ipv4']['address'] }}"
+cockpit_ssh_interface: "{{ ansible_local.testbed_network_devices.management }}"
+
+##########################################################
+# netdata
+
+netdata_host_type: client
+
+##########################################################
+# network
+
+network_type: netplan
+
+network_ethernets_virtual:
+  "{{ ansible_local.testbed_network_devices.management }}":
+    addresses:
+      - "{{ '192.168.16.0/20' | ipaddr('net') | ipaddr(node_id) | ipaddr('address') }}/20"
+      - "{{ '192.168.64.0/20' | ipaddr('net') | ipaddr(node_id) | ipaddr('address') }}/20"
+      - "{{ '192.168.80.0/20' | ipaddr('net') | ipaddr(node_id) | ipaddr('address') }}/20"
+      - "{{ '192.168.96.0/20' | ipaddr('net') | ipaddr(node_id) | ipaddr('address') }}/20"
+    gateway4: "{{ '192.168.16.0/20' | ipaddr('net') | ipaddr('1') | ipaddr('address') }}"
+    mtu: "{{ testbed_mtu_node }}"
+
+# NOTE: On OTC BMS nodes, the virtualization_role is set to host. On these nodes we want to
+#       use the existing Netplan configuration. Therefore, an empty Netplan configuration is
+#       used for nodes with the virtualization role host.
+network_ethernets: "{{ (hostvars[inventory_hostname]['ansible_virtualization_role'] == 'host') | ternary({}, network_ethernets_virtual) }}"
+
+network_dispatcher_scripts:
+  - src: /opt/configuration/network/vxlan.sh
+    dest: routable.d/vxlan.sh
+
+##########################################################
+# kolla
+
+network_interface: "{{ ansible_local.testbed_network_devices.management }}"
+
+# api_interface:
+# dns_interface:
+# kolla_external_vip_interface:
+# migration_interface:
+neutron_external_interface: vxlan0
+# octavia_network_interface:
+# storage_interface:
+# tunnel_interface:
+
+##########################################################
+# ceph
+
+# monitor_interface:
+monitor_address: "{{ '192.168.64.0/20' | ipaddr('net') | ipaddr(16) | ipaddr('address') }}"
+# radosgw_interface:
+radosgw_address: "{{ '192.168.64.0/20' | ipaddr('net') | ipaddr(16) | ipaddr('address') }}"
+
+devices: "{{ ansible_local.testbed_ceph_devices }}"
+
+# NOTE: to use the third block device for Ceph change this parameter as follows
+# devices: "{{ ansible_local.testbed_ceph_devices_all }}"

@@ -137,6 +137,7 @@ write_files:
       sudo -iu dragon ansible-playbook -i testbed-manager.osism.test, /opt/manager-part-1.yml -e configuration_git_version=${var.configuration_version}
       sudo -iu dragon sh -c 'cd /opt/configuration; ./scripts/set-ceph-version.sh ${var.ceph_version}'
       sudo -iu dragon sh -c 'cd /opt/configuration; ./scripts/set-openstack-version.sh ${var.openstack_version}'
+      sudo -iu dragon sh -c 'cd /opt/configuration; ./scripts/enable-secondary-nodes.sh ${var.number_of_nodes}'
 
       sudo -iu dragon ansible-playbook -i testbed-manager.osism.test, /opt/manager-part-2.yml
       sudo -iu dragon ansible-playbook -i testbed-manager.osism.test, /opt/manager-part-3.yml

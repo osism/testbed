@@ -38,9 +38,7 @@ The nodes always have the same postfix in the networks.
 Name             CIDR
 ================ ==================
 testbed-manager  ``192.168.X.5/20``
-testbed-node-1   ``192.168.X.10/20``
-testbed-node-2   ``192.168.X.11/20``
-testbed-node-3   ``192.168.X.12/20``
+testbed-node-Y   ``192.168.X.1Y/20``
 ================ ==================
 
 VIPs
