@@ -4,7 +4,20 @@
 [testbed-managers]
 testbed-manager.osism.test
 
-[testbed-nodes]
+[testbed-primary-nodes]
 testbed-node-0.osism.test
 testbed-node-1.osism.test
 testbed-node-2.osism.test
+
+[testbed-secondary-nodes]
+#testbed-node-3.osism.test
+#testbed-node-4.osism.test
+#testbed-node-5.osism.test
+#testbed-node-6.osism.test
+#testbed-node-7.osism.test
+#testbed-node-8.osism.test
+#testbed-node-9.osism.test
+
+[testbed-nodes:children]
+testbed-primary-nodes
+testbed-secondary-nodes

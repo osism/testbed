@@ -15,16 +15,16 @@ testbed-managers
 testbed-managers
 
 [control:children]
-testbed-nodes
+testbed-primary-nodes
 
 [compute:children]
 testbed-nodes
 
 [network:children]
-testbed-nodes
+testbed-primary-nodes
 
 [ceph-control:children]
-testbed-nodes
+testbed-primary-nodes
 
 [ceph-resource:children]
 testbed-nodes
