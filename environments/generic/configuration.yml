@@ -11,9 +11,9 @@ dotfiles_files:
 ##########################
 # patchman-client
 
-patchman_client_host: "{{ hostvars['testbed-manager.osism.test']['ansible_' + management_interface]['ipv4']['address'] }}"
+patchman_client_host: "{{ hostvars['testbed-manager.osism.test']['ansible_' + hostvars['testbed-manager.osism.test']['management_interface']]['ipv4']['address'] }}"
 
 ##########################
 # zabbix-agent
 
-zabbix_agent_server: "{{ hostvars['testbed-manager.osism.test']['ansible_' + management_interface]['ipv4']['address'] }}"
+zabbix_agent_server: "{{ hostvars['testbed-manager.osism.test']['ansible_' + hostvars['testbed-manager.osism.test']['management_interface']]['ipv4']['address'] }}"
