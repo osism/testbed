@@ -27,7 +27,7 @@ testbed-primary-nodes
 testbed-primary-nodes
 
 [ceph-resource:children]
-testbed-nodes
+testbed-primary-nodes
 
 # NOTE: After the initial import of the inventory in the netbox,
 #       the groups in this file can be emptied. The systems are

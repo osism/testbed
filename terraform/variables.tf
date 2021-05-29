@@ -32,6 +32,11 @@ variable "flavor_node" {
   default = "4C-16GB-40GB"
 }
 
+variable "flavor_node_alt" {
+  type    = string
+  default = "4C-16GB-40GB"
+}
+
 variable "flavor_manager" {
   type    = string
   default = "4C-8GB-20GB"
