@@ -1,0 +1,183 @@
+---
+- name: keycloak - configure OIDC Client for Keystone
+  hosts: manager
+  gather_facts: false
+
+  vars:
+    keycloak_service_container_name: "keycloak"
+    keycloak_url: "http://localhost:8080"
+    keycloak_key_provider_component_name: "rsa-for-keystone"
+    keycloak_realm: "gx-scs"
+    kcadm: "/opt/jboss/keycloak/bin/kcadm.sh"
+    keystone_client_id: "keystone"
+    keystone_redirect_uris:
+      - "http://api.osism.test:5000/redirect_uri"
+      - "http://api.osism.test"
+      - "http://192.168.96.9:5000/redirect_uri"
+      - "http://192.168.96.9"
+    private_key_data: "{{ lookup('file', private_key_file_path)| regex_replace('\n', '\\\\n') }}"
+    certificate_data: "{{ lookup('file', certificate_file_path)| regex_replace('\n', '\\\\n') }}"
+
+  tasks:
+    - name: Wait until service is available
+      command: >-
+        docker exec {{ keycloak_service_container_name }} bash -c
+          'until echo > "/dev/tcp/127.0.0.1/8080"
+          do
+            echo "Waiting until Keycloak service is available" && sleep 5;
+          done'
+      changed_when: false
+      run_once: true
+
+    - name: Log in to Keycloak
+      command: >-
+        docker exec {{ keycloak_service_container_name }} {{ kcadm }}
+          config credentials --server "{{ keycloak_url }}/auth"
+                             --realm master
+                             --user "{{ keycloak_admin_id }}"
+                             --password "{{ keycloak_admin_secret }}"
+      changed_when: false
+      run_once: true
+      no_log: true
+
+    - name: Get available realms
+      command: >-
+        docker exec {{ keycloak_service_container_name }} {{ kcadm }}
+          get realms --fields id
+      register: available_realms_json
+      changed_when: false
+      run_once: true
+
+    - name: Filter available realms
+      set_fact:
+        available_realms: "{{ available_realms_json.stdout|from_json|map(attribute='id')|list }}"
+      run_once: true
+
+    - name: Create target realm if it doesn't exist
+      command: >-
+        docker exec {{ keycloak_service_container_name }} {{ kcadm }}
+          create realms
+            --set id="{{ keycloak_realm }}"
+            --set realm="{{ keycloak_realm }}"
+            --set enabled=true
+      when: keycloak_realm not in available_realms
+      run_once: true
+
+
+    - name: Get available clients in realm
+      command: >-
+        docker exec {{ keycloak_service_container_name }} {{ kcadm }}
+          get clients --target-realm {{ keycloak_realm }}
+                --query clientId={{ keystone_client_id }}
+                --fields id,clientId
+      register: available_clients_json
+      changed_when: false
+      run_once: true
+
+    - name: Filter available clients in realm
+      set_fact:
+        available_clients: "{{ available_clients_json.stdout|from_json|map(attribute='clientId')|list }}"
+      run_once: true
+
+
+    - name: Create OIDC client configuration
+      command: >-
+        docker exec {{ keycloak_service_container_name }} {{ kcadm }}
+          create clients --target-realm "{{ keycloak_realm }}"
+            --set clientId={{ keystone_client_id }}
+            --set protocol=openid-connect
+            --set 'redirectUris={{ keystone_redirect_uris|tojson }}'
+            --set standardFlowEnabled=true
+            --set implicitFlowEnabled=true
+            --set directAccessGrantsEnabled=true
+            --set publicClient=false
+            --set secret="{{ keystone_container_federation_oidc_client_secret }}"
+      when: keystone_client_id not in available_clients
+      run_once: true
+      no_log: true
+
+    - name: "Get internal ID for {{ keystone_client_id }} client"
+      command: >-
+        docker exec {{ keycloak_service_container_name }} {{ kcadm }}
+          get clients --target-realm {{ keycloak_realm }}
+                --query clientId={{ keystone_client_id }}
+                --fields id
+                --format csv
+                --noquotes
+      register: internal_client_id_json
+      changed_when: false
+      run_once: true
+
+    - name: "Filter internal ID for {{ keystone_client_id }} client"
+      set_fact:
+        internal_client_id: "{{ internal_client_id_json.stdout }}"
+      run_once: true
+
+    - name: Get available mappers for client
+      command: >-
+        docker exec {{ keycloak_service_container_name }} {{ kcadm }}
+          get "clients/{{ internal_client_id }}/protocol-mappers/models"
+                 --target-realm {{ keycloak_realm }}
+                 --fields name
+      register: available_mappers_json
+      changed_when: false
+      run_once: true
+
+    - name: Filter available mappers for client
+      set_fact:
+        available_mappers: "{{ available_mappers_json.stdout|from_json|map(attribute='name')|list }}"
+      run_once: true
+
+    - name: Create mappers for client
+      command: >-
+        docker exec {{ keycloak_service_container_name }} {{ kcadm }}
+          create clients/{{ internal_client_id }}/protocol-mappers/models
+            --target-realm "{{ keycloak_realm }}"
+            --set protocol=openid-connect
+            --set name={{ item }}
+            --set protocolMapper=oidc-usermodel-attribute-mapper
+            --set 'config."id.token.claim"="true"'
+            --set 'config."access.token.claim"="true"'
+            --set 'config."userinfo.token.claim"="true"'
+            --set 'config.multivalued=""'
+            --set 'config."aggregate.attrs"=""'
+            --set 'config."user.attribute"="{{ item }}"'
+            --set 'config."claim.name"="{{ item }}"'
+      when: item not in available_mappers
+      loop:
+        - "openstack-user-domain"
+        - "openstack-default-project"
+      run_once: true
+
+    - name: Get available components in realm
+      command: >-
+        docker exec {{ keycloak_service_container_name }} {{ kcadm }}
+          get components --target-realm {{ keycloak_realm }}
+                --query name="{{ keycloak_key_provider_component_name }}"
+                --fields name
+      register: available_components_json
+      changed_when: false
+      run_once: true
+
+    - name: Filter available components in realm
+      set_fact:
+        available_components: "{{ available_components_json.stdout|from_json|map(attribute='name')|list }}"
+      run_once: true
+
+    - name: Add privateKey and certificate to realm
+      command: >-
+        docker exec {{ keycloak_service_container_name }} {{ kcadm }}
+          create components --target-realm "{{ keycloak_realm }}"
+            --set name="{{ keycloak_key_provider_component_name }}"
+            --set providerId=rsa
+            --set providerType=org.keycloak.keys.KeyProvider
+            --set parentId="{{ keycloak_realm }}"
+            --set "config.priority=[\"101\"]"
+            --set "config.enabled=[\"true\"]"
+            --set "config.active=[\"true\"]"
+            --set "config.algorithm=[\"RS256\"]"
+            --set "config.privateKey=[\"{{ private_key_data }}\"]"
+            --set "config.certificate=[\"{{ certificate_data }}\"]"
+      when: keycloak_key_provider_component_name not in available_components
+      run_once: true
+      no_log: true

@@ -1,4 +1,11 @@
-# customer specific configuration
+WEBSSO_ENABLED = True
 
-# SESSION_TIMEOUT = 7200
-# OPENSTACK_ENABLE_PASSWORD_RETRIEVE = True
+WEBSSO_KEYSTONE_URL = "http://192.168.96.9:5000/v3"
+WEBSSO_CHOICES = (
+    ("credentials", "Keystone Credentials"),
+    ("keycloak", "Authenticate via Keycloak"),
+)
+
+WEBSSO_IDP_MAPPING = {
+    "keycloak": ("keycloak", "openid"),
+}
