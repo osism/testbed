@@ -166,6 +166,7 @@
             --set providerId=user-attribute-ldap-mapper
             --set providerType=org.keycloak.storage.ldap.mappers.LDAPStorageMapper
             --set 'config."ldap.attribute"=["givenName"]'
+            --set 'config."is.mandatory.in.ldap"=["false"]'
       changed_when: false
       run_once: true
 
