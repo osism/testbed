@@ -26,7 +26,7 @@ if [[ ! -e /opt/refstack/client/.venv ]]; then
     popd >>$INSTALL_LOG 2>&1
 fi
 
-GUIDELINE=${1:-2020.06}
+GUIDELINE=${1:-2020.11}
 TARGET=${2:-platform}
 
 # NOTE: AccountQuotasNegativeTest.test_user_modify_quota and AccountQuotasTest.test_upload_valid_object
