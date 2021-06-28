@@ -262,7 +262,7 @@
 
     - name: Download amphora image
       get_url:
-        url: https://files.osism.de/octavia-amphora-haproxy-victoria.qcow2
+        url: https://files.osism.de/octavia-amphora-haproxy-wallaby.qcow2
         dest: /tmp/amphora.img
 
     - name: Upload amphora image
