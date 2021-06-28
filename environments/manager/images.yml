@@ -39,11 +39,11 @@ inventory_reconciler_image: "{{ docker_registry_ansible }}/osism/inventory-recon
 cephclient_tag: "{{ ceph_version|default('octopus') }}"
 cephclient_image: "{{ docker_registry_cephclient|default('quay.io') }}/osism/cephclient:{{ cephclient_tag }}"
 
-openstackclient_tag: "{{ openstack_version|default('victoria') }}"
+openstackclient_tag: "{{ openstack_version|default('wallaby') }}"
 openstackclient_image: "{{ docker_registry_openstackclient|default('quay.io') }}/osism/openstackclient:{{ openstackclient_tag }}"
 
 ceph_ansible_tag: "{{ ceph_version|default('octopus') }}"
 ceph_ansible_image: "{{ docker_registry_ansible|default('quay.io') }}/osism/ceph-ansible:{{ ceph_ansible_tag }}"
 
-kolla_ansible_tag: "{{ openstack_version|default('victoria') }}"
+kolla_ansible_tag: "{{ openstack_version|default('wallaby') }}"
 kolla_ansible_image: "{{ docker_registry_ansible|default('quay.io') }}/osism/kolla-ansible:{{ kolla_ansible_tag }}"

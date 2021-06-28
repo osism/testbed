@@ -36,7 +36,8 @@ OpenStack
 * Stein
 * Train
 * Ussuri
-* Victoria (**default**)
+* Victoria
+* Wallaby (**default**)
 
 Services
 ========

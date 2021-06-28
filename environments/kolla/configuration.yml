@@ -3,7 +3,7 @@
 # images
 
 docker_registry: quay.io
-openstack_release: victoria
+openstack_release: wallaby
 kolla_image_version: "{{ openstack_release }}"
 
 ##########################################################

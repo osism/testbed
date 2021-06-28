@@ -4,7 +4,7 @@
 
 ceph_version: octopus
 manager_version: latest
-openstack_version: victoria
+openstack_version: wallaby
 
 ##########################
 # cockpit

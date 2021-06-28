@@ -19,7 +19,7 @@ jobs:
     strategy:
       matrix:
         openstack-version:
-          - victoria
+          - wallaby
 
     steps:
       - name: Checkout
@@ -64,7 +64,7 @@ jobs:
     strategy:
       matrix:
         openstack-version:
-          - victoria
+          - wallaby
 
     steps:
       - name: Checkout

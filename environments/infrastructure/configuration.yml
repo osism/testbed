@@ -3,7 +3,7 @@
 # versions
 
 ceph_version: octopus
-openstack_version: victoria
+openstack_version: wallaby
 
 ##########################
 # cephclient

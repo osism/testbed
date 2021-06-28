@@ -66,7 +66,7 @@ network_interface: "{{ ansible_local.testbed_network_devices.management }}"
 # kolla_external_vip_interface:
 # migration_interface:
 neutron_external_interface: vxlan0
-# octavia_network_interface:
+octavia_network_interface: ohm0
 # storage_interface:
 # tunnel_interface:
 

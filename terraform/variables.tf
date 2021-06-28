@@ -114,7 +114,7 @@ variable "ceph_version" {
 
 variable "openstack_version" {
   type    = string
-  default = "victoria"
+  default = "wallaby"
 }
 
 variable "number_of_nodes" {
