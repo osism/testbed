@@ -1,0 +1,15 @@
+---
+- name: Fix 'insecure global_id reclaim' ceph health warning
+  hosts: manager
+  gather_facts: false
+
+  tasks:
+
+    # NOTE: This temporarily solves the following problems:
+    #
+    #       client is using insecure global_id reclaim
+    #       mons are allowing insecure global_id reclaim
+
+    - name: Fix 'insecure global_id reclaim' ceph health warning
+      command: ceph config set mon auth_allow_insecure_global_id_reclaim false
+      changed_when: false
