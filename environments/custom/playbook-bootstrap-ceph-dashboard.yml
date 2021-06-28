@@ -29,6 +29,7 @@
       ansible.builtin.copy:
         content: "{{ ceph_dashboard_password }}"
         dest: /opt/cephclient/data/ceph_dashboard_password
+        mode: 0644
       no_log: true
 
     - name: Create admin user
