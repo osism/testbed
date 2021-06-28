@@ -7,11 +7,6 @@ openstack_release: victoria
 kolla_image_version: "{{ openstack_release }}"
 
 ##########################################################
-# kolla
-
-kolla_enable_sanity_checks: "yes"
-
-##########################################################
 # haproxy
 
 kolla_internal_fqdn: api-int.osism.test
