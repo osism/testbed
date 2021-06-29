@@ -20,6 +20,13 @@
       - name: "{{ ansible_distribution_release }}-updates"
         repository: "deb [arch=amd64] http://de.archive.ubuntu.com/ubuntu/ {{ ansible_distribution_release }}-updates main restricted universe multiverse"
 
+    # resolvconf
+    resolvconf_nameserver:
+      - 8.8.8.8
+      - 9.9.9.9
+    resolvconf_search: osism.test
+    resolvconf_dnssec: false
+
   collections:
     - osism.commons
     - osism.services
