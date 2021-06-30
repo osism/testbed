@@ -60,6 +60,20 @@
         name: bms-network-setup
         enabled: false
 
+# NOTE: The netplan apply call is made separately and not via the osism.commons.network role in order
+#       to keep the default configuration in the testbed. In the default configuration, network restarts
+#       are deactivated.
+
+- name: Apply netplan configuration on all nodes
+  hosts: all
+  gather_facts: false
+
+  tasks:
+    - name: Apply netplan configuration
+      become: true
+      command: netplan apply
+      changed_when: false
+
 - name: Add a workaround service to non-manager nodes
   hosts: all:!manager
   gather_facts: false
