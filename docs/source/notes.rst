@@ -33,8 +33,8 @@ Notes
       openssl x509 -req -days 365 -in csr.csr -signkey  private_key.pem -out cert.crt
 
 
-* The configuration is intentionally kept quite static. Please no PRs to make the configuration
-  more flexible/dynamic.
+* The configuration is intentionally kept quite static. Please create no PRs to make the
+  configuration more flexible/dynamic.
 * The `OSISM documentation <https://docs.osism.de>`_ uses hostnames, examples, addresses etc.
   from this testbed.
 * Even if all components (storage, network, compute, control) are operated on the same nodes,
