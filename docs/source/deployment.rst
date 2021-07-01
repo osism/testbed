@@ -249,6 +249,9 @@ Initialization
 .. raw:: html
    :file: html/asciinema-tf-deployment.html
 
+When the terraform deployment is complete, you can watch the ansible deployment with
+the command below. The checks won't work until the deployment is fully completed.
+
 .. code-block:: console
 
    make watch ENVIRONMENT=betacloud
