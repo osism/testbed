@@ -51,13 +51,30 @@ Terraform in a current version must be installed and usable.
 Information on installing Terraform can be found in the Terraform
 documentation: https://learn.hashicorp.com/tutorials/terraform/install-cli
 
-Supported cloud providers
-=========================
-
-**Works**
+Cloud access
+------------
 
 There is a separate environment file, e.g. ``environments/betacloud.tfvars``, for
 each supported cloud provider.
+
+If the name of the cloud provider in ``clouds.yaml`` differs from the intended default, e.g.
+``betacloud`` for Betacloud, this can be adjusted as follows.
+
+.. code-block:: console
+
+   PARAMS="-var 'cloud_provider=the-name-of-the-entry'"
+
+A complete example with the environment for the Betacloud and a cloud provider with the name
+``the-name-of-the-entry`` looks like this:
+
+.. code-block:: console
+
+   make deploy ENVIRONMENT=betacloud PARAMS="-var 'cloud_provider=the-name-of-the-entry'"
+
+Alternatively, you can also just set the ``OS_CLOUD`` environment
+(``export OS_CLOUD=the-name-of-the-entry`` in bash), so your ``openstack`` command line
+client works without passing ``--os-cloud=``.
+
 
 * `Betacloud <https://www.betacloud.de>`_
 
@@ -140,31 +157,12 @@ each supported cloud provider.
 
         make deploy ENVIRONMENT=otc PARALLELISM=1
 
-.. note::
-
-   If the name of the cloud provider in ``clouds.yaml`` differs from the intended default, e.g.
-   ``betacloud`` for Betacloud, this can be adjusted as follows.
-
-   .. code-block:: console
-
-      PARAMS="-var 'cloud_provider=the-name-of-the-entry'"
-
-   A complete example with the environment for the Betacloud and a cloud provider with the name
-   ``the-name-of-the-entry`` looks like this:
-
-   .. code-block:: console
-
-      make deploy ENVIRONMENT=betacloud PARAMS="-var 'cloud_provider=the-name-of-the-entry'"
-
-   Alternatively, you can also just set the ``OS_CLOUD`` environment
-   (``export OS_CLOUD=the-name-of-the-entry`` in bash), so your ``openstack`` command line
-   client works without passing ``--os-cloud=``.
-
 * `SCS Demonstrator <https://ui.gx-scs.sovereignit.cloud/>`_
 
   .. note::
 
      * The credentials are stored in ``clouds.yaml`` and ``secure.yaml`` with the name ``scs-demo``.
+
 
 Preparations
 ============
