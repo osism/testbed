@@ -82,7 +82,7 @@ client works without passing ``--os-cloud=``.
 
      * The credentials are stored in ``clouds.yaml`` and ``secure.yaml`` with the name ``betacloud``.
 
-     * To use the beta cloud, please send an email to support@betacloud.de. Please state that you are
+     * To use the Betacloud, please send an email to support@betacloud.de. Please state that you are
        interested in using the OSISM testbed.
 
 * `Citycloud <https://www.citycloud.com>`_
