@@ -82,17 +82,24 @@ client works without passing ``--os-cloud=``.
 
      * The credentials are stored in ``clouds.yaml`` and ``secure.yaml`` with the name ``betacloud``.
 
+     * To use the beta cloud, please send an email to support@betacloud.de. Please state that you are
+       interested in using the OSISM testbed.
+
 * `Citycloud <https://www.citycloud.com>`_
 
   .. note::
 
      * The credentials are stored in ``clouds.yaml`` and ``secure.yaml`` with the name ``citycloud``.
 
+     * Registration is possible at the following URL: https://admin.citycloud.com/login?register=true
+
 * `OVH <https://www.ovhcloud.com>`_
 
   .. note::
 
      * The credentials are stored in ``clouds.yaml`` and ``secure.yaml`` with the name ``ovh``.
+
+     * Registration is possible at the following URL: https://us.ovhcloud.com/auth/signup/#/
 
      * The public L3 network services at OVH are currently still in beta. For more details, please
        visit https://labs.ovh.com/public-cloud-l3-services.
@@ -115,6 +122,8 @@ client works without passing ``--os-cloud=``.
 * `Open Telekom Cloud (OTC) <https://open-telekom-cloud.com/>`_
 
   .. note::
+
+     * Registration is possible at the following URL: https://www.websso.t-systems.com/eshop/agb/de/public/configcart/show
 
      * You will need to create your own Ubuntu 20.04 image to make sure that you have a larger
        min-disk (20GB recommended). You can base it on the OTC Ubuntu images by creating a volume
