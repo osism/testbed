@@ -51,13 +51,30 @@ Terraform in a current version must be installed and usable.
 Information on installing Terraform can be found in the Terraform
 documentation: https://learn.hashicorp.com/tutorials/terraform/install-cli
 
-Supported cloud providers
-=========================
-
-**Works**
+Cloud access
+------------
 
 There is a separate environment file, e.g. ``environments/betacloud.tfvars``, for
 each supported cloud provider.
+
+If the name of the cloud provider in ``clouds.yaml`` differs from the intended default, e.g.
+``betacloud`` for Betacloud, this can be adjusted as follows.
+
+.. code-block:: console
+
+   PARAMS="-var 'cloud_provider=the-name-of-the-entry'"
+
+A complete example with the environment for the Betacloud and a cloud provider with the name
+``the-name-of-the-entry`` looks like this:
+
+.. code-block:: console
+
+   make deploy ENVIRONMENT=betacloud PARAMS="-var 'cloud_provider=the-name-of-the-entry'"
+
+Alternatively, you can also just set the ``OS_CLOUD`` environment
+(``export OS_CLOUD=the-name-of-the-entry`` in bash), so your ``openstack`` command line
+client works without passing ``--os-cloud=``.
+
 
 * `Betacloud <https://www.betacloud.de>`_
 
@@ -65,17 +82,24 @@ each supported cloud provider.
 
      * The credentials are stored in ``clouds.yaml`` and ``secure.yaml`` with the name ``betacloud``.
 
+     * To use the Betacloud, please send an email to support@betacloud.de. Please state that you are
+       interested in using the OSISM testbed.
+
 * `Citycloud <https://www.citycloud.com>`_
 
   .. note::
 
      * The credentials are stored in ``clouds.yaml`` and ``secure.yaml`` with the name ``citycloud``.
 
+     * Registration is possible at the following URL: https://admin.citycloud.com/login?register=true
+
 * `OVH <https://www.ovhcloud.com>`_
 
   .. note::
 
      * The credentials are stored in ``clouds.yaml`` and ``secure.yaml`` with the name ``ovh``.
+
+     * Registration is possible at the following URL: https://us.ovhcloud.com/auth/signup/#/
 
      * The public L3 network services at OVH are currently still in beta. For more details, please
        visit https://labs.ovh.com/public-cloud-l3-services.
@@ -98,6 +122,8 @@ each supported cloud provider.
 * `Open Telekom Cloud (OTC) <https://open-telekom-cloud.com/>`_
 
   .. note::
+
+     * Registration is possible at the following URL: https://www.websso.t-systems.com/eshop/agb/de/public/configcart/show
 
      * You will need to create your own Ubuntu 20.04 image to make sure that you have a larger
        min-disk (20GB recommended). You can base it on the OTC Ubuntu images by creating a volume
@@ -140,34 +166,12 @@ each supported cloud provider.
 
         make deploy ENVIRONMENT=otc PARALLELISM=1
 
-.. note::
-
-   If the name of the cloud provider in ``clouds.yaml`` differs from the intended default, e.g.
-   ``betacloud`` for Betacloud, this can be adjusted as follows.
-
-   .. code-block:: console
-
-      make deploy PARAMS="-var 'cloud_provider=the-name-of-the-entry'"
-
-   A complete example with the environment for the Betacloud and a cloud provider with the name
-   ``the-name-of-the-entry`` looks like this:
-
-   .. code-block:: console
-
-      make deploy ENVIRONMENT=betacloud
-
-   You can also set the ``ENVIRONMENT`` environment variable (``export ENVIRONMENT=betacloud``
-   in bash) to avoid having to pass it manually all the time.
-
-   Alternatively, you can also just set the ``OS_CLOUD`` environment
-   (``export OS_CLOUD=the-name-of-the-entry`` in bash), so your ``openstack`` command line
-   client works without passing ``--os-cloud=``.
-
 * `SCS Demonstrator <https://ui.gx-scs.sovereignit.cloud/>`_
 
   .. note::
 
      * The credentials are stored in ``clouds.yaml`` and ``secure.yaml`` with the name ``scs-demo``.
+
 
 Preparations
 ============
