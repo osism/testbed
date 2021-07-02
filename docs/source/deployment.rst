@@ -41,7 +41,7 @@ The testbed requires the following resources When using the default flavors.
 .. note::
 
    When deploying all additional OpenStack services, the use of nodes with at least
-   32 GByte memory is recommended. Then 104 GByte memory are required.
+   32 GByte memory is recommended. Then 104 GByte memory in total are required.
 
 Software
 --------
@@ -248,13 +248,14 @@ Initialization
    make dry-run ENVIRONMENT=betacloud
    make plan ENVIRONMENT=betacloud  # this is just an alias for "make dry-run"
 
+The most basic deployment can be achived with the code below. It should
+take about half an hour to finish. For more advanced deployments take a look
+at the note box.
+
 .. code-block:: console
 
    make deploy ENVIRONMENT=betacloud
    make create ENVIRONMENT=betacloud  # this is just an alias for "make deploy"
-
-.. raw:: html
-   :file: html/asciinema-tf-deployment.html
 
 When the terraform deployment is complete, you can watch the ansible deployment with
 the command below. The checks won't work until the deployment is fully completed.
@@ -274,14 +275,14 @@ the command below. The checks won't work until the deployment is fully completed
    * Use ``deploy-infra`` to deploy infrastructure services when building the environment.
    * Use ``deploy-ceph`` to deploy Ceph when building the environment.
    * Use ``deploy-openstack`` to deploy OpenStack when building the environment.
-     This also includes Ceph and infrastructure services.
+     This also includes Ceph and infrastructure services. (Takes about 2 hours)
    * Use ``deploy-full`` to deploy OpenStack including Ceph and infrastructure services as
      well as monitoring.
 
-.. note::
+This video shows a code record of how your terraform deployment should look like.
 
-   You can also set the ``ENVIRONMENT`` environment variable (``export ENVIRONMENT=betacloud``
-   in bash) to avoid having to pass it manually all the time.
+.. raw:: html
+   :file: html/asciinema-tf-deployment.html
 
 
 Usage
@@ -319,6 +320,9 @@ Create a tunnel for the internal networks (``192.168.16.0/20``,
 
 Checks
 ======
+
+Most of the checks require a full installation of openstack and ceph.
+Only "ping" works without them.
 
 Check the installation via ping:
 
