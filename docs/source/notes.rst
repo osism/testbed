@@ -35,7 +35,7 @@ Notes
 
 * The configuration is intentionally kept quite static. Please create no PRs to make the
   configuration more flexible/dynamic.
-* The `OSISM documentation <https://docs.osism.de>`_ uses hostnames, examples, addresses etc.
+* The `OSISM documentation <https://docs.osism.tech>`_ uses hostnames, examples, addresses etc.
   from this testbed.
 * Even if all components (storage, network, compute, control) are operated on the same nodes,
   there are separate networks. This is because in larger productive HCI environments, dedicated
@@ -48,7 +48,7 @@ Notes
   running ``osism-generic facts``.
 
   To avoid this problem a cronjob should be used for regular updates: ``osism-run custom cronjobs``.
-* The documentation of the OSISM can be found on https://docs.osism.de. There you will find
+* The documentation of the OSISM can be found on https://docs.osism.tech. There you will find
   further details on deployment, operation etc.
 * The manager is used as pull through cache for Docker images and Ubuntu packages. This reduces
   the amount of traffic consumed.
