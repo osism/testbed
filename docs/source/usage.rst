@@ -118,7 +118,6 @@ Webinterfaces
 Name             URL                        Username Password
 ================ ========================== ======== ========================================
 ARA              http://192.168.16.5:8120   ara      password
-AWX              http://192.168.16.5:8052   dragon   vaeh7eingix8ooPi
 Ceph             http://192.168.16.9:7000   admin    phoon7Chahvae6we
 Cockpit          https://192.168.16.5:8130  dragon   da5pahthaew2Pai2
 Horizon          http://192.168.16.9        admin    pYV8bV749aDMXLPlYJwoJs4ouRPWezCIOXYAQP6v
@@ -136,11 +135,6 @@ ARA
 ---
 
 .. figure:: /images/ara.png
-
-AWX
----
-
-.. figure:: /images/awx.png
 
 Ceph
 ----

@@ -7,9 +7,6 @@ adminer_image: "{{ docker_registry }}/library/adminer:{{ adminer_tag }}"
 ara_server_tag: "1.5.6"
 ara_server_image: "{{ docker_registry_ansible|default('quay.io') }}/osism/ara-server:{{ ara_server_tag }}"
 
-awxclient_tag: "19.2.2"
-awxclient_image: "{{ docker_registry_ansible|default('quay.io') }}/osism/awxclient:{{ awxclient_tag }}"
-
 mariadb_tag: "10.6"
 mariadb_image: "{{ docker_registry }}/library/mariadb:{{ mariadb_tag }}"
 
@@ -30,9 +27,6 @@ redis_image: "{{ docker_registry }}/library/redis:{{ redis_tag }}"
 
 registry_tag: "2.7"
 registry_image: "{{ docker_registry }}/library/registry:{{ registry_tag }}"
-
-awx_tag: "{{ awx_version|default('latest') }}"
-awx_image: "{{ docker_registry_ansible|default('quay.io') }}/osism/manager:{{ awx_tag }}"
 
 osism_ansible_tag: "{{ manager_version|default('latest') }}"
 osism_ansible_image: "{{ docker_registry_ansible|default('quay.io') }}/osism/osism-ansible:{{ osism_ansible_tag }}"
