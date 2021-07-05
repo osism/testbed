@@ -16,7 +16,7 @@ partition = os.path.basename(result.stdout.strip())
 result = run("basename $(readlink -f '/sys/class/block/%s/..')" % partition, stdout=PIPE, stderr=PIPE, universal_newlines=True, shell=True)
 root = result.stdout.strip()
 
-result = run("lsblk -nd -I 8,220,252 --output NAME | sort | grep -v %s" % root, stdout=PIPE, stderr=PIPE, universal_newlines=True, shell=True)
+result = run("hwinfo --disk --short | grep Disk | awk '{print $1}' | xargs -n1 basename | sort | grep -v %s" % root, stdout=PIPE, stderr=PIPE, universal_newlines=True, shell=True)
 devices = result.stdout.strip().split("\n")
 
 print(json.dumps(["/dev/%s" % x for x in devices[:-1]]))

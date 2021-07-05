@@ -5,28 +5,34 @@
 
   tasks:
     - name: Install python3-netifaces package
+      become: true
       apt:
         name: python3-netifaces
         state: present
+
+    - name: Install hwinfo package
       become: true
+      apt:
+        name: hwinfo
+        state: present
 
     - name: Create custom facts directory
+      become: true
       file:
         path: /etc/ansible/facts.d
         state: "directory"
         owner: root
         group: root
         mode: 0755
-      become: true
 
     - name: Copy fact files
+      become: true
       copy:
         src: "{{ item }}.fact"
         dest: "/etc/ansible/facts.d/{{ item }}.fact"
         owner: root
         group: root
         mode: 0755
-      become: true
       loop:
         - testbed_ceph_devices
         - testbed_ceph_devices_all
