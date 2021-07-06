@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+from dotenv import load_dotenv
 import json
 import os
 from subprocess import PIPE, run
@@ -10,13 +11,21 @@ if os.path.isfile("/etc/is_bms"):
     print(json.dumps(["/dev/nvme0n1"]))
     sys.exit(0)
 
-result = run("df -hT | grep /$ | awk '{print $1}' | xargs -n1 readlink -f", stdout=PIPE, stderr=PIPE, universal_newlines=True, shell=True)
-partition = os.path.basename(result.stdout.strip())
+# NOTE: Get the partition on which the / fileysystem is located.
+#       inspired by https://bootlin.com/blog/find-root-device/
+result = run("stat / | grep Device | awk '{print $2}' | awk -F/ '{print $1}'", stdout=PIPE, stderr=PIPE, universal_newlines=True, shell=True)
+major, minor = divmod(int(result.stdout.strip()[:-1], base=16), 0x100)
+load_dotenv(f"/sys/dev/block/{major}:{minor}/uevent")
+partition = os.environ.get("DEVNAME")
 
-result = run("basename $(readlink -f '/sys/class/block/%s/..')" % partition, stdout=PIPE, stderr=PIPE, universal_newlines=True, shell=True)
+# NOTE: Get the block device on which the partition of the / fileysystem
+#       is located.
+result = run(f"basename $(readlink -f '/sys/class/block/{partition}/..')", stdout=PIPE, stderr=PIPE, universal_newlines=True, shell=True)
 root = result.stdout.strip()
 
-result = run("hwinfo --disk --short | grep Disk | awk '{print $1}' | xargs -n1 basename | sort | grep -v %s" % root, stdout=PIPE, stderr=PIPE, universal_newlines=True, shell=True)
+# NOTE: Get all block devices that are present except the block device
+#       on which the / filesystem is located.
+result = run(f"hwinfo --disk --short | grep Disk | awk '{{print $1}}' | xargs -n1 basename | sort | grep -v {root}", stdout=PIPE, stderr=PIPE, universal_newlines=True, shell=True)
 devices = result.stdout.strip().split("\n")
 
-print(json.dumps(["/dev/%s" % x for x in devices]))
+print(json.dumps([f"/dev/{x}" for x in devices]))
