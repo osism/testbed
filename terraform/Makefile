@@ -12,6 +12,12 @@ PARALLELISM = 10
 RESOURCE = openstack_networking_floatingip_v2.manager_floating_ip
 STATE = errored.tfstate
 
+VERSION_CEPH ?= octopus
+VERSION_OPENSTACK ?= victoria
+
+RALLY ?= false
+REFSTACK ?= false
+
 APPLY_PARAMS = -auto-approve -parallelism=$(PARALLELISM)
 
 ifneq (,$(wildcard ./local.env))
@@ -40,6 +46,10 @@ init:
 	@rm -f *.auto.tfvars
 	@cp environments/$(ENVIRONMENT).tfvars $(ENVIRONMENT).auto.tfvars
 	@echo "cloud_provider = \"$(OS_CLOUD)\"" >> $(ENVIRONMENT).auto.tfvars
+	@echo "ceph_version = \"$(VERSION_CEPH)\"" >> $(ENVIRONMENT).auto.tfvars
+	@echo "openstack_version = \"$(VERSION_OPENSTACK)\"" >> $(ENVIRONMENT).auto.tfvars
+	@echo "run_rally = $(RALLY)" >> $(ENVIRONMENT).auto.tfvars
+	@echo "run_refstack = $(REFSTACK)" >> $(ENVIRONMENT).auto.tfvars
 
 	@rm -f *_custom.tf
 	@for custom in `grep '^# *customisation:' "environments/${ENVIRONMENT}.tfvars" | sed 's/^# *customisation://'`; do \
@@ -50,6 +60,8 @@ init:
 	@for over in `grep '^# *override:' "environments/${ENVIRONMENT}.tfvars" | sed 's/^# *override://'`; do \
 		cp -p overrides/$${over}_override.tf .; \
 	done
+
+	@terraform fmt
 
 validate: init
 	@$(TERRAFORM) validate $(PARAMS)

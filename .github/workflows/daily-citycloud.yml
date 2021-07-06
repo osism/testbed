@@ -98,5 +98,5 @@ jobs:
         run: make ENVIRONMENT=citycloud init
         working-directory: ./terraform
       - name: Deploy environment
-        run: make ENVIRONMENT=citycloud deploy-full PARAMS="-var openstack_version=${{ matrix.openstack-version }} -var run_refstack=true -var run_rally=true"
         working-directory: ./terraform
+        run: make ENVIRONMENT=citycloud deploy-full OPENSTACK_VERSION=${{ matrix.openstack-version }} REFSTACK=true RALLY=true
