@@ -4,16 +4,10 @@
   gather_facts: false
 
   tasks:
-    - name: Install python3-netifaces package
+    - name: Install required packages
       become: true
       apt:
-        name: python3-netifaces
-        state: present
-
-    - name: Install hwinfo package
-      become: true
-      apt:
-        name: hwinfo
+        name: ["python3-netifaces", "python3-dotenv", "hwinfo"]
         state: present
 
     - name: Create custom facts directory
