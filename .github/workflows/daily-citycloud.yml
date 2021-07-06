@@ -2,6 +2,7 @@
 name: Daily citycloud
 
 "on":
+  workflow_dispatch:
   push:
     paths:
       - '.github/workflows/daily-citycloud.yml'
