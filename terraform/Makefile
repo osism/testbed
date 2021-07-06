@@ -21,9 +21,10 @@ endif
 export OS_CLOUD ?= $(ENVIRONMENT)
 
 export TF_VAR_cloud_provider=$(ENVIRONMENT)
+export TF_CLI_CONFIG_FILE=terraformrc
 
-ifneq (,$(wildcard ./minio.env))
-  include minio.env
+ifneq (,$(wildcard ./backend.env))
+  include backend.env
 endif
 
 reset:
@@ -32,23 +33,29 @@ reset:
 init:
 	@if [ ! -d .terraform/providers ]; then $(TERRAFORM) init; fi
 
-	@$(TERRAFORM) workspace select ${ENVIRONMENT} || $(TERRAFORM) workspace new ${ENVIRONMENT}
+	@if [ ! -f backend.tf ]; then \
+		$(TERRAFORM) workspace select ${ENVIRONMENT} || $(TERRAFORM) workspace new ${ENVIRONMENT}; \
+	fi
 
-	@rm -f *_override.tf
-	@for over in `grep '^# *override:' "environments/${ENVIRONMENT}.tfvars" | sed 's/^# *override://'`; do \
-		cp -p overrides/$${over}_override.tf .; \
-	done
+	@rm -f *.auto.tfvars
+	@cp environments/$(ENVIRONMENT).tfvars $(ENVIRONMENT).auto.tfvars
+	@echo "cloud_provider = \"$(OS_CLOUD)\"" >> $(ENVIRONMENT).auto.tfvars
 
 	@rm -f *_custom.tf
 	@for custom in `grep '^# *customisation:' "environments/${ENVIRONMENT}.tfvars" | sed 's/^# *customisation://'`; do \
 		cp -p customisations/$${custom}_custom.tf .; \
 	done
 
+	@rm -f *_override.tf
+	@for over in `grep '^# *override:' "environments/${ENVIRONMENT}.tfvars" | sed 's/^# *override://'`; do \
+		cp -p overrides/$${over}_override.tf .; \
+	done
+
 validate: init
 	@$(TERRAFORM) validate $(PARAMS)
 
 attach: init
-	@$(TERRAFORM) import -var-file="environments/$(ENVIRONMENT).tfvars" $(RESOURCE) $(PARAMS)
+	@$(TERRAFORM) import $(RESOURCE) $(PARAMS)
 
 detach: init
 	@$(TERRAFORM) state rm $(RESOURCE) $(PARAMS)
@@ -57,31 +64,42 @@ state-push: init
 	@$(TERRAFORM) state push $(STATE)
 
 dry-run: init
-	@$(TERRAFORM) plan -var-file="environments/$(ENVIRONMENT).tfvars" $(PARAMS)
+	@$(TERRAFORM) plan $(PARAMS)
 
 deploy: init
 	@touch .deploy.$(ENVIRONMENT)
-	@$(TERRAFORM) apply $(APPLY_PARAMS) -var-file="environments/$(ENVIRONMENT).tfvars" -var "configuration_version=$(CONFIGURATION)" $(PARAMS)
+	@echo "configuration_version = \"$(CONFIGURATION)\"" >> $(ENVIRONMENT).auto.tfvars
+	@$(TERRAFORM) apply $(APPLY_PARAMS) $(PARAMS)
 
 deploy-identity: init
 	@touch .deploy.$(ENVIRONMENT)
-	@$(TERRAFORM) apply $(APPLY_PARAMS) -var-file="environments/$(ENVIRONMENT).tfvars" -var 'deploy_identity=true' $(PARAMS)
+	@echo "deploy_identity = true" >> $(ENVIRONMENT).auto.tfvars
+	@$(TERRAFORM) apply $(APPLY_PARAMS) $(PARAMS)
 
 deploy-infra: init
 	@touch .deploy.$(ENVIRONMENT)
-	@$(TERRAFORM) apply $(APPLY_PARAMS) -var-file="environments/$(ENVIRONMENT).tfvars" -var 'deploy_infrastructure=true' $(PARAMS)
+	@echo "deploy_infrastructure = true" >> $(ENVIRONMENT).auto.tfvars
+	@$(TERRAFORM) apply $(APPLY_PARAMS) $(PARAMS)
 
 deploy-ceph: init
 	@touch .deploy.$(ENVIRONMENT)
-	@$(TERRAFORM) apply $(APPLY_PARAMS) -var-file="environments/$(ENVIRONMENT).tfvars" -var 'deploy_ceph=true' $(PARAMS)
+	@echo "deploy_ceph = true" >> $(ENVIRONMENT).auto.tfvars
+	@$(TERRAFORM) apply $(APPLY_PARAMS) $(PARAMS)
 
 deploy-openstack: init
 	@touch .deploy.$(ENVIRONMENT)
-	@$(TERRAFORM) apply $(APPLY_PARAMS) -approve -var-file="environments/$(ENVIRONMENT).tfvars" -var 'deploy_infrastructure=true' -var 'deploy_ceph=true' -var 'deploy_openstack=true' $(PARAMS)
+	@echo "deploy_ceph = true" >> $(ENVIRONMENT).auto.tfvars
+	@echo "deploy_infrastructure = true" >> $(ENVIRONMENT).auto.tfvars
+	@echo "deploy_openstack = true" >> $(ENVIRONMENT).auto.tfvars
+	@$(TERRAFORM) apply $(APPLY_PARAMS) $(PARAMS)
 
 deploy-full: init
 	@touch .deploy.$(ENVIRONMENT)
-	@$(TERRAFORM) apply $(APPLY_PARAMS) -var-file="environments/$(ENVIRONMENT).tfvars" -var 'deploy_infrastructure=true' -var 'deploy_ceph=true' -var 'deploy_openstack=true' -var 'deploy_monitoring=true' $(PARAMS)
+	@echo "deploy_ceph = true" >> $(ENVIRONMENT).auto.tfvars
+	@echo "deploy_infrastructure = true" >> $(ENVIRONMENT).auto.tfvars
+	@echo "deploy_monitoring = true" >> $(ENVIRONMENT).auto.tfvars
+	@echo "deploy_openstack = true" >> $(ENVIRONMENT).auto.tfvars
+	@$(TERRAFORM) apply $(APPLY_PARAMS) $(PARAMS)
 
 check: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
 	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
@@ -103,11 +121,16 @@ show: init
 	@$(TERRAFORM) show
 
 clean: init
-	@$(TERRAFORM) destroy $(APPLY_PARAMS) -var-file="environments/$(ENVIRONMENT).tfvars" $(PARAMS)
+	@$(TERRAFORM) destroy $(APPLY_PARAMS) $(PARAMS)
 	@rm -f .deploy.$(ENVIRONMENT) .MANAGER_ADDRESS.$(ENVIRONMENT)
 	@rm -f .id_rsa.$(ENVIRONMENT)
-	@$(TERRAFORM) workspace select default
-	@$(TERRAFORM) workspace delete $(ENVIRONMENT)
+
+	@if [ ! -f backend.tf ]; then \
+		$(TERRAFORM) workspace select default; \
+		$(TERRAFORM) workspace delete $(ENVIRONMENT); \
+	fi
+	@rm -f *.auto.tfvars
+	@rm -f *_custom.tf
 	@rm -f *_override.tf
 
 list: init

@@ -31,17 +31,23 @@ jobs:
         shell: bash
         working-directory: ./terraform
         env:
-          OPENSTACK: ${{ secrets.OPENSTACK }}
+          OPENSTACK: ${{ secrets.OPENSTACK_DAILY_CITYCLOUD }}
         run: |
           echo "$OPENSTACK" > clouds.yaml
-      - name: Prepare use of minio
+      - name: Prepare use of remote backend
         shell: bash
         working-directory: ./terraform
         env:
-          MINIO: ${{ secrets.MINIO }}
+          BACKEND: ${{ secrets.TF_BACKEND_DAILY_CITYCLOUD }}
         run: |
-          echo "$MINIO" > minio.env
-          cp minio.tf.disabled minio.tf
+          echo "$BACKEND" > backend.tf
+      - name: Set terraform cloud credentials
+        shell: bash
+        working-directory: ./terraform
+        env:
+          BACKEND: ${{ secrets.TF_CLI_CONFIG_DAILY_CITYCLOUD }}
+        run: |
+          echo "$BACKEND" > terraformrc
       - name: Initialization
         run: make init
         working-directory: ./terraform
@@ -70,17 +76,23 @@ jobs:
         shell: bash
         working-directory: ./terraform
         env:
-          OPENSTACK: ${{ secrets.OPENSTACK }}
+          OPENSTACK: ${{ secrets.OPENSTACK_DAILY_CITYCLOUD }}
         run: |
           echo "$OPENSTACK" > clouds.yaml
-      - name: Prepare use of minio
+      - name: Prepare use of remote backend
         shell: bash
         working-directory: ./terraform
         env:
-          MINIO: ${{ secrets.MINIO }}
+          BACKEND: ${{ secrets.TF_BACKEND_DAILY_CITYCLOUD }}
         run: |
-          echo "$MINIO" > minio.env
-          cp minio.tf.disabled minio.tf
+          echo "$BACKEND" > backend.tf
+      - name: Set terraform cloud credentials
+        shell: bash
+        working-directory: ./terraform
+        env:
+          BACKEND: ${{ secrets.TF_CLI_CONFIG_DAILY_CITYCLOUD }}
+        run: |
+          echo "$BACKEND" > terraformrc
       - name: Initialization
         run: make ENVIRONMENT=citycloud init
         working-directory: ./terraform
