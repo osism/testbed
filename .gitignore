@@ -1,3 +1,4 @@
+*.auto.tfvars
 .*.swp
 .MANAGER_ADDRESS.*
 .deploy.*
@@ -7,6 +8,8 @@
 .tox
 .venv
 Pipfile.lock
+backend.env
+backend.tf
 clouds.yaml
 clouds.yml
 contrib/es_test_data.py
@@ -16,13 +19,12 @@ environment-local.tfvars
 environments/**/ceph.client.*.keyring
 errored.tfstate
 local.env
-minio.env
-minio.tf
 roles
 secrets
 secure.yaml
 secure.yml
 terraform.tfstate*
 terraform.tfstate.d
-terraform/*_override.tf
 terraform/*_custom.tf
+terraform/*_override.tf
+terraformrc
