@@ -72,7 +72,6 @@
 
   roles:
     - role: chrony
-    - role: systohc
     - role: configfs
     - role: packages
     - role: sysctl
