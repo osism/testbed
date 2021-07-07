@@ -130,6 +130,15 @@ Skydive          http://192.168.16.5:8085   admin    pYV8bV749aDMXLPlYJwoJs4ouRP
 phpMyAdmin       http://192.168.16.5:8110   root     qNpdZmkKuUKBK3D5nZ08KMZ5MnYrGEe2hzH6XC0i
 ================ ========================== ======== ========================================
 
+.. note::
+
+   To access the webinterfaces, make sure that you have a tunnel up and running for the
+   internal networks.
+
+   .. code-block:: console
+
+      make sshuttle ENVIRONMENT=betacloud
+
 ARA
 ---
 

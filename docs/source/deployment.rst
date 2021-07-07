@@ -279,6 +279,8 @@ the command below. The checks won't work until the deployment is fully completed
    * Use ``deploy-full`` to deploy OpenStack including Ceph and infrastructure services as
      well as monitoring.
 
+   To deploy additional services after initial deployment, please see :ref:`Deploy services`.
+
 This video shows a code record of how your terraform deployment should look like.
 
 .. raw:: html
