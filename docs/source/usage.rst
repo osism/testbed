@@ -128,7 +128,6 @@ Netdata          http://192.168.16.5:19999  -        -
 Patchman         http://192.168.16.5:8150   patchman password
 Skydive          http://192.168.16.5:8085   admin    pYV8bV749aDMXLPlYJwoJs4ouRPWezCIOXYAQP6v
 phpMyAdmin       http://192.168.16.5:8110   root     qNpdZmkKuUKBK3D5nZ08KMZ5MnYrGEe2hzH6XC0i
-Zabbix           http://192.168.16.5:8160   Admin    zabbix
 ================ ========================== ======== ========================================
 
 ARA
@@ -243,16 +242,6 @@ Deploy `Clustered infrastructure services`, `Infrastructure services`, and
 .. code-block:: console
 
    osism-kolla deploy prometheus
-
-Zabbix
-------
-
-.. code-block:: console
-
-   osism-monitoring zabbix-agent
-   osism-monitoring zabbix
-
-.. figure:: /images/zabbix.png
 
 Tools
 =====
