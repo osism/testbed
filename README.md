@@ -20,6 +20,7 @@ Cloud or Open Telekom Cloud.
 ### Regular tasks
 
 [![Daily citycloud](https://github.com/osism/testbed/actions/workflows/daily-citycloud.yml/badge.svg)](https://github.com/osism/testbed/actions/workflows/daily-citycloud.yml)
+[![Longterm OTCBMS](https://github.com/osism/testbed/actions/workflows/longterm-otcbms.yml/badge.svg)](https://github.com/osism/testbed/actions/workflows/longterm-otcbms.yml)
 [![Update manager images](https://github.com/osism/testbed/actions/workflows/update-manager-images.yml/badge.svg)](https://github.com/osism/testbed/actions/workflows/update-manager-images.yml)
 
 ### Other tasks

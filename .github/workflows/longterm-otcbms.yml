@@ -1,0 +1,55 @@
+---
+name: Longterm OTCBMS
+
+"on":
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/longterm-otcbms.yml'
+    branches:
+      - master
+
+jobs:
+  longterm-otcbms:
+    if: github.repository == 'osism/testbed'
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        openstack-version:
+          - victoria
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.0.1
+      - name: Prepare use of openstack
+        shell: bash
+        working-directory: ./terraform
+        env:
+          OPENSTACK: ${{ secrets.OPENSTACK_OTCBMS }}
+        run: |
+          echo "$OPENSTACK" > clouds.yaml
+      - name: Prepare use of remote backend
+        shell: bash
+        working-directory: ./terraform
+        env:
+          BACKEND: ${{ secrets.TF_BACKEND_OTCBMS }}
+        run: |
+          echo "$BACKEND" > backend.tf
+      - name: Set terraform cloud credentials
+        shell: bash
+        working-directory: ./terraform
+        env:
+          BACKEND: ${{ secrets.TF_CLI_CONFIG_OTCBMS }}
+        run: |
+          echo "$BACKEND" > terraformrc
+      - name: Initialization
+        run: make ENVIRONMENT=otcbms init
+        working-directory: ./terraform
+      - name: Deploy environment
+        working-directory: ./terraform
+        run: make ENVIRONMENT=otcbms create OPENSTACK_VERSION=${{ matrix.openstack-version }}
