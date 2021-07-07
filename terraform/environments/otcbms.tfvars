@@ -13,4 +13,4 @@ volume_size_base          = "40"
 public                    = "admin_external_net"
 enable_dhcp               = "true"
 dns_nameservers           = ["100.125.4.25", "9.9.9.9"]
-number_of_nodes           = 10
+number_of_nodes           = 3
