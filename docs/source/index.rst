@@ -19,4 +19,5 @@ in which, among other things, the OSISM testbed is briefly introduced.
    deployment
    usage
    notes
+   contributing
    appendix
