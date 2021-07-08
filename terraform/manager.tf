@@ -125,108 +125,37 @@ write_files:
     path: /root/node.sh
     permissions: 0700
   - content: |
+      ${indent(6, file("files/manager.sh"))}
+    path: /root/manager.sh
+    permissions: 0700
+  - content: |
       #!/usr/bin/env bash
 
-      apt-get install --yes python3-netifaces
-      python3 /root/configure-network-devices.py
+      export NUMBER_OF_NODES=${var.number_of_nodes}
 
-      cp /home/ubuntu/.ssh/id_rsa /home/dragon/.ssh/id_rsa
-      cp /home/ubuntu/.ssh/id_rsa.pub /home/dragon/.ssh/id_rsa.pub
-      chown -R dragon:dragon /home/dragon/.ssh
+      export CEPH_VERSION=${var.ceph_version}
+      export CONFIGURATION_VERSION=${var.configuration_version}
+      export OPENSTACK_VERSION=${var.openstack_version}
 
-      sudo -iu dragon ansible-playbook -i testbed-manager.osism.test, /opt/manager-part-1.yml -e configuration_git_version=${var.configuration_version}
-      sudo -iu dragon sh -c 'cd /opt/configuration; ./scripts/set-ceph-version.sh ${var.ceph_version}'
-      sudo -iu dragon sh -c 'cd /opt/configuration; ./scripts/set-openstack-version.sh ${var.openstack_version}'
-      sudo -iu dragon sh -c 'cd /opt/configuration; ./scripts/enable-secondary-nodes.sh ${var.number_of_nodes}'
+      export DEPLOY_CEPH=${var.deploy_ceph}
+      export DEPLOY_IDENTITY=${var.deploy_identity}
+      export DEPLOY_INFRASTRUCTURE=${var.deploy_infrastructure}
+      export DEPLOY_MONITORING=${var.deploy_monitoring}
+      export DEPLOY_OPENSTACK=${var.deploy_openstack}
 
-      sudo -iu dragon ansible-playbook -i testbed-manager.osism.test, /opt/manager-part-2.yml
-      sudo -iu dragon ansible-playbook -i testbed-manager.osism.test, /opt/manager-part-3.yml
+      export RUN_RALLY=${var.run_rally}
+      export RUN_REFSTACK=${var.run_refstack}
 
-      sudo -iu dragon cp /home/dragon/.ssh/id_rsa.pub /opt/ansible/secrets/id_rsa.operator.pub
+      bash /root/manager.sh
 
-      # NOTE(berendt): wait for ARA
-      until [[ "$(/usr/bin/docker inspect -f '{{.State.Health.Status}}' manager_ara-server_1)" == "healthy" ]]; do
-          sleep 1;
-      done;
-
-      /root/cleanup.sh
-
-      # NOTE(berendt): sudo -E does not work here because sudo -i is needed
-
-      sudo -iu dragon sh -c 'INTERACTIVE=false osism-run custom cronjobs'
-      sudo -iu dragon sh -c 'INTERACTIVE=false osism-run custom facts'
-
-      sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic bootstrap'
-      sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic operator'
-
-      # copy network configuration
-      sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic network'
-
-      # apply workarounds
-      sudo -iu dragon sh -c 'INTERACTIVE=false osism-run custom workarounds'
-
-      # reboot nodes
-      sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic reboot -l testbed-nodes -e ireallymeanit=yes'
-      sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic wait-for-connection -l testbed-nodes -e ireallymeanit=yes'
-
-      # NOTE: Restart the manager services to update the /etc/hosts file
-      sudo -iu dragon sh -c 'docker-compose -f /opt/manager/docker-compose.yml restart'
-
-      # NOTE(berendt): wait for ARA
-      until [[ "$(/usr/bin/docker inspect -f '{{.State.Health.Status}}' manager_ara-server_1)" == "healthy" ]];
-      do
-          sleep 1;
-      done;
-
-      # deploy helper services
-      sudo -iu dragon sh -c '/opt/configuration/scripts/001-helper-services.sh'
-
-      # deploy identity services
-      # NOTE: All necessary infrastructure services are also deployed.
-      if [[ "${var.deploy_identity}" == "true" ]]; then
-          sudo -iu dragon sh -c '/opt/configuration/scripts/999-identity-services.sh'
-      fi
-
-      # deploy infrastructure services
-      if [[ "${var.deploy_infrastructure}" == "true" ]]; then
-          sudo -iu dragon sh -c '/opt/configuration/scripts/002-infrastructure-services-basic.sh'
-      fi
-
-      # deploy ceph services
-      if [[ "${var.deploy_ceph}" == "true" ]]; then
-          sudo -iu dragon sh -c '/opt/configuration/scripts/003-ceph-services.sh'
-      fi
-
-      # deploy openstack services
-      if [[ "${var.deploy_openstack}" == "true" ]]; then
-          if [[ "${var.deploy_infrastructure}" != "true" ]]; then
-              echo "infrastructure services are necessary for the deployment of OpenStack"
-          else
-              sudo -iu dragon sh -c '/opt/configuration/scripts/004-openstack-services-basic.sh'
-
-              if [[ "${var.run_rally}" == "true" ]]; then
-                  sudo -iu dragon sh -c '/opt/configuration/contrib/rally/rally.sh'
-              fi
-
-              if [[ "${var.run_refstack}" == "true" ]]; then
-                  sudo -iu dragon sh -c 'INTERACTIVE=false osism-run openstack bootstrap-refstack'
-                  sudo -iu dragon sh -c '/opt/configuration/contrib/refstack/refstack.sh'
-              fi
-          fi
-      fi
-
-      # deploy monitoring services
-      if [[ "${var.deploy_monitoring}" == "true" ]]; then
-          sudo -iu dragon sh -c '/opt/configuration/scripts/005-monitoring-services.sh'
-      fi
-    path: /root/manager.sh
+    path: /root/run-manager.sh
     permissions: 0700
 runcmd:
   - "echo 'network: {config: disabled}' > /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg"
   - "rm -f /etc/network/interfaces.d/50-cloud-init.cfg"
   - "mv /etc/netplan/50-cloud-init.yaml /etc/netplan/50-cloud-init.yaml.unused"
   - "/root/node.sh"
-  - "/root/manager.sh"
+  - "/root/run-manager.sh"
 final_message: "The system is finally up, after $UPTIME seconds"
 power_state:
   mode: reboot
