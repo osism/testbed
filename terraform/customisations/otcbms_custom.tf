@@ -27,7 +27,7 @@ resource "opentelekomcloud_compute_bms_server_v2" "node_server" {
 #cloud-config
 network:
    config: disabled
-package_update: false
+package_update: true
 package_upgrade: false
 write_files:
   - content: ${openstack_compute_keypair_v2.key.public_key}
