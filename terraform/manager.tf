@@ -65,7 +65,7 @@ resource "openstack_compute_instance_v2" "manager_server" {
 #cloud-config
 network:
    config: disabled
-package_update: false
+package_update: true
 package_upgrade: false
 write_files:
   - content: |
