@@ -9,8 +9,8 @@
     keycloak_ldap_storage_provider_component_name: "ldap-provider"
     keycloak_realm: "gx-scs"
     kcadm: "/opt/jboss/keycloak/bin/kcadm.sh"
-    ldap_url: "ldap://192.168.16.5:389"
-    ldap_base: "dc=scs-organization,dc=intranet"
+    ldap_url: "ldap://{{ openldap_host }}:{{ openldap_ldap_port }}"
+    ldap_base: "{{ openldap_base_dn }}"
     ldap_users: "cn=users,{{ ldap_base }}"
 
 
