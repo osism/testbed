@@ -202,3 +202,77 @@
             --set 'config."ldap.attribute"=["mailPrimaryAddress"]'
       changed_when: false
       run_once: true
+
+
+    # Check if openstack-default-project mapper exists
+    - name: Get the openstack-default-project mapper ID
+      command: >-
+        docker exec {{ keycloak_service_container_name }} {{ kcadm }}
+          get "realms/{{ keycloak_realm }}/components"
+            --query name="openstack-default-project"
+            --query providerId="hardcoded-attribute-mapper"
+            --query parentId="{{ ldap_provider_id }}"
+            --fields id
+            --format csv
+            --noquotes
+      register: project_mapper_id_json
+      changed_when: false
+      run_once: true
+
+
+    - name: Filter openstack-default-project mapper ID
+      set_fact:
+        project_mapper_id: "{{ project_mapper_id_json.stdout }}"
+      run_once: true
+
+    # Create openstack-default-project if it doesn't exist
+    # and have it unconditionally map to the "admin" project
+    - name: Add openstack-default-project mapper to LDAP storage provider
+      command: >-
+        docker exec {{ keycloak_service_container_name }} {{ kcadm }}
+          create "realms/{{ keycloak_realm }}/components"
+            --set name="openstack-default-project"
+            --set parentId="{{ ldap_provider_id[0] }}"
+            --set providerId=hardcoded-attribute-mapper
+            --set providerType=org.keycloak.storage.ldap.mappers.LDAPStorageMapper
+            --set 'config."user.model.attribute"=["openstack-default-project"]'
+            --set 'config."attribute.value"=["admin"]'
+      when: not project_mapper_id
+      run_once: true
+
+
+    # Check if openstack-user-domain mapper exists
+    - name: Get the openstack-user-domain mapper ID
+      command: >-
+        docker exec {{ keycloak_service_container_name }} {{ kcadm }}
+          get "realms/{{ keycloak_realm }}/components"
+            --query name="openstack-user-domain"
+            --query providerId="hardcoded-attribute-mapper"
+            --query parentId="{{ ldap_provider_id }}"
+            --fields id
+            --format csv
+            --noquotes
+      register: domain_mapper_id_json
+      changed_when: false
+      run_once: true
+
+
+    - name: Filter openstack-user-domain mapper ID
+      set_fact:
+        domain_mapper_id: "{{ domain_mapper_id_json.stdout }}"
+      run_once: true
+
+    # Create openstack-user-domain if it doesn't exist
+    # and have it unconditionally map to the "default" domain
+    - name: Add openstack-user-domain mapper to LDAP storage provider
+      command: >-
+        docker exec {{ keycloak_service_container_name }} {{ kcadm }}
+          create "realms/{{ keycloak_realm }}/components"
+            --set name="openstack-user-domain"
+            --set parentId="{{ ldap_provider_id[0] }}"
+            --set providerId=hardcoded-attribute-mapper
+            --set providerType=org.keycloak.storage.ldap.mappers.LDAPStorageMapper
+            --set 'config."user.model.attribute"=["openstack-user-domain"]'
+            --set 'config."attribute.value"=["default"]'
+      when: not domain_mapper_id
+      run_once: true
