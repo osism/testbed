@@ -13,7 +13,7 @@ RESOURCE = openstack_networking_floatingip_v2.manager_floating_ip
 STATE = errored.tfstate
 
 VERSION_CEPH ?= octopus
-VERSION_OPENSTACK ?= victoria
+VERSION_OPENSTACK ?= wallaby
 
 RALLY ?= false
 REFSTACK ?= false
