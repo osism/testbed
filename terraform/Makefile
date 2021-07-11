@@ -12,7 +12,7 @@ PARALLELISM = 10
 RESOURCE = openstack_networking_floatingip_v2.manager_floating_ip
 STATE = errored.tfstate
 
-VERSION_CEPH ?= octopus
+VERSION_CEPH ?= pacific
 VERSION_OPENSTACK ?= wallaby
 
 RALLY ?= false
