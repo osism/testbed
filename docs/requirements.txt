@@ -1,4 +1,4 @@
-Sphinx==4.0.3
+Sphinx==4.1.0
 sphinx-rtd-theme==0.5.2
 sphinx_fontawesome==0.0.6
 sphinxcontrib-blockdiag==2.0.0
