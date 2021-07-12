@@ -7,7 +7,7 @@ name: Daily citycloud
     paths:
       - '.github/workflows/daily-citycloud.yml'
     branches:
-      - master
+      - main
   schedule:
     - cron: '0 3 * * *'
 
