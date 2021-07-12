@@ -8,7 +8,7 @@ City Cloud or Open Telekom Cloud.
 
 For the German-speaking readers, `iX 2020/12 <https://www.osism.tech/files/ix.2020.12.048_059.pdf_kiosk.pdf>`_
 contains an article by Kurt Garloff titled
-"`Wolken-Verbund <https://www.osism.tech/files/ix.2020.12.048_059.pdf_kiosk.pdf>`_",
+`Wolken-Verbund <https://www.osism.tech/files/ix.2020.12.048_059.pdf_kiosk.pdf>`_,
 in which, among other things, the OSISM testbed is briefly introduced.
 
 .. toctree::

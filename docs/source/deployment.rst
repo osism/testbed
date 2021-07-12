@@ -324,7 +324,7 @@ Checks
 ======
 
 Most of the checks require a full installation of openstack and ceph.
-Only "ping" works without them.
+Only ``ping`` works without them.
 
 Check the installation via ping:
 
