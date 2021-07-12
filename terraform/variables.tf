@@ -104,7 +104,7 @@ variable "run_refstack" {
 
 variable "configuration_version" {
   type    = string
-  default = "master"
+  default = "main"
 }
 
 variable "ceph_version" {
