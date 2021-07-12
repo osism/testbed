@@ -113,11 +113,13 @@ client works without passing ``--os-cloud=``.
 
           {"NeutronError": {"message": "Invalid input for operation: Can not get vracks for tenant xxx from DB!.", "type": "InvalidInput", "detail": ""}}
 
-* `PlusServer <https://www.plusserver.com>`_
+* `pluscloud open <https://www.plusserver.com/produkte/pluscloud-open>`_
 
   .. note::
 
      * The credentials are stored in ``clouds.yaml`` and ``secure.yaml`` with the name ``pluscloudopen``.
+
+     * To use pluscloud open, you can call +49 2203 1045 3500, send an email to beratung@plusserver.com or arrange a call back https://www.plusserver.com/produkte/pluscloud-open
 
 * `Open Telekom Cloud (OTC) <https://open-telekom-cloud.com/>`_
 
