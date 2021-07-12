@@ -21,6 +21,8 @@ configuration_git_protocol: https
 ##########################
 # docker
 
+docker_version: "5:20.10.6"
+
 docker_user: "{{ operator_user }}"
 
 ceph_docker_registry: quay.io
@@ -32,12 +34,6 @@ docker_registry_service: index.docker.io
 # docker_compose
 
 docker_compose_install_type: package
-
-##########################
-# versions
-
-docker_version: "5:20.10.6"
-repository_version: latest
 
 ##########################
 # operator

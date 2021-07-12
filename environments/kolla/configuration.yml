@@ -1,12 +1,5 @@
 ---
 ##########################################################
-# images
-
-docker_registry: quay.io
-openstack_release: wallaby
-kolla_image_version: "{{ openstack_release }}"
-
-##########################################################
 # kolla
 
 kolla_enable_sanity_checks: "yes"
