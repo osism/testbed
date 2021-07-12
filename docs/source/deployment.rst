@@ -195,7 +195,7 @@ The defaults for the environment variables are intended for the Betacloud.
 **Variable**              **Default**
 ------------------------- -----------
 availability_zone         south-2
-ceph_version              octopus
+ceph_version              pacific
 cloud_provider            betacloud
 configuration_version     main
 flavor_manager            2C-4GB-20GB

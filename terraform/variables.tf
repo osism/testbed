@@ -109,7 +109,7 @@ variable "configuration_version" {
 
 variable "ceph_version" {
   type    = string
-  default = "octopus"
+  default = "pacific"
 }
 
 variable "openstack_version" {
