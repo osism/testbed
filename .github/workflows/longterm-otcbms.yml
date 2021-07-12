@@ -7,7 +7,7 @@ name: Longterm OTCBMS
     paths:
       - '.github/workflows/longterm-otcbms.yml'
     branches:
-      - master
+      - main
 
 jobs:
   longterm-otcbms:
