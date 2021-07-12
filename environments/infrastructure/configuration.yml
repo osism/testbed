@@ -1,11 +1,5 @@
 ---
 ##########################
-# versions
-
-ceph_version: pacific
-openstack_version: wallaby
-
-##########################
 # cephclient
 
 cephclient_mons:
