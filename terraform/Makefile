@@ -1,6 +1,6 @@
 # Makefile
 
-CONFIGURATION = master
+CONFIGURATION = main
 CONSOLE = manager
 ENVIRONMENT ?= betacloud
 USERNAME = dragon

@@ -36,7 +36,7 @@ html_context = {
     'display_github': True,
     'github_user': 'osism',
     'github_repo': 'testbed',
-    'github_version': 'master',
+    'github_version': 'main',
     'conf_py_path': '/docs/source/'
 }
 html_logo = 'images/logo.png'

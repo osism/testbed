@@ -197,7 +197,7 @@ The defaults for the environment variables are intended for the Betacloud.
 availability_zone         south-2
 ceph_version              octopus
 cloud_provider            betacloud
-configuration_version     master
+configuration_version     main
 flavor_manager            2C-4GB-20GB
 flavor_node               4C-16GB-40GB
 image                     Ubuntu 20.04
