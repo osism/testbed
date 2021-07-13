@@ -10,11 +10,11 @@ ${KC_URL}         http://testbed-manager:8080
 ${HORIZON_URL}    http://api.osism.test
 ${BROWSER_URL}    http://testbed-manager:4444
 ${BROWSER}        firefox
-${USERNAME}       Administrator
-${PASSWORD}       univention
+${USERNAME}       umc-admin
+${PASSWORD}       password
 ${NEW_USERNAME}   AdministratorUUID1
 ${NEW_PASSWORD}   mgrt97HABCEXBYNqgv8Jpdqe
-${BASE_DN}        dc=scs-organization,dc=intranet
+${BASE_DN}        dc=osism,dc=local
 ${NEW_DN}         uid=${NEW_USERNAME},cn=users,${BASE_DN}
 
 *** Test Cases ***
