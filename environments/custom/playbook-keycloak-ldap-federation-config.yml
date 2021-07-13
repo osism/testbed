@@ -5,6 +5,7 @@
 
   vars:
     keycloak_service_container_name: "keycloak"
+    openldap_service_container_name: "openldap"
     keycloak_url: "http://localhost:8080"
     keycloak_ldap_storage_provider_component_name: "ldap-provider"
     keycloak_realm: "gx-scs"
@@ -275,4 +276,37 @@
             --set 'config."user.model.attribute"=["openstack-user-domain"]'
             --set 'config."attribute.value"=["default"]'
       when: not domain_mapper_id
+      run_once: true
+
+    - name: Get Keycloak's LDAP user
+      command: >-
+        docker exec -i {{ openldap_service_container_name }}
+          slapcat -f /etc/ldap/slapd.conf
+                  -b "{{ ldap_binddn }}"
+                  -H "ldap:///{{ ldap_binddn }}??base"
+      register: ldap_user_json
+      changed_when: false
+      run_once: true
+
+    - name: Filter LDAP users
+      set_fact:
+        available_users:
+          "{{ ldap_user_json.stdout.split('\n')
+              | select('match', 'dn: .*')
+              | map('replace', 'dn: ', '')
+              | list }}"
+      run_once: true
+
+
+    # Provision the LDAP user which will be used by Keycloak
+    # If it doesn't exist yet
+    - name: Add Keycloak's LDAP user
+      shell: >-
+        set -o pipefail &&
+        echo "{{ lookup('template', './files/openldap/user.ldif.j2') }}" |
+          docker exec -i {{ openldap_service_container_name }} \
+            slapadd -f /etc/ldap/slapd.conf
+      args:
+        executable: /usr/bin/bash
+      when: ldap_binddn not in available_users
       run_once: true
