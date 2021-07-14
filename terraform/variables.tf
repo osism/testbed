@@ -112,6 +112,11 @@ variable "ceph_version" {
   default = "pacific"
 }
 
+variable "manager_version" {
+  type    = string
+  default = "latest"
+}
+
 variable "openstack_version" {
   type    = string
   default = "wallaby"

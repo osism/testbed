@@ -8,8 +8,17 @@ cp /home/ubuntu/.ssh/id_rsa.pub /home/dragon/.ssh/id_rsa.pub
 chown -R dragon:dragon /home/dragon/.ssh
 
 sudo -iu dragon ansible-playbook -i testbed-manager.osism.test, /opt/manager-part-1.yml -e configuration_git_version=$CONFIGURATION_VERSION
-sudo -iu dragon sh -c 'cd /opt/configuration; ./scripts/set-ceph-version.sh $CEPH_VERSION'
-sudo -iu dragon sh -c 'cd /opt/configuration; ./scripts/set-openstack-version.sh $OPENSTACK_VERSION'
+
+sudo -iu dragon sh -c 'cd /opt/configuration; ./scripts/set-manager-version.sh $MANAGER_VERSION'
+
+if [[ "$MANAGER_VERSION" == "latest" ]]; then
+    sudo -iu dragon sh -c 'cd /opt/configuration; ./scripts/set-ceph-version.sh $CEPH_VERSION'
+    sudo -iu dragon sh -c 'cd /opt/configuration; ./scripts/set-openstack-version.sh $OPENSTACK_VERSION'
+else
+    sudo -iu dragon sh -c 'cd /opt/configuration; ./scripts/set-ceph-version.sh $MANAGER_VERSION'
+    sudo -iu dragon sh -c 'cd /opt/configuration; ./scripts/set-openstack-version.sh $MANAGER_VERSION'
+fi
+
 sudo -iu dragon sh -c 'cd /opt/configuration; ./scripts/enable-secondary-nodes.sh $NUMBER_OF_NODES'
 
 sudo -iu dragon ansible-playbook -i testbed-manager.osism.test, /opt/manager-part-2.yml
