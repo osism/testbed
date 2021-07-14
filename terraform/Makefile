@@ -1,6 +1,6 @@
 # Makefile
 
-CONFIGURATION = main
+CONFIGURATION = stable
 CONSOLE = manager
 ENVIRONMENT ?= betacloud
 USERNAME = dragon
@@ -13,7 +13,7 @@ RESOURCE = openstack_networking_floatingip_v2.manager_floating_ip
 STATE = errored.tfstate
 
 VERSION_CEPH ?= pacific
-VERSION_MANAGER ?= latest
+VERSION_MANAGER ?= 1.0.0
 VERSION_OPENSTACK ?= wallaby
 
 RALLY ?= false
