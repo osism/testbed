@@ -3,4 +3,4 @@
 DEFAULT_VERSION=pacific
 VERSION=${1:-pacific}
 
-grep -rlZ $DEFAULT_VERSION * | xargs -0 sed -i "s/${DEFAULT_VERSION}/${VERSION}/g"
+sed -i "s/ceph_version: ${DEFAULT_VERSION}/ceph_version: ${VERSION}/g" environments/manager/configuration.yml

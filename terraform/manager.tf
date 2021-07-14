@@ -135,6 +135,7 @@ write_files:
 
       export CEPH_VERSION=${var.ceph_version}
       export CONFIGURATION_VERSION=${var.configuration_version}
+      export MANAGER_VERSION=${var.manager_version}
       export OPENSTACK_VERSION=${var.openstack_version}
 
       export DEPLOY_CEPH=${var.deploy_ceph}
