@@ -194,6 +194,14 @@
         url: http://cloud-images.ubuntu.com/minimal/releases/focal/release/ubuntu-20.04-minimal-cloudimg-amd64.img
         dest: /tmp/ubuntu.img
 
+    - name: Get timestamp from the system
+      shell: "date +%Y-%m-%d%H-%M-%S"
+      register: tstamp
+
+    - name: Set variables
+      set_fact:
+       cur_date: "{{ tstamp.stdout[0:10]}}"
+
     - name: Upload ubuntu minimal 20.04 image
       os_image:
         cloud: admin
@@ -203,10 +211,23 @@
         disk_format: qcow2
         filename: /tmp/ubuntu.img
         min_disk: 3
+        min_ram: 512
         properties:
           cpu_arch: x86_64
           distro: ubuntu
           hw_rng_model: virtio
+          architecture: x86_64
+          hypervisor_type
+          os_version: "20.04"
+          os_distro: ubuntu
+          hw_disk_bus: virtio
+          replace_frequency: never
+          uuid_validity: forever
+          image_source: http://cloud-images.ubuntu.com/minimal/releases/focal/release/ubuntu-20.04-minimal-cloudimg-amd64.img
+          image_description: https://launchpad.net/cloud-images
+          image_original_user: ubuntu
+          # NOTE: The upload date is taken at this point. The Ubuntu upstream images are rotated and not archived.
+          image_build_date: "{{ cur_date }}"
 
     # NOTE: is_public from os_image is not working like expected
     - name: Make ubuntu minimal 20.04 image visible
