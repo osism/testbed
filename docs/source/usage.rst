@@ -30,8 +30,13 @@ Change versions
 This can also be achieved automatically by passing the wanted versions inside the environment
 ``ceph_version`` and ``openstack_version`` respectively.
 
+.. _Deploy services:
+
 Deploy services
 ===============
+
+On the testbed, the services can currently be deployed manually. In the future, these manual
+steps will be automated by Zuul CI.
 
 * Basic infrastructure services (MariaDB, RabbitMQ, Redis, ..)
 
@@ -74,6 +79,22 @@ Deploy services
   .. code-block:: console
 
      /opt/configuration/scripts/005-monitoring-services.sh
+
+Update services
+===============
+
+The update of the services is done in the same way as the deployment of the services.
+Simply re-run the scripts listed in :ref:`Deploy services`.
+
+Upgrade services
+================
+
+For an upgrade, the manager itself is updated first. Set the ``manager_version`` argument in
+``environments/manager/configuration.yml`` to the new version and execute ``osism-update-manager``
+afterwards.
+
+The upgrade of the services is then done in the same way as the deployment of the services.
+Simply re-run the scripts listed in :ref:`Deploy services`.
 
 Purge services
 ==============
