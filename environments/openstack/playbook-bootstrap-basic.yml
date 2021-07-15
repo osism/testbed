@@ -322,21 +322,3 @@
         state: present
         server: test
         volume: test
-
-    - name: Download amphora image
-      get_url:
-        url: https://files.osism.de/octavia-amphora-haproxy-wallaby.qcow2
-        dest: /tmp/amphora.img
-
-    - name: Upload amphora image
-      os_image:
-        cloud: admin
-        state: present
-        name: Octavia Amphora
-        container_format: bare
-        disk_format: qcow2
-        filename: /tmp/amphora.img
-        properties:
-          cpu_arch: x86_64
-          distro: ubuntu
-          hw_rng_model: virtio
