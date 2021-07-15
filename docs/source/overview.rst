@@ -39,7 +39,6 @@ OpenStack
 * Victoria
 * Wallaby (**default**)
 
-
 Software Bill Of Materials (SBOM)
 =================================
 
