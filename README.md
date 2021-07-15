@@ -6,6 +6,14 @@ With this testbed, it is possible to run a full OSISM installation, the baseline
 of the Sovereign Cloud Stack, on an existing OpenStack environment such as City
 Cloud or Open Telekom Cloud.
 
+The testbed is intended as a playground. Further services and integration will be
+added over time. More and more best practices and experiences from the productive
+installations will be included here in the future. It will become more production-like
+over time. However, at no point does it claim to represent a production exactly.
+
+Open Source Software lives from participation. We welcome any issues, change requests
+or general feedback. Do not hestiate to open an issue.
+
 ## GitHub Actions
 
 ### Syntax checks
