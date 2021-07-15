@@ -39,8 +39,9 @@ OpenStack
 * Victoria
 * Wallaby (**default**)
 
-Services
-========
+
+Software Bill Of Materials (SBOM)
+=================================
 
 The following services can currently be used with this testbed without further adjustments.
 Feel free to open an issue on Github (https://github.com/osism/testbed/issues)  if you want
