@@ -24,6 +24,8 @@ usually works too.
 Ceph
 ----
 
+The deployment of Ceph is based on `ceph-ansible <https://github.com/ceph/ceph-ansible>`_.
+
 * Luminous
 * Nautilus
 * Octopus
@@ -31,6 +33,8 @@ Ceph
 
 OpenStack
 ---------
+
+The deployment of OpenStack is based on `kolla-ansible <https://github.com/openstack/kolla-ansible>`_.
 
 * Rocky
 * Stein
