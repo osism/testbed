@@ -7,7 +7,7 @@
     keycloak_service_container_name: "keycloak"
     keycloak_url: "http://localhost:8080"
     keycloak_key_provider_component_name: "rsa-for-keystone"
-    keycloak_realm: "gx-scs"
+    keycloak_realm: "osism"
     kcadm: "/opt/jboss/keycloak/bin/kcadm.sh"
     keystone_client_id: "keystone"
     keystone_redirect_uris:

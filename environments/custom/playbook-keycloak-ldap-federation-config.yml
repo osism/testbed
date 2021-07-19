@@ -8,7 +8,7 @@
     openldap_service_container_name: "openldap"
     keycloak_url: "http://localhost:8080"
     keycloak_ldap_storage_provider_component_name: "ldap-provider"
-    keycloak_realm: "gx-scs"
+    keycloak_realm: "osism"
     kcadm: "/opt/jboss/keycloak/bin/kcadm.sh"
     ldap_url: "ldap://{{ openldap_host }}:{{ openldap_ldap_port }}"
     ldap_base: "{{ openldap_base_dn }}"

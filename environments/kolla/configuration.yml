@@ -72,7 +72,7 @@ keystone_identity_providers:
   - name: "keycloak"
     openstack_domain: "default"
     protocol: "openid"
-    identifier: "http://192.168.16.5:8170/auth/realms/gx-scs"
+    identifier: "http://192.168.16.5:8170/auth/realms/osism"
     public_name: "Authenticate via Keycloak"
     attribute_mapping: "mappingId1"
     metadata_folder: "{{ node_custom_config }}/keystone/federation/oidc/metadata"

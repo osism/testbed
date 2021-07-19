@@ -1,12 +1,12 @@
 {
-  "issuer": "http://192.168.16.5:8170/auth/realms/gx-scs",
-  "authorization_endpoint": "http://192.168.16.5:8170/auth/realms/gx-scs/protocol/openid-connect/auth",
-  "token_endpoint": "http://192.168.16.5:8170/auth/realms/gx-scs/protocol/openid-connect/token",
-  "introspection_endpoint": "http://192.168.16.5:8170/auth/realms/gx-scs/protocol/openid-connect/token/introspect",
-  "userinfo_endpoint": "http://192.168.16.5:8170/auth/realms/gx-scs/protocol/openid-connect/userinfo",
-  "end_session_endpoint": "http://192.168.16.5:8170/auth/realms/gx-scs/protocol/openid-connect/logout",
-  "jwks_uri": "http://192.168.16.5:8170/auth/realms/gx-scs/protocol/openid-connect/certs",
-  "check_session_iframe": "http://192.168.16.5:8170/auth/realms/gx-scs/protocol/openid-connect/login-status-iframe.html",
+  "issuer": "http://192.168.16.5:8170/auth/realms/osism",
+  "authorization_endpoint": "http://192.168.16.5:8170/auth/realms/osism/protocol/openid-connect/auth",
+  "token_endpoint": "http://192.168.16.5:8170/auth/realms/osism/protocol/openid-connect/token",
+  "introspection_endpoint": "http://192.168.16.5:8170/auth/realms/osism/protocol/openid-connect/token/introspect",
+  "userinfo_endpoint": "http://192.168.16.5:8170/auth/realms/osism/protocol/openid-connect/userinfo",
+  "end_session_endpoint": "http://192.168.16.5:8170/auth/realms/osism/protocol/openid-connect/logout",
+  "jwks_uri": "http://192.168.16.5:8170/auth/realms/osism/protocol/openid-connect/certs",
+  "check_session_iframe": "http://192.168.16.5:8170/auth/realms/osism/protocol/openid-connect/login-status-iframe.html",
   "grant_types_supported": [
     "authorization_code",
     "implicit",
@@ -92,7 +92,7 @@
     "fragment",
     "form_post"
   ],
-  "registration_endpoint": "http://192.168.16.5:8170/auth/realms/gx-scs/clients-registrations/openid-connect",
+  "registration_endpoint": "http://192.168.16.5:8170/auth/realms/osism/clients-registrations/openid-connect",
   "token_endpoint_auth_methods_supported": [
     "private_key_jwt",
     "client_secret_basic",
@@ -170,7 +170,7 @@
     "S256"
   ],
   "tls_client_certificate_bound_access_tokens": true,
-  "revocation_endpoint": "http://192.168.16.5:8170/auth/realms/gx-scs/protocol/openid-connect/revoke",
+  "revocation_endpoint": "http://192.168.16.5:8170/auth/realms/osism/protocol/openid-connect/revoke",
   "revocation_endpoint_auth_methods_supported": [
     "private_key_jwt",
     "client_secret_basic",
@@ -194,9 +194,9 @@
   ],
   "backchannel_logout_supported": true,
   "backchannel_logout_session_supported": true,
-  "device_authorization_endpoint": "http://192.168.16.5:8170/auth/realms/gx-scs/protocol/openid-connect/auth/device",
+  "device_authorization_endpoint": "http://192.168.16.5:8170/auth/realms/osism/protocol/openid-connect/auth/device",
   "backchannel_token_delivery_modes_supported": [
     "poll"
   ],
-  "backchannel_authentication_endpoint": "http://192.168.16.5:8170/auth/realms/gx-scs/protocol/openid-connect/ext/ciba/auth"
+  "backchannel_authentication_endpoint": "http://192.168.16.5:8170/auth/realms/osism/protocol/openid-connect/ext/ciba/auth"
 }
