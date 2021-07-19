@@ -1,0 +1,23 @@
+dn: {{ ldap_binddn }}
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: posixAccount
+objectClass: shadowAccount
+objectClass: top
+objectClass: univentionMail
+objectClass: univentionObject
+objectClass: univentionPolicyReference
+cn: {{ ldap_user }}
+gidNumber: 5000
+homeDirectory: /home/{{ ldap_user }}
+sn: {{ ldap_user }}
+uid: {{ ldap_user }}
+uidNumber: 2002
+univentionObjectType: users/user
+displayName: {{ ldap_user }}
+mailPrimaryAddress: {{ ldap_user }}@example.com
+givenName: {{ ldap_user }}
+gecos: {{ ldap_user }}
+loginShell: /dev/null
+userPassword:: {{ ldap_bindpw | b64encode }}
