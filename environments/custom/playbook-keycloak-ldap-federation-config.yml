@@ -3,17 +3,6 @@
   hosts: manager
   gather_facts: false
 
-  vars:
-    keycloak_service_container_name: "keycloak"
-    openldap_service_container_name: "openldap"
-    keycloak_url: "http://localhost:8080"
-    keycloak_ldap_storage_provider_component_name: "ldap-provider"
-    keycloak_realm: "osism"
-    kcadm_binary: "/opt/jboss/keycloak/bin/kcadm.sh"
-    ldap_url: "ldap://{{ openldap_host }}:389"
-    ldap_base: "dc=osism,dc=local"
-    ldap_users: "cn=users,{{ ldap_base }}"
-
   tasks:
     - name: Wait until service is available
       command: >-

@@ -1,4 +1,41 @@
 ---
-# Dummy variable to avoid error because ansible does not recognize the
-# file as a good configuration file when no variable in it.
-dummy:
+# bootstrap-ceph-dashboard
+
+ceph_dashboard_username: admin
+
+# keycloak
+
+kcadm_binary: "/opt/jboss/keycloak/bin/kcadm.sh"
+keycloak_realm: "osism"
+keycloak_url: "http://localhost:8080"
+keycloak_service_container_name: "keycloak"
+
+# keycloak-ldap-federation-config
+
+openldap_service_container_name: "openldap"
+
+keycloak_ldap_storage_provider_component_name: "ldap-provider"
+
+ldap_base: "dc=osism,dc=local"
+ldap_url: "ldap://{{ openldap_host }}:389"
+ldap_user: "Administrator"
+ldap_users: "cn=users,{{ ldap_base }}"
+ldap_binddn: "uid={{ ldap_user }},{{ ldap_users }}"
+
+# keycloak-oidc-client-config
+
+keycloak_admin_id: "admin"
+keycloak_key_provider_component_name: "rsa-for-keystone"
+
+keystone_client_id: "keystone"
+keystone_redirect_uris:
+  - "http://api.osism.test:5000/redirect_uri"
+  - "http://api.osism.test"
+  - "http://192.168.96.9:5000/redirect_uri"
+  - "http://192.168.96.9"
+
+private_key_file_path: "{{ configuration_directory }}/environments/custom/files/keycloak/private_key.pem"
+private_key_data: "{{ lookup('file', private_key_file_path)| regex_replace('\n', '\\\\n') }}"
+
+certificate_file_path: "{{ configuration_directory }}/environments/custom/files/keycloak/cert.crt"
+certificate_data: "{{ lookup('file', certificate_file_path)| regex_replace('\n', '\\\\n') }}"

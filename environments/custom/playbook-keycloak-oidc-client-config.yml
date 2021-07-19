@@ -3,21 +3,6 @@
   hosts: manager
   gather_facts: false
 
-  vars:
-    keycloak_service_container_name: "keycloak"
-    keycloak_url: "http://localhost:8080"
-    keycloak_key_provider_component_name: "rsa-for-keystone"
-    keycloak_realm: "osism"
-    kcadm: "/opt/jboss/keycloak/bin/kcadm.sh"
-    keystone_client_id: "keystone"
-    keystone_redirect_uris:
-      - "http://api.osism.test:5000/redirect_uri"
-      - "http://api.osism.test"
-      - "http://192.168.96.9:5000/redirect_uri"
-      - "http://192.168.96.9"
-    private_key_data: "{{ lookup('file', private_key_file_path)| regex_replace('\n', '\\\\n') }}"
-    certificate_data: "{{ lookup('file', certificate_file_path)| regex_replace('\n', '\\\\n') }}"
-
   tasks:
     - name: Wait until service is available
       command: >-
@@ -31,7 +16,7 @@
 
     - name: Log in to Keycloak
       command: >-
-        docker exec {{ keycloak_service_container_name }} {{ kcadm }}
+        docker exec {{ keycloak_service_container_name }} {{ kcadm_binary }}
           config credentials --server "{{ keycloak_url }}/auth"
                              --realm master
                              --user "{{ keycloak_admin_id }}"
@@ -42,7 +27,7 @@
 
     - name: Get available realms
       command: >-
-        docker exec {{ keycloak_service_container_name }} {{ kcadm }}
+        docker exec {{ keycloak_service_container_name }} {{ kcadm_binary }}
           get realms --fields id
       register: available_realms_json
       changed_when: false
@@ -55,7 +40,7 @@
 
     - name: Create target realm if it doesn't exist
       command: >-
-        docker exec {{ keycloak_service_container_name }} {{ kcadm }}
+        docker exec {{ keycloak_service_container_name }} {{ kcadm_binary }}
           create realms
             --set id="{{ keycloak_realm }}"
             --set realm="{{ keycloak_realm }}"
@@ -66,7 +51,7 @@
 
     - name: Get available clients in realm
       command: >-
-        docker exec {{ keycloak_service_container_name }} {{ kcadm }}
+        docker exec {{ keycloak_service_container_name }} {{ kcadm_binary }}
           get clients --target-realm {{ keycloak_realm }}
                 --query clientId={{ keystone_client_id }}
                 --fields id,clientId
@@ -82,7 +67,7 @@
 
     - name: Create OIDC client configuration
       command: >-
-        docker exec {{ keycloak_service_container_name }} {{ kcadm }}
+        docker exec {{ keycloak_service_container_name }} {{ kcadm_binary }}
           create clients --target-realm "{{ keycloak_realm }}"
             --set clientId={{ keystone_client_id }}
             --set protocol=openid-connect
@@ -98,7 +83,7 @@
 
     - name: "Get internal ID for {{ keystone_client_id }} client"
       command: >-
-        docker exec {{ keycloak_service_container_name }} {{ kcadm }}
+        docker exec {{ keycloak_service_container_name }} {{ kcadm_binary }}
           get clients --target-realm {{ keycloak_realm }}
                 --query clientId={{ keystone_client_id }}
                 --fields id
@@ -115,7 +100,7 @@
 
     - name: Get available mappers for client
       command: >-
-        docker exec {{ keycloak_service_container_name }} {{ kcadm }}
+        docker exec {{ keycloak_service_container_name }} {{ kcadm_binary }}
           get "clients/{{ internal_client_id }}/protocol-mappers/models"
                  --target-realm {{ keycloak_realm }}
                  --fields name
@@ -130,7 +115,7 @@
 
     - name: Create mappers for client
       command: >-
-        docker exec {{ keycloak_service_container_name }} {{ kcadm }}
+        docker exec {{ keycloak_service_container_name }} {{ kcadm_binary }}
           create clients/{{ internal_client_id }}/protocol-mappers/models
             --target-realm "{{ keycloak_realm }}"
             --set protocol=openid-connect
@@ -151,7 +136,7 @@
 
     - name: Get available components in realm
       command: >-
-        docker exec {{ keycloak_service_container_name }} {{ kcadm }}
+        docker exec {{ keycloak_service_container_name }} {{ kcadm_binary }}
           get components --target-realm {{ keycloak_realm }}
                 --query name="{{ keycloak_key_provider_component_name }}"
                 --fields name
@@ -166,7 +151,7 @@
 
     - name: Add privateKey and certificate to realm
       command: >-
-        docker exec {{ keycloak_service_container_name }} {{ kcadm }}
+        docker exec {{ keycloak_service_container_name }} {{ kcadm_binary }}
           create components --target-realm "{{ keycloak_realm }}"
             --set name="{{ keycloak_key_provider_component_name }}"
             --set providerId=rsa
