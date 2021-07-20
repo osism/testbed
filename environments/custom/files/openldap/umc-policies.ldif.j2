@@ -1,0 +1,311 @@
+dn: cn=UMC,cn=policies,{{ ldap_base }}
+objectClass: top
+objectClass: organizationalRole
+objectClass: univentionObject
+univentionObjectType: container/cn
+cn: UMC
+
+dn: cn=UMC,cn=univention,{{ ldap_base }}
+objectClass: top
+objectClass: organizationalRole
+objectClass: univentionObject
+univentionObjectType: container/cn
+cn: UMC
+
+dn: cn=operations,cn=UMC,cn=univention,{{ ldap_base }}
+objectClass: top
+objectClass: organizationalRole
+objectClass: univentionObject
+univentionObjectType: container/cn
+cn: operations
+
+dn: cn=default-umc-all,cn=UMC,cn=policies,{{ ldap_base }}
+objectClass: umcPolicy
+objectClass: top
+objectClass: univentionObject
+objectClass: univentionPolicy
+univentionObjectType: policies/umc
+cn: default-umc-all
+umcPolicyGrantedOperationSet: cn=appcenter-all,cn=operations,cn=UMC,cn=univention,{{ ldap_base }}
+umcPolicyGrantedOperationSet: cn=diagnostic-all,cn=operations,cn=UMC,cn=univention,{{ ldap_base }}
+umcPolicyGrantedOperationSet: cn=join-all,cn=operations,cn=UMC,cn=univention,{{ ldap_base }}
+umcPolicyGrantedOperationSet: cn=lib-all,cn=operations,cn=UMC,cn=univention,{{ ldap_base }}
+umcPolicyGrantedOperationSet: cn=mrtg-all,cn=operations,cn=UMC,cn=univention,{{ ldap_base }}
+umcPolicyGrantedOperationSet: cn=printers-all,cn=operations,cn=UMC,cn=univention,{{ ldap_base }}
+umcPolicyGrantedOperationSet: cn=quota-all,cn=operations,cn=UMC,cn=univention,{{ ldap_base }}
+umcPolicyGrantedOperationSet: cn=reboot-all,cn=operations,cn=UMC,cn=univention,{{ ldap_base }}
+umcPolicyGrantedOperationSet: cn=services-all,cn=operations,cn=UMC,cn=univention,{{ ldap_base }}
+umcPolicyGrantedOperationSet: cn=setup-all,cn=operations,cn=UMC,cn=univention,{{ ldap_base }}
+umcPolicyGrantedOperationSet: cn=sysinfo-all,cn=operations,cn=UMC,cn=univention,{{ ldap_base }}
+umcPolicyGrantedOperationSet: cn=top-all,cn=operations,cn=UMC,cn=univention,{{ ldap_base }}
+umcPolicyGrantedOperationSet: cn=ucr-all,cn=operations,cn=UMC,cn=univention,{{ ldap_base }}
+umcPolicyGrantedOperationSet: cn=udm-all,cn=operations,cn=UMC,cn=univention,{{ ldap_base }}
+umcPolicyGrantedOperationSet: cn=updater-all,cn=operations,cn=UMC,cn=univention,{{ ldap_base }}
+umcPolicyGrantedOperationSet: cn=server-overview-all,cn=operations,cn=UMC,cn=univention,{{ ldap_base }}
+umcPolicyGrantedOperationSet: cn=apps-all,cn=operations,cn=UMC,cn=univention,{{ ldap_base }}
+
+dn: cn=udm-request-license,cn=operations,cn=UMC,cn=univention,{{ ldap_base }}
+objectClass: top
+objectClass: umcOperationSet
+objectClass: univentionObject
+umcOperationSetCommand: udm/request_new_license
+univentionObjectType: settings/umc_operationset
+cn: udm-request-license
+description: UDM - Request new license
+
+dn: cn=udm-all,cn=operations,cn=UMC,cn=univention,{{ ldap_base }}
+objectClass: top
+objectClass: umcOperationSet
+objectClass: univentionObject
+umcOperationSetCommand: udm/*
+univentionObjectType: settings/umc_operationset
+cn: udm-all
+description: UDM - All operations
+
+dn: cn=udm-users,cn=operations,cn=UMC,cn=univention,{{ ldap_base }}
+description: UDM - Users
+objectClass: top
+objectClass: umcOperationSet
+objectClass: univentionObject
+univentionObjectType: settings/umc_operationset
+umcOperationSetCommand: udm/query:objectType=groups/group
+umcOperationSetCommand: udm/values:objectType=groups/group
+umcOperationSetCommand: udm/*:objectType=users/user
+umcOperationSetCommand: udm/query:objectType=policies/*
+umcOperationSetCommand: udm/properties:objectType=policies/*
+umcOperationSetCommand: udm/*:!objectType
+umcOperationSetCommand: udm/properties:objectType=groups/group
+umcOperationSetCommand: udm/layout:objectType=policies/*
+umcOperationSetFlavor: users/user
+cn: udm-users
+
+dn: cn=udm-groups,cn=operations,cn=UMC,cn=univention,{{ ldap_base }}
+description: UDM - Groups
+objectClass: top
+objectClass: umcOperationSet
+objectClass: univentionObject
+univentionObjectType: settings/umc_operationset
+umcOperationSetCommand: udm/*:!objectType
+umcOperationSetCommand: udm/values:objectType=users/user
+umcOperationSetCommand: udm/properties:objectType=users/user
+umcOperationSetCommand: udm/query:objectType=policies/*
+umcOperationSetCommand: udm/properties:objectType=policies/*
+umcOperationSetCommand: udm/properties:objectType=computers/*
+umcOperationSetCommand: udm/query:objectType=computers/*
+umcOperationSetCommand: udm/values:objectType=computers/*
+umcOperationSetCommand: udm/query:objectType=users/user
+umcOperationSetCommand: udm/layout:objectType=policies/*
+umcOperationSetCommand: udm/*:objectType=groups/group
+umcOperationSetFlavor: groups/group
+cn: udm-groups
+
+dn: cn=udm-computers,cn=operations,cn=UMC,cn=univention,{{ ldap_base }}
+description: UDM - Computers
+objectClass: top
+objectClass: umcOperationSet
+objectClass: univentionObject
+univentionObjectType: settings/umc_operationset
+umcOperationSetCommand: udm/query:objectType=groups/group
+umcOperationSetCommand: udm/values:objectType=groups/group
+umcOperationSetCommand: udm/*:objectType=computers/*
+umcOperationSetCommand: udm/query:objectType=policies/*
+umcOperationSetCommand: udm/properties:objectType=policies/*
+umcOperationSetCommand: udm/*:!objectType
+umcOperationSetCommand: udm/properties:objectType=groups/group
+umcOperationSetCommand: udm/layout:objectType=policies/*
+umcOperationSetFlavor: computers/computer
+cn: udm-computers
+
+dn: cn=udm-printers,cn=operations,cn=UMC,cn=univention,{{ ldap_base }}
+description: UDM - Printers
+objectClass: top
+objectClass: umcOperationSet
+objectClass: univentionObject
+univentionObjectType: settings/umc_operationset
+umcOperationSetCommand: udm/properties:objectType=policies/*
+umcOperationSetCommand: udm/*:!objectType
+umcOperationSetCommand: udm/*:objectType=shares/print*
+umcOperationSetCommand: udm/layout:objectType=policies/*
+umcOperationSetCommand: udm/query:objectType=policies/*
+umcOperationSetFlavor: shares/print
+cn: udm-printers
+
+dn: cn=udm-shares,cn=operations,cn=UMC,cn=univention,{{ ldap_base }}
+description: UDM - Shares
+objectClass: top
+objectClass: umcOperationSet
+objectClass: univentionObject
+univentionObjectType: settings/umc_operationset
+umcOperationSetCommand: udm/properties:objectType=policies/*
+umcOperationSetCommand: udm/*:objectType=shares/share
+umcOperationSetCommand: udm/*:!objectType
+umcOperationSetCommand: udm/layout:objectType=policies/*
+umcOperationSetCommand: udm/query:objectType=policies/*
+umcOperationSetFlavor: shares/share
+cn: udm-shares
+
+dn: cn=udm-polcies,cn=operations,cn=UMC,cn=univention,{{ ldap_base }}
+description: UDM - Policies
+objectClass: top
+objectClass: umcOperationSet
+objectClass: univentionObject
+univentionObjectType: settings/umc_operationset
+umcOperationSetCommand: udm/properties:objectType=policies/*
+umcOperationSetCommand: udm/*:!objectType
+umcOperationSetCommand: udm/*:objectType=policies/*
+umcOperationSetCommand: udm/layout:objectType=policies/*
+umcOperationSetCommand: udm/query:objectType=policies/*
+umcOperationSetFlavor: policies/policy
+cn: udm-polcies
+
+dn: cn=udm-mail,cn=operations,cn=UMC,cn=univention,{{ ldap_base }}
+description: UDM - Mail
+objectClass: top
+objectClass: umcOperationSet
+objectClass: univentionObject
+univentionObjectType: settings/umc_operationset
+umcOperationSetCommand: udm/properties:objectType=policies/*
+umcOperationSetCommand: udm/*:objectType=mail/*
+umcOperationSetCommand: udm/layout:objectType=policies/*
+umcOperationSetCommand: udm/query:objectType=policies/*
+umcOperationSetFlavor: mail/mail
+cn: udm-mail
+
+dn: cn=udm-network,cn=operations,cn=UMC,cn=univention,{{ ldap_base }}
+description: UDM - Network
+objectClass: top
+objectClass: umcOperationSet
+objectClass: univentionObject
+univentionObjectType: settings/umc_operationset
+umcOperationSetCommand: udm/*:objectType=networks/network
+umcOperationSetCommand: udm/properties:objectType=policies/*
+umcOperationSetCommand: udm/layout:objectType=policies/*
+umcOperationSetFlavor: networks/network
+cn: udm-network
+
+dn: cn=udm-dns,cn=operations,cn=UMC,cn=univention,{{ ldap_base }}
+description: UDM - DNS
+objectClass: top
+objectClass: umcOperationSet
+objectClass: univentionObject
+univentionObjectType: settings/umc_operationset
+umcOperationSetCommand: udm/properties:objectType=policies/*
+umcOperationSetCommand: udm/*:objectType=dns/*
+umcOperationSetCommand: udm/layout:objectType=policies/*
+umcOperationSetCommand: udm/query:objectType=policies/*
+umcOperationSetFlavor: dns/dns
+cn: udm-dns
+
+dn: cn=udm-dhcp,cn=operations,cn=UMC,cn=univention,{{ ldap_base }}
+description: UDM - DHCP
+objectClass: top
+objectClass: umcOperationSet
+objectClass: univentionObject
+univentionObjectType: settings/umc_operationset
+umcOperationSetCommand: udm/properties:objectType=policies/*
+umcOperationSetCommand: udm/layout:objectType=policies/*
+umcOperationSetCommand: udm/*:objectType=dhcp/*
+umcOperationSetCommand: udm/query:objectType=policies/*
+umcOperationSetFlavor: dhcp/dhcp
+cn: udm-dhcp
+
+dn: cn=udm-nagios,cn=operations,cn=UMC,cn=univention,{{ ldap_base }}
+description: UDM - Nagios
+objectClass: top
+objectClass: umcOperationSet
+objectClass: univentionObject
+univentionObjectType: settings/umc_operationset
+umcOperationSetCommand: udm/properties:objectType=policies/*
+umcOperationSetCommand: udm/*:objectType=nagios/*
+umcOperationSetCommand: udm/layout:objectType=policies/*
+umcOperationSetCommand: udm/query:objectType=policies/*
+umcOperationSetFlavor: nagios/nagios
+cn: udm-nagios
+
+dn: cn=udm-navigation,cn=operations,cn=UMC,cn=univention,{{ ldap_base }}
+description: UDM - LDAP directory
+objectClass: top
+objectClass: umcOperationSet
+objectClass: univentionObject
+univentionObjectType: settings/umc_operationset
+umcOperationSetCommand: udm/nav/*
+umcOperationSetFlavor: navigation
+cn: udm-navigation
+
+dn: cn=udm-license,cn=operations,cn=UMC,cn=univention,{{ ldap_base }}
+description: UDM - License Import
+objectClass: top
+objectClass: umcOperationSet
+objectClass: univentionObject
+univentionObjectType: settings/umc_operationset
+umcOperationSetCommand: udm/license/*
+umcOperationSetFlavor: license-import
+cn: udm-license
+
+dn: cn=udm-portal,cn=operations,cn=UMC,cn=univention,{{ ldap_base }}
+description: UDM - Portal settings
+objectClass: top
+objectClass: umcOperationSet
+objectClass: univentionObject
+univentionObjectType: settings/umc_operationset
+umcOperationSetCommand: udm/put
+umcOperationSetCommand: udm/types
+umcOperationSetCommand: udm/*:objectType=settings/portal*
+umcOperationSetCommand: udm/properties
+umcOperationSetCommand: udm/get
+umcOperationSetCommand: udm/values
+umcOperationSetFlavor: settings/portal_all
+cn: udm-portal
+
+dn: cn=udm-syntax,cn=operations,cn=UMC,cn=univention,{{ ldap_base }}
+objectClass: top
+objectClass: umcOperationSet
+objectClass: univentionObject
+umcOperationSetCommand: udm/syntax/choices/info
+umcOperationSetCommand: udm/syntax/choices
+univentionObjectType: settings/umc_operationset
+cn: udm-syntax
+description: UDM - Syntax
+
+dn: cn=udm-validate,cn=operations,cn=UMC,cn=univention,{{ ldap_base }}
+objectClass: top
+objectClass: umcOperationSet
+objectClass: univentionObject
+umcOperationSetCommand: udm/validate
+univentionObjectType: settings/umc_operationset
+cn: udm-validate
+description: UDM - Validate
+
+dn: cn=udm-self,cn=operations,cn=UMC,cn=univention,{{ ldap_base }}
+description: UDM - Personal account
+objectClass: top
+objectClass: umcOperationSet
+objectClass: univentionObject
+univentionObjectType: settings/umc_operationset
+umcOperationSetCommand: udm/*:objectType=users/self
+umcOperationSetFlavor: users/self
+cn: udm-self
+
+dn: cn=default-udm-self,cn=UMC,cn=policies,{{ ldap_base }}
+objectClass: umcPolicy
+objectClass: top
+objectClass: univentionObject
+objectClass: univentionPolicy
+univentionObjectType: policies/umc
+cn: default-udm-self
+umcPolicyGrantedOperationSet: cn=udm-self,cn=operations,cn=UMC,cn=univention,{{ ldap_base }}
+
+dn: cn=udm-new-portal,cn=operations,cn=UMC,cn=univention,{{ ldap_base }}
+cn: udm-new-portal
+description: UDM - Portal
+umcOperationSetCommand: udm/put
+umcOperationSetCommand: udm/get
+umcOperationSetCommand: udm/properties
+umcOperationSetCommand: udm/types
+umcOperationSetCommand: udm/values
+umcOperationSetCommand: udm/*:objectType=portals/*
+umcOperationSetFlavor: portals/all
+objectClass: top
+objectClass: umcOperationSet
+objectClass: univentionObject
+univentionObjectType: settings/umc_operationset

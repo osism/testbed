@@ -12,15 +12,9 @@ keycloak_service_container_name: "keycloak"
 
 # keycloak-ldap-federation-config
 
-openldap_service_container_name: "openldap"
-
 keycloak_ldap_storage_provider_component_name: "ldap-provider"
-
-ldap_base: "dc=osism,dc=local"
-ldap_url: "ldap://{{ openldap_host }}:389"
-ldap_user: "Administrator"
-ldap_users: "cn=users,{{ ldap_base }}"
-ldap_binddn: "uid={{ ldap_user }},{{ ldap_users }}"
+keycloak_ldap_user: "keycloak-user"
+keycloak_ldap_binddn: "uid={{ keycloak_ldap_user }},{{ ldap_users }}"
 
 # keycloak-oidc-client-config
 
@@ -39,3 +33,15 @@ private_key_data: "{{ lookup('file', private_key_file_path)| regex_replace('\n',
 
 certificate_file_path: "{{ configuration_directory }}/environments/custom/files/keycloak/cert.crt"
 certificate_data: "{{ lookup('file', certificate_file_path)| regex_replace('\n', '\\\\n') }}"
+
+# openldap
+openldap_service_container_name: "openldap"
+ldap_base: "dc=osism,dc=local"
+# In case of OpenLDAP this should be {{ openldap_password }}
+ldap_password: password
+ldap_url: "ldap://{{ openldap_host }}:389"
+ldap_users: "cn=users,{{ ldap_base }}"
+
+# umc-config
+umc_ldap_user: "umc-admin"
+umc_ldap_binddn: "uid={{ umc_ldap_user }},{{ ldap_users }}"
