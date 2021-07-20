@@ -1,0 +1,13 @@
+dn: cn=Domain Admins,cn=groups,{{ ldap_base }}
+changetype: modify
+add: objectClass
+objectClass: univentionPolicyReference
+-
+add: memberUid
+memberUid: {{ ldap_user }}
+-
+add: uniqueMember
+uniqueMember: {{ ldap_binddn }}
+-
+add: univentionPolicyReference
+univentionPolicyReference: cn=default-umc-all,cn=UMC,cn=policies,{{ ldap_base }}
