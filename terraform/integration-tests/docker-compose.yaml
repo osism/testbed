@@ -1,0 +1,39 @@
+---
+
+version: '3.7'
+
+services:
+  firefox:
+    container_name: firefox
+    image:
+      selenium/standalone-firefox:89.0
+    volumes:
+      - /dev/shm:/dev/shm
+    ports:
+      - "192.168.16.5:4444:4444"
+      - "192.168.16.5:7900:7900"
+    healthcheck:
+      test: wget --output-document=- --tries=1 --timeout=1 http://localhost:4444 || exit 255
+      interval: 2s
+      timeout: 1s
+      retries: 10
+      start_period: 5s
+
+  test:
+    container_name: test
+    image:
+      quay.io/univention/univention-upx-container-test-automation-integration-test:selenium
+    entrypoint: robot
+                  --xunit xunit.xml
+                  --outputdir /tests/robot_results
+                  --consolecolors=on
+                  tests
+    volumes:
+      - ./:/tests:rw
+    environment:
+      - TERM=xterm
+    working_dir: /tests
+    depends_on:
+      - firefox
+#       condition: service_healthy
+...
