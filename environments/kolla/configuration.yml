@@ -88,6 +88,10 @@ enable_neutron_agent_ha: "yes"
 enable_neutron_dvr: "no"
 enable_neutron_qos: "yes"
 
+# NOTE: This volume is only needed in the testbed so that the virtualbmc service can access the Libvirt sockets.
+nova_libvirt_extra_volumes:
+  - "nova_libvirt_run:/var/run/libvirt"
+
 # nova
 nova_console: novnc
 nova_virt_type: kvm
