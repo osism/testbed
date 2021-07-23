@@ -67,42 +67,6 @@
         - member
         - _member_
 
-    - name: Create tiny flavor
-      os_nova_flavor:
-        cloud: admin
-        state: present
-        name: 1C-256MB-1GB
-        ram: 256
-        vcpus: 1
-        disk: 1
-        ephemeral: 0
-        extra_specs:
-          "hw_rng:allowed": "True"
-
-    - name: Create small flavor
-      os_nova_flavor:
-        cloud: admin
-        state: present
-        name: 1C-512MB-1GB
-        ram: 512
-        vcpus: 1
-        disk: 1
-        ephemeral: 0
-        extra_specs:
-          "hw_rng:allowed": "True"
-
-    - name: Create medium flavor
-      os_nova_flavor:
-        cloud: admin
-        state: present
-        name: 1C-1GB-5GB
-        ram: 1024
-        vcpus: 1
-        disk: 5
-        ephemeral: 0
-        extra_specs:
-          "hw_rng:allowed": "True"
-
     - name: Download cirros image
       get_url:
         url: https://github.com/cirros-dev/cirros/releases/download/0.5.1/cirros-0.5.1-x86_64-disk.img
@@ -257,7 +221,7 @@
         state: present
         name: test
         image: cirros
-        flavor: 1C-512MB-1GB
+        flavor: "SCS-1L:1:5"
         network: test
         delete_fip: true
         key_name: test
