@@ -123,7 +123,7 @@ Perform login via Keycloak
     # Click Login
     Click Button       loginBtn
     # Keycloak Login Page Should Open
-    Title Should Be    Sign in to gx-scs
+    Title Should Be    Sign in to osism
     # Fill in username and password
     Input Text    id:username    ${NEW_USERNAME}
     Input Text    id:password    ${NEW_PASSWORD}
