@@ -56,17 +56,3 @@ resource "openstack_networking_subnet_v2" "subnet_management" {
     end   = "192.168.31.250"
   }
 }
-
-###################
-# Router          #
-###################
-
-resource "openstack_networking_router_v2" "router" {
-  name                = var.prefix
-  external_network_id = data.openstack_networking_network_v2.public.id
-}
-
-resource "openstack_networking_router_interface_v2" "router_interface" {
-  router_id = openstack_networking_router_v2.router.id
-  subnet_id = openstack_networking_subnet_v2.subnet_management.id
-}

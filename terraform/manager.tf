@@ -1,8 +1,3 @@
-resource "openstack_networking_floatingip_v2" "manager_floating_ip" {
-  pool       = var.public
-  depends_on = [openstack_networking_router_interface_v2.router_interface]
-}
-
 resource "openstack_networking_port_v2" "manager_port_management" {
   network_id = openstack_networking_network_v2.net_management.id
   security_group_ids = [
@@ -33,11 +28,6 @@ resource "openstack_networking_port_v2" "manager_port_management" {
   allowed_address_pairs {
     ip_address = "192.168.112.0/20"
   }
-}
-
-resource "openstack_networking_floatingip_associate_v2" "manager_floating_ip_association" {
-  floating_ip = openstack_networking_floatingip_v2.manager_floating_ip.address
-  port_id     = openstack_networking_port_v2.manager_port_management.id
 }
 
 resource "openstack_blockstorage_volume_v3" "manager_base_volume" {

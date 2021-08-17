@@ -1,6 +1,9 @@
+# customisation:access_floatingip
 # customisation:default
-# override:neutron_availability_zone_hints
+# customisation:neutron_floatingip
 # override:manager_boot_from_image
+# override:neutron_availability_zone_hints_network
+# override:neutron_availability_zone_hints_router
 # override:nodes_boot_from_image
 image       = "Ubuntu 20.04"
 image_node  = "Ubuntu 20.04"

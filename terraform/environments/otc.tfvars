@@ -1,6 +1,8 @@
+# customisation:access_floatingip
 # customisation:default
-# override:neutron_router_enable_snat
+# customisation:neutron_floatingip
 # override:manager_boot_from_volume
+# override:neutron_router_enable_snat
 # override:nodes_boot_from_volume
 availability_zone         = "eu-de-02"
 volume_availability_zone  = "eu-de-02"

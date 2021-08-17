@@ -1,4 +1,6 @@
+# customisation:access_floatingip
 # customisation:default
+# customisation:neutron_floatingip
 # override:manager_boot_from_image
 # override:nodes_boot_from_image
 availability_zone         = "nova"
