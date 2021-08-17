@@ -1,6 +1,8 @@
-# override:neutron_router_enable_snat
-# override:manager_boot_from_volume
+# customisation:access_floatingip
+# customisation:neutron_floatingip
 # customisation:otcbms
+# override:manager_boot_from_volume
+# override:neutron_router_enable_snat
 availability_zone         = "eu-de-01"
 volume_availability_zone  = "eu-de-01"
 network_availability_zone = "eu-de-01"
