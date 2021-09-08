@@ -132,6 +132,107 @@ Manager services
 
 Some services like phpMyAdmin or OpenStackClient will still run afterwards.
 
+Authentication with OpenID Connect
+==================================
+
+Authentication with OpenID Connect is possible via Keycloak,
+which is automatically configured for OIDC mechanism when
+the identity services are deployed with ``deploy-identity``.
+
+Once the configuration is in place, the users
+need to be provisioned into the LDAP database,
+before they can be authenticated via OIDC.
+
+OpenStack web dashboard (Horizon) login via OpenID Connect
+----------------------------------------------------------
+
+For logging in via OIDC, open your browser at OpenStack Dashboard Login Page,
+select ``Authenticate via Keycloak``, after being redirected to the Keycloak
+login page, perform the login with the credentials provisioned into LDAP.
+After that you will be redirected back to the Horizon dashboard, where
+you will be logged in with your user.
+
+OpenStack web dashboard (Horizon) logout
+----------------------------------------
+
+Keep in mind, that clicking ``Sign Out`` on the Horizon dashboard
+currently doesn't revoke your OIDC token, and any consequent attempt
+to ``Authenticate via Keycloak`` will succeed without providing the credentials.
+
+[TODO]
+Proper logout.
+
+OpenStack CLI operations with OpenID Connect password
+-----------------------------------------------------
+
+Using the openstack cli is also possible via OIDC,
+assuming you provisioned the user ``testuser`` with password ``password``,
+then you can perform a simple `project list` operation like this:
+
+.. code-block:: console
+
+   openstack \
+     --os-auth-url http://192.168.16.12:5000/v3 \
+     --os-auth-type v3oidcpassword \
+     --os-client-id keystone \
+     --os-client-secret 0056b89c-030f-486b-a6ad-f0fa398fa4ad \
+     --os-username testuser \
+     --os-password password \
+     --os-identity-provider keycloak \
+     --os-protocol openid \
+     --os-identity-api-version 3 \
+     --os-discovery-endpoint http://192.168.16.5:8170/auth/realms/osism/.well-known/openid-configuration \
+   project list
+
+
+
+OpenStack CLI token issue with OpenID Connect
+---------------------------------------------
+
+It is also possible to exchange your username/password to a token,
+for further use with the cli.
+The ``token issue`` subcommand returns an SQL table,
+in which the `id` column's `value` field contains the token:
+
+.. code-block:: console
+
+   openstack \
+     --os-auth-url http://192.168.16.12:5000/v3 \
+     --os-auth-type v3oidcpassword \
+     --os-client-id keystone \
+     --os-client-secret 0056b89c-030f-486b-a6ad-f0fa398fa4ad \
+     --os-username testuser \
+     --os-password password \
+     --os-identity-provider keycloak \
+     --os-protocol openid \
+     --os-identity-api-version 3 \
+     --os-discovery-endpoint http://192.168.16.5:8170/auth/realms/osism/.well-known/openid-configuration \
+     --os-openid-scope "openid profile email" \
+   token issue \
+       -c id
+       -f value
+
+An example token is like:
+
+.. code-block:: console
+
+   gAAAAABhC98gL8nsQWknro3JWDXWLFCG3CDr3Mi9OIlvVAZMjy2mNgYtlXv_0yAIy-
+   nSlLAaLIGhht17-mwf8uclKgRuNVsYLSmgUpB163l89-ch2w2_OFe9zNSQNWf4qfd8
+   Cl7E7XvvUoFr1N8Gh09vaYLvRvYgCGV05xBUSs76qCHa0qElPUsk56s5ft4ALrSrzD
+   4cEQRVb5PXNjywdZk9_gtJziz31A7sD4LPIy82O5N9NryDoDw
+
+OpenStack CLI operations with token
+-----------------------------------
+
+[TODO]
+
+OpenStack CLI token revoke
+--------------------------
+
+[TODO]
+
+
+
 Webinterfaces
 =============
 
