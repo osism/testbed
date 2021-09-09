@@ -143,6 +143,64 @@ Once the configuration is in place, the users
 need to be provisioned into the LDAP database,
 before they can be authenticated via OIDC.
 
+SSL / TLS connection to Keycloak OpenID Connect provider
+--------------------------------------------------------
+
+Currently by default, the testbed does not use SSL / TLS
+to secure the connection to Keycloak.
+This poses security risks, and should only be used for demonstration
+or test purposes, not in production.
+
+Furthermore starting with
+`8.0.2 <https://www.keycloak.org/docs/latest/release_notes/#keycloak-8-0-2>`_
+Keycloak only sets, the ``SameSite`` parameter to ``None``
+if SSL / TLS is in use.
+Having Keycloak set ``SameSite=None`` is a must have for browsers,
+that follow the IETF draft proposal titled `Incrementally Better Cookies
+<https://datatracker.ietf.org/doc/html/draft-west-cookie-incrementalism-00>`_
+which suggests to treat cookies without a SameSite attribute as ``SameSite=Lax``.
+
+That treatment essentially disables the sending of the login cookies into
+third party contexts, and in this case Keystone is considered a third party contex
+from Keycloak, therfore the login via OpenID Connect won't work.
+
+Compatibility list of browsers, for accessing Keycloak without SSL / TLS:
+-------------------------------------------------------------------------
+
+Browsers enforcing ``SameSite=Lax``, which can't work:
+------------------------------------------------------
+
+Recent ``Chromium`` based browsers:
+
+* Chromium 91 and newer version
+* Vivalid 4.0 and newer version (Chrome/91.0.4472.79)
+* Microsoft Edge 91 and newer version
+
+Browsers, that can opt-out of enforcing ``SameSite=Lax``:
+---------------------------------------------------------
+
+Older ``Chromium`` based browsers, which can
+disabling the ``SameSite by default cookies`` and ``Enable removing SameSite=None cookies``
+flags in (`<chrome://flags>`_ and or `<vivaldi://flags>`_) and therfore can work:
+
+* `Chromium 90 and earlier versions <https://www.chromium.org/getting-involved/download-chromium>`_
+* `Vivalid 3.8 (Chrome/90.0.4430.214) and earlier versions <https://vivaldi.com/download/archive/>`_
+* Microsoft Edge 90 and earlier version
+
+Tested and recommended browsers, that are known to work well without further action:
+------------------------------------------------------------------------------------
+
+Gecko based browsers:
+
+* Firefox 92
+* SeaMonkey 2.53.9
+* LibreWolf 91.0.2-1 (After continuing to the plain http site)
+
+WebKit based browsers:
+
+* Safari 14.1.2
+* GnomeWeb 40.3
+
 OpenStack web dashboard (Horizon) login via OpenID Connect
 ----------------------------------------------------------
 
