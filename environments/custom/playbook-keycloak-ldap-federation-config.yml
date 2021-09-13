@@ -3,6 +3,12 @@
   hosts: manager
   gather_facts: false
 
+  vars:
+    # These generic variables are expected by the generic user.ldif.j2 template
+    ldap_user: "{{ keycloak_ldap_user }}"
+    ldap_binddn: "{{ keycloak_ldap_binddn }}"
+    ldap_bindpw: "{{ keycloak_ldap_bindpw }}"
+
   tasks:
     - name: Wait until service is available
       command: >-

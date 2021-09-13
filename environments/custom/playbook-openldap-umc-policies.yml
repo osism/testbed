@@ -1,0 +1,38 @@
+---
+- name: LDAP - configure UMC modules in LDAP
+  hosts: manager
+  gather_facts: false
+
+  vars:
+    umc_policies: "cn=UMC,cn=policies,{{ ldap_base }}"
+
+  tasks:
+    - name: Get UMC policies
+      command: >-
+        docker exec -i {{ openldap_service_container_name }}
+          slapcat -f /etc/ldap/slapd.conf
+                  -b "cn=UMC,cn=policies,{{ ldap_base }}"
+                  -H "ldap:///cn=UMC,cn=policies,{{ ldap_base }}??base"
+      register: policies_json
+      changed_when: false
+      run_once: true
+
+    - name: Filter UMC policies
+      set_fact:
+        available_umc_policies:
+          "{{ policies_json.stdout.split('\n')
+              | select('match', 'dn: .*')
+              | map('replace', 'dn: ', '')
+              | list }}"
+      run_once: true
+    # This enables the User, Group, etc management modules
+    - name: Add UMC modules for the Admin user
+      shell: >-
+        set -o pipefail &&
+        echo "{{ lookup('template', './files/openldap/umc-policies.ldif.j2') }}" |
+          docker exec -i {{ openldap_service_container_name }} \
+            slapadd -f /etc/ldap/slapd.conf
+      args:
+        executable: /usr/bin/bash
+      when: umc_policies not in available_umc_policies
+      run_once: true
