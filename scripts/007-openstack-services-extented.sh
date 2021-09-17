@@ -10,6 +10,3 @@ osism-kolla deploy panko
 osism-kolla deploy heat
 osism-kolla deploy barbican
 osism-kolla deploy senlin
-
-osism-kolla deploy magnum
-osism-run openstack bootstrap-magnum

@@ -30,7 +30,6 @@ enable_cinder_backup: "yes"
 enable_designate: "yes"
 enable_gnocchi: "yes"
 enable_heat: "yes"
-enable_magnum: "yes"
 enable_manila: "yes"
 enable_octavia: "yes"
 enable_panko: "yes"
@@ -105,9 +104,6 @@ ceilometer_event_type: panko
 
 # designate
 designate_ns_record: openstack.osism.test
-
-# magnum
-enable_cluster_user_trust: "yes"
 
 # manila
 enable_manila_backend_generic: "yes"
