@@ -30,6 +30,7 @@ enable_cinder_backup: "yes"
 enable_designate: "yes"
 enable_gnocchi: "yes"
 enable_heat: "yes"
+enable_ironic: "yes"
 enable_manila: "yes"
 enable_octavia: "yes"
 enable_panko: "yes"
@@ -107,6 +108,11 @@ designate_ns_record: openstack.osism.test
 
 # manila
 enable_manila_backend_generic: "yes"
+
+# ironic
+ironic_dnsmasq_interface: "vxlan0"
+ironic_dnsmasq_dhcp_range: "192.168.112.50,192.168.112.60"
+ironic_cleaning_network: "public"
 
 ##########################################################
 # external ceph

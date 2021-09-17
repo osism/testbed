@@ -28,3 +28,5 @@ terraform.tfstate.d
 terraform/*_custom.tf
 terraform/*_override.tf
 terraformrc
+ironic-agent.initramfs
+ironic-agent.kernel
