@@ -86,8 +86,8 @@ OpenStack
 * Glance
 * Heat
 * Horizon
+* Ironic
 * Keystone
-* Magnum
 * Manila
 * Neutron
 * Nova (with KVM)
