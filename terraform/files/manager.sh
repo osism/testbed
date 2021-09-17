@@ -85,6 +85,7 @@ if [[ "$DEPLOY_OPENSTACK" == "true" ]]; then
         echo "infrastructure services are necessary for the deployment of OpenStack"
     else
         sudo -iu dragon sh -c '/opt/configuration/scripts/004-openstack-services-basic.sh'
+        sudo -iu dragon sh -c '/opt/configuration/scripts/009-openstack-services-baremetal.sh'
 
         if [[ "$RUN_RALLY" == "true" ]]; then
             sudo -iu dragon sh -c '/opt/configuration/contrib/rally/rally.sh'
