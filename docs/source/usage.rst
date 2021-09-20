@@ -164,6 +164,14 @@ That treatment essentially disables the sending of the login cookies into
 third party contexts, and in this case Keystone is considered a third party contex
 from Keycloak, therfore the login via OpenID Connect won't work.
 
+The Keycloak documentation also explicitly states,
+that browsers with ``SameSite=Lax`` policy
+only get full feature support if SSL / TLS is configured.
+For further information see the the Keycloak documentation's
+`Browsers with "SameSite=Lax by Default" Policy
+<https://www.keycloak.org/docs/latest/securing_apps/
+#browsers-with-samesite-lax-by-default-policy>`_  section.
+
 Compatibility list of browsers, for accessing Keycloak without SSL / TLS:
 -------------------------------------------------------------------------
 
@@ -216,6 +224,31 @@ OpenStack web dashboard (Horizon) logout
 Keep in mind, that clicking ``Sign Out`` on the Horizon dashboard
 currently doesn't revoke your OIDC token, and any consequent attempt
 to ``Authenticate via Keycloak`` will succeed without providing the credentials.
+
+The expiration time of the Single Sign On tokens can be
+controlled on multiple levels in Keycloak.
+
+1. On realm level under `Realm Settings` > `Tokes`.
+   Assuming the `keycloak_realm` ansible variable is the default `osism`,
+   and keycloak is listening on `http://192.168.16.5:8170`, then the
+   configuration form is available here:
+   http://192.168.16.5:8170/auth/admin/master/console/#/realms/osism/token-settings
+
+   Detailed information is available in the
+   Keycloak Server Administrator Documentation `Session and Token Timeouts
+   <https://www.keycloak.org/docs/latest/server_admin/#_timeouts>`_ section.
+
+2. In a realm down on the `client level
+   <http://192.168.16.5:8170/auth/admin/master/console/#/realms/osism/clients>`_
+   select the client (keystone), and under `Settings` > `Advanced Settings`.
+
+   It is recommended to keep the `Access Token Lifespan` on a relatively low value,
+   with the trend of blocking third party cookies.
+   For further information see the Keycloak documentation's
+   `Browsers with Blocked Third-Party Cookies
+   <https://www.keycloak.org/docs/latest/securing_apps/
+   #browsers-with-blocked-third-party-cookies>`_ section.
+
 
 [TODO]
 Proper logout.
