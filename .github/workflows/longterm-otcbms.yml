@@ -3,11 +3,6 @@ name: Longterm OTCBMS
 
 "on":
   workflow_dispatch:
-  push:
-    paths:
-      - '.github/workflows/longterm-otcbms.yml'
-    branches:
-      - main
 
 jobs:
   longterm-otcbms:
@@ -25,7 +20,7 @@ jobs:
       - name: Setup terraform
         uses: hashicorp/setup-terraform@v1
         with:
-          terraform_version: 1.0.1
+          terraform_version: 1.0.7
       - name: Prepare use of openstack
         shell: bash
         working-directory: ./terraform
