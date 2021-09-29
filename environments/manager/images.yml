@@ -4,25 +4,25 @@
 adminer_tag: "4.8.1"
 adminer_image: "{{ docker_registry }}/library/adminer:{{ adminer_tag }}"
 
-ara_server_tag: "1.5.6"
+ara_server_tag: "1.5.7"
 ara_server_image: "{{ docker_registry_ansible|default('quay.io') }}/osism/ara-server:{{ ara_server_tag }}"
 
-mariadb_tag: "10.6"
+mariadb_tag: "10.6.4"
 mariadb_image: "{{ docker_registry }}/library/mariadb:{{ mariadb_tag }}"
 
-netbox_tag: "v3.0.2-ldap"
+netbox_tag: "v3.0.3-ldap"
 netbox_image: "{{ docker_registry }}/netboxcommunity/netbox:{{ netbox_tag }}"
 
-nginx_tag: "1.21-alpine"
+nginx_tag: "1.21.3-alpine"
 nginx_image: "{{ docker_registry }}/library/nginx:{{ nginx_tag }}"
 
 phpmyadmin_tag: "5.1.1"
 phpmyadmin_image: "{{ docker_registry }}/phpmyadmin/phpmyadmin:{{ phpmyadmin_tag }}"
 
-postgres_tag: "13.3-alpine"
+postgres_tag: "13.4-alpine"
 postgres_image: "{{ docker_registry }}/library/postgres:{{ postgres_tag }}"
 
-redis_tag: "6.2.4-alpine"
+redis_tag: "6.2.5-alpine"
 redis_image: "{{ docker_registry }}/library/redis:{{ redis_tag }}"
 
 registry_tag: "2.7"
