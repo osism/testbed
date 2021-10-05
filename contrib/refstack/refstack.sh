@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+PYTHON_VERSION=3.8
+TEMPEST_VERSION=29.0.0
+
 INSTALL_LOG=/opt/refstack/refstack-install-$(date +%Y-%m-%d).log
 
 sudo mkdir -p /opt/refstack
@@ -22,8 +25,13 @@ git clone https://opendev.org/osf/refstack-client.git /opt/refstack/client >>$IN
 
 if [[ ! -e /opt/refstack/client/.venv ]]; then
     pushd /opt/refstack/client >>$INSTALL_LOG 2>&1
-    ./setup_env >>$INSTALL_LOG 2>&1
+    ./setup_env -p $PYTHON_VERSION -t $TEMPEST_VERSION >>$INSTALL_LOG 2>&1
     popd >>$INSTALL_LOG 2>&1
+
+    # NOTE: Tempest with jsonschema > 4.0.0 does not work, therefore explicit downgrade to < 4.0.0
+    #       AttributeError: module jsonschema has no attribute compat
+    source /opt/refstack/client/.tempest/.venv/bin/activate
+    pip3 install jsonschema==3.2.0 >>$INSTALL_LOG 2>&1
 fi
 
 GUIDELINE=${1:-2020.11}
