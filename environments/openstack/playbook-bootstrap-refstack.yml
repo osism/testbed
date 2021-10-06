@@ -58,7 +58,7 @@
         cloud: admin
         project: "{{ item }}"
         state: present
-        name: test
+        name: "net-{{ item }}"
       loop: "{{ refstack_users }}"
 
     - name: Create test subnets
@@ -66,20 +66,22 @@
         cloud: admin
         project: "{{ item }}"
         state: present
-        name: subnet-test
-        network_name: test
-        cidr: 192.168.200.0/24
+        name: "subnet-{{ item }}"
+        network_name: "net-{{ item }}"
+        cidr: "192.168.{{ 200 + index }}.0/24"
       loop: "{{ refstack_users }}"
+      loop_control:
+        index_var: index
 
     - name: Create test router
       os_router:
         cloud: admin
         project: "{{ item }}"
         state: present
-        name: router-test
+        name: "router-{{ item }}"
         network: public
         interfaces:
-          - subnet-test
+          - "subnet-{{ item }}"
       loop: "{{ refstack_users }}"
 
     - name: Create tiny flavors
