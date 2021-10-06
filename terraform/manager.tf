@@ -134,9 +134,6 @@ write_files:
       export DEPLOY_MONITORING=${var.deploy_monitoring}
       export DEPLOY_OPENSTACK=${var.deploy_openstack}
 
-      export RUN_RALLY=${var.run_rally}
-      export RUN_REFSTACK=${var.run_refstack}
-
       bash /root/manager.sh
 
     path: /root/run-manager.sh

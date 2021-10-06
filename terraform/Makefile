@@ -49,8 +49,6 @@ init:
 	@echo "cloud_provider = \"$(OS_CLOUD)\"" >> $(ENVIRONMENT).auto.tfvars
 	@echo "ceph_version = \"$(VERSION_CEPH)\"" >> $(ENVIRONMENT).auto.tfvars
 	@echo "openstack_version = \"$(VERSION_OPENSTACK)\"" >> $(ENVIRONMENT).auto.tfvars
-	@echo "run_rally = $(RALLY)" >> $(ENVIRONMENT).auto.tfvars
-	@echo "run_refstack = $(REFSTACK)" >> $(ENVIRONMENT).auto.tfvars
 
 	@rm -f *_custom.tf
 	@for custom in `grep '^# *customisation:' "environments/${ENVIRONMENT}.tfvars" | sed 's/^# *customisation://'`; do \

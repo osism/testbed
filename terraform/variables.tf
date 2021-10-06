@@ -92,16 +92,6 @@ variable "deploy_identity" {
   default = false
 }
 
-variable "run_rally" {
-  type    = bool
-  default = false
-}
-
-variable "run_refstack" {
-  type    = bool
-  default = false
-}
-
 variable "configuration_version" {
   type    = string
   default = "main"
