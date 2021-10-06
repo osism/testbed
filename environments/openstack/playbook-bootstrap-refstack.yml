@@ -58,7 +58,7 @@
         cloud: admin
         project: "{{ item }}"
         state: present
-        name: "net-{{ item }}"
+        name: test
       loop: "{{ refstack_users }}"
 
     - name: Create test subnets
@@ -67,7 +67,7 @@
         project: "{{ item }}"
         state: present
         name: "subnet-{{ item }}"
-        network_name: "net-{{ item }}"
+        network_name: test
         cidr: "192.168.{{ 200 + index }}.0/24"
       loop: "{{ refstack_users }}"
       loop_control:
