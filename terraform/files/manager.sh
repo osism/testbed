@@ -93,7 +93,7 @@ if [[ "$DEPLOY_OPENSTACK" == "true" ]]; then
 
         if [[ "$RUN_REFSTACK" == "true" ]]; then
             sudo -iu dragon sh -c 'INTERACTIVE=false osism-run openstack bootstrap-refstack'
-            sudo -iu dragon sh -c '/opt/configuration/contrib/refstack/refstack.sh'
+            sudo -iu dragon sh -c '/opt/configuration/contrib/refstack/run.sh'
         fi
     fi
 fi
