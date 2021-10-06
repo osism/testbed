@@ -21,3 +21,9 @@ clouds:
   refstack-2:
     auth:
       password: password
+  refstack-3:
+    auth:
+      password: password
+  refstack-4:
+    auth:
+      password: password
