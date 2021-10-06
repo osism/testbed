@@ -56,3 +56,19 @@ clouds:
       project_domain_name: default
       user_domain_name: default
     identity_api_version: 3
+  refstack-3:
+    auth:
+      username: refstack-3
+      project_name: refstack-3
+      auth_url: http://api.osism.test:5000/v3
+      project_domain_name: default
+      user_domain_name: default
+    identity_api_version: 3
+  refstack-4:
+    auth:
+      username: refstack-4
+      project_name: refstack-4
+      auth_url: http://api.osism.test:5000/v3
+      project_domain_name: default
+      user_domain_name: default
+    identity_api_version: 3

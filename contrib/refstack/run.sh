@@ -14,7 +14,7 @@ INTERACTIVE=false osism-run openstack bootstrap-basic >>$INSTALL_LOG 2>&1
 INTERACTIVE=false osism-run openstack bootstrap-refstack >>$INSTALL_LOG 2>&1
 
 # NOTE: create RGW user accounts
-for username in refstack-0 refstack-1 refstack-2; do
+for username in refstack-0 refstack-1 refstack-2 refstack-3 refstack-4; do
     openstack --os-cloud $username container list >>$INSTALL_LOG 2>&1
 done
 
