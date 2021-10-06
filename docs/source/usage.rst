@@ -494,7 +494,7 @@ Refstack
 
 .. code-block:: console
 
-   /opt/configuration/contrib/refstack/refstack.sh
+   /opt/configuration/contrib/refstack/run.sh
    [...]
    ======
    Totals

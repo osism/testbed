@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
 PYTHON_VERSION=3.8
-TEMPEST_VERSION=29.0.0
+
+# NOTE: This is the version used in setup_env of refstack-client
+TEMPEST_VERSION=1d500e79156ada6bc6fdb628ed1da0efd4121f6a
 
 INSTALL_LOG=/opt/refstack/refstack-install-$(date +%Y-%m-%d).log
 
