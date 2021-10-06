@@ -86,15 +86,6 @@ if [[ "$DEPLOY_OPENSTACK" == "true" ]]; then
     else
         sudo -iu dragon sh -c '/opt/configuration/scripts/004-openstack-services-basic.sh'
         sudo -iu dragon sh -c '/opt/configuration/scripts/009-openstack-services-baremetal.sh'
-
-        if [[ "$RUN_RALLY" == "true" ]]; then
-            sudo -iu dragon sh -c '/opt/configuration/contrib/rally/rally.sh'
-        fi
-
-        if [[ "$RUN_REFSTACK" == "true" ]]; then
-            sudo -iu dragon sh -c 'INTERACTIVE=false osism-run openstack bootstrap-refstack'
-            sudo -iu dragon sh -c '/opt/configuration/contrib/refstack/run.sh'
-        fi
     fi
 fi
 
