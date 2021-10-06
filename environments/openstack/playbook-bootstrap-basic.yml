@@ -221,7 +221,7 @@
 
     - name: Download cirros image
       get_url:
-        url: https://github.com/cirros-dev/cirros/releases/download/0.5.1/cirros-0.5.1-x86_64-disk.img
+        url: https://github.com/cirros-dev/cirros/releases/download/0.5.2/cirros-0.5.2-x86_64-disk.img
         dest: /tmp/cirros.img
 
     - name: Upload cirros image
