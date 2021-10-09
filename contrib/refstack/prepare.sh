@@ -47,13 +47,14 @@ curl -s "https://refstack.openstack.org/api/v1/guidelines/$GUIDELINE/tests?targe
 # dns
 
 curl -s "https://refstack.openstack.org/v1/guidelines/dns.${GUIDELINE}.json/tests?target=dns&type=required&alias=true&flag=false" \
-    > /opt/refstack/test-list.txt
+    >> /opt/refstack/test-list.txt
 
 # orchestration
 
 curl -s "https://refstack.openstack.org/v1/guidelines/orchestration.${GUIDELINE}.json/tests?target=orchestration&type=required&alias=true&flag=false" \
-    > /opt/refstack/test-list.txt
+    >> /opt/refstack/test-list.txt
 
 # shared file system
 # NOTE: Manila currently not functional, therefore not activated
 # curl -s "https://refstack.openstack.org/v1/guidelines/shared_file_system.${GUIDELINE}.json/tests?target=shared_file_system&type=required&alias=true&flag=false" \
+#    >> /opt/refstack/test-list.txt
