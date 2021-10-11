@@ -10,7 +10,7 @@ ara_server_image: "{{ docker_registry_ansible|default('quay.io') }}/osism/ara-se
 mariadb_tag: "10.6.4"
 mariadb_image: "{{ docker_registry }}/library/mariadb:{{ mariadb_tag }}"
 
-netbox_tag: "v3.0.4-ldap"
+netbox_tag: "v3.0.6-ldap"
 netbox_image: "{{ docker_registry }}/netboxcommunity/netbox:{{ netbox_tag }}"
 
 nginx_tag: "1.21.3-alpine"
@@ -22,7 +22,7 @@ phpmyadmin_image: "{{ docker_registry }}/phpmyadmin/phpmyadmin:{{ phpmyadmin_tag
 postgres_tag: "14.0-alpine"
 postgres_image: "{{ docker_registry }}/library/postgres:{{ postgres_tag }}"
 
-redis_tag: "6.2.5-alpine"
+redis_tag: "6.2.6-alpine"
 redis_image: "{{ docker_registry }}/library/redis:{{ redis_tag }}"
 
 registry_tag: "2.7"
