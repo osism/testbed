@@ -34,6 +34,12 @@ if [[ ! -e /opt/refstack/client/.venv ]]; then
     #       AttributeError: module jsonschema has no attribute compat
     source /opt/refstack/client/.tempest/.venv/bin/activate
     pip3 install jsonschema==3.2.0 >>$INSTALL_LOG 2>&1
+
+    # required by heat tests
+    pip3 install heat-tempest-plugin==0.4.0
+
+    # required by designate tests
+    pip3 install designate-tempest-plugin==0.7.0
 fi
 
 GUIDELINE=${1:-2020.11}
