@@ -333,6 +333,7 @@ Name             URL                        Username Password
 ARA              http://192.168.16.5:8120   ara      password
 Ceph             http://192.168.16.9:7000   admin    phoon7Chahvae6we
 Cockpit          https://192.168.16.5:8130  dragon   da5pahthaew2Pai2
+Grafana          http://192.168.16.9:3000   admin    iT8TsrKOLdz2KQoT6Y84Vpi22opdDdZR5B7aKjos
 Horizon          http://192.168.16.9        admin    pYV8bV749aDMXLPlYJwoJs4ouRPWezCIOXYAQP6v
 Keycloak         http://192.168.16.5:8170   admin    password
 Kibana           http://192.168.16.9:5601   kibana   k2ReobFEsoxNm3DyZnkZmFPadSnCz6BjQhaLFoyB
@@ -377,6 +378,11 @@ Cockpit
    osism-run custom generate-ssh-known-hosts
 
 .. figure:: /images/cockpit.png
+
+Grafana
+-------
+
+.. figure:: /images/grafana.png
 
 Keycloak
 --------
