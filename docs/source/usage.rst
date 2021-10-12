@@ -384,6 +384,15 @@ Grafana
 
 .. figure:: /images/grafana.png
 
+Homer
+-----
+
+.. code-block:: console
+
+   osism-infrastructure homer
+
+.. figure:: /images/homer.png
+
 Keycloak
 --------
 
