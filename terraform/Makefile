@@ -155,11 +155,6 @@ scp: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
 	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
 	scp -o StrictHostKeyChecking=no -i .id_rsa.$(ENVIRONMENT) $(PARAMS) $(USERNAME)@$$MANAGER_ADDRESS:$(SOURCE) .
 
-test: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
-	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
-	scp -o StrictHostKeyChecking=no -i .id_rsa.$(ENVIRONMENT) -r ./integration-tests/ $(USERNAME)@$$MANAGER_ADDRESS:/tmp/; \
-	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(ENVIRONMENT) $(USERNAME)@$$MANAGER_ADDRESS "cd /tmp/integration-tests/; ./run_test.sh"
-
 sshuttle: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
 	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
 	sshuttle --ssh-cmd "ssh -o StrictHostKeyChecking=no -i .id_rsa.$(ENVIRONMENT) " -r $(USERNAME)@$$MANAGER_ADDRESS 192.168.16.0/20 192.168.96.0/20 192.168.112.0/20
