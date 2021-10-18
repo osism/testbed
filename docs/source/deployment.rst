@@ -17,8 +17,11 @@ Deployment
 
    The necessary files are located in the ``terraform`` directory.
 
-Requirements
-============
+Requirements for a physical environment
+=======================================
+
+Requirements for a virtual environment
+======================================
 
 Cloud resources
 ---------------
@@ -26,7 +29,7 @@ Cloud resources
 To use this testbed, a project on an OpenStack cloud environment is required. Cinder
 must be usable there as additional service.
 
-The testbed requires the following resources When using the default flavors.
+The testbed requires the following resources when using the default flavors.
 
 * 1 keypair
 * 6 security groups (50 security group rules)
