@@ -3,7 +3,7 @@
 PYTHON_VERSION=3.8
 
 # NOTE: This is the version used in setup_env of refstack-client
-TEMPEST_VERSION=1d500e79156ada6bc6fdb628ed1da0efd4121f6a
+TEMPEST_VERSION=29.0.0
 
 INSTALL_LOG=/opt/refstack/refstack-install-$(date +%Y-%m-%d).log
 
@@ -34,6 +34,9 @@ if [[ ! -e /opt/refstack/client/.venv ]]; then
     #       AttributeError: module jsonschema has no attribute compat
     source /opt/refstack/client/.tempest/.venv/bin/activate
     pip3 install jsonschema==3.2.0 >>$INSTALL_LOG 2>&1
+
+    pip3 install heat-tempest-plugin==1.4.0 >>$INSTALL_LOG 2>&1
+    pip3 install designate-tempest-plugin==0.12.0  >>$INSTALL_LOG 2>&1
 fi
 
 GUIDELINE=${1:-2020.11}

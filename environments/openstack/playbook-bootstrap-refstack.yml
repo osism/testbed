@@ -53,6 +53,14 @@
         - "{{ refstack_users }}"
         - ['member', '_member_']
 
+    - name: Create refstack keypairs
+      os_keypair:
+        cloud: "{{ item }}"
+        state: present
+        name: refstack
+        public_key_file: /ansible/secrets/id_rsa.operator.pub
+      loop: "{{ refstack_users }}"
+
     - name: Create test networks
       os_network:
         cloud: admin
@@ -66,7 +74,7 @@
         cloud: admin
         project: "{{ item }}"
         state: present
-        name: "subnet-{{ item }}"
+        name: subnet-test
         network_name: test
         cidr: "192.168.{{ 200 + index }}.0/24"
       loop: "{{ refstack_users }}"
@@ -81,7 +89,7 @@
         name: "router-{{ item }}"
         network: public
         interfaces:
-          - "subnet-{{ item }}"
+          - subnet-test
       loop: "{{ refstack_users }}"
 
     - name: Create tiny flavors
@@ -140,7 +148,25 @@
         name: public
       register: public
 
-    - name: Set image_ref in tempest.conf
+    - name: Set image_ref in heat_plugin in tempest.conf
+      ini_file:
+        path: /opt/configuration/contrib/refstack/tempest.conf
+        section: heat_plugin
+        option: image_ref
+        value: "{{ images.results.0.id }}"
+        mode: 0644
+      delegate_to: testbed-manager
+
+    - name: Set minimal_image_ref in heat_plugin in tempest.conf
+      ini_file:
+        path: /opt/configuration/contrib/refstack/tempest.conf
+        section: heat_plugin
+        option: minimal_image_ref
+        value: "{{ images.results.1.id }}"
+        mode: 0644
+      delegate_to: testbed-manager
+
+    - name: Set image_ref in compute in tempest.conf
       ini_file:
         path: /opt/configuration/contrib/refstack/tempest.conf
         section: compute
@@ -149,7 +175,7 @@
         mode: 0644
       delegate_to: testbed-manager
 
-    - name: Set image_ref_alt in tempest.conf
+    - name: Set image_ref_alt in compute in tempest.conf
       ini_file:
         path: /opt/configuration/contrib/refstack/tempest.conf
         section: compute
@@ -158,7 +184,7 @@
         mode: 0644
       delegate_to: testbed-manager
 
-    - name: Set flavor_ref in tempest.conf
+    - name: Set flavor_ref in compute in tempest.conf
       ini_file:
         path: /opt/configuration/contrib/refstack/tempest.conf
         section: compute
@@ -167,7 +193,7 @@
         mode: 0644
       delegate_to: testbed-manager
 
-    - name: Set flavor_ref_alt in tempest.conf
+    - name: Set flavor_ref_alt in compute in tempest.conf
       ini_file:
         path: /opt/configuration/contrib/refstack/tempest.conf
         section: compute
@@ -176,7 +202,7 @@
         mode: 0644
       delegate_to: testbed-manager
 
-    - name: Set public_network_id in tempest.conf
+    - name: Set public_network_id in network in tempest.conf
       ini_file:
         path: /opt/configuration/contrib/refstack/tempest.conf
         section: network
