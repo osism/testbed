@@ -1,5 +1,5 @@
 ---
-- name: Copy custom facts
+- name: Copy custom network devices fact
   hosts: all
   gather_facts: false
 
@@ -7,7 +7,39 @@
     - name: Install required packages
       become: true
       apt:
-        name: ["python3-netifaces", "python3-dotenv", "hwinfo"]
+        name: python3-netifaces
+        state: present
+
+    - name: Create custom facts directory
+      become: true
+      file:
+        path: /etc/ansible/facts.d
+        state: "directory"
+        owner: root
+        group: root
+        mode: 0755
+
+    - name: Copy fact file
+      become: true
+      copy:
+        src: testbed_network_devices.fact
+        dest: /etc/ansible/facts.d/testbed_network_devices.fact
+        owner: root
+        group: root
+        mode: 0755
+
+    - name: Gathers facts about remote hosts
+      setup:
+
+- name: Copy custom ceph devices facts
+  hosts: ceph-resource
+  gather_facts: false
+
+  tasks:
+    - name: Install required packages
+      become: true
+      apt:
+        name: ["python3-dotenv", "hwinfo"]
         state: present
 
     - name: Create custom facts directory
@@ -30,7 +62,6 @@
       loop:
         - testbed_ceph_devices
         - testbed_ceph_devices_all
-        - testbed_network_devices
 
     - name: Gathers facts about remote hosts
       setup:
