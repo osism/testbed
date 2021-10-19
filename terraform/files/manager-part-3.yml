@@ -8,27 +8,29 @@
     ansible_python_interpreter: /usr/bin/python3
 
   tasks:
+    - name: Install required packages
+      become: true
+      apt:
+        name: python3-netifaces
+        state: present
+
     - name: Create custom facts directory
+      become: true
       file:
         path: /etc/ansible/facts.d
-        state: "directory"
+        state: directory
         owner: root
         group: root
         mode: 0755
-      become: true
 
     - name: Copy fact files
+      become: true
       copy:
-        src: "/opt/configuration/environments/custom/files/{{ item }}.fact"
-        dest: "/etc/ansible/facts.d/{{ item }}.fact"
+        src: /opt/configuration/environments/custom/files/testbed_network_devices.fact
+        dest: /etc/ansible/facts.d/testbed_network_devices.fact
         owner: root
         group: root
         mode: 0755
-      become: true
-      loop:
-        - testbed_ceph_devices
-        - testbed_ceph_devices_all
-        - testbed_network_devices
 
 - name: Apply role manager & netbox
   hosts: testbed-manager.osism.test
