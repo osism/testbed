@@ -1,7 +1,3 @@
-provider "openstack" {
-  cloud = var.cloud_provider
-}
-
 terraform {
   required_version = ">= 1.0.0"
 

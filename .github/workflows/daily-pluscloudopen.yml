@@ -1,18 +1,18 @@
 ---
-name: Daily citycloud
+name: Daily pluscloudopen
 
 "on":
   workflow_dispatch:
   push:
     paths:
-      - '.github/workflows/daily-citycloud.yml'
+      - '.github/workflows/daily-pluscloudopen.yml'
     branches:
       - main
   schedule:
     - cron: '0 3 * * *'
 
 jobs:
-  daily-citycloud-cleanup:
+  daily-pluscloudopen-cleanup:
     if: github.repository == 'osism/testbed'
     runs-on: ubuntu-latest
 
@@ -32,33 +32,33 @@ jobs:
         shell: bash
         working-directory: ./terraform
         env:
-          OPENSTACK: ${{ secrets.OPENSTACK_DAILY_CITYCLOUD }}
+          OPENSTACK: ${{ secrets.OPENSTACK_DAILY_PLUSCLOUDOPEN }}
         run: |
           echo "$OPENSTACK" > clouds.yaml
       - name: Prepare use of remote backend
         shell: bash
         working-directory: ./terraform
         env:
-          BACKEND: ${{ secrets.TF_BACKEND_DAILY_CITYCLOUD }}
+          BACKEND: ${{ secrets.TF_BACKEND_DAILY_PLUSCLOUDOPEN }}
         run: |
           echo "$BACKEND" > backend.tf
       - name: Set terraform cloud credentials
         shell: bash
         working-directory: ./terraform
         env:
-          BACKEND: ${{ secrets.TF_CLI_CONFIG_DAILY_CITYCLOUD }}
+          BACKEND: ${{ secrets.TF_CLI_CONFIG_DAILY_PLUSCLOUDOPEN }}
         run: |
           echo "$BACKEND" > terraformrc
       - name: Initialization
         run: make init
         working-directory: ./terraform
       - name: Remove existing environment
-        run: make ENVIRONMENT=citycloud clean || exit 0
+        run: make ENVIRONMENT=pluscloudopen clean || exit 0
         working-directory: ./terraform
 
-  daily-citycloud-deploy:
+  daily-pluscloudopen-deploy:
     if: github.repository == 'osism/testbed'
-    needs: daily-citycloud-cleanup
+    needs: daily-pluscloudopen-cleanup
     runs-on: ubuntu-latest
 
     strategy:
@@ -77,26 +77,26 @@ jobs:
         shell: bash
         working-directory: ./terraform
         env:
-          OPENSTACK: ${{ secrets.OPENSTACK_DAILY_CITYCLOUD }}
+          OPENSTACK: ${{ secrets.OPENSTACK_DAILY_PLUSCLOUDOPEN }}
         run: |
           echo "$OPENSTACK" > clouds.yaml
       - name: Prepare use of remote backend
         shell: bash
         working-directory: ./terraform
         env:
-          BACKEND: ${{ secrets.TF_BACKEND_DAILY_CITYCLOUD }}
+          BACKEND: ${{ secrets.TF_BACKEND_DAILY_PLUSCLOUDOPEN }}
         run: |
           echo "$BACKEND" > backend.tf
       - name: Set terraform cloud credentials
         shell: bash
         working-directory: ./terraform
         env:
-          BACKEND: ${{ secrets.TF_CLI_CONFIG_DAILY_CITYCLOUD }}
+          BACKEND: ${{ secrets.TF_CLI_CONFIG_DAILY_PLUSCLOUDOPEN }}
         run: |
           echo "$BACKEND" > terraformrc
       - name: Initialization
-        run: make ENVIRONMENT=citycloud init
+        run: make ENVIRONMENT=pluscloudopen init
         working-directory: ./terraform
       - name: Deploy environment
         working-directory: ./terraform
-        run: make ENVIRONMENT=citycloud deploy-full OPENSTACK_VERSION=${{ matrix.openstack-version }}
+        run: make ENVIRONMENT=pluscloudopen deploy-full OPENSTACK_VERSION=${{ matrix.openstack-version }}
