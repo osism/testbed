@@ -36,23 +36,34 @@ The testbed requires the following resources when using the default flavors.
 * 6 networks with 6 subnetworks
 * 1 router
 * 30 ports
-* 1 floating ip address
-* 4 instances
+* 1 floating IP address
 * 9 volumes (min 90 GB) plus 140GB root disks (depends on flavors)
-* 4 instances (18 VCPUs, 56 GByte memory)
-
-.. note::
-
-   When deploying all additional OpenStack services, the use of nodes with at least
-   32 GByte memory is recommended. Then 104 GByte memory in total are required.
+* 4 instances (28 VCPUs, 104 GByte memory)
 
 Software
 --------
 
-Terraform in a current version must be installed and usable.
+Terraform in a current version must be installed and usable on the local workstation.
 
 Information on installing Terraform can be found in the Terraform
 documentation: https://learn.hashicorp.com/tutorials/terraform/install-cli
+
+Repository
+----------
+
+The code for deploying the testbed is hosted in a git repository, you need to make
+a local copy of it by running:
+
+.. code-block:: console
+
+   git clone https://github.com/osism/testbed
+
+The remainder of this document assumes that your working directory is the ``terraform``
+sub-directory of this repository, i.e. do:
+
+.. code-block:: console
+
+   cd testbed/terraform
 
 Cloud access
 ------------
@@ -187,6 +198,14 @@ Preparations
   If available, check that your openstack client tools work to validate the settings with
   e.g. ``openstack --os-cloud=the-name-of-the-entry availability zone list``.
 
+  .. note::
+
+     Note that terraform only supports public cloud profiles if a file named ``clouds-public.yaml``
+     exists in one of the standard locations and contains the matching definition. The embedded
+     well-known profiles that are available in the python openstack client do not work.
+     TODO: Publish a clouds-public.yaml file for betacloud (or all public clouds) and link
+     it here.
+
   .. warning::
 
      The file extension ``yaml`` is important!
@@ -203,8 +222,8 @@ availability_zone         south-2
 ceph_version              pacific
 cloud_provider            betacloud
 configuration_version     main
-flavor_manager            2C-4GB-20GB
-flavor_node               4C-16GB-40GB
+flavor_manager            4C-8GB-20GB
+flavor_node               8C-32GB-40GB
 image                     Ubuntu 20.04
 network_availability_zone south-2
 openstack_version         wallaby
@@ -216,10 +235,10 @@ volume_size_storage       10
 With the file ``environments/CLOUDPROVIDER.tfvars`` the parameters of the environment
 ``CLOUDPROVIDER`` can be adjusted.
 
-.. code-block:: json
+.. code-block:: ini
 
-   image       = "OSISM base"
-   flavor_node = "8C-32GB-40GB"
+   image             = "OSISM base"
+   openstack_version = "xena"
 
 Beyond the terraform variables, you can enable special overrides by adding special
 comments into the .tfvars files. The syntax is ``# override:XXXX``. This will
