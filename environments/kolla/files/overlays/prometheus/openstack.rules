@@ -1,0 +1,15 @@
+
+
+groups:
+- name: OpenStack
+  rules:
+  - alert: OpenStackServiceDown
+    expr: (sum({__name__=~"openstack.+_state", job="openstack_exporter"} == 0) by (hostname, service))
+    for: 1m
+    labels:
+      severity: alert
+    annotations:
+      summary: "{{ $labels.service }} at {{ $labels.instance }} is down"
+      description: "OpenStack service {{ $labels.service }} at {{ $labels.instance }} is down"
+
+

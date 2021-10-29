@@ -1,0 +1,11 @@
+# yamllint disable-file
+{% if groups.get('mons') %}
+scrape_configs:
+  - job_name: ceph
+    static_configs:
+      - targets:
+{% for host in groups['mons'] %}
+        - "{{ hostvars[host]['ansible_' + hostvars[host]['storage_interface']]['ipv4']['address'] }}:9283"
+{% endfor %}
+    scrape_interval: 15s
+{% endif %}
