@@ -21,13 +21,6 @@ internal_address: "{{ '192.168.16.0/20' | ipaddr('net') | ipaddr(13) | ipaddr('a
 fluentd_host: "{{ '192.168.16.0/20' | ipaddr('net') | ipaddr(13) | ipaddr('address') }}"
 
 ##########################################################
-# cockpit
-
-configure_cockpit_server: true
-cockpit_host: "{{ hostvars[inventory_hostname]['ansible_' + console_interface]['ipv4']['address'] }}"
-cockpit_ssh_interface: "{{ ansible_local.testbed_network_devices.management }}"
-
-##########################################################
 # netdata
 
 netdata_host_type: client

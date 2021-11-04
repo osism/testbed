@@ -7,12 +7,6 @@ manager_version: latest
 openstack_version: wallaby
 
 ##########################
-# cockpit
-
-configure_cockpit: true
-cockpit_host: "{{ hostvars[inventory_hostname]['ansible_' + console_interface]['ipv4']['address'] }}"
-
-##########################
 # manager
 
 ara_server_database_type: sqlite3

@@ -3,7 +3,6 @@
 export INTERACTIVE=false
 
 osism-infrastructure phpmyadmin
-osism-generic cockpit
 
 osism-infrastructure patchman
 osism-generic patchman-client
