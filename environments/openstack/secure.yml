@@ -2,7 +2,7 @@
 clouds:
   admin:
     auth:
-      password: pYV8bV749aDMXLPlYJwoJs4ouRPWezCIOXYAQP6v
+      password: password
   test:
     auth:
       password: test

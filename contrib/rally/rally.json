@@ -6,7 +6,7 @@
         "admin": {
             "username": "admin",
             "user_domain_name": "Default",
-            "password": "pYV8bV749aDMXLPlYJwoJs4ouRPWezCIOXYAQP6v",
+            "password": "password",
             "project_name": "admin",
             "project_domain_name": "Default"
         },

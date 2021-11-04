@@ -367,7 +367,7 @@ Webinterfaces
             <td>Horizon</td>
             <td><a href="http://192.168.16.9" target="_blank">http://192.168.16.9</a></td>
             <td>admin</td>
-            <td>pYV8bV749aDMXLPlYJwoJs4ouRPWezCIOXYAQP6v</td>
+            <td>password</td>
          </tr>
          <tr class="row-odd">
             <td>Keycloak</td>
@@ -403,7 +403,7 @@ Webinterfaces
             <td>Skydive</td>
             <td><a href="http://192.168.16.5:8085" target="_blank">http://192.168.16.5:8085</a></td>
             <td>admin</td>
-            <td>pYV8bV749aDMXLPlYJwoJs4ouRPWezCIOXYAQP6v</td>
+            <td>password</td>
          </tr>
          <tr class="row-odd">
             <td>phpMyAdmin</td>
