@@ -7,7 +7,7 @@
 NUMBER_OF_ROWS=${1:-100000}
 
 export MYSQL_HOST=api-int.osism.test
-export MYSQL_PWD=qNpdZmkKuUKBK3D5nZ08KMZ5MnYrGEe2hzH6XC0i
+export MYSQL_PWD=password
 export MYSQL_TCP_PORT=3306
 
 VERSION_mysql_random_data_load=0.1.12
