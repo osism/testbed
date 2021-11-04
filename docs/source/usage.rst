@@ -355,7 +355,7 @@ Webinterfaces
             <td>Cockpit</td>
             <td><a href="http://192.168.16.5:8130" target="_blank">http://192.168.16.5:8130</a></td>
             <td>dragon</td>
-            <td>da5pahthaew2Pai2</td>
+            <td>password</td>
          </tr>
          <tr class="row-odd">
             <td>Grafana</td>
