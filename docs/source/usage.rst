@@ -379,7 +379,7 @@ Webinterfaces
             <td>Kibana</td>
             <td><a href="http://192.168.16.9:5601" target="_blank">http://192.168.16.9:5601</a></td>
             <td>kibana</td>
-            <td>k2ReobFEsoxNm3DyZnkZmFPadSnCz6BjQhaLFoyB</td>
+            <td>password</td>
          </tr>
          <tr class="row-odd">
             <td>Netbox</td>
