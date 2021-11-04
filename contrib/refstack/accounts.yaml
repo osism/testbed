@@ -47,7 +47,7 @@
   user_domain_name: default
   tenant_name: admin
   project_domain_name: default
-  password: pYV8bV749aDMXLPlYJwoJs4ouRPWezCIOXYAQP6v
+  password: password
   types:
     - admin
     - operator
