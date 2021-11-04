@@ -409,7 +409,7 @@ Webinterfaces
             <td>phpMyAdmin</td>
             <td><a href="http://192.168.16.5:8110" target="_blank">http://192.168.16.5:8110</a></td>
             <td>root</td>
-            <td>qNpdZmkKuUKBK3D5nZ08KMZ5MnYrGEe2hzH6XC0i</td>
+            <td>password</td>
          </tr>
       </tbody>
    </table>

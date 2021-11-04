@@ -17,7 +17,7 @@ echo
 echo "# MariaDB"
 echo
 
-bash nagios-plugins/check_galera_cluster -u root -p qNpdZmkKuUKBK3D5nZ08KMZ5MnYrGEe2hzH6XC0i -H api-int.osism.test -c 1
+bash nagios-plugins/check_galera_cluster -u root -p password -H api-int.osism.test -c 1
 
 echo
 echo "# RabbitMQ"
