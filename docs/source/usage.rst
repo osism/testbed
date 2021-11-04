@@ -361,7 +361,7 @@ Webinterfaces
             <td>Grafana</td>
             <td><a href="http://192.168.16.9:3000" target="_blank">http://192.168.16.9:3000</a></td>
             <td>admin</td>
-            <td>iT8TsrKOLdz2KQoT6Y84Vpi22opdDdZR5B7aKjos</td>
+            <td>password</td>
          </tr>
          <tr class="row-even">
             <td>Horizon</td>
