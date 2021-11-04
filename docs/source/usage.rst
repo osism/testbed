@@ -349,7 +349,7 @@ Webinterfaces
             <td>Ceph</td>
             <td><a href="http://192.168.16.9:7000" target="_blank">http://192.168.16.9:7000</a></td>
             <td>admin</td>
-            <td>phoon7Chahvae6we</td>
+            <td>password</td>
          </tr>
          <tr class="row-even">
             <td>Cockpit</td>
