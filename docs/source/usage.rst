@@ -327,22 +327,92 @@ OpenStack CLI token revoke
 Webinterfaces
 =============
 
-================ ========================== ======== ========================================
-Name             URL                        Username Password
-================ ========================== ======== ========================================
-ARA              http://192.168.16.5:8120   ara      password
-Ceph             http://192.168.16.9:7000   admin    phoon7Chahvae6we
-Cockpit          https://192.168.16.5:8130  dragon   da5pahthaew2Pai2
-Grafana          http://192.168.16.9:3000   admin    iT8TsrKOLdz2KQoT6Y84Vpi22opdDdZR5B7aKjos
-Horizon          http://192.168.16.9        admin    pYV8bV749aDMXLPlYJwoJs4ouRPWezCIOXYAQP6v
-Keycloak         http://192.168.16.5:8170   admin    password
-Kibana           http://192.168.16.9:5601   kibana   k2ReobFEsoxNm3DyZnkZmFPadSnCz6BjQhaLFoyB
-Netbox           http://192.168.16.5:8121   netbox   password
-Netdata          http://192.168.16.5:19999  -        -
-Patchman         http://192.168.16.5:8150   patchman password
-Skydive          http://192.168.16.5:8085   admin    pYV8bV749aDMXLPlYJwoJs4ouRPWezCIOXYAQP6v
-phpMyAdmin       http://192.168.16.5:8110   root     qNpdZmkKuUKBK3D5nZ08KMZ5MnYrGEe2hzH6XC0i
-================ ========================== ======== ========================================
+.. raw:: html
+
+   <table class="docutils align-default">
+      <thead>
+         <tr class="row-odd">
+            <th class="head">Name</th>
+            <th class="head">URL</th>
+            <th class="head">Username</th>
+            <th class="head">Password</th>
+         </tr>
+      </thead>
+      <tbody>
+         <tr class="row-even">
+            <td>ARA</td>
+            <td><a href="http://192.168.16.5:8120" target="_blank">http://192.168.16.5:8120</a></td>
+            <td>ara</td>
+            <td>password</td>
+         </tr>
+         <tr class="row-odd">
+            <td>Ceph</td>
+            <td><a href="http://192.168.16.9:7000" target="_blank">http://192.168.16.9:7000</a></td>
+            <td>admin</td>
+            <td>phoon7Chahvae6we</td>
+         </tr>
+         <tr class="row-even">
+            <td>Cockpit</td>
+            <td><a href="http://192.168.16.5:8130" target="_blank">http://192.168.16.5:8130</a></td>
+            <td>dragon</td>
+            <td>da5pahthaew2Pai2</td>
+         </tr>
+         <tr class="row-odd">
+            <td>Grafana</td>
+            <td><a href="http://192.168.16.9:3000" target="_blank">http://192.168.16.9:3000</a></td>
+            <td>admin</td>
+            <td>iT8TsrKOLdz2KQoT6Y84Vpi22opdDdZR5B7aKjos</td>
+         </tr>
+         <tr class="row-even">
+            <td>Horizon</td>
+            <td><a href="http://192.168.16.9" target="_blank">http://192.168.16.9</a></td>
+            <td>admin</td>
+            <td>pYV8bV749aDMXLPlYJwoJs4ouRPWezCIOXYAQP6v</td>
+         </tr>
+         <tr class="row-odd">
+            <td>Keycloak</td>
+            <td><a href="http://192.168.16.5:8170" target="_blank">http://192.168.16.5:8170</a></td>
+            <td>admin</td>
+            <td>password</td>
+         </tr>
+         <tr class="row-even">
+            <td>Kibana</td>
+            <td><a href="http://192.168.16.9:5601" target="_blank">http://192.168.16.9:5601</a></td>
+            <td>kibana</td>
+            <td>k2ReobFEsoxNm3DyZnkZmFPadSnCz6BjQhaLFoyB</td>
+         </tr>
+         <tr class="row-odd">
+            <td>Netbox</td>
+            <td><a href="http://192.168.16.5:8121" target="_blank">http://192.168.16.5:8121</a></td>
+            <td>netbox</td>
+            <td>password</td>
+         </tr>
+         <tr class="row-even">
+            <td>Netdata</td>
+            <td><a href="http://192.168.16.5:19999" target="_blank">http://192.168.16.5:19999</a></td>
+            <td>-</td>
+            <td>-</td>
+         </tr>
+         <tr class="row-odd">
+            <td>Patchman</td>
+            <td><a href="http://192.168.16.5:8150" target="_blank">http://192.168.16.5:8150</a></td>
+            <td>patchman</td>
+            <td>password</td>
+         </tr>
+         <tr class="row-even">
+            <td>Skydive</td>
+            <td><a href="http://192.168.16.5:8085" target="_blank">http://192.168.16.5:8085</a></td>
+            <td>admin</td>
+            <td>pYV8bV749aDMXLPlYJwoJs4ouRPWezCIOXYAQP6v</td>
+         </tr>
+         <tr class="row-odd">
+            <td>phpMyAdmin</td>
+            <td><a href="http://192.168.16.5:8110" target="_blank">http://192.168.16.5:8110</a></td>
+            <td>root</td>
+            <td>qNpdZmkKuUKBK3D5nZ08KMZ5MnYrGEe2hzH6XC0i</td>
+         </tr>
+      </tbody>
+   </table>
 
 .. note::
 
