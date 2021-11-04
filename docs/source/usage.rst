@@ -439,16 +439,6 @@ Deploy `Ceph` first.
 
 .. figure:: /images/ceph-dashboard.png
 
-Cockpit
--------
-
-.. code-block:: console
-
-   osism-generic cockpit
-   osism-run custom generate-ssh-known-hosts
-
-.. figure:: /images/cockpit.png
-
 Grafana
 -------
 

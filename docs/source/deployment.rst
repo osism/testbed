@@ -359,7 +359,7 @@ Run refstack script:
 General Management
 ==================
 
-Show endpoint URLs (ara, cockpit, phpmyadmin):
+Show endpoint URLs (ara, phpmyadmin):
 
 .. code-block:: console
 
