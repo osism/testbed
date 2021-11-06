@@ -384,7 +384,7 @@ Webinterfaces
          <tr class="row-odd">
             <td>Netbox</td>
             <td><a href="http://192.168.16.5:8121" target="_blank">http://192.168.16.5:8121</a></td>
-            <td>netbox</td>
+            <td>admin</td>
             <td>password</td>
          </tr>
          <tr class="row-even">
