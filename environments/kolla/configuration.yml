@@ -12,8 +12,8 @@ kolla_enable_sanity_checks: "yes"
 ##########################################################
 # haproxy
 
-kolla_internal_fqdn: api-int.osism.test
-kolla_external_fqdn: api.osism.test
+kolla_internal_fqdn: api-int.testbed.osism.xyz
+kolla_external_fqdn: api.testbed.osism.xyz
 
 kolla_enable_tls_external: "no"
 kolla_enable_tls_internal: "no"
@@ -76,7 +76,7 @@ keystone_identity_providers:
   - name: "keycloak"
     openstack_domain: "default"
     protocol: "openid"
-    identifier: "http://192.168.16.5:8170/auth/realms/osism"
+    identifier: "http://manager.testbed.osism.xyz:8170/auth/realms/osism"
     public_name: "Authenticate via Keycloak"
     attribute_mapping: "mappingId1"
     metadata_folder: "{{ node_custom_config }}/keystone/federation/oidc/metadata"
@@ -109,7 +109,7 @@ ceilometer_database_type: gnocchi
 ceilometer_event_type: panko
 
 # designate
-designate_ns_record: openstack.osism.test
+designate_ns_record: openstack.testbed.osism.xyz
 
 # manila
 enable_manila_backend_generic: "yes"

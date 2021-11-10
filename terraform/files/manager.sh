@@ -7,7 +7,7 @@ cp /home/ubuntu/.ssh/id_rsa /home/dragon/.ssh/id_rsa
 cp /home/ubuntu/.ssh/id_rsa.pub /home/dragon/.ssh/id_rsa.pub
 chown -R dragon:dragon /home/dragon/.ssh
 
-sudo -iu dragon ansible-playbook -i testbed-manager.osism.test, /opt/manager-part-1.yml -e configuration_git_version=$CONFIGURATION_VERSION
+sudo -iu dragon ansible-playbook -i testbed-manager.testbed.osism.xyz, /opt/manager-part-1.yml -e configuration_git_version=$CONFIGURATION_VERSION
 
 sudo -iu dragon sh -c 'cd /opt/configuration; ./scripts/set-manager-version.sh $MANAGER_VERSION'
 
@@ -21,8 +21,8 @@ fi
 
 sudo -iu dragon sh -c 'cd /opt/configuration; ./scripts/enable-secondary-nodes.sh $NUMBER_OF_NODES'
 
-sudo -iu dragon ansible-playbook -i testbed-manager.osism.test, /opt/manager-part-2.yml
-sudo -iu dragon ansible-playbook -i testbed-manager.osism.test, /opt/manager-part-3.yml
+sudo -iu dragon ansible-playbook -i testbed-manager.testbed.osism.xyz, /opt/manager-part-2.yml
+sudo -iu dragon ansible-playbook -i testbed-manager.testbed.osism.xyz, /opt/manager-part-3.yml
 
 sudo -iu dragon cp /home/dragon/.ssh/id_rsa.pub /opt/ansible/secrets/id_rsa.operator.pub
 

@@ -47,7 +47,7 @@ operator_authorized_keys:
 resolvconf_nameserver:
   - 8.8.8.8
   - 9.9.9.9
-resolvconf_search: osism.test
+resolvconf_search: testbed.osism.xyz
 resolvconf_dnssec: false
 
 ##########################
@@ -55,8 +55,8 @@ resolvconf_dnssec: false
 
 hosts_type: template
 hosts_additional_entries:
-  api-int.osism.test: 192.168.16.9
-  api.osism.test: 192.168.96.9
+  api-int.testbed.osism.xyz: 192.168.16.9
+  api.testbed.osism.xyz: 192.168.96.9
 
 ##########################
 # common

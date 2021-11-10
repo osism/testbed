@@ -24,7 +24,7 @@
     resolvconf_nameserver:
       - 8.8.8.8
       - 9.9.9.9
-    resolvconf_search: osism.test
+    resolvconf_search: testbed.osism.xyz
     resolvconf_dnssec: false
 
   collections:
