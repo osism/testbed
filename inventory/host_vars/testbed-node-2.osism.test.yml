@@ -10,6 +10,14 @@ ansible_host: "{{ '192.168.16.0/20' | ipaddr('net') | ipaddr(12) | ipaddr('addre
 # netbox
 
 netbox_inventory_status: Active
+netbox_inventory_device_role: generic-node
+netbox_inventory_tags:
+  - generic
+  - control
+  - compute
+  - network
+  - ceph-control
+  - ceph-resource
 
 ##########################################################
 # generic
