@@ -44,4 +44,6 @@ jobs:
           server-dir: /
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
-        if: github.ref == 'refs/heads/main'
+        if: |
+          github.repository == 'osism/testbed' &&
+          github.ref == 'refs/heads/main'

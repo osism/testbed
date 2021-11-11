@@ -8,6 +8,7 @@ name: Update manager images
 
 jobs:
   update-manager-images:
+    if: github.repository == 'osism/testbed'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
