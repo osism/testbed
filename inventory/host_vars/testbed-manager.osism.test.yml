@@ -19,10 +19,8 @@ netbox_inventory_tags:
 ##########################################################
 # generic
 
-console_interface: "{{ ansible_local.testbed_network_devices.management }}"
-management_interface: "{{ ansible_local.testbed_network_devices.management }}"
-
 internal_address: "{{ '192.168.16.0/20' | ipaddr('net') | ipaddr(5) | ipaddr('address') }}"
+internal_interface: "{{ ansible_local.testbed_network_devices.management }}"
 
 ##########################################################
 # docker
