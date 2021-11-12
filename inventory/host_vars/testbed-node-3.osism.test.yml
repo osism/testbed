@@ -4,7 +4,7 @@ node_id: 13
 ##########################################################
 # ansible
 
-ansible_host: "{{ '192.168.16.0/20' | ipaddr('net') | ipaddr(13) | ipaddr('address') }}"
+ansible_host: "{{ '192.168.16.0/20' | ipaddr('net') | ipaddr(node_id) | ipaddr('address') }}"
 
 ##########################################################
 # netbox
@@ -19,7 +19,7 @@ netbox_inventory_tags:
 ##########################################################
 # generic
 
-internal_address: "{{ '192.168.16.0/20' | ipaddr('net') | ipaddr(13) | ipaddr('address') }}"
+internal_address: "{{ '192.168.16.0/20' | ipaddr('net') | ipaddr(node_id) | ipaddr('address') }}"
 internal_interface: "{{ ansible_local.testbed_network_devices.management }}"
 
 ##########################################################
@@ -69,9 +69,9 @@ octavia_network_interface: ohm0
 # ceph
 
 # monitor_interface:
-monitor_address: "{{ '192.168.64.0/20' | ipaddr('net') | ipaddr(13) | ipaddr('address') }}"
+monitor_address: "{{ '192.168.64.0/20' | ipaddr('net') | ipaddr(node_id) | ipaddr('address') }}"
 # radosgw_interface:
-radosgw_address: "{{ '192.168.64.0/20' | ipaddr('net') | ipaddr(13) | ipaddr('address') }}"
+radosgw_address: "{{ '192.168.64.0/20' | ipaddr('net') | ipaddr(node_id) | ipaddr('address') }}"
 
 devices: "{{ ansible_local.testbed_ceph_devices }}"
 
