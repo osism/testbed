@@ -35,7 +35,6 @@ done;
 
 # NOTE(berendt): sudo -E does not work here because sudo -i is needed
 
-sudo -iu dragon sh -c 'INTERACTIVE=false osism-run custom cronjobs'
 sudo -iu dragon sh -c 'INTERACTIVE=false osism-run custom facts'
 
 sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic bootstrap'
