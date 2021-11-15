@@ -9,6 +9,8 @@ openstack_version: wallaby
 ##########################
 # manager
 
+celery_enable: true
+
 ara_server_database_type: sqlite3
 
 ara_enable: true
