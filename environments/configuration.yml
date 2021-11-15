@@ -67,8 +67,6 @@ cleanup_services_extra:
   - lxcfs
   - nscd
   - ntp
-  - networkd-dispatcher
-  - systemd-networkd
 
 ##########################
 # systohc
