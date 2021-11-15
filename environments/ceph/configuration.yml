@@ -234,7 +234,7 @@ ceph_conf_overrides:
     "rgw keystone admin user": "swift"
     "rgw keystone api version": "3"
     "rgw keystone revocation interval": "900"
-    "rgw keystone url": "http://api-int.osism.test:35357"
+    "rgw keystone url": "http://api-int.testbed.osism.xyz:35357"
     "rgw keystone implicit tenants": "true"
     "rgw s3 auth use keystone": "true"
     "rgw swift account in url": "true"

@@ -195,7 +195,7 @@
         state: present
         name: test
         password: test
-        email: test@osism.test
+        email: test@testbed.osism.xyz
         domain: default
         default_project: test
       no_log: true

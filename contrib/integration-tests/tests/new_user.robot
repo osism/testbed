@@ -7,7 +7,7 @@ Library           RequestsLibrary
 *** Variables ***
 ${UMC_URL}        http://testbed-manager:8008
 ${KC_URL}         http://testbed-manager:8080
-${HORIZON_URL}    http://api.osism.test
+${HORIZON_URL}    http://api.testbed.osism.xyz
 ${BROWSER_URL}    http://testbed-manager:4444
 ${BROWSER}        firefox
 ${USERNAME}       umc-admin

@@ -6,7 +6,7 @@
 
 NUMBER_OF_ROWS=${1:-100000}
 
-export MYSQL_HOST=api-int.osism.test
+export MYSQL_HOST=api-int.testbed.osism.xyz
 export MYSQL_PWD=password
 export MYSQL_TCP_PORT=3306
 

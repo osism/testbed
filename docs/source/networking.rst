@@ -47,9 +47,9 @@ VIPs
 On the local workstation you should put the following entries into ``/etc/hosts``.
 Without these entries e.g. the VNC access to instances does not work.
 
-========= =================== =======================
+========= =================== =============================
 Name      Address             Domain
-========= =================== =======================
-external  ``192.168.96.9``    ``api.osism.test``
-internal  ``192.168.16.9``    ``api-int.osism.test``
-========= =================== =======================
+========= =================== =============================
+external  ``192.168.96.9``    ``api.testbed.osism.xyz``
+internal  ``192.168.16.9``    ``api-int.testbed.osism.xyz``
+========= =================== =============================

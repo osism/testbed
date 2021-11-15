@@ -11,19 +11,19 @@ echo
 echo "# Elasticsearch"
 echo
 
-bash nagios-plugins/check_elasticsearch -H api-int.osism.test
+bash nagios-plugins/check_elasticsearch -H api-int.testbed.osism.xyz
 
 echo
 echo "# MariaDB"
 echo
 
-bash nagios-plugins/check_galera_cluster -u root -p password -H api-int.osism.test -c 1
+bash nagios-plugins/check_galera_cluster -u root -p password -H api-int.testbed.osism.xyz -c 1
 
 echo
 echo "# RabbitMQ"
 echo
 
-perl nagios-plugins/check_rabbitmq_cluster -H api-int.osism.test -u openstack -p BO6yGAAq9eqA7IKqeBdtAEO7aJuNu4zfbhtnRo8Y
+perl nagios-plugins/check_rabbitmq_cluster -H api-int.testbed.osism.xyz -u openstack -p BO6yGAAq9eqA7IKqeBdtAEO7aJuNu4zfbhtnRo8Y
 
 echo
 echo "# Redis"
