@@ -113,11 +113,11 @@ write_files:
   - content: |
       ${indent(6, file("files/node.sh"))}
     path: /root/node.sh
-    permissions: 0700
+    permissions: '0700'
   - content: |
       ${indent(6, file("files/manager.sh"))}
     path: /root/manager.sh
-    permissions: 0700
+    permissions: '0700'
   - content: |
       #!/usr/bin/env bash
 
@@ -137,7 +137,7 @@ write_files:
       bash /root/manager.sh
 
     path: /root/run-manager.sh
-    permissions: 0700
+    permissions: '0700'
 runcmd:
   - "echo 'network: {config: disabled}' > /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg"
   - "rm -f /etc/network/interfaces.d/50-cloud-init.cfg"
