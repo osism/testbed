@@ -71,6 +71,7 @@
     - osism.services
 
   roles:
+    - role: operator
     - role: chrony
     - role: configfs
     - role: packages
@@ -80,7 +81,6 @@
     - role: hddtemp
     - role: rng
     - role: cleanup
-    - role: operator
 
 - name: Apply role docker
   hosts: localhost
