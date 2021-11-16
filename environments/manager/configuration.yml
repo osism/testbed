@@ -22,3 +22,15 @@ ara_server_host: "{{ hostvars[inventory_hostname]['ansible_' + internal_interfac
 netbox_enable: true
 netbox_host: "{{ hostvars[inventory_hostname]['ansible_' + internal_interface]['ipv4']['address'] }}"
 netbox_api_url: "http://{{ netbox_host }}:8121"
+
+##########################
+# configuration
+
+configuration_directory: /opt/configuration
+
+configuration_type: git
+configuration_git_version: main
+configuration_git_host: github.com
+configuration_git_port: 443
+configuration_git_repository: osism/testbed.git
+configuration_git_protocol: https
