@@ -7,3 +7,4 @@ rules:
 
 ignore: |
   contrib/rally/tests/
+  .git
