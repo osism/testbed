@@ -40,8 +40,8 @@ osism_ansible_image: "{{ docker_registry_ansible|default('quay.io') }}/osism/osi
 inventory_reconciler_tag: "{{ manager_version|default('latest') }}"
 inventory_reconciler_image: "{{ docker_registry_ansible }}/osism/inventory-reconciler:{{ inventory_reconciler_tag }}"
 
-scheduler_tag: "{{ manager_version|default('latest') }}"
-scheduler_image: "{{ docker_registry_ansible }}/osism/scheduler:{{ scheduler_tag }}"
+osism_tag: "{{ manager_version|default('latest') }}"
+osism_image: "{{ docker_registry_ansible }}/osism/osism:{{ osism_tag }}"
 
 # image tag depends on CEPH_VERSION or OPENSTACK_VERSION
 
