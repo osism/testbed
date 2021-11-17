@@ -247,16 +247,16 @@ controlled on multiple levels in Keycloak.
 
 1. On realm level under `Realm Settings` > `Tokes`.
    Assuming the `keycloak_realm` ansible variable is the default `osism`,
-   and keycloak is listening on `http://manager.testbed.osism.xyz:8170`, then the
+   and keycloak is listening on `http://testbed-manager.testbed.osism.xyz:8170`, then the
    configuration form is available here:
-   http://manager.testbed.osism.xyz:8170/auth/admin/master/console/#/realms/osism/token-settings
+   http://testbed-manager.testbed.osism.xyz:8170/auth/admin/master/console/#/realms/osism/token-settings
 
    Detailed information is available in the
    Keycloak Server Administrator Documentation `Session and Token Timeouts
    <https://www.keycloak.org/docs/latest/server_admin/#_timeouts>`_ section.
 
 2. In a realm down on the `client level
-   <http://manager.testbed.osism.xyz:8170/auth/admin/master/console/#/realms/osism/clients>`_
+   <http://testbed-manager.testbed.osism.xyz:8170/auth/admin/master/console/#/realms/osism/clients>`_
    select the client (keystone), and under `Settings` > `Advanced Settings`.
 
    It is recommended to keep the `Access Token Lifespan` on a relatively low value,
@@ -289,7 +289,7 @@ then you can perform a simple `project list` operation like this:
      --os-identity-provider keycloak \
      --os-protocol openid \
      --os-identity-api-version 3 \
-     --os-discovery-endpoint http://manager.testbed.osism.xyz:8170/auth/realms/osism/.well-known/openid-configuration \
+     --os-discovery-endpoint http://testbed-manager.testbed.osism.xyz:8170/auth/realms/osism/.well-known/openid-configuration \
    project list
 
 
@@ -314,7 +314,7 @@ in which the `id` column's `value` field contains the token:
      --os-identity-provider keycloak \
      --os-protocol openid \
      --os-identity-api-version 3 \
-     --os-discovery-endpoint http://manager.testbed.osism.xyz:8170/auth/realms/osism/.well-known/openid-configuration \
+     --os-discovery-endpoint http://testbed-manager.testbed.osism.xyz:8170/auth/realms/osism/.well-known/openid-configuration \
      --os-openid-scope "openid profile email" \
    token issue \
        -c id
@@ -358,7 +358,7 @@ Webinterfaces
       <tbody>
          <tr class="row-even">
             <td>ARA</td>
-            <td><a href="http://manager.testbed.osism.xyz:8120" target="_blank">http://manager.testbed.osism.xyz:8120</a></td>
+            <td><a href="http://testbed-manager.testbed.osism.xyz:8120" target="_blank">http://testbed-manager.testbed.osism.xyz:8120</a></td>
             <td>ara</td>
             <td>password</td>
          </tr>
@@ -370,7 +370,7 @@ Webinterfaces
          </tr>
          <tr class="row-even">
             <td>Cockpit</td>
-            <td><a href="http://manager.testbed.osism.xyz:8130" target="_blank">http://manager.testbed.osism.xyz:8130</a></td>
+            <td><a href="http://testbed-manager.testbed.osism.xyz:8130" target="_blank">http://testbed-manager.testbed.osism.xyz:8130</a></td>
             <td>dragon</td>
             <td>password</td>
          </tr>
@@ -388,7 +388,7 @@ Webinterfaces
          </tr>
          <tr class="row-odd">
             <td>Keycloak</td>
-            <td><a href="http://manager.testbed.osism.xyz:8170" target="_blank">http://manager.testbed.osism.xyz:8170</a></td>
+            <td><a href="http://testbed-manager.testbed.osism.xyz:8170" target="_blank">http://testbed-manager.testbed.osism.xyz:8170</a></td>
             <td>admin</td>
             <td>password</td>
          </tr>
@@ -400,31 +400,31 @@ Webinterfaces
          </tr>
          <tr class="row-odd">
             <td>Netbox</td>
-            <td><a href="http://manager.testbed.osism.xyz:8121" target="_blank">http://manager.testbed.osism.xyz:8121</a></td>
+            <td><a href="http://testbed-manager.testbed.osism.xyz:8121" target="_blank">http://testbed-manager.testbed.osism.xyz:8121</a></td>
             <td>admin</td>
             <td>password</td>
          </tr>
          <tr class="row-even">
             <td>Netdata</td>
-            <td><a href="http://manager.testbed.osism.xyz:19999" target="_blank">http://manager.testbed.osism.xyz:19999</a></td>
+            <td><a href="http://testbed-manager.testbed.osism.xyz:19999" target="_blank">http://testbed-manager.testbed.osism.xyz:19999</a></td>
             <td>-</td>
             <td>-</td>
          </tr>
          <tr class="row-odd">
             <td>Patchman</td>
-            <td><a href="http://manager.testbed.osism.xyz:8150" target="_blank">http://manager.testbed.osism.xyz:8150</a></td>
+            <td><a href="http://testbed-manager.testbed.osism.xyz:8150" target="_blank">http://testbed-manager.testbed.osism.xyz:8150</a></td>
             <td>patchman</td>
             <td>password</td>
          </tr>
          <tr class="row-even">
             <td>Skydive</td>
-            <td><a href="http://manager.testbed.osism.xyz:8085" target="_blank">http://manager.testbed.osism.xyz:8085</a></td>
+            <td><a href="http://testbed-manager.testbed.osism.xyz:8085" target="_blank">http://testbed-manager.testbed.osism.xyz:8085</a></td>
             <td>admin</td>
             <td>password</td>
          </tr>
          <tr class="row-odd">
             <td>phpMyAdmin</td>
-            <td><a href="http://manager.testbed.osism.xyz:8110" target="_blank">http://manager.testbed.osism.xyz:8110</a></td>
+            <td><a href="http://testbed-manager.testbed.osism.xyz:8110" target="_blank">http://testbed-manager.testbed.osism.xyz:8110</a></td>
             <td>root</td>
             <td>password</td>
          </tr>
