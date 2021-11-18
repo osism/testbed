@@ -84,21 +84,25 @@ deploy: init
 
 deploy-identity: init
 	@touch .deploy.$(ENVIRONMENT)
+	@echo "configuration_version = \"$(CONFIGURATION)\"" >> $(ENVIRONMENT).auto.tfvars
 	@echo "deploy_identity = true" >> $(ENVIRONMENT).auto.tfvars
 	@$(TERRAFORM) apply $(APPLY_PARAMS) $(PARAMS)
 
 deploy-infra: init
 	@touch .deploy.$(ENVIRONMENT)
+	@echo "configuration_version = \"$(CONFIGURATION)\"" >> $(ENVIRONMENT).auto.tfvars
 	@echo "deploy_infrastructure = true" >> $(ENVIRONMENT).auto.tfvars
 	@$(TERRAFORM) apply $(APPLY_PARAMS) $(PARAMS)
 
 deploy-ceph: init
 	@touch .deploy.$(ENVIRONMENT)
+	@echo "configuration_version = \"$(CONFIGURATION)\"" >> $(ENVIRONMENT).auto.tfvars
 	@echo "deploy_ceph = true" >> $(ENVIRONMENT).auto.tfvars
 	@$(TERRAFORM) apply $(APPLY_PARAMS) $(PARAMS)
 
 deploy-openstack: init
 	@touch .deploy.$(ENVIRONMENT)
+	@echo "configuration_version = \"$(CONFIGURATION)\"" >> $(ENVIRONMENT).auto.tfvars
 	@echo "deploy_ceph = true" >> $(ENVIRONMENT).auto.tfvars
 	@echo "deploy_infrastructure = true" >> $(ENVIRONMENT).auto.tfvars
 	@echo "deploy_openstack = true" >> $(ENVIRONMENT).auto.tfvars
@@ -106,6 +110,7 @@ deploy-openstack: init
 
 deploy-full: init
 	@touch .deploy.$(ENVIRONMENT)
+	@echo "configuration_version = \"$(CONFIGURATION)\"" >> $(ENVIRONMENT).auto.tfvars
 	@echo "deploy_ceph = true" >> $(ENVIRONMENT).auto.tfvars
 	@echo "deploy_infrastructure = true" >> $(ENVIRONMENT).auto.tfvars
 	@echo "deploy_monitoring = true" >> $(ENVIRONMENT).auto.tfvars
