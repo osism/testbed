@@ -56,7 +56,7 @@ resource "openstack_compute_instance_v2" "manager_server" {
 network:
    config: disabled
 package_update: true
-package_upgrade: false
+package_upgrade: true
 write_files:
   - content: |
       import subprocess
@@ -87,10 +87,6 @@ write_files:
     path: /home/ubuntu/.ssh/id_rsa
     permissions: '0600'
   - content: |
-      ${indent(6, file("files/node.yml"))}
-    path: /opt/node.yml
-    permissions: '0644'
-  - content: |
       ${indent(6, file("files/cleanup.yml"))}
     path: /opt/cleanup.yml
     permissions: '0644'
@@ -98,6 +94,10 @@ write_files:
       ${indent(6, file("files/cleanup.sh"))}
     path: /root/cleanup.sh
     permissions: '0700'
+  - content: |
+      ${indent(6, file("files/manager-part-0.yml"))}
+    path: /opt/manager-part-0.yml
+    permissions: '0644'
   - content: |
       ${indent(6, file("files/manager-part-1.yml"))}
     path: /opt/manager-part-1.yml
@@ -110,10 +110,6 @@ write_files:
       ${indent(6, file("files/manager-part-3.yml"))}
     path: /opt/manager-part-3.yml
     permissions: '0644'
-  - content: |
-      ${indent(6, file("files/node.sh"))}
-    path: /root/node.sh
-    permissions: '0700'
   - content: |
       ${indent(6, file("files/manager.sh"))}
     path: /root/manager.sh
@@ -140,9 +136,6 @@ write_files:
     permissions: '0700'
 runcmd:
   - "echo 'network: {config: disabled}' > /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg"
-  - "rm -f /etc/network/interfaces.d/50-cloud-init.cfg"
-  - "mv /etc/netplan/50-cloud-init.yaml /etc/netplan/50-cloud-init.yaml.unused"
-  - "/root/node.sh"
   - "/root/run-manager.sh"
 final_message: "The system is finally up, after $UPTIME seconds"
 power_state:
