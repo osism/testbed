@@ -23,37 +23,9 @@ resource "openstack_compute_instance_v2" "node_server" {
 network:
    config: disabled
 package_update: true
-package_upgrade: false
-write_files:
-  - content: ${openstack_compute_keypair_v2.key.public_key}
-    path: /home/ubuntu/.ssh/id_rsa.pub
-    permissions: '0600'
-  - content: |
-      ${indent(6, openstack_compute_keypair_v2.key.private_key)}
-    path: /home/ubuntu/.ssh/id_rsa
-    permissions: '0600'
-  - content: |
-      ${indent(6, file("files/node.yml"))}
-    path: /opt/node.yml
-    permissions: '0644'
-  - content: |
-      ${indent(6, file("files/cleanup.yml"))}
-    path: /opt/cleanup.yml
-    permissions: '0644'
-  - content: |
-      ${indent(6, file("files/cleanup.sh"))}
-    path: /root/cleanup.sh
-    permissions: '0700'
-  - content: |
-      ${indent(6, file("files/node.sh"))}
-    path: /root/node.sh
-    permissions: '0700'
+package_upgrade: true
 runcmd:
   - "echo 'network: {config: disabled}' > /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg"
-  - "rm -f /etc/network/interfaces.d/50-cloud-init.cfg"
-  - "mv /etc/netplan/50-cloud-init.yaml /etc/netplan/50-cloud-init.yaml.unused"
-  - "/root/node.sh"
-  - "/root/cleanup.sh"
 final_message: "The system is finally up, after $UPTIME seconds"
 EOT
 }
