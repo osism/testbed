@@ -77,8 +77,6 @@ until [[ "$(/usr/bin/docker inspect -f '{{.State.Health.Status}}' manager_ara-se
     sleep 1;
 done;
 
-/root/cleanup.sh
-
 # NOTE(berendt): sudo -E does not work here because sudo -i is needed
 
 sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic operator -l "all:!manager" -u ubuntu'

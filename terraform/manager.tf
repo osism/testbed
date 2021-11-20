@@ -87,14 +87,6 @@ write_files:
     path: /home/ubuntu/.ssh/id_rsa
     permissions: '0600'
   - content: |
-      ${indent(6, file("files/cleanup.yml"))}
-    path: /opt/cleanup.yml
-    permissions: '0644'
-  - content: |
-      ${indent(6, file("files/cleanup.sh"))}
-    path: /root/cleanup.sh
-    permissions: '0700'
-  - content: |
       ${indent(6, file("files/manager-part-0.yml"))}
     path: /opt/manager-part-0.yml
     permissions: '0644'
