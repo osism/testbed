@@ -13,6 +13,7 @@ echo '* libraries/restart-without-asking boolean true' | debconf-set-selections
 
 apt-get update
 apt-get install --yes \
+  git-lfs \
   python3-argcomplete \
   python3-crypto \
   python3-dnspython \
