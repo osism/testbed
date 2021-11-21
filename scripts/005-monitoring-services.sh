@@ -4,3 +4,4 @@ export INTERACTIVE=false
 
 osism-monitoring netdata
 osism-kolla deploy prometheus
+osism-kolla deploy grafana
