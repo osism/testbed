@@ -14,6 +14,13 @@ over time. However, at no point does it claim to represent a production exactly.
 Open Source Software lives from participation. We welcome any issues, change requests
 or general feedback. Do not hestiate to open an issue.
 
+## Point of entry
+
+The [Operations Dashboard](http://testbed-manager.testbed.osism.xyz:8080) is best for
+getting started with the testbed after full deployment.
+
+![Operations Dashboard](https://raw.githubusercontent.com/osism/testbed/main/contrib/assets/operations-dashboard.png)
+
 ## GitHub Actions
 
 ### Syntax checks
