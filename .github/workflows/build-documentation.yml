@@ -35,7 +35,7 @@ jobs:
       - name: Build documentation
         run: sphinx-build -b html source build/html
         working-directory: docs
-      - uses: SamKirkland/FTP-Deploy-Action@4.1.0
+      - uses: SamKirkland/FTP-Deploy-Action@4.2.0
         with:
           local-dir: docs/build/html/
           password: ${{ secrets.FTP_PASSWORD }}
