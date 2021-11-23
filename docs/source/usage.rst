@@ -145,7 +145,7 @@ Manager services
 .. code-block:: console
 
    cd /opt/manager
-   docker-compose down -v
+   docker compose down -v
 
 Some services like phpMyAdmin or OpenStackClient will still run afterwards.
 
