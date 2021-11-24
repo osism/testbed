@@ -25,7 +25,7 @@ root = result.stdout.strip()
 
 # NOTE: Get all block devices that are present except the block device
 #       on which the / filesystem is located.
-result = run(f"hwinfo --disk --short | grep Disk | awk '{{print $1}}' | xargs -n1 basename | sort | grep -v {root}", stdout=PIPE, stderr=PIPE, universal_newlines=True, shell=True)
+result = run(f"hwinfo --disk --short | tail -n +2 | grep -i disk | awk '{{print $1}}' | xargs -n1 basename | sort | grep -v {root}", stdout=PIPE, stderr=PIPE, universal_newlines=True, shell=True)
 devices = result.stdout.strip().split("\n")
 
 print(json.dumps([f"/dev/{x}" for x in devices]))
