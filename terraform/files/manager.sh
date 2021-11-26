@@ -89,7 +89,7 @@ sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic reboot -l testbed-nodes -
 sudo -iu dragon sh -c 'INTERACTIVE=false osism-generic wait-for-connection -l testbed-nodes -e ireallymeanit=yes'
 
 # NOTE: Restart the manager services to update the /etc/hosts file
-sudo -iu dragon sh -c 'docker-compose -f /opt/manager/docker-compose.yml restart'
+sudo -iu dragon sh -c 'docker compose -f /opt/manager/docker-compose.yml restart'
 
 # NOTE(berendt): wait for ARA
 until [[ "$(/usr/bin/docker inspect -f '{{.State.Health.Status}}' manager_ara-server_1)" == "healthy" ]];
