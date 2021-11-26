@@ -41,8 +41,6 @@ network_ethernets:
   "{{ ansible_local.testbed_network_devices.management }}":
     addresses:
       - "{{ '192.168.16.0/20' | ipaddr('net') | ipaddr(node_id) | ipaddr('address') }}/20"
-      - "{{ '192.168.64.0/20' | ipaddr('net') | ipaddr(node_id) | ipaddr('address') }}/20"
-      - "{{ '192.168.96.0/20' | ipaddr('net') | ipaddr(node_id) | ipaddr('address') }}/20"
     gateway4: "{{ '192.168.16.0/20' | ipaddr('net') | ipaddr('1') | ipaddr('address') }}"
     mtu: "{{ testbed_mtu_manager }}"
 network_dispatcher_scripts:

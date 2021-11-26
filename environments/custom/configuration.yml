@@ -25,8 +25,8 @@ keystone_client_id: "keystone"
 keystone_redirect_uris:
   - "http://api.testbed.osism.xyz:5000/redirect_uri"
   - "http://api.testbed.osism.xyz"
-  - "http://192.168.96.9:5000/redirect_uri"
-  - "http://192.168.96.9"
+  - "http://192.168.16.254:5000/redirect_uri"
+  - "http://192.168.16.254"
 
 private_key_file_path: "{{ configuration_directory }}/environments/custom/files/keycloak/private_key.pem"
 private_key_data: "{{ lookup('file', private_key_file_path)| regex_replace('\n', '\\\\n') }}"

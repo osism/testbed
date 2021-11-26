@@ -5,10 +5,7 @@ import netifaces
 
 NETWORKS = {
     'external': '192.168.96',
-    'internal': '192.168.32',
     'management': '192.168.16',
-    'storage_frontend': '192.168.64',
-    'storage_backend': '192.168.80',
     'provider': '192.168.112'
 }
 

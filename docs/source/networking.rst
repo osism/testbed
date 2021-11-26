@@ -2,15 +2,6 @@
 Networking
 ==========
 
-.. contents::
-   :local:
-
-.. figure:: /images/network-topology.png
-
-The network ``net-to-external-testbed`` is not part of the testbed.
-It is a standard network on the Betacloud. ``external`` is an external network on the Betacloud.
-This network is also not part of the testbed.
-
 Networks
 ========
 
@@ -20,12 +11,8 @@ only has no connection to the storage backend.
 ================ ==================== ========================================================
 Name             CIDR                 Description
 ================ ==================== ========================================================
-out of band      ``192.168.0.0/20``   This network is not used in the testbed.
 management       ``192.168.16.0/20``  SSH access via this network & all internal communication
 wireguard        ``192.168.48.0/20``  Is used by Wireguard.
-storage frontend ``192.168.64.0/20``  For access of the compute nodes to the storage nodes.
-storage backend  ``192.168.80.0/20``  For synchronization between storage nodes.
-external         ``192.168.96.0/20``  Is used to emulate an external network.
 provider         ``192.168.112.0/20`` Is used to emulate an provider network.
 ================ ==================== ========================================================
 
@@ -50,6 +37,6 @@ Without these entries e.g. the VNC access to instances does not work.
 ========= =================== =============================
 Name      Address             Domain
 ========= =================== =============================
-external  ``192.168.96.9``    ``api.testbed.osism.xyz``
+external  ``192.168.16.254``    ``api.testbed.osism.xyz``
 internal  ``192.168.16.9``    ``api-int.testbed.osism.xyz``
 ========= =================== =============================
