@@ -10,22 +10,6 @@ resource "openstack_networking_port_v2" "manager_port_management" {
   }
 
   allowed_address_pairs {
-    ip_address = "192.168.48.0/20"
-  }
-
-  allowed_address_pairs {
-    ip_address = "192.168.64.0/20"
-  }
-
-  allowed_address_pairs {
-    ip_address = "192.168.80.0/20"
-  }
-
-  allowed_address_pairs {
-    ip_address = "192.168.96.0/20"
-  }
-
-  allowed_address_pairs {
     ip_address = "192.168.112.0/20"
   }
 }
@@ -58,27 +42,6 @@ network:
 package_update: true
 package_upgrade: true
 write_files:
-  - content: |
-      import subprocess
-      import netifaces
-
-      PORTS = {
-          "${openstack_networking_port_v2.manager_port_management.mac_address}": [
-              "192.168.64.5/20",
-              "192.168.96.5/20"
-          ]
-      }
-
-      for interface in netifaces.interfaces():
-          try:
-              mac_address = netifaces.ifaddresses(interface)[netifaces.AF_LINK][0]['addr']
-              if mac_address in PORTS:
-                  for address in PORTS[mac_address]:
-                      subprocess.run("ip addr add %s dev %s" % (address, interface), shell=True)
-          except:
-              pass
-    path: /root/configure-network-devices.py
-    permissions: '0600'
   - content: ${openstack_compute_keypair_v2.key.public_key}
     path: /home/ubuntu/.ssh/id_rsa.pub
     permissions: '0600'

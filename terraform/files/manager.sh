@@ -1,10 +1,5 @@
 #!/usr/bin/env bash
 
-# NOTE: cloud-init may set a wrong default route. This is repaired manually here.
-ip route del default via 192.168.16.1 || true
-ip route del default via 192.168.112.1 || true
-ip route add default via 192.168.16.1 || true
-
 # NOTE: Because DNS queries don't always work directly at the beginning a
 #       retry for APT.
 echo "APT::Acquire::Retries \"3\";" > /etc/apt/apt.conf.d/80-retries
@@ -48,8 +43,6 @@ ansible-galaxy collection install --collections-path /usr/share/ansible/collecti
 chmod -R +r /usr/share/ansible
 
 ansible-playbook -i localhost, /opt/manager-part-0.yml
-
-python3 /root/configure-network-devices.py
 
 cp /home/ubuntu/.ssh/id_rsa /home/dragon/.ssh/id_rsa
 cp /home/ubuntu/.ssh/id_rsa.pub /home/dragon/.ssh/id_rsa.pub
