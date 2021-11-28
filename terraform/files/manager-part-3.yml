@@ -78,11 +78,15 @@
 
     # NOTE: Temporary way to initialize Vault
     - name: Initialize vault
-      command: "INTERACTIVE=false osism-manager vault-init -e 'vault_token={{ root_token }}'"
+      command: "osism-manager vault-init -e 'vault_token={{ root_token }}'"
+      environment:
+        INTERACTIVE: false
 
     # NOTE: Temporary way to import secrets into Vault
     - name: Import secrets
-      command: "INTERACTIVE=false osism-manager vault-import -e 'vault_token={{ root_token }}' -e 'vault_secrets_path={{ item }}'"
+      command: "osism-manager vault-import -e 'vault_token={{ root_token }}' -e 'vault_secrets_path={{ item }}'"
+      environment:
+        INTERACTIVE: false
       loop:
         - /opt/configuration/environments/ceph/secrets.yml
         - /opt/configuration/environments/custom/secrets.yml
