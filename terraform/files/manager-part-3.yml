@@ -56,7 +56,7 @@
     - netbox
     - manager
 
-- name: Unseal vault
+- name: Unseal & initialize vault
   hosts: testbed-manager.testbed.osism.xyz
   connection: local
   gather_facts: false
@@ -75,3 +75,21 @@
         vault_unseal_key_1: "{{ unseal_keys_hex[0] }}"
         vault_unseal_key_2: "{{ unseal_keys_hex[1] }}"
         vault_unseal_key_3: "{{ unseal_keys_hex[2] }}"
+
+    # NOTE: Temporary way to initialize Vault
+    - name: Initialize vault
+      command: "osism-manager vault-init -e 'vault_token={{ root_token }}'"
+
+    # NOTE: Temporary way to import secrets into Vault
+    - name: Import secrets
+      command: "osism-manager vault-import -e 'vault_token={{ root_token }}' -e 'vault_secrets_path={{ item }}'"
+      loop:
+        - /opt/configuration/environments/ceph/secrets.yml
+        - /opt/configuration/environments/custom/secrets.yml
+        - /opt/configuration/environments/generic/secrets.yml
+        - /opt/configuration/environments/infrastructure/secrets.yml
+        - /opt/configuration/environments/kolla/secrets.yml
+        - /opt/configuration/environments/manager/secrets.yml
+        - /opt/configuration/environments/monitoring/secrets.yml
+        - /opt/configuration/environments/openstack/secrets.yml
+        - /opt/configuration/environments/secrets.yml
