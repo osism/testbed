@@ -10,18 +10,15 @@ testbed_mtu_node: "{{ testbed_mtu }}"
 # docker
 
 docker_version: "5:20.10.6"
-
 docker_user: "{{ operator_user }}"
+
+##########################
+# docker registries
 
 ceph_docker_registry: quay.io
 docker_registry: index.docker.io
 docker_registry_ansible: quay.io
 docker_registry_service: index.docker.io
-
-##########################
-# docker_compose
-
-docker_compose_install_type: package
 
 ##########################
 # operator
