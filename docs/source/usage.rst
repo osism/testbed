@@ -55,17 +55,17 @@ Deploy services
 On the testbed, the services can currently be deployed manually. In the future, these manual
 steps will be automated by Zuul CI.
 
-* Basic infrastructure services (MariaDB, RabbitMQ, Redis, ..)
+* Basic infrastructure services (MariaDB, RabbitMQ, Redis, ...)
 
   .. code-block:: console
 
      /opt/configuration/scripts/002-infrastructure-services-basic.sh
 
-* Extented infrastructure services (Patchman, phpMyAdmin, Cockpit, ..)
+* Extended infrastructure services (Patchman, phpMyAdmin, ...)
 
   .. code-block:: console
 
-     /opt/configuration/scripts/006-infrastructure-services-extented.sh
+     /opt/configuration/scripts/006-infrastructure-services-extended.sh
 
 * Ceph services
 
@@ -73,25 +73,25 @@ steps will be automated by Zuul CI.
 
      /opt/configuration/scripts/003-ceph-services.sh
 
-* Basic OpenStack services (Compute, Storage, ..)
+* Basic OpenStack services (Compute, Storage, ...)
 
   .. code-block:: console
 
      /opt/configuration/scripts/004-openstack-services-basic.sh
 
-* Extented OpenStack services (Telemetry, Kubernetes, ..)
+* Extended OpenStack services (Telemetry, Kubernetes, ...)
 
   .. code-block:: console
 
-     /opt/configuration/scripts/007-openstack-services-extented.sh
+     /opt/configuration/scripts/007-openstack-services-extended.sh
 
-* Additional OpenStack services (Rating, Container, ..)
+* Additional OpenStack services (Rating, Container, ...)
 
   .. code-block:: console
 
      /opt/configuration/scripts/008-openstack-services-additional.sh
 
-* Monitoring services (Netdata, Prometheus exporters, ..)
+* Monitoring services (Netdata, Prometheus exporters, ...)
 
   .. code-block:: console
 
@@ -366,12 +366,6 @@ Webinterfaces
             <td>Ceph</td>
             <td><a href="http://api.testbed.osism.xyz:7000" target="_blank">http://api.testbed.osism.xyz:7000</a></td>
             <td>admin</td>
-            <td>password</td>
-         </tr>
-         <tr class="row-even">
-            <td>Cockpit</td>
-            <td><a href="http://testbed-manager.testbed.osism.xyz:8130" target="_blank">http://testbed-manager.testbed.osism.xyz:8130</a></td>
-            <td>dragon</td>
             <td>password</td>
          </tr>
          <tr class="row-odd">
