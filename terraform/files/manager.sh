@@ -109,7 +109,7 @@ fi
 # deploy infrastructure services
 if [[ "$DEPLOY_INFRASTRUCTURE" == "true" ]]; then
     sudo -iu dragon sh -c '/opt/configuration/scripts/002-infrastructure-services-basic.sh'
-    sudo -iu dragon sh -c '/opt/configuration/scripts/006-infrastructure-services-extented.sh'
+    sudo -iu dragon sh -c '/opt/configuration/scripts/006-infrastructure-services-extended.sh'
 fi
 
 # deploy ceph services

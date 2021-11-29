@@ -34,7 +34,7 @@ The deployment of Ceph is based on `ceph-ansible <https://github.com/ceph/ceph-a
 OpenStack
 ---------
 
-The deployment of OpenStack is based on `kolla-ansible <https://github.com/openstack/kolla-ansible>`_.
+The deployment of OpenStack is based on `kolla-ansible <https://opendev.org/openstack/kolla-ansible>`_.
 
 * Rocky
 * Stein
@@ -54,7 +54,6 @@ Infrastructure
 --------------
 
 * Ceph
-* Cockpit
 * Elasticsearch
 * Etcd
 * Fluentd
