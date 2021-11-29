@@ -364,7 +364,7 @@ Webinterfaces
          </tr>
          <tr class="row-odd">
             <td>Ceph</td>
-            <td><a href="http://api.testbed.osism.xyz:7000" target="_blank">http://api.testbed.osism.xyz:7000</a></td>
+            <td><a href="http://api-int.testbed.osism.xyz:8140" target="_blank">http://api-int.testbed.osism.xyz:8140</a></td>
             <td>admin</td>
             <td>password</td>
          </tr>
