@@ -8,7 +8,7 @@ curl https://tarballs.opendev.org/openstack/ironic-python-agent/dib/files/ipa-ce
 # NOTE: The docker-compose role is currently required for the
 #       virtualbmc service. Can be removed again when everything
 #       has been switched to the docker compose cli plugin.
-osism-generic docker-compose
+osism apply docker-compose
 
-osism-infrastructure virtualbmc
-osism-kolla deploy ironic
+osism apply virtualbmc
+osism apply ironic

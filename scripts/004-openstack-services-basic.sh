@@ -2,12 +2,18 @@
 
 export INTERACTIVE=false
 
-osism-kolla deploy testbed --tags openstack --skip-tags infrastructure
+osism apply keystone
+osism apply horizon
+osism apply placement
+osism apply glance
+osism apply cinder
+osism apply neutron
+osism apply nova
 
-osism-kolla deploy barbican
-osism-kolla deploy designate
-osism-kolla deploy heat
-osism-kolla deploy octavia
+osism apply barbican
+osism apply designate
+osism apply heat
+osism apply octavia
 
 osism-run openstack bootstrap-basic
 osism-run openstack bootstrap-ceph-rgw
