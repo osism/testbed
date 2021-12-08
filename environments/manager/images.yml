@@ -46,6 +46,9 @@ osism_image: "{{ docker_registry_ansible }}/osism/osism:{{ osism_tag }}"
 vault_tag: "1.9.0"
 vault_image: "{{ docker_registry }}/hashicorp/vault:{{ vault_tag }}"
 
+traefik_tag: "v2.5.4"
+traefik_image: "{{ docker_registry }}/library/traefik:{{ traefik_tag }}"
+
 # image tag depends on CEPH_VERSION or OPENSTACK_VERSION
 
 ceph_ansible_tag: "{{ ceph_version|default(manager_version)|default('pacific') }}"
