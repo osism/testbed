@@ -16,7 +16,7 @@ awxclient_image: "{{ docker_registry_ansible|default('quay.io') }}/osism/awxclie
 mariadb_tag: "10.6.5"
 mariadb_image: "{{ docker_registry }}/library/mariadb:{{ mariadb_tag }}"
 
-netbox_tag: "v3.0.10-ldap"
+netbox_tag: "v3.1.0-ldap"
 netbox_image: "{{ docker_registry_netbox|default('quay.io') }}/osism/netbox:{{ netbox_tag }}"
 
 nginx_tag: "1.21.4-alpine"
