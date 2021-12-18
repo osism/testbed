@@ -54,6 +54,7 @@ enable_osprofiler: "no"
 # elasticsearch
 
 es_heap_size: "1g"
+es_java_opts: "-Dlog4j2.formatMsgNoLookups=true {% if es_heap_size %}-Xms{{ es_heap_size }} -Xmx{{ es_heap_size }}{%endif%}"
 
 # grafana
 
