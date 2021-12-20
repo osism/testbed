@@ -47,6 +47,7 @@
     - /opt/configuration/environments/manager/configuration.yml
     - /opt/configuration/environments/manager/images.yml
     - /opt/configuration/environments/manager/secrets.yml
+    - /opt/configuration/environments/configuration.yml
     - /opt/configuration/environments/secrets.yml
 
   collections:
