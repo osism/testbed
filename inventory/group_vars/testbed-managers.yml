@@ -27,6 +27,7 @@ management_interface: "{{ internal_interface }}"
 # docker
 
 docker_allow_restart: false
+docker_network_mtu: "{{ testbed_mtu_manager }}"
 
 ##########################################################
 # netdata

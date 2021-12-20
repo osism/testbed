@@ -18,6 +18,11 @@ netbox_inventory_tags:
   - ceph-resource
 
 ##########################################################
+# docker
+
+docker_network_mtu: "{{ testbed_mtu_node }}"
+
+##########################################################
 # generic
 
 internal_address: "{{ '192.168.16.0/20' | ipaddr('net') | ipaddr(node_id) | ipaddr('address') }}"
