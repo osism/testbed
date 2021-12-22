@@ -10,7 +10,7 @@ ara_server_image: "{{ docker_registry_ansible|default('quay.io') }}/osism/ara-se
 awx_tag: "19.4.0"
 awx_image: "{{ docker_registry_ansible|default('quay.io') }}/ansible/awx:{{ awx_tag }}"
 
-awxclient_tag: "19.4.0"
+awxclient_tag: "19.5.0"
 awxclient_image: "{{ docker_registry_ansible|default('quay.io') }}/osism/awxclient:{{ awxclient_tag }}"
 
 mariadb_tag: "10.6.5"
