@@ -1,9 +1,0 @@
----
-- name: Generate ssh known hosts file on the manager
-  hosts: manager
-  gather_facts: false
-
-  tasks:
-    - name: Run ssh-keyscan for all FQDNs
-      shell: ssh-keyscan {{ item }}  >> ~/.ssh/known_hosts  # noqa 301
-      loop: "{{ groups['all'] }}"
