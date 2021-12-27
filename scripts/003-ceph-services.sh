@@ -2,10 +2,10 @@
 
 export INTERACTIVE=false
 
-osism apply ceph-mon
-osism apply ceph-mgr
-osism apply ceph-osd
-osism apply ceph-mds
+osism apply ceph-mons
+osism apply ceph-mgrs
+osism apply ceph-osds
+osism apply ceph-mdss
 osism apply ceph-crash
 osism apply ceph-rgws
 
