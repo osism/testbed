@@ -2,12 +2,12 @@
 
 export INTERACTIVE=false
 
-osism-kolla deploy influxdb
+osism apply influxdb
 
-osism-kolla deploy manila
+osism apply manila
 
 # NOTE: The Skydive agent creates a high load on the Open vSwitch services.
 #       Therefore the agent is only started manually when needed.
 
-osism-kolla deploy skydive
+osism apply skydive
 osism-generic manage-container -e container_action=stop -e container_name=skydive_agent -l skydive-agent

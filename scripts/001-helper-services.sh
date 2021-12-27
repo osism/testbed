@@ -2,7 +2,7 @@
 
 export INTERACTIVE=false
 
-osism-infrastructure sshconfig
+osism apply sshconfig
 osism-run custom generate-ssh-known-hosts
-osism-generic dotfiles
-osism-infrastructure homer
+osism apply dotfiles
+osism apply homer

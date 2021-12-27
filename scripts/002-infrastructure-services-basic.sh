@@ -2,7 +2,18 @@
 
 export INTERACTIVE=false
 
-osism-infrastructure openstackclient
-osism-infrastructure keycloak
+osism apply openstackclient
+osism apply keycloak
 osism-run custom keycloak-oidc-client-config
-osism-kolla deploy testbed --tags infrastructure --skip-tags openstack
+osism apply common
+osism apply haproxy
+osism apply elasticsearch
+osism apply openvswitch
+osism apply memcached
+osism apply redis
+osism apply etcd
+osism apply mariadb
+osism apply kibana
+osism apply ovn
+osism apply rabbitmq
+osism apply homer

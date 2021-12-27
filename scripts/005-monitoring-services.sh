@@ -2,6 +2,6 @@
 
 export INTERACTIVE=false
 
-osism-monitoring netdata
-osism-kolla deploy prometheus
-osism-kolla deploy grafana
+osism netdata
+osism apply prometheus
+osism apply grafana

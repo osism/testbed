@@ -2,9 +2,9 @@
 
 export INTERACTIVE=false
 
-osism-kolla deploy gnocchi
-osism-kolla deploy ceilometer
-osism-kolla deploy aodh
-osism-kolla deploy panko
+osism apply gnocchi
+osism apply ceilometer
+osism apply aodh
+osism apply panko
 
-osism-kolla deploy senlin
+osism apply senlin
