@@ -6,6 +6,8 @@ name: Check terraform syntax
     paths:
       - 'terraform/**'
       - '.github/workflows/check-terraform-syntax.yml'
+    branches:
+      - main
   pull_request:
     paths:
       - 'terraform/**'

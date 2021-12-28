@@ -7,6 +7,8 @@ name: Check ansible syntax
       - 'environments/**.yml'
       - 'playbooks/**.yml'
       - '.github/workflows/check-ansible-syntax.yml'
+    branches:
+      - main
   pull_request:
     paths:
       - 'environments/**.yml'
