@@ -13,6 +13,16 @@ cephclient_mons:
 homer_host: "{{ hostvars[inventory_hostname]['ansible_' + hostvars[inventory_hostname]['internal_interface']]['ipv4']['address'] }}"
 
 ##########################
-# jenkins
+# netbox
 
-jenkins_host: "{{ hostvars[inventory_hostname]['ansible_' + hostvars[inventory_hostname]['internal_interface']]['ipv4']['address'] }}"
+netbox_traefik: true
+
+netbox_host: "{{ hostvars[inventory_hostname]['ansible_' + internal_interface]['ipv4']['address'] }}"
+
+##########################
+# traefik
+
+traefik_enable: true
+
+traefik_host: "{{ hostvars[inventory_hostname]['ansible_' + internal_interface]['ipv4']['address'] }}"
+traefik_port_http: 80

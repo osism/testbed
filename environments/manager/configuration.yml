@@ -7,13 +7,16 @@ manager_version: latest
 openstack_version: wallaby
 
 ##########################
-# manager
+# celery
 
 celery_enable: true
 
-ara_server_database_type: sqlite3
+##########################
+# ara
 
 ara_enable: true
+
+ara_server_database_type: sqlite3
 ara_server_host: "{{ hostvars[inventory_hostname]['ansible_' + internal_interface]['ipv4']['address'] }}"
 
 ##########################
@@ -28,9 +31,8 @@ vault_write_key_shares: true
 # netbox
 
 netbox_enable: true
-netbox_traefik: true
-netbox_host: "{{ hostvars[inventory_hostname]['ansible_' + internal_interface]['ipv4']['address'] }}"
-netbox_api_url: "http://{{ netbox_host }}/netbox/"
+
+netbox_api_url: "http://{{ hostvars[inventory_hostname]['ansible_' + internal_interface]['ipv4']['address'] }}/netbox/"
 
 ##########################
 # configuration
