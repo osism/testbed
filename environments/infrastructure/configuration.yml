@@ -22,7 +22,7 @@ netbox_host: "{{ hostvars[inventory_hostname]['ansible_' + internal_interface]['
 ##########################
 # nexus
 
-enable_nexus_traefik: true
+nexus_traefik: true
 
 nexus_host: "{{ hostvars[inventory_hostname]['ansible_' + internal_interface]['ipv4']['address'] }}"
 
