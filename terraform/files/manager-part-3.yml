@@ -32,7 +32,35 @@
         group: root
         mode: 0755
 
-- name: Apply role manager, traefik & netbox
+- name: Apply role traefik & netbox
+  hosts: testbed-manager.testbed.osism.xyz
+  connection: local
+  gather_facts: true
+
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+    docker_registry_ansible: quay.io
+
+  vars_files:
+    - /opt/configuration/inventory/group_vars/testbed-managers.yml
+    - /opt/configuration/inventory/host_vars/testbed-manager.testbed.osism.xyz.yml
+    - /opt/configuration/environments/manager/configuration.yml
+    - /opt/configuration/environments/manager/images.yml
+    - /opt/configuration/environments/manager/secrets.yml
+    - /opt/configuration/environments/infrastructure/configuration.yml
+    - /opt/configuration/environments/infrastructure/images.yml
+    - /opt/configuration/environments/infrastructure/secrets.yml
+    - /opt/configuration/environments/configuration.yml
+    - /opt/configuration/environments/secrets.yml
+
+  collections:
+    - osism.services
+
+  roles:
+    - traefik
+    - netbox
+
+- name: Apply role manager
   hosts: testbed-manager.testbed.osism.xyz
   connection: local
   gather_facts: true
@@ -54,8 +82,6 @@
     - osism.services
 
   roles:
-    - traefik
-    - netbox
     - manager
 
 - name: Unseal & initialize vault
