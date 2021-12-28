@@ -32,7 +32,7 @@
         group: root
         mode: 0755
 
-- name: Apply role manager & netbox
+- name: Apply role manager, traefik & netbox
   hosts: testbed-manager.testbed.osism.xyz
   connection: local
   gather_facts: true
@@ -54,6 +54,7 @@
     - osism.services
 
   roles:
+    - traefik
     - netbox
     - manager
 

@@ -28,8 +28,9 @@ vault_write_key_shares: true
 # netbox
 
 netbox_enable: true
+netbox_traefik: true
 netbox_host: "{{ hostvars[inventory_hostname]['ansible_' + internal_interface]['ipv4']['address'] }}"
-netbox_api_url: "http://{{ netbox_host }}:8121"
+netbox_api_url: "http://{{ netbox_host }}/netbox/"
 
 ##########################
 # configuration
