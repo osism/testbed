@@ -7,6 +7,8 @@ name: Build documentation
     paths:
       - 'docs/**'
       - '.github/workflows/build-documentation.yml'
+    branches:
+      - main
   pull_request:
     paths:
       - 'docs/**'

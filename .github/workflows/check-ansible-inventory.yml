@@ -6,6 +6,8 @@ name: Check ansible inventory
     paths:
       - 'inventory/hosts'
       - '.github/workflows/check-ansible-inventory.yml'
+    branches:
+      - main
   pull_request:
     paths:
       - 'inventory/hosts'
