@@ -1,0 +1,5 @@
+---
+clouds:
+  betacloud:
+    auth:
+      password: PASSWORD
