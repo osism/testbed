@@ -1,0 +1,99 @@
+---
+- name: Manage rack 1000
+  connection: local
+  hosts: localhost
+  gather_facts: false
+
+  collections:
+    - netbox.netbox
+
+  vars:
+    site: Discworld
+    location: Ankh-Morpork
+    rack: "1000"
+
+  tasks:
+    - name: "Manage rack {{ rack }}"
+      netbox_rack:
+        netbox_url: "{{ netbox_url }}"
+        netbox_token: "{{ netbox_token }}"
+        data:
+          name: "{{ rack }}"
+          site: "{{ site }}"
+          location: "{{ location }}"
+        state: present
+
+    - name: Manage testbed-switch-1
+      netbox_device:
+        netbox_url: "{{ netbox_url }}"
+        netbox_token: "{{ netbox_token }}"
+        data:
+          name: testbed-switch-1
+          site: "{{ site }}"
+          location: "{{ location }}"
+          rack: "{{ rack }}"
+          device_type: crs354-48g-4splus-2qplus-rm
+          device_role: Mixed
+          face: front
+          position: 1
+        state: present
+
+    - name: Manage testbed-manager
+      netbox_device:
+        netbox_url: "{{ netbox_url }}"
+        netbox_token: "{{ netbox_token }}"
+        data:
+          name: testbed-manager
+          site: "{{ site }}"
+          location: "{{ location }}"
+          rack: "{{ rack }}"
+          device_type: Manager
+          device_role: Management
+          face: front
+          position: 5
+        state: present
+
+    - name: Manage testbed-node-0
+      netbox_device:
+        netbox_url: "{{ netbox_url }}"
+        netbox_token: "{{ netbox_token }}"
+        data:
+          name: testbed-node-0
+          site: "{{ site }}"
+          location: "{{ location }}"
+          rack: "{{ rack }}"
+          device_type: Node
+          device_role: Management
+          face: front
+          position: 10
+        state: present
+
+    - name: Manage testbed-node-1
+      netbox_device:
+        netbox_url: "{{ netbox_url }}"
+        netbox_token: "{{ netbox_token }}"
+        data:
+          name: testbed-node-1
+          site: "{{ site }}"
+          location: "{{ location }}"
+          rack: "{{ rack }}"
+          device_type: Node
+          device_role: Management
+          face: front
+          position: 11
+        state: present
+
+    - name: Manage testbed-node-2
+      netbox_device:
+        netbox_url: "{{ netbox_url }}"
+        netbox_token: "{{ netbox_token }}"
+        data:
+          name: testbed-node-2
+          site: "{{ site }}"
+          location: "{{ location }}"
+          rack: "{{ rack }}"
+          device_type: Node
+          device_role: Management
+          face: front
+          position: 12
+        state: present

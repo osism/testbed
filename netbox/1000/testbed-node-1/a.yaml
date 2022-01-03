@@ -1,0 +1,6 @@
+---
+testbed-node-1:
+  "Ethernet1":
+    device: testbed-switch-0
+    interface: Ethernet11
+    type: cat6a

@@ -1,0 +1,13 @@
+---
+manufacturer: Other
+model: Node
+slug: node
+u_height: 1
+is_full_depth: true
+console-ports: []
+power-ports:
+  - name: PS1
+    type: iec-60320-c14
+interfaces:
+  - name: Ethernet1
+    type: 10gbase-t
