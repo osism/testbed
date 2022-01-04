@@ -106,13 +106,13 @@
 
     # NOTE: Temporary way to initialize Vault
     - name: Initialize vault
-      command: "osism-manager vault-init -e 'vault_token={{ root_token }}'"
+      command: "osism apply vault-init -e 'vault_token={{ root_token }}'"
       environment:
         INTERACTIVE: false
 
     # NOTE: Temporary way to import secrets into Vault
     - name: Import secrets
-      command: "osism-manager vault-import -e 'vault_token={{ root_token }}' -e 'vault_secrets_path={{ item }}'"
+      command: "osism apply vault-import -e 'vault_token={{ root_token }}' -e 'vault_secrets_path={{ item }}'"
       environment:
         INTERACTIVE: false
       loop:
