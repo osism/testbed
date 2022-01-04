@@ -53,6 +53,9 @@ cleanup_services_extra:
   - nscd
   - ntp
 
+cleanup_packages_extra:
+  - snapd
+
 ##########################
 # systohc
 
