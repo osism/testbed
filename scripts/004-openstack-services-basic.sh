@@ -15,7 +15,7 @@ osism apply designate
 osism apply heat
 osism apply octavia
 
-osism-run openstack bootstrap-basic
-osism-run openstack bootstrap-ceph-rgw
+osism apply --environment openstack bootstrap-basic
+osism apply --environment openstack bootstrap-ceph-rgw
 
-osism-monitoring openstack-health-monitor
+osism apply openstack-health-monitor

@@ -30,7 +30,7 @@
 
   tasks:
     - name: Fetch ceph keys from the first monitor node
-      command: "osism-ceph fetch-keys"  # noqa 301
+      command: "osism apply ceph-fetch-keys"  # noqa 301
       environment:
         INTERACTIVE: false
 

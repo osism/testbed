@@ -4,7 +4,7 @@ export INTERACTIVE=false
 
 osism apply openstackclient
 osism apply keycloak
-osism-run custom keycloak-oidc-client-config
+osism apply --environment custom keycloak-oidc-client-config
 osism apply common
 osism apply haproxy
 osism apply elasticsearch
