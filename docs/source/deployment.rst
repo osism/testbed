@@ -186,7 +186,7 @@ client works without passing ``--os-cloud=``.
 
   .. note::
 
-     * The credentials are stored in ``clouds.yaml`` and ``secure.yaml`` with the name ``scs-demo``.
+     * The credentials are stored in ``clouds.yaml`` and ``secure.yaml`` with the name ``gx-scs``.
 
 
 Preparations
