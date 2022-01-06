@@ -2,7 +2,7 @@
 
 export INTERACTIVE=false
 
-osism apploy phpmyadmin
+osism apply phpmyadmin
 
 osism apply patchman
 osism apply patchman-client -- -e patchman_client_update_force=true
