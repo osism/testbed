@@ -6,8 +6,8 @@
 availability_zone         = null
 volume_availability_zone  = null
 network_availability_zone = null
-flavor_node               = "SCS-8V:32GB:50"
-flavor_manager            = "SCS-4V:32GB:50"
+flavor_node               = "SCS-8V:32:50"
+flavor_manager            = "SCS-4V:32:50"
 image                     = "Ubuntu 20.04"
 image_node                = "Ubuntu 20.04"
 public                    = "ext01"
