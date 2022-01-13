@@ -17,6 +17,7 @@
       netbox_rack:
         netbox_url: "{{ netbox_url }}"
         netbox_token: "{{ netbox_token }}"
+        validate_certs: "no"
         data:
           name: "{{ rack }}"
           site: "{{ site }}"
@@ -27,6 +28,7 @@
       netbox_device:
         netbox_url: "{{ netbox_url }}"
         netbox_token: "{{ netbox_token }}"
+        validate_certs: "no"
         data:
           name: testbed-switch-1
           site: "{{ site }}"
@@ -42,6 +44,7 @@
       netbox_device:
         netbox_url: "{{ netbox_url }}"
         netbox_token: "{{ netbox_token }}"
+        validate_certs: "no"
         data:
           name: testbed-manager
           site: "{{ site }}"
@@ -59,6 +62,7 @@
       netbox_device:
         netbox_url: "{{ netbox_url }}"
         netbox_token: "{{ netbox_token }}"
+        validate_certs: "no"
         data:
           name: testbed-node-0
           site: "{{ site }}"
@@ -76,6 +80,7 @@
       netbox_device:
         netbox_url: "{{ netbox_url }}"
         netbox_token: "{{ netbox_token }}"
+        validate_certs: "no"
         data:
           name: testbed-node-1
           site: "{{ site }}"
@@ -93,6 +98,7 @@
       netbox_device:
         netbox_url: "{{ netbox_url }}"
         netbox_token: "{{ netbox_token }}"
+        validate_certs: "no"
         data:
           name: testbed-node-2
           site: "{{ site }}"
