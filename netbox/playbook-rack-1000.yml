@@ -56,6 +56,9 @@
           position: 5
           tags:
             - managed-by-osism
+            - generic
+            - manager
+            - monitoring
         state: present
 
     - name: Manage testbed-node-0
@@ -69,11 +72,17 @@
           location: "{{ location }}"
           rack: "{{ rack }}"
           device_type: Node
-          device_role: Management
+          device_role: Mixed
           face: front
           position: 10
           tags:
             - managed-by-osism
+            - generic
+            - control
+            - compute
+            - network
+            - ceph-control
+            - ceph-resource
         state: present
 
     - name: Manage testbed-node-1
@@ -87,11 +96,17 @@
           location: "{{ location }}"
           rack: "{{ rack }}"
           device_type: Node
-          device_role: Management
+          device_role: Mixed
           face: front
           position: 11
           tags:
             - managed-by-osism
+            - generic
+            - control
+            - compute
+            - network
+            - ceph-control
+            - ceph-resource
         state: present
 
     - name: Manage testbed-node-2
@@ -105,9 +120,15 @@
           location: "{{ location }}"
           rack: "{{ rack }}"
           device_type: Node
-          device_role: Management
+          device_role: Mixed
           face: front
           position: 12
           tags:
             - managed-by-osism
+            - generic
+            - control
+            - compute
+            - network
+            - ceph-control
+            - ceph-resource
         state: present
