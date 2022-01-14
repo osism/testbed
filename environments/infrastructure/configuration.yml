@@ -26,6 +26,10 @@ nexus_traefik: true
 
 nexus_host: "{{ hostvars[inventory_hostname]['ansible_' + internal_interface]['ipv4']['address'] }}"
 
+netbox_plugins_extra:
+  - netbox_bgp
+  - netbox_dns
+
 ##########################
 # traefik
 
