@@ -2,5 +2,5 @@
 testbed-manager:
   "Ethernet1":
     device: testbed-switch-0
-    interface: Ethernet5
+    interface: ether5
     type: cat6a

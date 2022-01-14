@@ -24,13 +24,13 @@
           location: "{{ location }}"
         state: present
 
-    - name: Manage testbed-switch-1
+    - name: Manage testbed-switch-0
       netbox_device:
         netbox_url: "{{ netbox_url }}"
         netbox_token: "{{ netbox_token }}"
         validate_certs: false
         data:
-          name: testbed-switch-1
+          name: testbed-switch-0
           site: "{{ site }}"
           location: "{{ location }}"
           rack: "{{ rack }}"
