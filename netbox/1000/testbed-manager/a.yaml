@@ -4,3 +4,6 @@ testbed-manager:
     device: testbed-switch-0
     interface: ether5
     type: cat6a
+    addresses:
+      - address: 192.168.16.5/20
+        primary: true

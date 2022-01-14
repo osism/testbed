@@ -4,3 +4,6 @@ testbed-node-0:
     device: testbed-switch-0
     interface: ether10
     type: cat6a
+    addresses:
+      - address: 192.168.16.10/20
+        primary: true
