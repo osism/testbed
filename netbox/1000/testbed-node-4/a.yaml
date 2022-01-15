@@ -1,0 +1,9 @@
+---
+testbed-node-4:
+  "Ethernet1":
+    device: testbed-switch-0
+    interface: ether14
+    type: cat6a
+    addresses:
+      - address: 192.168.16.14/20
+        primary: true

@@ -77,6 +77,7 @@
           position: 10
           tags:
             - managed-by-osism
+            - managed-by-bifrost
             - generic
             - control
             - compute
@@ -101,6 +102,7 @@
           position: 11
           tags:
             - managed-by-osism
+            - managed-by-bifrost
             - generic
             - control
             - compute
@@ -125,10 +127,137 @@
           position: 12
           tags:
             - managed-by-osism
+            - managed-by-bifrost
             - generic
             - control
             - compute
             - network
             - ceph-control
             - ceph-resource
+        state: present
+
+    - name: Manage testbed-node-3
+      netbox_device:
+        netbox_url: "{{ netbox_url }}"
+        netbox_token: "{{ netbox_token }}"
+        validate_certs: false
+        data:
+          name: testbed-node-3
+          site: "{{ site }}"
+          location: "{{ location }}"
+          rack: "{{ rack }}"
+          device_type: Node
+          device_role: Compute
+          face: front
+          position: 13
+          tags:
+            - managed-by-osism
+            - managed-by-ironic
+            - generic
+            - compute
+        state: present
+
+    - name: Manage testbed-node-4
+      netbox_device:
+        netbox_url: "{{ netbox_url }}"
+        netbox_token: "{{ netbox_token }}"
+        validate_certs: false
+        data:
+          name: testbed-node-4
+          site: "{{ site }}"
+          location: "{{ location }}"
+          rack: "{{ rack }}"
+          device_type: Node
+          device_role: Compute
+          face: front
+          position: 14
+          tags:
+            - managed-by-osism
+            - managed-by-ironic
+            - generic
+            - compute
+        state: present
+
+    - name: Manage testbed-node-5
+      netbox_device:
+        netbox_url: "{{ netbox_url }}"
+        netbox_token: "{{ netbox_token }}"
+        validate_certs: false
+        data:
+          name: testbed-node-5
+          site: "{{ site }}"
+          location: "{{ location }}"
+          rack: "{{ rack }}"
+          device_type: Node
+          device_role: Compute
+          face: front
+          position: 15
+          tags:
+            - managed-by-osism
+            - managed-by-ironic
+            - generic
+            - compute
+        state: present
+
+    - name: Manage testbed-node-6
+      netbox_device:
+        netbox_url: "{{ netbox_url }}"
+        netbox_token: "{{ netbox_token }}"
+        validate_certs: false
+        data:
+          name: testbed-node-6
+          site: "{{ site }}"
+          location: "{{ location }}"
+          rack: "{{ rack }}"
+          device_type: Node
+          device_role: Storage
+          face: front
+          position: 16
+          tags:
+            - managed-by-osism
+            - managed-by-ironic
+            - generic
+            - ceph-storage
+        state: present
+
+    - name: Manage testbed-node-7
+      netbox_device:
+        netbox_url: "{{ netbox_url }}"
+        netbox_token: "{{ netbox_token }}"
+        validate_certs: false
+        data:
+          name: testbed-node-7
+          site: "{{ site }}"
+          location: "{{ location }}"
+          rack: "{{ rack }}"
+          device_type: Node
+          device_role: Storage
+          face: front
+          position: 17
+          tags:
+            - managed-by-osism
+            - managed-by-ironic
+            - generic
+            - ceph-storage
+        state: present
+
+    - name: Manage testbed-node-8
+      netbox_device:
+        netbox_url: "{{ netbox_url }}"
+        netbox_token: "{{ netbox_token }}"
+        validate_certs: false
+        data:
+          name: testbed-node-8
+          site: "{{ site }}"
+          location: "{{ location }}"
+          rack: "{{ rack }}"
+          device_type: Node
+          device_role: Storage
+          face: front
+          position: 18
+          tags:
+            - managed-by-osism
+            - managed-by-ironic
+            - generic
+            - ceph-storage
         state: present
