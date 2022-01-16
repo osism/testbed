@@ -74,7 +74,7 @@ done;
 
 # NOTE(berendt): sudo -E does not work here because sudo -i is needed
 
-sudo -iu dragon sh -c 'INTERACTIVE=false osism netbox import --vendors Mikrotik'
+sudo -iu dragon sh -c 'INTERACTIVE=false osism netbox import --vendors Arista'
 sudo -iu dragon sh -c 'INTERACTIVE=false osism netbox import --vendors Other --no-library'
 sudo -iu dragon sh -c 'INTERACTIVE=false osism netbox init'
 sudo -iu dragon sh -c 'INTERACTIVE=false osism netbox manage 1000'

@@ -2,7 +2,7 @@
 testbed-manager:
   "Ethernet1":
     device: testbed-switch-0
-    interface: ether5
+    interface: Ethernet5
     type: cat6a
     addresses:
       - address: 192.168.16.5/20

@@ -2,7 +2,7 @@
 testbed-node-0:
   "Ethernet1":
     device: testbed-switch-0
-    interface: ether10
+    interface: Ethernet10
     type: cat6a
     addresses:
       - address: 192.168.16.10/20
