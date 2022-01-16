@@ -16,7 +16,7 @@ no spanning-tree vlan-id 4094
 no aaa root
 !
 {{ '{%' }} for item in users {{ '%}' }}
-username {{ '{{' }} item.key {{ '}}' }} role network-admin secret sha512 {{ '{{' }} item.value {{ '}}' }}
+username {{ '{{' }} item {{ '}}' }} role network-admin secret sha512 {{ '{{' }} users[item] {{ '}}' }}
 {{ '{%' }} endfor {{ '%}' }}
 !
 
