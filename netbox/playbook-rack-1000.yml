@@ -34,9 +34,9 @@
           site: "{{ site }}"
           location: "{{ location }}"
           rack: "{{ rack }}"
-          device_type: crs354-48g-4splus-2qplus-rm
+          device_type: DCS-7050TX3-48C8
           device_role: Mixed
-          face: front
+          face: rear
           position: 1
         state: present
 
