@@ -4,71 +4,80 @@ clouds:
     auth:
       username: admin
       project_name: admin
-      auth_url: http://api.testbed.osism.xyz:5000/v3
+      auth_url: https://api.testbed.osism.xyz:5000/v3
       project_domain_name: default
       user_domain_name: default
+    cacert: /etc/ssl/certs/ca-certificates.crt
     identity_api_version: 3
   test:
     auth:
       username: test
       project_name: test
-      auth_url: http://api.testbed.osism.xyz:5000/v3
+      auth_url: https://api.testbed.osism.xyz:5000/v3
       project_domain_name: default
       user_domain_name: default
+    cacert: /etc/ssl/certs/ca-certificates.crt
     identity_api_version: 3
   octavia:
     auth:
       username: octavia
       project_name: admin
-      auth_url: http://api.testbed.osism.xyz:5000/v3
+      auth_url: https://api.testbed.osism.xyz:5000/v3
       project_domain_name: default
       user_domain_name: default
+    cacert: /etc/ssl/certs/ca-certificates.crt
     identity_api_version: 3
   openstack_health_monitor:
     auth:
       username: test
       project_name: test
-      auth_url: http://api.testbed.osism.xyz:5000/v3
+      auth_url: https://api.testbed.osism.xyz:5000/v3
       project_domain_name: default
       user_domain_name: default
+    cacert: /etc/ssl/certs/ca-certificates.crt
     identity_api_version: 3
   refstack-0:
     auth:
       username: refstack-0
       project_name: refstack-0
-      auth_url: http://api.testbed.osism.xyz:5000/v3
+      auth_url: https://api.testbed.osism.xyz:5000/v3
       project_domain_name: default
       user_domain_name: default
+    cacert: /etc/ssl/certs/ca-certificates.crt
     identity_api_version: 3
   refstack-1:
     auth:
       username: refstack-1
       project_name: refstack-1
-      auth_url: http://api.testbed.osism.xyz:5000/v3
+      auth_url: https://api.testbed.osism.xyz:5000/v3
       project_domain_name: default
       user_domain_name: default
+    cacert: /etc/ssl/certs/ca-certificates.crt
     identity_api_version: 3
   refstack-2:
     auth:
       username: refstack-2
       project_name: refstack-2
-      auth_url: http://api.testbed.osism.xyz:5000/v3
+      auth_url: https://api.testbed.osism.xyz:5000/v3
       project_domain_name: default
       user_domain_name: default
+    cacert: /etc/ssl/certs/ca-certificates.crt
     identity_api_version: 3
   refstack-3:
     auth:
       username: refstack-3
       project_name: refstack-3
-      auth_url: http://api.testbed.osism.xyz:5000/v3
+      auth_url: https://api.testbed.osism.xyz:5000/v3
       project_domain_name: default
       user_domain_name: default
+    cacert: /etc/ssl/certs/ca-certificates.crt
     identity_api_version: 3
   refstack-4:
     auth:
       username: refstack-4
       project_name: refstack-4
-      auth_url: http://api.testbed.osism.xyz:5000/v3
+      auth_url: https://api.testbed.osism.xyz:5000/v3
       project_domain_name: default
       user_domain_name: default
+    cacert: /etc/ssl/certs/ca-certificates.crt
     identity_api_version: 3

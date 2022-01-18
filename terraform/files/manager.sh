@@ -62,6 +62,9 @@ fi
 
 sudo -iu dragon sh -c 'cd /opt/configuration; ./scripts/enable-secondary-nodes.sh $NUMBER_OF_NODES'
 
+cp /opt/configuration/environments/kolla/certificates/ca/testbed.crt /usr/local/share/ca-certificates/
+update-ca-certificates
+
 sudo -iu dragon ansible-playbook -i testbed-manager.testbed.osism.xyz, /opt/manager-part-2.yml
 sudo -iu dragon ansible-playbook -i testbed-manager.testbed.osism.xyz, /opt/manager-part-3.yml
 
