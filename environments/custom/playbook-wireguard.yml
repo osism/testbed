@@ -5,7 +5,7 @@
 
   tasks:
 
-    # NOTE: the wirguard repository is only required on Bionic
+    # NOTE: the wireguard repository is only required on Bionic
     - name: Add wireguard repository
       become: true
       apt_repository:
@@ -21,15 +21,23 @@
         state: present
       when: "ansible_distribution_release == 'bionic'"
 
-    - name: Install wireguard packages
+    - name: Install wireguard package
       become: true
       apt:
-        name: ["wireguard", "wireguard-dkms"]
+        name: wireguard
         state: present
+
+    - name: Install wireguard dkms pkg
+      become: true
+      apt:
+        name: wireguard-dkms
+        state: present
+      when: "ansible_distribution_release == 'bionic'"
 
     - name: Build wireguard kernel module
       become: true
       command: dpkg-reconfigure wireguard-dkms  # noqa 301
+      when: "ansible_distribution_release == 'bionic'"
 
     - name: Create public and private key - client
       become: true
