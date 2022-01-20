@@ -5,6 +5,9 @@
 ! device: {{ hostname }}
 ! type: {{ device_manufacturer }} {{ device_type }}
 !
+
+{{ '{{' }} extra_header|default('') {{ '}}' }}
+
 hostname {{ hostname }}
 !
 spanning-tree mode mstp
@@ -95,5 +98,7 @@ mlag configuration
    peer-link {{ mlag_vlan.parent.name }}
 !
 {% endif %}
+
+{{ '{{' }} extra_footer|default('') {{ '}}' }}
 
 end
