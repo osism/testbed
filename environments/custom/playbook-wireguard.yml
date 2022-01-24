@@ -113,7 +113,7 @@
         name: wg-quick@wg0.service
         state: started
         enabled: true
-      ignore_errors: true
+      failed_when: false
 
   handlers:
     # NOTE: Errors are ignored because the kernel module may not be available
@@ -123,7 +123,7 @@
       systemd:
         name: wg-quick@wg0.service
         state: restarted
-      ignore_errors: true
+      failed_when: false
 
 - hosts: all:!manager
   gather_facts: false
