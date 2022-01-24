@@ -38,6 +38,8 @@
           device_role: Mixed
           face: rear
           position: 1
+          tags:
+            - managed-by-osism
         state: present
 
     - name: Manage testbed-manager
