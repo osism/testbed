@@ -40,6 +40,7 @@
           position: 1
           tags:
             - managed-by-osism
+            - eos
         state: present
 
     - name: Manage testbed-manager
