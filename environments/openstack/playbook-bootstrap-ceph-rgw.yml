@@ -30,15 +30,20 @@
         service_type: object-store
         description: Openstack Object Storage
 
-    - name: Create swift endpoints
+    - name: Create swift internal endpoint
       os_keystone_endpoint:
         cloud: admin
         state: present
         service: swift
-        endpoint_interface: "{{ item }}"
-        url: http://api.testbed.osism.xyz:8080/swift/v1/AUTH_%(tenant_id)s
+        endpoint_interface: internal
+        url: https://api-int.testbed.osism.xyz:8080/swift/v1/AUTH_%(tenant_id)s
         region: RegionOne
-      loop:
-        - admin
-        - internal
-        - public
+
+    - name: Create swift public endpoint
+      os_keystone_endpoint:
+        cloud: admin
+        state: present
+        service: swift
+        endpoint_interface: public
+        url: https://api.testbed.osism.xyz:8080/swift/v1/AUTH_%(tenant_id)s
+        region: RegionOne
