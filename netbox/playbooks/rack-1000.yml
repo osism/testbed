@@ -40,7 +40,10 @@
           position: 1
           tags:
             - managed-by-osism
-            - eos
+          custom_fields:
+            device_type: switch
+            deployment_type: napalm
+            deployment_parameters: eos
         state: present
 
     - name: Manage testbed-manager
