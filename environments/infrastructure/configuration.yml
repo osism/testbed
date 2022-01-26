@@ -13,6 +13,11 @@ cephclient_mons:
 homer_host: "{{ hostvars[inventory_hostname]['ansible_' + hostvars[inventory_hostname]['internal_interface']]['ipv4']['address'] }}"
 
 ##########################
+# keycloak
+
+keycloak_traefik: true
+
+##########################
 # netbox
 
 netbox_traefik: true
