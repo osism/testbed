@@ -17,3 +17,11 @@ testbed-manager:
     device: testbed-switch-2
     interface: Ethernet5
     type: cat6a
+
+  "mgmt":
+    device:
+    type: port-channel
+    channel: 30
+    interfaces:
+      - Ethernet2
+      - Ethernet3

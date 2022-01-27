@@ -11,3 +11,7 @@ power-ports:
 interfaces:
   - name: Ethernet1
     type: 10gbase-t
+  - name: Ethernet2
+    type: 10gbase-t
+  - name: Ethernet3
+    type: 10gbase-t

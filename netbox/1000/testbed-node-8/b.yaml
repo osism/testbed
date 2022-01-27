@@ -17,3 +17,11 @@ testbed-node-8:
     device: testbed-switch-2
     interface: Ethernet18
     type: cat6a
+
+  "mgmt":
+    device:
+    type: port-channel
+    channel: 48
+    interfaces:
+      - Ethernet2
+      - Ethernet3
