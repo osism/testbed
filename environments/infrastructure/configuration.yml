@@ -8,6 +8,11 @@ cephclient_mons:
   - 192.168.16.12
 
 ##########################
+# cgit
+
+cgit_traefik: true
+
+##########################
 # homer
 
 homer_host: "{{ hostvars[inventory_hostname]['ansible_' + hostvars[inventory_hostname]['internal_interface']]['ipv4']['address'] }}"
@@ -21,19 +26,14 @@ keycloak_traefik: true
 # netbox
 
 netbox_traefik: true
-
-netbox_host: "{{ hostvars[inventory_hostname]['ansible_' + internal_interface]['ipv4']['address'] }}"
+netbox_plugins_extra:
+  - netbox_bgp
+  - netbox_dns
 
 ##########################
 # nexus
 
 nexus_traefik: true
-
-nexus_host: "{{ hostvars[inventory_hostname]['ansible_' + internal_interface]['ipv4']['address'] }}"
-
-netbox_plugins_extra:
-  - netbox_bgp
-  - netbox_dns
 
 ##########################
 # traefik
@@ -42,8 +42,3 @@ traefik_enable: true
 
 traefik_host: "{{ hostvars[inventory_hostname]['ansible_' + internal_interface]['ipv4']['address'] }}"
 traefik_port_http: 80
-
-##########################
-# cgit
-
-cgit_traefik: true
