@@ -20,7 +20,7 @@ osism_api_host: "{{ hostvars[inventory_hostname]['ansible_' + internal_interface
 ara_enable: true
 
 ara_server_database_type: sqlite3
-ara_server_host: "{{ hostvars[inventory_hostname]['ansible_' + internal_interface]['ipv4']['address'] }}"
+ara_server_traefik: true
 
 ##########################
 # vault
