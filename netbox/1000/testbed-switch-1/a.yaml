@@ -1,5 +1,13 @@
 ---
 testbed-switch-1:
+  Management1:
+    device: testbed-switch-0
+    interface: Ethernet2
+    type: cat6a
+    addresses:
+      - address: 192.168.16.3/20
+        primary: true
+
   "Ethernet55/1":
     device: testbed-switch-2
     interface: Ethernet55/1
