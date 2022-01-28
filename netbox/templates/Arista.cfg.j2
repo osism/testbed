@@ -1,0 +1,103 @@
+! managed by OSISM
+!
+! device: {{ hostname }}
+! type: {{ device_manufacturer }} {{ device_type }}
+!
+
+{{ '{{' }} extra_header|default('') {{ '}}' }}
+
+hostname {{ hostname }}
+!
+spanning-tree mode mstp
+{% if mlag %}
+no spanning-tree vlan-id 4094
+{% endif %}
+!
+
+no aaa root
+!
+{{ '{%' }} for item in users {{ '%}' }}
+username {{ '{{' }} item {{ '}}' }} role network-admin secret sha512 {{ '{{' }} users[item] {{ '}}' }}
+{{ '{%' }} endfor {{ '%}' }}
+!
+
+{% for vlan in vlans %}
+{% if not vlan.vid == 1 %}
+vlan {{ vlan.vid }}
+{% if vlan.vid == 4094 %}
+   trunk group mlpeer
+{% else %}
+   name {{ vlan.name }}
+{% endif %}
+!
+{% endif %}
+{% endfor %}
+
+{% for interface in interfaces_port_channels %}
+interface {{ interface.name }}
+   mlag {{ interface.name|replace("Port-Channel", "") }}
+{% if interface.name|replace("Port-Channel", "") == 10 %}
+   switchport mode trunk
+   switchport trunk group mlpeer
+{% elif vlans_as_string(interface.untagged_vlan, interface.tagged_vlans) %}
+   switchport trunk allowed vlan {{ vlans_as_string(interface.untagged_vlan, interface.tagged_vlans) }}
+{% if not interface.mode|string == "Access" %}
+   switchport mode trunk
+{% endif %}
+{% else %}
+   switchport trunk
+{% endif %}
+!
+{% endfor %}
+
+{% for interface in interfaces_ethernet %}
+interface {{ interface.name }}
+{% if interface.connected_endpoint %}
+    description {{ interface.connected_endpoint.device.name }}
+{% endif %}
+{% if first(nb.ipam.ip_addresses.filter(device=device, interface=interface.name)) %}
+    ip address {{ first(nb.ipam.ip_addresses.filter(device=device, interface=interface.name)) }}
+{% endif %}
+{% if not interface.enabled %}
+    shutdown
+{% endif %}
+{% if interface.mode|string == "Access" %}
+    switchport access vlan {{ interface.untagged_vlan.vid }}
+{% endif %}
+{% if interface.lag %}
+    channel-group {{ interface.lag.name|replace("Port-Channel", "") }} mode active
+{% if interface.lag.name != "Port-Channel10" %}
+    lacp timer fast
+{% endif %}
+{% endif %}
+!
+{% endfor %}
+
+{% for interface in interfaces_virtual %}
+interface {{ interface.name }}
+{% if interface.name == "Vlan4094" %}
+    no autostate
+{% endif %}
+{% if first(nb.ipam.ip_addresses.filter(device=device, interface=interface.name)) %}
+    ip address {{ first(nb.ipam.ip_addresses.filter(device=device, interface=interface.name)) }}
+{% endif %}
+!
+{% endfor %}
+
+no ip routing
+!
+
+{% if mlag %}
+mlag configuration
+   domain-id {{ mlag_domain_id }}
+   heartbeat-interval 1500
+   local-interface {{ mlag_vlan.name }}
+   peer-address {{ mlag_peer_address }}
+   peer-link {{ mlag_vlan.parent.name }}
+!
+{% endif %}
+
+{{ '{{' }} extra_footer|default('') {{ '}}' }}
+
+end
+

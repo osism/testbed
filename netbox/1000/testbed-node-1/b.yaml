@@ -1,0 +1,27 @@
+---
+testbed-node-1:
+  "Ethernet1":
+    device: testbed-switch-0
+    interface: Ethernet11
+    type: cat6a
+    addresses:
+      - address: 192.168.16.11/20
+        primary: true
+
+  "Ethernet2":
+    device: testbed-switch-1
+    interface: Ethernet11
+    type: cat6a
+
+  "Ethernet3":
+    device: testbed-switch-2
+    interface: Ethernet11
+    type: cat6a
+
+  "mgmt":
+    device:
+    type: port-channel
+    channel: 41
+    interfaces:
+      - Ethernet2
+      - Ethernet3

@@ -11,6 +11,9 @@ openstack_version: wallaby
 
 celery_enable: true
 
+flower_host: "{{ hostvars[inventory_hostname]['ansible_' + internal_interface]['ipv4']['address'] }}"
+osism_api_host: "{{ hostvars[inventory_hostname]['ansible_' + internal_interface]['ipv4']['address'] }}"
+
 ##########################
 # ara
 
@@ -32,7 +35,7 @@ vault_write_key_shares: true
 
 netbox_enable: true
 
-netbox_api_url: "http://{{ hostvars[inventory_hostname]['ansible_' + internal_interface]['ipv4']['address'] }}/netbox/"
+netbox_api_url: "https://{{ hostvars[inventory_hostname]['ansible_' + internal_interface]['ipv4']['address'] }}/netbox/"
 
 ##########################
 # configuration

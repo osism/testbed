@@ -1,0 +1,24 @@
+---
+testbed-switch-1:
+  "Ethernet55/1":
+    device: testbed-switch-2
+    interface: Ethernet55/1
+    type: mmf-om4
+
+  "Ethernet56/1":
+    device: testbed-switch-2
+    interface: Ethernet56/1
+    type: mmf-om4
+
+  "mlag":
+    device:
+    type: mlag
+    data:
+      channel: 10
+      vlan: 4094
+      address: 192.168.23.1/30
+      peer-address: 192.168.23.2
+      domain-id: osism-testbed
+    interfaces:
+      - Ethernet55/1
+      - Ethernet56/1

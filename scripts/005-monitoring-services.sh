@@ -2,6 +2,6 @@
 
 export INTERACTIVE=false
 
-osism netdata
+osism apply netdata
 osism apply prometheus
 osism apply grafana

@@ -1,0 +1,90 @@
+---
+- name: Manage sites and locations
+  connection: local
+  hosts: localhost
+  gather_facts: false
+
+  collections:
+    - netbox.netbox
+
+  tasks:
+    - name: Manage Discworld site
+      netbox_site:
+        netbox_url: "{{ netbox_url }}"
+        netbox_token: "{{ netbox_token }}"
+        validate_certs: false
+        data:
+          name: Discworld
+          slug: discworld
+        state: present
+
+    - name: Manage Ankh-Morpork location
+      netbox_location:
+        netbox_url: "{{ netbox_url }}"
+        netbox_token: "{{ netbox_token }}"
+        validate_certs: false
+        data:
+          name: Ankh-Morpork
+          slug: ankh-morpork
+          site: discworld
+        state: present
+
+- name: Manage IP prefixes
+  connection: local
+  hosts: localhost
+  gather_facts: false
+
+  collections:
+    - netbox.netbox
+
+  tasks:
+    - name: Manage 192.168.16.0/20
+      netbox_prefix:
+        netbox_url: "{{ netbox_url }}"
+        netbox_token: "{{ netbox_token }}"
+        validate_certs: false
+        data:
+          family: 4
+          prefix: 192.168.16.0/20
+          prefix_role: Management
+        state: present
+
+    - name: Manage 192.168.112.0/20
+      netbox_prefix:
+        netbox_url: "{{ netbox_url }}"
+        netbox_token: "{{ netbox_token }}"
+        validate_certs: false
+        data:
+          family: 4
+          prefix: 192.168.112.0/20
+          prefix_role: External
+        state: present
+
+- name: Manage IP addresses
+  connection: local
+  hosts: localhost
+  gather_facts: false
+
+  collections:
+    - netbox.netbox
+
+  tasks:
+    - name: Manage api.testbed.osism.xyz IP address
+      netbox_ip_address:
+        netbox_url: "{{ netbox_url }}"
+        netbox_token: "{{ netbox_token }}"
+        validate_certs: false
+        data:
+          address: 192.168.16.254
+          dns_name: api.testbed.osism.xyz
+        state: present
+
+    - name: Manage api-int.testbed.osism.xyz IP address
+      netbox_ip_address:
+        netbox_url: "{{ netbox_url }}"
+        netbox_token: "{{ netbox_token }}"
+        validate_certs: false
+        data:
+          address: 192.168.16.9
+          dns_name: api-int.testbed.osism.xyz
+        state: present

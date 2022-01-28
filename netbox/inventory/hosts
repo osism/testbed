@@ -1,0 +1,4 @@
+[arista]
+testbed-switch-0 ansible_connection=local
+testbed-switch-1 ansible_connection=local
+testbed-switch-2 ansible_connection=local

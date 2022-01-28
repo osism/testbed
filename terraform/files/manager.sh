@@ -62,6 +62,9 @@ fi
 
 sudo -iu dragon sh -c 'cd /opt/configuration; ./scripts/enable-secondary-nodes.sh $NUMBER_OF_NODES'
 
+cp /opt/configuration/environments/kolla/certificates/ca/testbed.crt /usr/local/share/ca-certificates/
+update-ca-certificates
+
 sudo -iu dragon ansible-playbook -i testbed-manager.testbed.osism.xyz, /opt/manager-part-2.yml
 sudo -iu dragon ansible-playbook -i testbed-manager.testbed.osism.xyz, /opt/manager-part-3.yml
 
@@ -74,10 +77,12 @@ done;
 
 # NOTE(berendt): sudo -E does not work here because sudo -i is needed
 
-sudo -iu dragon sh -c 'INTERACTIVE=false osism netbox import --vendors Mikrotik'
+sudo -iu dragon sh -c 'INTERACTIVE=false osism netbox import --vendors Arista'
 sudo -iu dragon sh -c 'INTERACTIVE=false osism netbox import --vendors Other --no-library'
 sudo -iu dragon sh -c 'INTERACTIVE=false osism netbox init'
 sudo -iu dragon sh -c 'INTERACTIVE=false osism netbox manage 1000'
+sudo -iu dragon sh -c 'INTERACTIVE=false osism netbox connect 1000'
+sudo -iu dragon sh -c 'INTERACTIVE=false osism netbox disable testbed-switch-0'
 
 sudo -iu dragon sh -c 'INTERACTIVE=false osism apply operator -l "all:!manager" -u ubuntu'
 sudo -iu dragon sh -c 'INTERACTIVE=false osism apply --environment custom facts'

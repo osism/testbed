@@ -15,8 +15,11 @@ kolla_enable_sanity_checks: "yes"
 kolla_internal_fqdn: api-int.testbed.osism.xyz
 kolla_external_fqdn: api.testbed.osism.xyz
 
-kolla_enable_tls_external: "no"
-kolla_enable_tls_internal: "no"
+kolla_enable_tls_external: "yes"
+kolla_enable_tls_internal: "yes"
+
+kolla_copy_ca_into_containers: "yes"
+openstack_cacert: /etc/ssl/certs/ca-certificates.crt
 
 ##########################################################
 # openstack
@@ -141,3 +144,4 @@ ceph_public_network: 192.168.16.0/20
 
 ##########################################################
 # other
+#

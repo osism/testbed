@@ -1,0 +1,313 @@
+---
+- name: Manage rack 1000
+  connection: local
+  hosts: localhost
+  gather_facts: false
+
+  collections:
+    - netbox.netbox
+
+  vars:
+    site: Discworld
+    location: Ankh-Morpork
+    rack: "1000"
+
+  tasks:
+    - name: "Manage rack {{ rack }}"
+      netbox_rack:
+        netbox_url: "{{ netbox_url }}"
+        netbox_token: "{{ netbox_token }}"
+        validate_certs: false
+        data:
+          name: "{{ rack }}"
+          site: "{{ site }}"
+          location: "{{ location }}"
+        state: present
+
+    - name: Manage testbed-switch-0
+      netbox_device:
+        netbox_url: "{{ netbox_url }}"
+        netbox_token: "{{ netbox_token }}"
+        validate_certs: false
+        data:
+          name: testbed-switch-0
+          site: "{{ site }}"
+          location: "{{ location }}"
+          rack: "{{ rack }}"
+          device_type: DCS-7050TX3-48C8
+          device_role: Mixed
+          face: rear
+          position: 1
+          tags:
+            - managed-by-osism
+          custom_fields:
+            device_type: switch
+            deployment_type: napalm
+            deployment_parameters: eos
+        state: present
+
+    - name: Manage testbed-switch-1
+      netbox_device:
+        netbox_url: "{{ netbox_url }}"
+        netbox_token: "{{ netbox_token }}"
+        validate_certs: false
+        data:
+          name: testbed-switch-1
+          site: "{{ site }}"
+          location: "{{ location }}"
+          rack: "{{ rack }}"
+          device_type: DCS-7050TX3-48C8
+          device_role: Mixed
+          face: rear
+          position: 2
+          tags:
+            - managed-by-osism
+          custom_fields:
+            device_type: switch
+            deployment_type: napalm
+            deployment_parameters: eos
+        state: present
+
+    - name: Manage testbed-switch-2
+      netbox_device:
+        netbox_url: "{{ netbox_url }}"
+        netbox_token: "{{ netbox_token }}"
+        validate_certs: false
+        data:
+          name: testbed-switch-2
+          site: "{{ site }}"
+          location: "{{ location }}"
+          rack: "{{ rack }}"
+          device_type: DCS-7050TX3-48C8
+          device_role: Mixed
+          face: rear
+          position: 3
+          tags:
+            - managed-by-osism
+          custom_fields:
+            device_type: switch
+            deployment_type: napalm
+            deployment_parameters: eos
+        state: present
+
+    - name: Manage testbed-manager
+      netbox_device:
+        netbox_url: "{{ netbox_url }}"
+        netbox_token: "{{ netbox_token }}"
+        validate_certs: false
+        data:
+          name: testbed-manager
+          site: "{{ site }}"
+          location: "{{ location }}"
+          rack: "{{ rack }}"
+          device_type: Manager
+          device_role: Management
+          face: front
+          position: 5
+          tags:
+            - managed-by-osism
+            - generic
+            - manager
+            - monitoring
+        state: present
+
+    - name: Manage testbed-node-0
+      netbox_device:
+        netbox_url: "{{ netbox_url }}"
+        netbox_token: "{{ netbox_token }}"
+        validate_certs: false
+        data:
+          name: testbed-node-0
+          site: "{{ site }}"
+          location: "{{ location }}"
+          rack: "{{ rack }}"
+          device_type: Node
+          device_role: Mixed
+          face: front
+          position: 10
+          tags:
+            - managed-by-osism
+            - managed-by-bifrost
+            - generic
+            - control
+            - compute
+            - network
+            - ceph-control
+            - ceph-resource
+        state: present
+
+    - name: Manage testbed-node-1
+      netbox_device:
+        netbox_url: "{{ netbox_url }}"
+        netbox_token: "{{ netbox_token }}"
+        validate_certs: false
+        data:
+          name: testbed-node-1
+          site: "{{ site }}"
+          location: "{{ location }}"
+          rack: "{{ rack }}"
+          device_type: Node
+          device_role: Mixed
+          face: front
+          position: 11
+          tags:
+            - managed-by-osism
+            - managed-by-bifrost
+            - generic
+            - control
+            - compute
+            - network
+            - ceph-control
+            - ceph-resource
+        state: present
+
+    - name: Manage testbed-node-2
+      netbox_device:
+        netbox_url: "{{ netbox_url }}"
+        netbox_token: "{{ netbox_token }}"
+        validate_certs: false
+        data:
+          name: testbed-node-2
+          site: "{{ site }}"
+          location: "{{ location }}"
+          rack: "{{ rack }}"
+          device_type: Node
+          device_role: Mixed
+          face: front
+          position: 12
+          tags:
+            - managed-by-osism
+            - managed-by-bifrost
+            - generic
+            - control
+            - compute
+            - network
+            - ceph-control
+            - ceph-resource
+        state: present
+
+    - name: Manage testbed-node-3
+      netbox_device:
+        netbox_url: "{{ netbox_url }}"
+        netbox_token: "{{ netbox_token }}"
+        validate_certs: false
+        data:
+          name: testbed-node-3
+          site: "{{ site }}"
+          location: "{{ location }}"
+          rack: "{{ rack }}"
+          device_type: Node
+          device_role: Compute
+          face: front
+          position: 13
+          tags:
+            - managed-by-osism
+            - managed-by-ironic
+            - generic
+            - compute
+        state: present
+
+    - name: Manage testbed-node-4
+      netbox_device:
+        netbox_url: "{{ netbox_url }}"
+        netbox_token: "{{ netbox_token }}"
+        validate_certs: false
+        data:
+          name: testbed-node-4
+          site: "{{ site }}"
+          location: "{{ location }}"
+          rack: "{{ rack }}"
+          device_type: Node
+          device_role: Compute
+          face: front
+          position: 14
+          tags:
+            - managed-by-osism
+            - managed-by-ironic
+            - generic
+            - compute
+        state: present
+
+    - name: Manage testbed-node-5
+      netbox_device:
+        netbox_url: "{{ netbox_url }}"
+        netbox_token: "{{ netbox_token }}"
+        validate_certs: false
+        data:
+          name: testbed-node-5
+          site: "{{ site }}"
+          location: "{{ location }}"
+          rack: "{{ rack }}"
+          device_type: Node
+          device_role: Compute
+          face: front
+          position: 15
+          tags:
+            - managed-by-osism
+            - managed-by-ironic
+            - generic
+            - compute
+        state: present
+
+    - name: Manage testbed-node-6
+      netbox_device:
+        netbox_url: "{{ netbox_url }}"
+        netbox_token: "{{ netbox_token }}"
+        validate_certs: false
+        data:
+          name: testbed-node-6
+          site: "{{ site }}"
+          location: "{{ location }}"
+          rack: "{{ rack }}"
+          device_type: Node
+          device_role: Storage
+          face: front
+          position: 16
+          tags:
+            - managed-by-osism
+            - managed-by-ironic
+            - generic
+            - ceph-storage
+        state: present
+
+    - name: Manage testbed-node-7
+      netbox_device:
+        netbox_url: "{{ netbox_url }}"
+        netbox_token: "{{ netbox_token }}"
+        validate_certs: false
+        data:
+          name: testbed-node-7
+          site: "{{ site }}"
+          location: "{{ location }}"
+          rack: "{{ rack }}"
+          device_type: Node
+          device_role: Storage
+          face: front
+          position: 17
+          tags:
+            - managed-by-osism
+            - managed-by-ironic
+            - generic
+            - ceph-storage
+        state: present
+
+    - name: Manage testbed-node-8
+      netbox_device:
+        netbox_url: "{{ netbox_url }}"
+        netbox_token: "{{ netbox_token }}"
+        validate_certs: false
+        data:
+          name: testbed-node-8
+          site: "{{ site }}"
+          location: "{{ location }}"
+          rack: "{{ rack }}"
+          device_type: Node
+          device_role: Storage
+          face: front
+          position: 18
+          tags:
+            - managed-by-osism
+            - managed-by-ironic
+            - generic
+            - ceph-storage
+        state: present

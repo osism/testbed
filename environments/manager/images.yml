@@ -10,16 +10,16 @@ ara_server_image: "{{ docker_registry_ansible|default('quay.io') }}/osism/ara-se
 awx_tag: "19.4.0"
 awx_image: "{{ docker_registry_ansible|default('quay.io') }}/ansible/awx:{{ awx_tag }}"
 
-awxclient_tag: "19.5.0"
+awxclient_tag: "19.5.1"
 awxclient_image: "{{ docker_registry_ansible|default('quay.io') }}/osism/awxclient:{{ awxclient_tag }}"
 
 mariadb_tag: "10.6.5"
 mariadb_image: "{{ docker_registry }}/library/mariadb:{{ mariadb_tag }}"
 
-netbox_tag: "v3.1.3-ldap"
+netbox_tag: "v3.1.6-ldap"
 netbox_image: "{{ docker_registry_netbox|default('quay.io') }}/osism/netbox:{{ netbox_tag }}"
 
-nginx_tag: "1.21.5-alpine"
+nginx_tag: "1.21.6-alpine"
 nginx_image: "{{ docker_registry }}/library/nginx:{{ nginx_tag }}"
 
 phpmyadmin_tag: "5.1.1"
@@ -43,10 +43,10 @@ inventory_reconciler_image: "{{ docker_registry_ansible }}/osism/inventory-recon
 osism_tag: "{{ manager_version|default('latest') }}"
 osism_image: "{{ docker_registry_ansible }}/osism/osism:{{ osism_tag }}"
 
-vault_tag: "1.9.0"
+vault_tag: "1.9.2"
 vault_image: "{{ docker_registry }}/hashicorp/vault:{{ vault_tag }}"
 
-traefik_tag: "v2.5.4"
+traefik_tag: "v2.6.0"
 traefik_image: "{{ docker_registry }}/library/traefik:{{ traefik_tag }}"
 
 # image tag depends on CEPH_VERSION or OPENSTACK_VERSION
