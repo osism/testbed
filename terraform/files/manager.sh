@@ -66,7 +66,7 @@ cp /opt/configuration/environments/kolla/certificates/ca/testbed.crt /usr/local/
 update-ca-certificates
 
 sudo -iu dragon ansible-playbook -i testbed-manager.testbed.osism.xyz, /opt/manager-part-2.yml
-sudo -iu dragon ansible-playbook -i testbed-manager.testbed.osism.xyz, /opt/manager-part-3.yml
+sudo -iu dragon ansible-playbook -i testbed-manager.testbed.osism.xyz, /opt/manager-part-3.yml --vault-password-file /opt/configuration/environments/.vault_pass
 
 sudo -iu dragon cp /home/dragon/.ssh/id_rsa.pub /opt/ansible/secrets/id_rsa.operator.pub
 
