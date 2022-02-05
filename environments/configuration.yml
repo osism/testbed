@@ -23,6 +23,7 @@ docker_registry_service: index.docker.io
 ##########################
 # operator
 
+operator_user: dragon
 operator_authorized_keys:
   - "{{lookup('file', '/ansible/secrets/id_rsa.operator.pub')}}"
 
