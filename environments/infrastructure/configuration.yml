@@ -16,6 +16,21 @@ cgit_traefik: true
 # homer
 
 homer_host: "{{ hostvars[inventory_hostname]['ansible_' + hostvars[inventory_hostname]['internal_interface']]['ipv4']['address'] }}"
+homer_url_ara: "https://testbed-manager.testbed.osism.xyz/ara/"
+homer_url_ceph: "https://api-int.testbed.osism.xyz:8140"
+homer_url_flower: "https://testbed-manager.testbed.osism.xyz/flower/"
+homer_url_grafana: "https://api-int.testbed.osism.xyz:3000"
+homer_url_horizon: "https://api.testbed.osism.xyz/"
+homer_url_keycloak: "https://testbed-manager.testbed.osism.xyz/keycloak/"
+homer_url_kibana: "https://api-int.testbed.osism.xyz:5601"
+homer_url_netbox: "https://testbed-manager.testbed.osism.xyz/netbox/"
+homer_url_netdata: "https://testbed-manager.testbed.osism.xyz/netdata/"
+homer_url_patchman: "https://testbed-manager.testbed.osism.xyz/patchman/"
+homer_url_phpmyadmin: "https://testbed-manager.testbed.osism.xyz/phpmyadmin/"
+homer_url_prometheus: "https://api-int.testbed.osism.xyz:9090/"
+homer_url_rabbitmq: "https://api-int.testbed.osism.xyz:15672/"
+homer_url_vault: "https://testbed-manager.testbed.osism.xyz/vault/"
+
 
 ##########################
 # keycloak
@@ -41,4 +56,3 @@ nexus_traefik: true
 traefik_enable: true
 
 traefik_host: "{{ hostvars[inventory_hostname]['ansible_' + internal_interface]['ipv4']['address'] }}"
-traefik_port_http: 80
