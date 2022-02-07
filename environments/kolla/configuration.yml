@@ -79,7 +79,7 @@ keystone_identity_providers:
   - name: "keycloak"
     openstack_domain: "default"
     protocol: "openid"
-    identifier: "http://testbed-manager.testbed.osism.xyz:8170/auth/realms/osism"
+    identifier: "https://testbed-manager.testbed.osism.xyz/keycloak/auth/realms/osism"
     public_name: "Authenticate via Keycloak"
     attribute_mapping: "mappingId1"
     metadata_folder: "{{ node_custom_config }}/keystone/federation/oidc/metadata"

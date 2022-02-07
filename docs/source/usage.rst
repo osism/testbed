@@ -247,16 +247,16 @@ controlled on multiple levels in Keycloak.
 
 1. On realm level under `Realm Settings` > `Tokes`.
    Assuming the `keycloak_realm` ansible variable is the default `osism`,
-   and keycloak is listening on `http://testbed-manager.testbed.osism.xyz:8170`, then the
+   and keycloak is listening on `https://testbed-manager.testbed.osism.xyz/keycloak`, then the
    configuration form is available here:
-   http://testbed-manager.testbed.osism.xyz:8170/auth/admin/master/console/#/realms/osism/token-settings
+   https://testbed-manager.testbed.osism.xyz/keycloak/auth/admin/master/console/#/realms/osism/token-settings
 
    Detailed information is available in the
    Keycloak Server Administrator Documentation `Session and Token Timeouts
    <https://www.keycloak.org/docs/latest/server_admin/#_timeouts>`_ section.
 
 2. In a realm down on the `client level
-   <http://testbed-manager.testbed.osism.xyz:8170/auth/admin/master/console/#/realms/osism/clients>`_
+   <https://testbed-manager.testbed.osism.xyz/keycloak/auth/admin/master/console/#/realms/osism/clients>`_
    select the client (keystone), and under `Settings` > `Advanced Settings`.
 
    It is recommended to keep the `Access Token Lifespan` on a relatively low value,
@@ -289,7 +289,7 @@ then you can perform a simple `project list` operation like this:
      --os-identity-provider keycloak \
      --os-protocol openid \
      --os-identity-api-version 3 \
-     --os-discovery-endpoint http://testbed-manager.testbed.osism.xyz:8170/auth/realms/osism/.well-known/openid-configuration \
+     --os-discovery-endpoint https://testbed-manager.testbed.osism.xyz/keycloak/auth/realms/osism/.well-known/openid-configuration \
    project list
 
 
@@ -314,7 +314,7 @@ in which the `id` column's `value` field contains the token:
      --os-identity-provider keycloak \
      --os-protocol openid \
      --os-identity-api-version 3 \
-     --os-discovery-endpoint http://testbed-manager.testbed.osism.xyz:8170/auth/realms/osism/.well-known/openid-configuration \
+     --os-discovery-endpoint https://testbed-manager.testbed.osism.xyz/keycloak/auth/realms/osism/.well-known/openid-configuration \
      --os-openid-scope "openid profile email" \
    token issue \
        -c id
@@ -382,7 +382,7 @@ Webinterfaces
          </tr>
          <tr class="row-odd">
             <td>Keycloak</td>
-            <td><a href="http://testbed-manager.testbed.osism.xyz:8170" target="_blank">http://testbed-manager.testbed.osism.xyz:8170</a></td>
+            <td><a href="https://testbed-manager.testbed.osism.xyz/keycloak" target="_blank">https://testbed-manager.testbed.osism.xyz/keycloak</a></td>
             <td>admin</td>
             <td>password</td>
          </tr>
