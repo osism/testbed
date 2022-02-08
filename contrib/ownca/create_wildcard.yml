@@ -1,0 +1,38 @@
+---
+- hosts: localhost
+  name: Create wildcard cert for testbed
+  gather_facts: false
+  vars_prompt:
+    - name: secret_ca_passphrase
+
+  tasks:
+    - name: Create private key for new certificate
+      community.crypto.openssl_privatekey:
+        path: testbed-certificate.key
+      run_once: true
+
+    - name: Create certificate signing request (CSR) for new certificate
+      community.crypto.openssl_csr_pipe:
+        privatekey_path: testbed-certificate.key
+        subject_alt_name:
+          - "DNS:*.testbed.osism.xyz"
+      run_once: true
+      register: csr
+
+    - name: Sign certificate with our CA
+      community.crypto.x509_certificate_pipe:
+        csr_content: "{{ csr.csr }}"
+        provider: ownca
+        ownca_path: testbed-ca-certificate.pem
+        ownca_privatekey_path: testbed-ca-certificate.key
+        ownca_privatekey_passphrase: "{{ secret_ca_passphrase }}"
+        ownca_not_after: +3650d  # valid for ten years
+        ownca_not_before: "-1h"  # valid since one hour
+      run_once: true
+      register: certificate
+
+    - name: Write certificate file
+      copy:
+        dest: testbed-certificate.pem
+        content: "{{ certificate.certificate }}"
+      run_once: true

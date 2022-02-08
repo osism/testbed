@@ -1,0 +1,35 @@
+---
+- hosts: localhost
+  name: Create OSISM Testbed CA
+  gather_facts: false
+  vars_prompt:
+    - name: secret_ca_passphrase
+
+  tasks:
+    - name: Create private key with password protection
+      community.crypto.openssl_privatekey:
+        cipher: auto
+        path: testbed-ca-certificate.key
+        passphrase: "{{ secret_ca_passphrase }}"
+
+    - name: Create certificate signing request (CSR) for CA certificate
+      community.crypto.openssl_csr_pipe:
+        privatekey_path: testbed-ca-certificate.key
+        privatekey_passphrase: "{{ secret_ca_passphrase }}"
+        common_name: OSISM Testbed CA
+        use_common_name_for_san: false  # since we do not specify SANs, don't use CN as a SAN
+        basic_constraints:
+          - 'CA:TRUE'
+        basic_constraints_critical: yes
+        key_usage:
+          - keyCertSign
+        key_usage_critical: true
+      register: ca_csr
+
+    - name: Create self-signed CA certificate from CSR
+      community.crypto.x509_certificate:
+        path: testbed-ca-certificate.pem
+        csr_content: "{{ ca_csr.csr }}"
+        privatekey_path: testbed-ca-certificate.key
+        privatekey_passphrase: "{{ secret_ca_passphrase }}"
+        provider: selfsigned
