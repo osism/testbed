@@ -4,7 +4,7 @@
 
 ceph_version: pacific
 manager_version: latest
-openstack_version: wallaby
+openstack_version: xena
 
 ##########################
 # celery

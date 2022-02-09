@@ -1,5 +1,13 @@
 ---
 clouds:
+  system:
+    auth:
+      username: admin
+      auth_url: https://api.testbed.osism.xyz:5000/v3
+      user_domain_name: default
+      system_scope: all
+    cacert: /etc/ssl/certs/ca-certificates.crt
+    identity_api_version: 3
   admin:
     auth:
       username: admin
