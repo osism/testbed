@@ -5,11 +5,6 @@
 docker_registry: quay.io
 
 ##########################################################
-# kolla
-
-kolla_enable_sanity_checks: "yes"
-
-##########################################################
 # haproxy
 
 kolla_internal_fqdn: api-int.testbed.osism.xyz
