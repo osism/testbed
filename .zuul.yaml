@@ -5,3 +5,6 @@
     gh_gate:
       jobs:
         - tox-linters
+    gh_post:
+      jobs:
+        - tox-linters
