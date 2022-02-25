@@ -1,0 +1,43 @@
+---
+- name: set up DNS for testbed
+  hosts: localhost
+  vars:
+    cloud_provider: betacloud
+    basedomain: "osism.xyz."
+    subdomain: "testbed."
+    fulldomain: "{{ subdomain }}{{ basedomain }}"
+    soa_email: "info@osism.tech"
+    ttl: "3600"
+    a_prefix: "192.168.16."
+    a_records:
+      "api-int": "9"
+      "api": "254"
+      "testbed-manager": "5"
+      "testbed-node-0": "10"
+      "testbed-node-1": "11"
+      "testbed-node-2": "12"
+      "testbed-node-3": "13"
+      "testbed-node-4": "14"
+      "testbed-node-5": "15"
+      "testbed-node-6": "16"
+      "testbed-node-7": "17"
+      "testbed-node-8": "18"
+      "testbed-node-9": "19"
+
+  tasks:
+    - openstack.cloud.dns_zone:
+        cloud: "{{ cloud_provider }}"
+        state: present
+        name: "{{ basedomain }}"
+        zone_type: primary
+        email: "{{ soa_email }}"
+        ttl: "{{ ttl }}"
+    - openstack.cloud.recordset:
+        cloud: "{{ cloud_provider }}"
+        state: present
+        zone: "{{ basedomain }}"
+        name: "{{ item.key }}.{{ fulldomain }}"
+        recordset_type: "a"
+        records: ["{{ a_prefix }}{{ item.value }}"]
+        ttl: "{{ ttl }}"
+      loop: "{{ a_records | dict2items }}"
