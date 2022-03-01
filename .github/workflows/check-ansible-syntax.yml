@@ -19,5 +19,5 @@ jobs:
   check-ansible-syntax:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: osism/ansible-lint-action@v1.0.0
