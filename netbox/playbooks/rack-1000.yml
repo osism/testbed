@@ -43,7 +43,6 @@
           custom_fields:
             device_type: switch
             deployment_type: napalm
-            deployment_parameters: eos
         state: present
 
     - name: Manage testbed-switch-1
@@ -65,7 +64,6 @@
           custom_fields:
             device_type: switch
             deployment_type: napalm
-            deployment_parameters: eos
         state: present
 
     - name: Manage testbed-switch-2
@@ -87,7 +85,6 @@
           custom_fields:
             device_type: switch
             deployment_type: napalm
-            deployment_parameters: eos
         state: present
 
     - name: Manage testbed-manager
@@ -104,6 +101,9 @@
           device_role: Management
           face: front
           position: 5
+          custom_fields:
+            device_type: server
+            ironic_enabled: false
           tags:
             - managed-by-osism
             - generic
@@ -125,6 +125,9 @@
           device_role: Mixed
           face: front
           position: 10
+          custom_fields:
+            device_type: server
+            ironic_enabled: false
           tags:
             - managed-by-osism
             - managed-by-bifrost
@@ -150,6 +153,9 @@
           device_role: Mixed
           face: front
           position: 11
+          custom_fields:
+            device_type: server
+            ironic_enabled: false
           tags:
             - managed-by-osism
             - managed-by-bifrost
@@ -175,6 +181,9 @@
           device_role: Mixed
           face: front
           position: 12
+          custom_fields:
+            device_type: server
+            ironic_enabled: false
           tags:
             - managed-by-osism
             - managed-by-bifrost
@@ -200,6 +209,9 @@
           device_role: Compute
           face: front
           position: 13
+          custom_fields:
+            device_type: server
+            ironic_enabled: false
           tags:
             - managed-by-osism
             - managed-by-ironic
@@ -221,6 +233,9 @@
           device_role: Compute
           face: front
           position: 14
+          custom_fields:
+            device_type: server
+            ironic_enabled: false
           tags:
             - managed-by-osism
             - managed-by-ironic
@@ -242,6 +257,9 @@
           device_role: Compute
           face: front
           position: 15
+          custom_fields:
+            device_type: server
+            ironic_enabled: false
           tags:
             - managed-by-osism
             - managed-by-ironic
@@ -263,6 +281,9 @@
           device_role: Storage
           face: front
           position: 16
+          custom_fields:
+            device_type: server
+            ironic_enabled: false
           tags:
             - managed-by-osism
             - managed-by-ironic
@@ -284,6 +305,9 @@
           device_role: Storage
           face: front
           position: 17
+          custom_fields:
+            device_type: server
+            ironic_enabled: false
           tags:
             - managed-by-osism
             - managed-by-ironic
@@ -305,6 +329,9 @@
           device_role: Storage
           face: front
           position: 18
+          custom_fields:
+            device_type: server
+            ironic_enabled: false
           tags:
             - managed-by-osism
             - managed-by-ironic
