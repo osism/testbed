@@ -1,2 +1,3 @@
 ---
+ansible_host: 192.168.16.18
 node_id: 18
