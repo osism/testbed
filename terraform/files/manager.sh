@@ -29,8 +29,7 @@ apt-get install --yes \
 # NOTE: There are cloud images on which Ansible is pre-installed.
 apt-get remove --yes ansible
 
-pip3 install --no-cache-dir 'ansible-core>=2.11.0,<2.12.0'
-pip3 install --no-cache-dir 'ansible>=4.0.0,<5.0.0'
+pip3 install --no-cache-dir 'ansible>=5.0.0,<6.0.0'
 
 chown -R ubuntu:ubuntu /home/ubuntu/.ssh
 
