@@ -1,10 +1,5 @@
 ---
 ##########################################################
-# ansible
-
-ansible_host: "{{ '192.168.16.0/20' | ansible.netcommon.ipaddr('net') | ansible.netcommon.ipaddr(node_id) | ansible.netcommon.ipaddr('address') }}"
-
-##########################################################
 # netbox
 
 netbox_inventory_status: Active
