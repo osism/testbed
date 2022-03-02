@@ -81,7 +81,7 @@ sudo -iu dragon sh -c 'INTERACTIVE=false osism netbox import --vendors Arista'
 sudo -iu dragon sh -c 'INTERACTIVE=false osism netbox import --vendors Other --no-library'
 sudo -iu dragon sh -c 'INTERACTIVE=false osism netbox init'
 sudo -iu dragon sh -c 'INTERACTIVE=false osism netbox manage 1000'
-sudo -iu dragon sh -c 'INTERACTIVE=false osism netbox connect 1000'
+sudo -iu dragon sh -c 'INTERACTIVE=false osism netbox connect 1000 --state a'
 sudo -iu dragon sh -c 'INTERACTIVE=false osism netbox disable testbed-switch-0'
 
 sudo -iu dragon sh -c 'INTERACTIVE=false osism apply operator -l "all:!manager" -u ubuntu'
