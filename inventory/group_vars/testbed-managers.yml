@@ -2,7 +2,7 @@
 ##########################################################
 # ansible
 
-ansible_host: "{{ '192.168.16.0/20' | ipaddr('net') | ipaddr(node_id) | ipaddr('address') }}"
+ansible_host: "{{ '192.168.16.0/20' | ansible.netcommon.ipaddr('net') | ansible.netcommon.ipaddr(node_id) | ansible.netcommon.ipaddr('address') }}"
 
 ##########################################################
 # netbox
@@ -17,7 +17,7 @@ netbox_inventory_tags:
 ##########################################################
 # generic
 
-internal_address: "{{ '192.168.16.0/20' | ipaddr('net') | ipaddr(node_id) | ipaddr('address') }}"
+internal_address: "{{ '192.168.16.0/20' | ansible.netcommon.ipaddr('net') | ansible.netcommon.ipaddr(node_id) | ansible.netcommon.ipaddr('address') }}"
 internal_interface: "{{ ansible_local.testbed_network_devices.management }}"
 
 console_interface: "{{ internal_interface }}"
@@ -41,8 +41,8 @@ network_type: netplan
 network_ethernets:
   "{{ ansible_local.testbed_network_devices.management }}":
     addresses:
-      - "{{ '192.168.16.0/20' | ipaddr('net') | ipaddr(node_id) | ipaddr('address') }}/20"
-    gateway4: "{{ '192.168.16.0/20' | ipaddr('net') | ipaddr('1') | ipaddr('address') }}"
+      - "{{ '192.168.16.0/20' | ansible.netcommon.ipaddr('net') | ansible.netcommon.ipaddr(node_id) | ansible.netcommon.ipaddr('address') }}/20"
+    gateway4: "{{ '192.168.16.0/20' | ansible.netcommon.ipaddr('net') | ansible.netcommon.ipaddr('1') | ansible.netcommon.ipaddr('address') }}"
     mtu: "{{ testbed_mtu_manager }}"
 network_dispatcher_scripts:
   - src: /opt/configuration/network/vxlan.sh
