@@ -11,7 +11,6 @@ osism apply elasticsearch
 osism apply openvswitch
 osism apply memcached
 osism apply redis
-osism apply etcd
 osism apply mariadb
 osism apply kibana
 osism apply ovn

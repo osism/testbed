@@ -34,7 +34,6 @@ enable_octavia: "yes"
 enable_panko: "yes"
 enable_senlin: "yes"
 
-enable_etcd: "yes"
 enable_grafana: "yes"
 enable_prometheus: "yes"
 enable_redis: "yes"
