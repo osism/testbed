@@ -83,6 +83,8 @@ sudo -iu dragon sh -c 'INTERACTIVE=false osism netbox init'
 sudo -iu dragon sh -c 'INTERACTIVE=false osism netbox manage 1000'
 sudo -iu dragon sh -c 'INTERACTIVE=false osism netbox connect 1000 --state a'
 sudo -iu dragon sh -c 'INTERACTIVE=false osism netbox disable testbed-switch-0'
+sudo -iu dragon sh -c 'INTERACTIVE=false osism netbox disable testbed-switch-1'
+sudo -iu dragon sh -c 'INTERACTIVE=false osism netbox disable testbed-switch-2'
 
 sudo -iu dragon sh -c 'INTERACTIVE=false osism apply operator -l "all:!manager" -u ubuntu'
 sudo -iu dragon sh -c 'INTERACTIVE=false osism apply --environment custom facts'
