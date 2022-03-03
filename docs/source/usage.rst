@@ -668,7 +668,7 @@ This section describes how individual parts of the testbed can be deployed.
 
   .. code-block:: console
 
-     osism-kolla deploy openvswitch,memcached,etcd,kibana
+     osism-kolla deploy openvswitch,memcached,kibana
 
 * Basic OpenStack services (also deploy `Infrastructure services`,
   `Clustered infrastructure services`, and `Ceph`)
