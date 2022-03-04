@@ -210,6 +210,21 @@ Preparations
 
      The file extension ``yaml`` is important!
 
+TLS certificates and hostnames
+------------------------------
+
+The testbed installation currently is hardcoded to use hostnames in the domain
+``testbed.osism.xyz``.  This is a real domain and we provide the DNS records matching the addresses
+used in the testbed, so that once you connect to your testbed via a direct link or e.g. wireguard,
+you can access hosts and servers by their hostname like ``ssh testbed-manager.testbed.osism.xyz``.
+You can find the playbook that generated these DNS records in ``contrib/ansible/dns.yaml``.
+
+We also provide a wildcard TLS certificate signed by a custom CA for ``testbed.osism.xyz`` and
+``*.testbed.osism.xyz``. If you want to replace this with your own certificate, have a look
+at the example playbooks in the ``contrib/ownca`` folder.
+
+In a future release we plan to make the used domain configurable.
+
 Configuration
 =============
 
