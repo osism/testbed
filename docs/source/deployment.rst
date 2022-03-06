@@ -40,6 +40,24 @@ The testbed requires the following resources when using the default flavors.
 * 9 volumes (min 90 GB) plus 140GB root disks (depends on flavors)
 * 4 instances (28 VCPUs, 104 GByte memory)
 
+Virtual resources
+-----------------
+
+If the testbed is to be deployed independently of the Terraform integration with
+OpenStack, the following resources are required.
+
+Each system needs a root disk with at least 30 GByte storage.
+
+2 networks are required. A network with which the virtual systems can be accessed
+and via which the virtual systems can communicate with the outside world. In addition,
+a fully internal network.
+
+* 1 virtual system which is used as manager and monitoring node (4 VCPUs, 16 GByte memory)
+* 3 virtual systems which are used as control, compute and, storage nodes (8 VCPUs, 32 GByte memory)
+  * 3 additional volumes per virtual system with at least 10 GByte storage each
+
+Ubuntu 20.04 is to be used as the base image for the virtual systems.
+
 Software
 --------
 
