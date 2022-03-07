@@ -10,36 +10,40 @@ cephclient_mons:
 ##########################
 # cgit
 
+cgit_host: cgit.testbed.osism.xyz
 cgit_traefik: true
 
 ##########################
 # homer
 
-homer_host: "{{ hostvars[inventory_hostname]['ansible_' + hostvars[inventory_hostname]['internal_interface']]['ipv4']['address'] }}"
-homer_url_ara: "https://testbed-manager.testbed.osism.xyz/ara/"
+homer_host: homer.testbed.osism.xyz
+homer_traefik: true
+homer_url_ara: "https://ara.testbed.osism.xyz/"
 homer_url_ceph: "https://api-int.testbed.osism.xyz:8140"
-homer_url_flower: "https://testbed-manager.testbed.osism.xyz/flower/"
+homer_url_flower: "https://flower.testbed.osism.xyz/"
 homer_url_grafana: "https://api-int.testbed.osism.xyz:3000"
 homer_url_horizon: "https://api.testbed.osism.xyz/"
-homer_url_keycloak: "https://testbed-manager.testbed.osism.xyz/keycloak/"
+homer_url_keycloak: "https://keycloak.testbed.osism.xyz/"
 homer_url_kibana: "https://api-int.testbed.osism.xyz:5601"
-homer_url_netbox: "https://testbed-manager.testbed.osism.xyz/netbox/"
-homer_url_netdata: "https://testbed-manager.testbed.osism.xyz/netdata/"
-homer_url_patchman: "https://testbed-manager.testbed.osism.xyz/patchman/"
-homer_url_phpmyadmin: "https://testbed-manager.testbed.osism.xyz/phpmyadmin/"
-homer_url_prometheus: "https://api-int.testbed.osism.xyz:9090/"
+homer_url_netbox: "https://netbox.testbed.osism.xyz/"
+homer_url_netdata: "https://netdata.testbed.osism.xyz/"
+homer_url_patchman: "https://patchman.testbed.osism.xyz/"
+homer_url_phpmyadmin: "https://phpmyadmin.testbed.osism.xyz/"
+homer_url_prometheus: "https://api-int.testbed.osism.xyz:9091/"
 homer_url_rabbitmq: "https://api-int.testbed.osism.xyz:15672/"
-homer_url_vault: "https://testbed-manager.testbed.osism.xyz/vault/"
+homer_url_vault: "https://vault.testbed.osism.xyz/"
 
 
 ##########################
 # keycloak
 
+keycloak_host: keycloak.testbed.osism.xyz
 keycloak_traefik: true
 
 ##########################
 # netbox
 
+netbox_host: netbox.testbed.osism.xyz
 netbox_traefik: true
 netbox_plugins_extra:
   - netbox_bgp
@@ -48,7 +52,14 @@ netbox_plugins_extra:
 ##########################
 # nexus
 
+nexus_host: nexus.testbed.osism.xyz
 nexus_traefik: true
+
+##########################
+# phpmyadmin
+
+phpmyadmin_host: phpmyadmin.testbed.osism.xyz
+phpmyadmin_traefik: true
 
 ##########################
 # traefik
