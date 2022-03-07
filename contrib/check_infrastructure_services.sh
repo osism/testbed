@@ -20,6 +20,13 @@ echo
 bash nagios-plugins/check_galera_cluster -u root -p password -H api-int.testbed.osism.xyz -c 1
 
 echo
+echo "# Prometheus"
+echo
+
+curl https://api-int.testbed.osism.xyz:9091/-/healthy
+curl https://api-int.testbed.osism.xyz:9091/-/ready
+
+echo
 echo "# RabbitMQ"
 echo
 
