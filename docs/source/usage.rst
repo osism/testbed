@@ -8,6 +8,12 @@ Usage
 Tailscale
 =========
 
+.. warning::
+
+   It is not recommended to use Tailscale. Tailscale is a VPNaaS provider
+   based on Wireguard. You don't know what exactly Tailscale does and
+   what's in their client.
+
 Tailscale is a zero config VPN service that just works.
 
 * Visit https://login.tailscale.com/admin/settings/authkeys and generate
