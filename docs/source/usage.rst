@@ -5,23 +5,6 @@ Usage
 .. contents::
    :local:
 
-Tailscale
-=========
-
-Tailscale is a zero config VPN service that just works.
-
-* Visit https://login.tailscale.com/admin/settings/authkeys and generate
-  a one-off-key or reusable key.
-
-* Deploy the tailscale service
-
-  .. code-block:: console
-
-     osism-infrastructure tailscale -e tailscale_authkey=tskey-xxx
-
-* Afterwards the route settings for ``testbed-manager`` have to be reviewed
-  and activated manually under https://login.tailscale.com/admin/machines.
-
 Wireguard
 =========
 
