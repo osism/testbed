@@ -14,7 +14,7 @@ STATE = errored.tfstate
 
 VERSION_CEPH ?= pacific
 VERSION_MANAGER ?= latest
-VERSION_OPENSTACK ?= wallaby
+VERSION_OPENSTACK ?= xena
 
 RALLY ?= false
 REFSTACK ?= false
