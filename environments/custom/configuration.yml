@@ -7,7 +7,7 @@ ceph_dashboard_username: admin
 
 kcadm_binary: "/opt/jboss/keycloak/bin/kcadm.sh"
 keycloak_realm: "osism"
-keycloak_url: "http://localhost:8080/keycloak"
+keycloak_url: "http://localhost:8080"
 keycloak_service_container_name: "keycloak"
 
 # keycloak-ldap-federation-config
