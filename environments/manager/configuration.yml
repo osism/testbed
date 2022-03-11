@@ -11,7 +11,9 @@ openstack_version: xena
 
 celery_enable: true
 
-flower_host: "{{ hostvars[inventory_hostname]['ansible_' + internal_interface]['ipv4']['address'] }}"
+flower_traefik: true
+flower_host: flower.testbed.osism.xyz
+
 osism_api_host: "{{ hostvars[inventory_hostname]['ansible_' + internal_interface]['ipv4']['address'] }}"
 
 ##########################
