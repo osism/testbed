@@ -1,6 +1,10 @@
 ---
 - name: Bootstrap refstack
   hosts: localhost
+  collections:
+    - ansible.builtin
+    - community.general
+    - openstack.cloud
 
   vars:
     refstack_users:
@@ -12,7 +16,7 @@
 
   tasks:
     - name: Create refstack projects
-      os_project:
+      openstack.cloud.project:
         cloud: admin
         state: present
         name: "{{ item }}"
@@ -20,7 +24,7 @@
       loop: "{{ refstack_users }}"
 
     - name: Create refstack users
-      os_user:
+      openstack.cloud.identity_user:
         cloud: admin
         state: present
         name: "{{ item }}"
@@ -31,7 +35,7 @@
       no_log: true
 
     - name: Add admin role to required users
-      os_user_role:
+      openstack.cloud.identity_role:
         cloud: admin
         state: present
         user: "{{ item }}"
@@ -42,7 +46,7 @@
         - refstack-4
 
     - name: Add member roles to refstack users
-      os_user_role:
+      openstack.cloud.identity_role:
         cloud: admin
         state: present
         user: "{{ item.0 }}"
@@ -54,7 +58,7 @@
         - ['member', '_member_']
 
     - name: Create refstack keypairs
-      os_keypair:
+      openstack.cloud.keypair:
         cloud: "{{ item }}"
         state: present
         name: refstack
@@ -62,7 +66,7 @@
       loop: "{{ refstack_users }}"
 
     - name: Create test networks
-      os_network:
+      openstack.cloud.network:
         cloud: admin
         project: "{{ item }}"
         state: present
@@ -70,7 +74,7 @@
       loop: "{{ refstack_users }}"
 
     - name: Create test subnets
-      os_subnet:
+      openstack.cloud.subnet:
         cloud: admin
         project: "{{ item }}"
         state: present
@@ -82,7 +86,7 @@
         index_var: index
 
     - name: Create test router
-      os_router:
+      openstack.cloud.router:
         cloud: admin
         project: "{{ item }}"
         state: present
@@ -93,7 +97,7 @@
       loop: "{{ refstack_users }}"
 
     - name: Create tiny flavors
-      os_nova_flavor:
+      openstack.cloud.compute_flavor:
         cloud: admin
         state: present
         name: "{{ item }}"
@@ -109,17 +113,17 @@
       register: flavors
 
     # - name: Download image
-    #   get_url:
+    #   ansible.builtin.get_url:
     #     url: http://cloud-images.ubuntu.com/focal/current/focal-server-cloudimg-amd64.img
     #     dest: /tmp/image.img
 
     - name: Download image
-      get_url:
+      ansible.builtin.get_url:
         url: https://github.com/cirros-dev/cirros/releases/download/0.5.2/cirros-0.5.2-x86_64-disk.img
         dest: /tmp/image.img
 
     - name: Upload images
-      os_image:
+      openstack.cloud.image:
         cloud: admin
         state: present
         name: "{{ item }}"
@@ -137,19 +141,19 @@
     # NOTE: is_public from os_image is not working like expected
 
     - name: Make images visible
-      command: "openstack --os-cloud admin image set --public {{ item }}"  # noqa 301
+      ansible.builtin.command: "openstack --os-cloud admin image set --public {{ item }}"  # noqa 301
       loop:
         - refstack-0
         - refstack-1
 
     - name: Get public network
-      os_networks_info:
+      openstack.cloud.networks_info:
         cloud: admin
         name: public
       register: public
 
     - name: Set image_ref in heat_plugin in tempest.conf
-      ini_file:
+      community.general.ini_file:
         path: /opt/configuration/contrib/refstack/tempest.conf
         section: heat_plugin
         option: image_ref
@@ -158,7 +162,7 @@
       delegate_to: testbed-manager
 
     - name: Set minimal_image_ref in heat_plugin in tempest.conf
-      ini_file:
+      community.general.ini_file:
         path: /opt/configuration/contrib/refstack/tempest.conf
         section: heat_plugin
         option: minimal_image_ref
@@ -167,7 +171,7 @@
       delegate_to: testbed-manager
 
     - name: Set image_ref in compute in tempest.conf
-      ini_file:
+      community.general.ini_file:
         path: /opt/configuration/contrib/refstack/tempest.conf
         section: compute
         option: image_ref
@@ -176,7 +180,7 @@
       delegate_to: testbed-manager
 
     - name: Set image_ref_alt in compute in tempest.conf
-      ini_file:
+      community.general.ini_file:
         path: /opt/configuration/contrib/refstack/tempest.conf
         section: compute
         option: image_ref_alt
@@ -185,7 +189,7 @@
       delegate_to: testbed-manager
 
     - name: Set flavor_ref in compute in tempest.conf
-      ini_file:
+      community.general.ini_file:
         path: /opt/configuration/contrib/refstack/tempest.conf
         section: compute
         option: flavor_ref
@@ -194,7 +198,7 @@
       delegate_to: testbed-manager
 
     - name: Set flavor_ref_alt in compute in tempest.conf
-      ini_file:
+      community.general.ini_file:
         path: /opt/configuration/contrib/refstack/tempest.conf
         section: compute
         option: flavor_ref_alt
@@ -203,7 +207,7 @@
       delegate_to: testbed-manager
 
     - name: Set public_network_id in network in tempest.conf
-      ini_file:
+      community.general.ini_file:
         path: /opt/configuration/contrib/refstack/tempest.conf
         section: network
         option: public_network_id
@@ -212,12 +216,12 @@
       delegate_to: testbed-manager
 
     - name: Check swift endpoint
-      command: openstack --os-cloud admin endpoint list --service swift  # noqa 301
+      ansible.builtin.command: openstack --os-cloud admin endpoint list --service swift  # noqa 301
       register: result
       delegate_to: testbed-manager
 
     - name: Set swift in tempest.conf
-      ini_file:
+      community.general.ini_file:
         path: /opt/configuration/contrib/refstack/tempest.conf
         section: service_available
         option: swift
