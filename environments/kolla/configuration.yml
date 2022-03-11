@@ -31,7 +31,6 @@ enable_heat: "yes"
 enable_ironic: "yes"
 enable_manila: "yes"
 enable_octavia: "yes"
-enable_panko: "yes"
 enable_senlin: "yes"
 
 enable_grafana: "yes"
@@ -104,7 +103,6 @@ octavia_loadbalancer_topology: "ACTIVE_STANDBY"
 
 # ceilometer
 ceilometer_database_type: gnocchi
-ceilometer_event_type: panko
 
 # designate
 designate_ns_record: openstack.testbed.osism.xyz
