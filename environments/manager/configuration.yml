@@ -26,14 +26,6 @@ ara_server_host: ara.testbed.osism.xyz
 ara_server_traefik: true
 
 ##########################
-# vault
-
-vault_enable: true
-
-vault_output_key_shares: true
-vault_write_key_shares: true
-
-##########################
 # netbox
 
 netbox_enable: true
