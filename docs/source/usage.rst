@@ -666,4 +666,4 @@ This section describes how individual parts of the testbed can be deployed.
 
   .. code-block:: console
 
-     osism-kolla deploy heat,gnocchi,ceilometer,aodh,panko,barbican,designate
+     osism-kolla deploy heat,gnocchi,ceilometer,aodh,barbican,designate
