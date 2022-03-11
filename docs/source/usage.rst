@@ -638,7 +638,7 @@ This section describes how individual parts of the testbed can be deployed.
   .. code-block:: console
 
      osism-ceph testbed
-     osism-run custom fetch-ceph-keys
+     osism apply copy-ceph-keys
      osism-infrastructure cephclient
 
 * Clustered infrastructure services

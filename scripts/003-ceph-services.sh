@@ -9,7 +9,7 @@ osism apply ceph-mdss
 osism apply ceph-crash
 osism apply ceph-rgws
 
-osism apply --environment custom fetch-ceph-keys
+osism apply copy-ceph-keys
 osism apply cephclient
 osism apply --environment custom bootstrap-ceph-dashboard
 
