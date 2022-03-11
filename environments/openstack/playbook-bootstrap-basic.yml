@@ -1,25 +1,27 @@
 ---
 - name: Prepare masquerading on the manager node
   hosts: testbed-managers
+  collections:
+    - ansible.builtin
 
   tasks:
     - name: Accpet FORWARD on the management interface (incoming)
       become: true
-      iptables:
+      ansible.builtin.iptables:
         chain: FORWARD
         in_interface: "{{ ansible_local.testbed_network_devices.management }}"
         jump: ACCEPT
 
     - name: Accept FORWARD on the management interface (outgoing)
       become: true
-      iptables:
+      ansible.builtin.iptables:
         chain: FORWARD
         out_interface: "{{ ansible_local.testbed_network_devices.management }}"
         jump: ACCEPT
 
     - name: Masquerade traffic on the management interface
       become: true
-      iptables:
+      ansible.builtin.iptables:
         table: nat
         chain: POSTROUTING
         out_interface: "{{ ansible_local.testbed_network_devices.management }}"
@@ -28,11 +30,13 @@
 - name: Create SCS flavors
   hosts: localhost
   connection: local
+  collections:
+    - openstack.cloud
 
   tasks:
     # vCPU:RAM ratio: 4:8
     - name: "Create SCS-4V:8 SCS flavor"
-      os_nova_flavor:
+      openstack.cloud.compute_flavor:
         cloud: admin
         state: present
         name: "SCS-4V:8"
@@ -42,7 +46,7 @@
         ephemeral: 0
 
     - name: "Create SCS-4V:8:20 SCS flavor"
-      os_nova_flavor:
+      openstack.cloud.compute_flavor:
         cloud: admin
         state: present
         name: "SCS-4V:8:20"
@@ -53,7 +57,7 @@
 
     # vCPU:RAM ratio: 2:8
     - name: "Create SCS-2V:8 SCS flavor"
-      os_nova_flavor:
+      openstack.cloud.compute_flavor:
         cloud: admin
         state: present
         name: "SCS-2V:8"
@@ -63,7 +67,7 @@
         ephemeral: 0
 
     - name: "Create SCS-2V:8:20 SCS flavor"
-      os_nova_flavor:
+      openstack.cloud.compute_flavor:
         cloud: admin
         state: present
         name: "SCS-2V:8:20"
@@ -74,7 +78,7 @@
 
     # vCPU:RAM ratio: 1:8
     - name: "Create SCS-1V:8 SCS flavor"
-      os_nova_flavor:
+      openstack.cloud.compute_flavor:
         cloud: admin
         state: present
         name: "SCS-1V:8"
@@ -84,7 +88,7 @@
         ephemeral: 0
 
     - name: "Create SCS-1V:8:20 SCS flavor"
-      os_nova_flavor:
+      openstack.cloud.compute_flavor:
         cloud: admin
         state: present
         name: "SCS-1V:8:20"
@@ -95,7 +99,7 @@
 
     # vCPU:RAM ratio: 2:4
     - name: "Create SCS-2V:4 SCS flavor"
-      os_nova_flavor:
+      openstack.cloud.compute_flavor:
         cloud: admin
         state: present
         name: "SCS-2V:4"
@@ -105,7 +109,7 @@
         ephemeral: 0
 
     - name: "Create SCS-2V:4:10 SCS flavor"
-      os_nova_flavor:
+      openstack.cloud.compute_flavor:
         cloud: admin
         state: present
         name: "SCS-2V:4:10"
@@ -116,7 +120,7 @@
 
     # vCPU:RAM ratio: 1:4
     - name: "Create SCS-1V:4 SCS flavor"
-      os_nova_flavor:
+      openstack.cloud.compute_flavor:
         cloud: admin
         state: present
         name: "SCS-1V:4"
@@ -126,7 +130,7 @@
         ephemeral: 0
 
     - name: "Create SCS-1V:4:10 SCS flavor"
-      os_nova_flavor:
+      openstack.cloud.compute_flavor:
         cloud: admin
         state: present
         name: "SCS-1V:4:10"
@@ -137,7 +141,7 @@
 
     # vCPU:RAM ratio: 1:2
     - name: "Create SCS-1V:2 SCS flavor"
-      os_nova_flavor:
+      openstack.cloud.compute_flavor:
         cloud: admin
         state: present
         name: "SCS-1V:2"
@@ -147,7 +151,7 @@
         ephemeral: 0
 
     - name: "Create SCS-1V:2:5 SCS flavor"
-      os_nova_flavor:
+      openstack.cloud.compute_flavor:
         cloud: admin
         state: present
         name: "SCS-1V:2:5"
@@ -158,7 +162,7 @@
 
     # vCPU:RAM ratio: 1:1
     - name: "Create SCS-1L:1 SCS flavor"
-      os_nova_flavor:
+      openstack.cloud.compute_flavor:
         cloud: admin
         state: present
         name: "SCS-1L:1"
@@ -168,7 +172,7 @@
         ephemeral: 0
 
     - name: "Create SCS-1L:1:5 SCS flavor"
-      os_nova_flavor:
+      openstack.cloud.compute_flavor:
         cloud: admin
         state: present
         name: "SCS-1L:1:5"
@@ -180,17 +184,20 @@
 - name: Bootstrap basic OpenStack services
   hosts: localhost
   connection: local
+  collections:
+    - ansible.builtin
+    - openstack.cloud
 
   tasks:
     - name: Create test project
-      os_project:
+      openstack.cloud.project:
         cloud: admin
         state: present
         name: test
         domain_id: default
 
     - name: Create test user
-      os_user:
+      openstack.cloud.identity_user:
         cloud: admin
         state: present
         name: test
@@ -202,13 +209,13 @@
 
     # NOTE: this role is required by octavia
     - name: Create load-balancer_member role
-      os_keystone_role:
+      openstack.cloud.identity_role:
         cloud: admin
         state: present
         name: load-balancer_member
 
     - name: Add member roles to user test
-      os_user_role:
+      openstack.cloud.role_assignment:
         cloud: admin
         state: present
         user: test
@@ -220,12 +227,12 @@
         - _member_
 
     - name: Download cirros image
-      get_url:
+      ansible.builtin.get_url:
         url: https://github.com/cirros-dev/cirros/releases/download/0.5.2/cirros-0.5.2-x86_64-disk.img
         dest: /tmp/cirros.img
 
     - name: Upload cirros image
-      os_image:
+      openstack.cloud.image:
         cloud: admin
         state: present
         name: cirros
@@ -240,20 +247,20 @@
 
     # NOTE: is_public from os_image is not working like expected
     - name: Make cirros image visible
-      command: openstack --os-cloud admin image set --public cirros  # noqa 301
+      ansible.builtin.command: openstack --os-cloud admin image set --public cirros  # noqa 301
 
     - name: Download ubuntu minimal 20.04 image
-      get_url:
+      ansible.builtin.get_url:
         url: http://cloud-images.ubuntu.com/minimal/releases/focal/release/ubuntu-20.04-minimal-cloudimg-amd64.img
         dest: /tmp/ubuntu.img
 
     - name: Get timestamp from the system
-      command: "date +%Y-%m-%d"
+      ansible.builtin.command: "date +%Y-%m-%d"
       register: date
       changed_when: false
 
     - name: Upload ubuntu minimal 20.04 image
-      os_image:
+      openstack.cloud.image:
         cloud: admin
         state: present
         name: "Ubuntu 20.04"
@@ -282,10 +289,10 @@
 
     # NOTE: is_public from os_image is not working like expected
     - name: Make ubuntu minimal 20.04 image visible
-      command: openstack --os-cloud admin image set --public 'Ubuntu 20.04'  # noqa 301
+      ansible.builtin.command: openstack --os-cloud admin image set --public 'Ubuntu 20.04'  # noqa 301
 
     - name: Create public network
-      os_network:
+      openstack.cloud.network:
         cloud: admin
         state: present
         name: public
@@ -295,7 +302,7 @@
         mtu: 1300  # NOTE: necessary because Geneve/VxLAN in Geneve/VxLAN
 
     - name: Create public subnet
-      os_subnet:
+      openstack.cloud.subnet:
         cloud: admin
         state: present
         name: subnet-public
@@ -307,14 +314,14 @@
         gateway_ip: 192.168.112.5
 
     - name: Create test network
-      os_network:
+      openstack.cloud.network:
         cloud: test
         state: present
         name: test
         mtu: 1300  # NOTE: necessary because Geneve/VxLAN in Geneve/VxLAN
 
     - name: Create test subnet
-      os_subnet:
+      openstack.cloud.subnet:
         cloud: test
         state: present
         name: subnet-test
@@ -322,7 +329,7 @@
         cidr: 192.168.200.0/24
 
     - name: Create test router
-      os_router:
+      openstack.cloud.router:
         cloud: test
         state: present
         name: router-test
@@ -331,13 +338,13 @@
           - subnet-test
 
     - name: Create ssh security group
-      os_security_group:
+      openstack.cloud.security_group:
         cloud: test
         state: present
         name: ssh
 
     - name: Add rule to ssh security group
-      os_security_group_rule:
+      openstack.cloud.security_group_rule:
         cloud: test
         state: present
         security_group: ssh
@@ -347,13 +354,13 @@
         remote_ip_prefix: 0.0.0.0/0
 
     - name: Create icmp security group
-      os_security_group:
+      openstack.cloud.security_group:
         cloud: test
         state: present
         name: icmp
 
     - name: Add rule to icmp security group
-      os_security_group_rule:
+      openstack.cloud.security_group_rule:
         cloud: test
         state: present
         security_group: icmp
@@ -361,14 +368,14 @@
         remote_ip_prefix: 0.0.0.0/0
 
     - name: Create test keypair
-      os_keypair:
+      openstack.cloud.keypair:
         cloud: test
         state: present
         name: test
         public_key_file: /opt/configuration/environments/openstack/id_rsa.test.pub
 
     - name: Create test instance
-      os_server:
+      openstack.cloud.server:
         cloud: test
         state: present
         name: test
@@ -382,14 +389,14 @@
           - ssh
 
     - name: Create test volume
-      os_volume:
+      openstack.cloud.volume:
         cloud: test
         state: present
         name: test
         size: 1
 
     - name: Attach test volume
-      os_server_volume:
+      openstack.cloud.server_volume:
         cloud: test
         state: present
         server: test

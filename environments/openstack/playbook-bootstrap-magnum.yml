@@ -2,15 +2,18 @@
 - name: Bootstrap magnum
   hosts: localhost
   connection: local
+  collections:
+    - ansible.builtin
+    - openstack.cloud
 
   tasks:
     - name: Download coreos image
-      get_url:
+      ansible.builtin.get_url:
         url: https://mirror.betacloud.io/fedora-coreos/fedora-coreos-31.20200407.3.0-openstack.x86_64.qcow2
         dest: /tmp/coreos.img
 
     - name: Upload coreos image
-      os_image:
+      openstack.cloud.image:
         cloud: admin
         state: present
         name: "Fedora CoreOS 31"
@@ -23,7 +26,7 @@
           os_distro: fedora-coreos
 
     - name: Get image information
-      os_image_info:
+      openstack.cloud.image_info:
         cloud: test
         image: "Fedora CoreOS 31"
       register: image
@@ -31,10 +34,10 @@
     # NOTE: is_public from os_image is not working like expected
 
     - name: Make coreos image visible
-      command: openstack --os-cloud admin image set --public 'Fedora CoreOS 31'  # noqa 301
+      ansible.builtin.command: openstack --os-cloud admin image set --public 'Fedora CoreOS 31'  # noqa 301
 
     - name: Create coreos flavor
-      os_nova_flavor:
+      openstack.cloud.compute_flavor:
         cloud: admin
         state: present
         name: 2C-2GB-10GB
@@ -47,13 +50,13 @@
       register: flavor
 
     - name: Get external network information
-      os_networks_info:
+      openstack.cloud.networks_info:
         cloud: test
         name: public
       register: network
 
     - name: Create cores magnum template
-      os_coe_cluster_template:
+      openstack.cloud.coe_cluster_template:
         name: "Fedora CoreOS 31 - Kubernetes"
         cloud: test
         state: present

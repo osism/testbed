@@ -2,10 +2,12 @@
 - name: Bootstrap ceph rgw
   hosts: localhost
   connection: local
+  collections:
+    - openstack.cloud
 
   tasks:
     - name: Create swift service account
-      os_user:
+      openstack.cloud.identity_user:
         cloud: admin
         state: present
         name: swift
@@ -15,7 +17,7 @@
       no_log: true
 
     - name: Add admin role to swift service account
-      os_user_role:
+      openstack.cloud.identity_role:
         cloud: admin
         state: present
         user: swift
@@ -23,7 +25,7 @@
         project: service
 
     - name: Create swift service
-      os_keystone_service:
+      openstack.cloud.catalog_service:
         cloud: admin
         state: present
         name: swift
@@ -31,7 +33,7 @@
         description: Openstack Object Storage
 
     - name: Create swift internal endpoint
-      os_keystone_endpoint:
+      openstack.cloud.endpoint:
         cloud: admin
         state: present
         service: swift
@@ -40,7 +42,7 @@
         region: RegionOne
 
     - name: Create swift public endpoint
-      os_keystone_endpoint:
+      openstack.cloud.endpoint:
         cloud: admin
         state: present
         service: swift
