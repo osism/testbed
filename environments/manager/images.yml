@@ -10,7 +10,7 @@ ara_server_image: "{{ docker_registry_ansible|default('quay.io') }}/osism/ara-se
 mariadb_tag: "10.6.7"
 mariadb_image: "{{ docker_registry }}/library/mariadb:{{ mariadb_tag }}"
 
-netbox_tag: "v3.1.8-ldap"
+netbox_tag: "v3.1.9-ldap"
 netbox_image: "{{ docker_registry_netbox|default('quay.io') }}/osism/netbox:{{ netbox_tag }}"
 
 nginx_tag: "1.21.6-alpine"
