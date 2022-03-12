@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+export DEBIAN_FRONTEND=noninteractive
+
 # NOTE: Because DNS queries don't always work directly at the beginning a
 #       retry for APT.
 echo "APT::Acquire::Retries \"3\";" > /etc/apt/apt.conf.d/80-retries
