@@ -1,4 +1,28 @@
 ---
+# NOTE: To ensure that the Netbox is fully initialized during
+#       initialization, regardless of the Ansibler runtime
+#       environments and python-osism, the /metrics endpoint
+#       is checked. The /metrics endpoint can only be accessed
+#       once the Netbox has been initialized and is accessible
+#       via Traefik.
+
+- name: Wait for netbox service
+  connection: local
+  hosts: localhost
+  gather_facts: false
+
+  tasks:
+    - name: Wait for netbox service
+      uri:
+        url: "{{ netbox_url }}/metrics"
+        return_content: true
+        status_code: [200]
+        validate_certs: false
+      register: result
+      failed_when: "'python_info' not in result.content"
+      retries: 60
+      delay: 5
+
 - name: Manage sites and locations
   connection: local
   hosts: localhost
