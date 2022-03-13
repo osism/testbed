@@ -12,7 +12,7 @@ Wireguard
 
   .. code-block:: console
 
-     osism-run custom wireguard
+     osism apply wireguard
 
 * client configuration can be found in ``/home/dragon/wireguard-client.conf`` on
   ``testbed-manager``, ``MANAGER_PUBLIC_IP_ADDRESS`` has to be replaced by the
@@ -429,7 +429,7 @@ Deploy `Ceph` first.
 
 .. code-block:: console
 
-   osism-run custom bootstraph-ceph-dashboard
+   osism apply bootstraph-ceph-dashboard
 
 .. figure:: /images/ceph-dashboard.png
 
@@ -443,7 +443,7 @@ Homer
 
 .. code-block:: console
 
-   osism-infrastructure homer
+   osism apply homer
 
 .. figure:: /images/homer.png
 
@@ -452,7 +452,7 @@ Keycloak
 
 .. code-block:: console
 
-   osism-infrastructure keycloak
+   osism apply keycloak
 
 .. figure:: /images/keycloak.png
 
@@ -468,7 +468,7 @@ Netdata
 
 .. code-block:: console
 
-   osism-monitoring netdata
+   osism apply netdata
 
 .. figure:: /images/netdata.png
 
@@ -480,14 +480,14 @@ Deploy `Clustered infrastructure services`, `Infrastructure services`, and
 
 .. code-block:: console
 
-   osism-kolla deploy skydive
+   osism apply skydive
 
 The Skydive agent creates a high load on the Open vSwitch services. Therefore
 the agent is only started manually when needed.
 
 .. code-block:: console
 
-   osism-generic manage-container -e container_action=stop -e container_name=skydive_agent -l skydive-agent
+   osism apply manage-container -e container_action=stop -e container_name=skydive_agent -l skydive-agent
 
 .. figure:: /images/skydive.png
 
@@ -496,8 +496,8 @@ Patchman
 
 .. code-block:: console
 
-   osism-generic patchman-client
-   osism-infrastructure patchman
+   osism apply patchman-client
+   osism apply patchman
 
 Every night the package list of the clients is transmitted via cron. Initially
 we transfer these lists manually.
@@ -520,7 +520,7 @@ The previous steps can also be done with a custom playbook.
 
 .. code-block:: console
 
-   osism-run custom bootstrap-patchman
+   osism apply bootstrap-patchman
 
 .. figure:: /images/patchman.png
 
@@ -532,7 +532,7 @@ Deploy `Clustered infrastructure services`, `Infrastructure services`, and
 
 .. code-block:: console
 
-   osism-kolla deploy prometheus
+   osism apply prometheus
 
 Tools
 =====
@@ -637,33 +637,58 @@ This section describes how individual parts of the testbed can be deployed.
 
   .. code-block:: console
 
-     osism-ceph testbed
+     osism apply ceph-mons
+     osism apply ceph-mgrs
+     osism apply ceph-osds
+     osism apply ceph-mdss
+     osism apply ceph-crash
+     osism apply ceph-rgws
      osism apply copy-ceph-keys
-     osism-infrastructure cephclient
+     osism apply cephclient
 
 * Clustered infrastructure services
 
   .. code-block:: console
 
-     osism-kolla deploy common,haproxy,elasticsearch,rabbitmq,mariadb,redis
+     osism apply common
+     osism apply loadbalancer
+     osism apply elasticsearch
+     osism apply rabbitmq
+     osism apply mariadb
 
 * Infrastructure services (also deploy `Clustered infrastructure services`)
 
   .. code-block:: console
 
-     osism-kolla deploy openvswitch,memcached,kibana
+     osism apply openvswitch
+     osism apply ovn
+     osism apply memcached
+     osism apply kibana
+
 
 * Basic OpenStack services (also deploy `Infrastructure services`,
   `Clustered infrastructure services`, and `Ceph`)
 
   .. code-block:: console
 
-     osism-kolla deploy keystone,horizon,placement,glance,cinder,neutron,nova
-     osism-infrastructure openstackclient
-     osism-custom run bootstrap-basic
+     osism apply keystone
+     osism apply horizon
+     osism apply placement
+     osism apply glance
+     osism apply cinder
+     osism apply neutron
+     osism apply nova
+     osism apply openstackclient
+     osism apply bootstrap-basic
 
 * Additional OpenStack services (also deploy `Basic OpenStack services` and all requirements)
 
   .. code-block:: console
 
-     osism-kolla deploy heat,gnocchi,ceilometer,aodh,barbican,designate
+     osism apply heat
+     osism apply gnocchi
+     osism apply ceilometer
+     osism apply aodh
+     osism apply barbican
+     osism apply designate
+     osism apply octavia

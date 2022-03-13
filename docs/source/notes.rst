@@ -45,7 +45,7 @@ Notes
   scaling of Ceph.
 * Ansible errors that have something to do with undefined variables (e.g. AnsibleUndefined)
   are most likely due to cached facts that are no longer valid. The facts can be updated by
-  running ``osism-generic facts``.
+  running ``osism apply facts``.
 * The documentation of the OSISM can be found on https://docs.osism.tech. There you will find
   further details on deployment, operation etc.
 * The manager is used as pull through cache for Docker images and Ubuntu packages. This reduces
