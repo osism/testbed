@@ -83,9 +83,6 @@ sudo -iu dragon sh -c 'INTERACTIVE=false osism netbox import --vendors Other --n
 sudo -iu dragon sh -c 'INTERACTIVE=false osism netbox init'
 sudo -iu dragon sh -c 'INTERACTIVE=false osism netbox manage 1000'
 sudo -iu dragon sh -c 'INTERACTIVE=false osism netbox connect 1000 --state a'
-sudo -iu dragon sh -c 'INTERACTIVE=false osism netbox disable testbed-switch-0'
-sudo -iu dragon sh -c 'INTERACTIVE=false osism netbox disable testbed-switch-1'
-sudo -iu dragon sh -c 'INTERACTIVE=false osism netbox disable testbed-switch-2'
 
 sudo -iu dragon sh -c 'INTERACTIVE=false osism apply operator -l "all:!manager" -u ubuntu'
 sudo -iu dragon sh -c 'INTERACTIVE=false osism apply --environment custom facts'
@@ -109,6 +106,10 @@ until [[ "$(/usr/bin/docker inspect -f '{{.State.Health.Status}}' manager_ara-se
 do
     sleep 1;
 done;
+
+sudo -iu dragon sh -c 'INTERACTIVE=false osism netbox disable testbed-switch-0'
+sudo -iu dragon sh -c 'INTERACTIVE=false osism netbox disable testbed-switch-1'
+sudo -iu dragon sh -c 'INTERACTIVE=false osism netbox disable testbed-switch-2'
 
 # deploy helper services
 sudo -iu dragon sh -c '/opt/configuration/scripts/001-helper-services.sh'
