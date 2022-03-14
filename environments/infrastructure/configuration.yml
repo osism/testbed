@@ -56,6 +56,12 @@ nexus_host: nexus.testbed.osism.xyz
 nexus_traefik: true
 
 ##########################
+# patchman
+
+patchman_host: patchman.testbed.osism.xyz
+patchman_traefik: true
+
+##########################
 # phpmyadmin
 
 phpmyadmin_host: phpmyadmin.testbed.osism.xyz
