@@ -31,7 +31,6 @@ homer_url_patchman: "https://patchman.testbed.osism.xyz/"
 homer_url_phpmyadmin: "https://phpmyadmin.testbed.osism.xyz/"
 homer_url_prometheus: "https://api-int.testbed.osism.xyz:9091/"
 homer_url_rabbitmq: "https://api-int.testbed.osism.xyz:15672/"
-homer_url_vault: "https://vault.testbed.osism.xyz/"
 
 
 ##########################
