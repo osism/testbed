@@ -341,25 +341,31 @@ Webinterfaces
       <tbody>
          <tr class="row-even">
             <td>ARA</td>
-            <td><a href="http://testbed-manager.testbed.osism.xyz:8120" target="_blank">http://testbed-manager.testbed.osism.xyz:8120</a></td>
+            <td><a href="https://ara.testbed.osism.xyz/" target="_blank">https://ara.testbed.osism.xyz/</a></td>
             <td>ara</td>
             <td>password</td>
          </tr>
          <tr class="row-odd">
             <td>Ceph</td>
-            <td><a href="http://api-int.testbed.osism.xyz:8140" target="_blank">http://api-int.testbed.osism.xyz:8140</a></td>
+            <td><a href="https://api-int.testbed.osism.xyz:8140" target="_blank">https://api-int.testbed.osism.xyz:8140</a></td>
             <td>admin</td>
             <td>password</td>
          </tr>
+         <tr class="row-even">
+            <td>Flower</td>
+            <td><a href="https://flower.testbed.osism.xyz/" target="_blank">https://flower.testbed.osism.xyz/</a></td>
+            <td>-</td>
+            <td>-</td>
+         </tr>
          <tr class="row-odd">
             <td>Grafana</td>
-            <td><a href="http://api.testbed.osism.xyz:3000" target="_blank">http://api.testbed.osism.xyz:3000</a></td>
+            <td><a href="https://api-int.testbed.osism.xyz:3000" target="_blank">https://api-int.testbed.osism.xyz:3000</a></td>
             <td>admin</td>
             <td>password</td>
          </tr>
          <tr class="row-even">
             <td>Horizon</td>
-            <td><a href="http://api.testbed.osism.xyz" target="_blank">http://api.testbed.osism.xyz</a></td>
+            <td><a href="https://api.testbed.osism.xyz" target="_blank">https://api.testbed.osism.xyz</a></td>
             <td>admin</td>
             <td>password</td>
          </tr>
@@ -371,39 +377,45 @@ Webinterfaces
          </tr>
          <tr class="row-even">
             <td>Kibana</td>
-            <td><a href="http://api.testbed.osism.xyz:5601" target="_blank">http://api.testbed.osism.xyz:5601</a></td>
+            <td><a href="https://api.testbed.osism.xyz:5601" target="_blank">https://api.testbed.osism.xyz:5601</a></td>
             <td>kibana</td>
             <td>password</td>
          </tr>
          <tr class="row-odd">
             <td>Netbox</td>
-            <td><a href="http://testbed-manager.testbed.osism.xyz:8121" target="_blank">http://testbed-manager.testbed.osism.xyz:8121</a></td>
+            <td><a href="https://netbox.testbed.osism.xyz/" target="_blank">https://netbox.testbed.osism.xyz/</a></td>
             <td>admin</td>
             <td>password</td>
          </tr>
          <tr class="row-even">
             <td>Netdata</td>
-            <td><a href="http://testbed-manager.testbed.osism.xyz:19999" target="_blank">http://testbed-manager.testbed.osism.xyz:19999</a></td>
+            <td><a href="https://testbed-manager.testbed.osism.xyz:19999" target="_blank">https://testbed-manager.testbed.osism.xyz:19999</a></td>
             <td>-</td>
             <td>-</td>
          </tr>
          <tr class="row-odd">
             <td>Patchman</td>
-            <td><a href="http://testbed-manager.testbed.osism.xyz:8150" target="_blank">http://testbed-manager.testbed.osism.xyz:8150</a></td>
+            <td><a href="https://patchman.testbed.osism.xyz/" target="_blank">https://patchman.testbed.osism.xyz/</a></td>
             <td>patchman</td>
             <td>password</td>
          </tr>
          <tr class="row-even">
-            <td>Skydive</td>
-            <td><a href="http://testbed-manager.testbed.osism.xyz:8085" target="_blank">http://testbed-manager.testbed.osism.xyz:8085</a></td>
-            <td>admin</td>
-            <td>password</td>
+            <td>Prometheus</td>
+            <td><a href="https://api-int.testbed.osism.xyz:9091/" target="_blank">https://api-int.testbed.osism.xyz:9091/</a></td>
+            <td>-</td>
+            <td>-</td>
          </tr>
          <tr class="row-odd">
             <td>phpMyAdmin</td>
-            <td><a href="http://testbed-manager.testbed.osism.xyz:8110" target="_blank">http://testbed-manager.testbed.osism.xyz:8110</a></td>
+            <td><a href="https://testbed-manager.testbed.osism.xyz:8110" target="_blank">https://testbed-manager.testbed.osism.xyz:8110</a></td>
             <td>root</td>
             <td>password</td>
+         </tr>
+         <tr class="row-even">
+            <td>RabbitMQ</td>
+            <td><a href="https://api-int.testbed.osism.xyz:15672/" target="_blank">https://api-int.testbed.osism.xyz:15672/</a></td>
+            <td>openstack</td>
+            <td>BO6yGAAq9eqA7IKqeBdtAEO7aJuNu4zfbhtnRo8Y</td>
          </tr>
       </tbody>
    </table>
