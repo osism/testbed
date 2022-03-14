@@ -48,7 +48,6 @@
       when: keycloak_realm not in available_realms
       run_once: true
 
-
     - name: Get available clients in realm
       command: >-
         docker exec {{ keycloak_service_container_name }} {{ kcadm_binary }}
@@ -63,7 +62,6 @@
       set_fact:
         available_clients: "{{ available_clients_json.stdout|from_json|map(attribute='clientId')|list }}"
       run_once: true
-
 
     - name: Create OIDC client configuration
       command: >-
@@ -166,3 +164,36 @@
       when: keycloak_key_provider_component_name not in available_components
       run_once: true
       no_log: true
+
+    - name: Get available users in realm
+      command: >-
+        docker exec {{ keycloak_service_container_name }} {{ kcadm_binary }}
+          get users --target-realm {{ keycloak_realm }}
+                --fields username
+      register: available_users_json
+      changed_when: false
+      run_once: true
+
+    - name: Filter available users in realm
+      set_fact:
+        available_users: "{{ available_users_json.stdout|from_json|map(attribute='username')|list }}"
+      run_once: true
+
+    - name: Create sample user
+      command: >-
+        docker exec {{ keycloak_service_container_name }} {{ kcadm_binary }}
+          create users --target-realm "{{ keycloak_realm }}"
+            --set username=alice
+            --set email=alice@testbed.osism.xyz
+            --set emailVerified=true
+            --set enabled=true
+            --set "attributes.openstack-default-project=test"
+      when: "'alice' not in available_users"
+
+    - name: Set password of sample user
+      command: >-
+        docker exec {{ keycloak_service_container_name }} {{ kcadm_binary }}
+          set-password --target-realm "{{ keycloak_realm }}"
+            --username=alice
+            --new-password=password
+      when: "'alice' not in available_users"

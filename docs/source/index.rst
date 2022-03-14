@@ -27,6 +27,7 @@ in which, among other things, the OSISM testbed is briefly introduced.
    networking
    deployment
    usage
+   authentication
    notes
    contributing
    appendix
