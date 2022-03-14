@@ -407,7 +407,7 @@ Webinterfaces
          </tr>
          <tr class="row-odd">
             <td>phpMyAdmin</td>
-            <td><a href="https://testbed-manager.testbed.osism.xyz:8110" target="_blank">https://testbed-manager.testbed.osism.xyz:8110</a></td>
+            <td><a href="https://phpmyadmin.testbed.osism.xyz" target="_blank">https://phpmyadmin.testbed.osism.xyz</a></td>
             <td>root</td>
             <td>password</td>
          </tr>
