@@ -291,6 +291,27 @@
     - name: Make ubuntu minimal 20.04 image visible
       ansible.builtin.command: openstack --os-cloud admin image set --public 'Ubuntu 20.04'  # noqa 301
 
+    - name: Download amphora image
+      ansible.builtin.get_url:
+        url: https://minio.services.osism.tech/openstack-octavia-amphora-image/octavia-amphora-haproxy-xena.qcow2
+        dest: /tmp/amphora.img
+
+    - name: Upload amphora image
+      openstack.cloud.image:
+        cloud: octavia
+        state: present
+        name: amphora
+        container_format: bare
+        disk_format: qcow2
+        filename: /tmp/amphora.img
+        min_disk: 2
+        tags:
+          - amphora
+        properties:
+          cpu_arch: x86_64
+          distro: ubuntu
+          hw_rng_model: virtio
+
     - name: Create public network
       openstack.cloud.network:
         cloud: admin
@@ -401,3 +422,30 @@
         state: present
         server: test
         volume: test
+
+    - name: Get info of server test
+      openstack.cloud.server_info:
+        cloud: test
+        server: test
+      register: result
+
+    - name: Create load balancer
+      openstack.cloud.loadbalancer:
+        cloud: test
+        state: present
+        name: test
+        vip_network: test
+        auto_public_ip: true
+        public_network: public
+        listeners:
+          - name: listener_test_22
+            protocol: TCP
+            protocol_port: 22
+            pool:
+              name: pool_test_22
+              protocol: TCP
+              members:
+                - name: test
+                  protocol_port: 22
+                  subnet: subnet-test
+                  address: "{{ result['openstack_servers'][0]['private_v4'] }}"
