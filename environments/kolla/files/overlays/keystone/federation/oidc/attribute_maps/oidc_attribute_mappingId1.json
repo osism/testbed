@@ -4,12 +4,13 @@
             {
                 "user": {
                     "name": "{0}",
+                    "email": "{1}",
                     "domain": {
-                        "name": "{1}"
+                        "name": "keycloak"
                     }
                 },
                 "domain": {
-                        "name": "{1}"
+                        "name": "keycloak"
                     },
                 "projects": [
                     {
@@ -17,6 +18,12 @@
                         "roles": [
                             {
                                 "name": "member"
+                            },
+                            {
+                                "name": "_member_"
+                            },
+                            {
+                                "name": "load-balancer_member"
                             }
                         ]
                     }
@@ -28,7 +35,7 @@
                 "type": "OIDC-preferred_username"
             },
             {
-                "type": "OIDC-openstack-user-domain"
+                "type": "OIDC-email"
             },
             {
                 "type": "OIDC-openstack-default-project"

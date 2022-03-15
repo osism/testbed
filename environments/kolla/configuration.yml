@@ -69,11 +69,14 @@ horizon_backend_database: "yes"
 
 # keystone
 keystone_token_provider: "fernet"
+
+enable_keystone_federation: "yes"
+keystone_enable_federation_openid: "yes"
 keystone_identity_providers:
   - name: "keycloak"
-    openstack_domain: "default"
+    openstack_domain: "keycloak"
     protocol: "openid"
-    identifier: "https://testbed-manager.testbed.osism.xyz/keycloak/auth/realms/osism"
+    identifier: "https://keycloak.testbed.osism.xyz/auth/realms/osism"
     public_name: "Authenticate via Keycloak"
     attribute_mapping: "mappingId1"
     metadata_folder: "{{ node_custom_config }}/keystone/federation/oidc/metadata"
