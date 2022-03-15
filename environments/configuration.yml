@@ -47,13 +47,6 @@ hosts_additional_entries:
 ##########################
 # common
 
-cleanup_services_extra:
-  - NetworkManager
-  - iscsid
-  - lxcfs
-  - nscd
-  - ntp
-
 cleanup_packages_extra:
   - snapd
 
