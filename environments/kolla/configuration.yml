@@ -38,26 +38,18 @@ enable_prometheus: "yes"
 enable_redis: "yes"
 enable_skydive: "yes"
 
-# disable services
-
 # generic
 
 openstack_service_workers: 2
 openstack_logging_debug: "True"
 
-# profiling
-enable_osprofiler: "no"
-
 # elasticsearch
-
 es_heap_size: "1g"
 
 # grafana
-
 grafana_enable_unified_alerting: "yes"
 
 # mariadb
-
 enable_mariabackup: "yes"
 
 # horizon
@@ -85,7 +77,6 @@ keystone_identity_mappings:
 neutron_plugin_agent: ovn
 
 enable_neutron_agent_ha: "yes"
-enable_neutron_dvr: "no"
 enable_neutron_qos: "yes"
 
 # NOTE: This volume is only needed in the testbed so that the virtualbmc service can access the Libvirt sockets.
@@ -99,9 +90,6 @@ nova_virt_type: kvm
 # octavia
 octavia_network_type: tenant
 octavia_loadbalancer_topology: "ACTIVE_STANDBY"
-
-# ceilometer
-ceilometer_database_type: gnocchi
 
 # designate
 designate_ns_record: openstack.testbed.osism.xyz
