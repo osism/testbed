@@ -41,7 +41,8 @@ The deployment of OpenStack is based on `kolla-ansible <https://opendev.org/open
 * Train
 * Ussuri
 * Victoria
-* Wallaby (**default**)
+* Wallaby
+* Xena (**default**)
 
 Software Bill Of Materials (SBOM)
 =================================
