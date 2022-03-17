@@ -16,3 +16,11 @@ public-clouds:
     identity_api_version: 3
     image_format: raw
     block_storage_api_version: 3
+  gx-scs:
+    auth:
+      auth_url: https://api.gx-scs.sovereignit.cloud:5000
+    regions:
+      - name: RegionOne
+    identity_api_version: 3
+    image_format: raw
+    block_storage_api_version: 3

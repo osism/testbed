@@ -52,9 +52,6 @@ grafana_enable_unified_alerting: "yes"
 # mariadb
 enable_mariabackup: "yes"
 
-# rabbitmq
-rabbitmq_server_additional_erl_args: "+S 1:1"
-
 # horizon
 horizon_backend_database: "yes"
 

@@ -3,3 +3,9 @@ clouds:
   betacloud:
     auth:
       password: PASSWORD
+  pluscloudopen:
+    auth:
+      password: PASSWORD
+  gx-scs:
+    auth:
+      password: PASSWORD
