@@ -14,11 +14,18 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
+      - name: Set up python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.x'
+
       - name: Create PR
         uses: technote-space/create-pr-action@v2
         with:
           EXECUTE_COMMANDS: |
-            curl -o environments/manager/images.yml https://raw.githubusercontent.com/osism/cfg-generics/master/environments/manager/images.yml
+            curl -o environments/manager/images.yml https://raw.githubusercontent.com/osism/cfg-generics/main/environments/manager/images.yml
+            curl -o environments/manager/render-images.py https://raw.githubusercontent.com/osism/cfg-generics/main/src/render-images.py
+            $(cd environments/manager; python3 render-images.py; rm -f render-images.py)
           COMMIT_EMAIL: 'bot@osism.tech'
           COMMIT_MESSAGE: |
             chore: update versions in environments/manager/images.yml
