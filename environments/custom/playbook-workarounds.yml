@@ -61,8 +61,8 @@
 #       to keep the default configuration in the testbed. In the default configuration, network restarts
 #       are deactivated.
 
-- name: Apply netplan configuration on all nodes
-  hosts: all
+- name: Apply netplan configuration on the manager node
+  hosts: manager
   gather_facts: false
 
   tasks:
@@ -70,6 +70,18 @@
       become: true
       command: netplan apply
       changed_when: false
+      failed_when: false  # netplan apply can lead to disconnections, ignore them
+
+- name: Apply netplan configuration on all other nodes
+  hosts: all:!manager
+  gather_facts: false
+
+  tasks:
+    - name: Apply netplan configuration
+      become: true
+      command: netplan apply
+      changed_when: false
+      failed_when: false  # netplan apply can lead to disconnections, ignore them
 
 - name: Add a workaround service to non-manager nodes
   hosts: all:!manager
