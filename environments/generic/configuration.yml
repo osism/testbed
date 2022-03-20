@@ -9,11 +9,6 @@ dotfiles_files:
   - .tmux.conf
 
 ##########################
-# patchman
-
-patchman_server_url: https://patchman.testbed.osism.xyz
-
-##########################
 # patchman-client
 
 patchman_client_server_url: https://patchman.testbed.osism.xyz

@@ -58,6 +58,7 @@ nexus_traefik: true
 # patchman
 
 patchman_host: patchman.testbed.osism.xyz
+patchman_server_url: https://patchman.testbed.osism.xyz
 patchman_traefik: true
 
 ##########################
