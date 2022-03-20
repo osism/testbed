@@ -73,6 +73,10 @@ keystone_identity_mappings:
   - name: "mappingId1"
     file: "{{ node_custom_config }}/keystone/federation/oidc/attribute_maps/oidc_attribute_mappingId1.json"
 
+# libvirt
+# NOTE: Doesn't work yet with our setup
+libvirt_enable_sasl: "no"
+
 # neutron
 neutron_plugin_agent: ovn
 
