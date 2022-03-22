@@ -5,3 +5,5 @@ exclude_paths:
   - environments/kolla/files/overlays/prometheus/prometheus.yml.d/50-ceph.yml
 mock_roles:
   - manager
+skip_list:
+  - yaml
