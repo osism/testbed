@@ -7,4 +7,6 @@ rules:
 
 ignore: |
   contrib/rally/tests/
+  environments/infrastructure/secrets.yml
   .git
+  .tox
