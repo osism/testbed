@@ -255,8 +255,8 @@ availability_zone         south-2
 ceph_version              pacific
 cloud_provider            betacloud
 configuration_version     main
-flavor_manager            4C-8GB-20GB
-flavor_node               8C-32GB-40GB
+flavor_manager            SCS-4V:8:50
+flavor_node               SCS-8V:32:50
 image                     Ubuntu 20.04
 network_availability_zone south-2
 openstack_version         wallaby
