@@ -46,9 +46,6 @@ openstack_logging_debug: "True"
 # elasticsearch
 es_heap_size: "1g"
 
-# grafana
-grafana_enable_unified_alerting: "yes"
-
 # mariadb
 enable_mariabackup: "yes"
 
