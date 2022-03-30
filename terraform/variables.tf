@@ -29,17 +29,17 @@ variable "volume_size_storage" {
 
 variable "flavor_node" {
   type    = string
-  default = "4C-16GB-40GB"
+  default = "SCS-8V:32:50"
 }
 
 variable "flavor_node_alt" {
   type    = string
-  default = "4C-16GB-40GB"
+  default = "SCS-8V:32:50"
 }
 
 variable "flavor_manager" {
   type    = string
-  default = "4C-8GB-40GB"
+  default = "SCS-4V:8:50"
 }
 
 variable "availability_zone" {
