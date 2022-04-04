@@ -11,6 +11,6 @@ osism apply ceph-rgws
 
 osism apply copy-ceph-keys
 osism apply cephclient
-osism apply --environment custom bootstrap-ceph-dashboard
+osism apply ceph-bootstrap-dashboard
 
 ceph config set mon auth_allow_insecure_global_id_reclaim false
