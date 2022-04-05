@@ -172,6 +172,12 @@ Webinterfaces
             <td>password</td>
          </tr>
          <tr class="row-even">
+            <td>Homer</td>
+            <td><a href="https://homer.testbed.osism.xyz" target="_blank">https://homer.testbed.osism.xyz</a></td>
+            <td>-</td>
+            <td>-</td>
+         </tr>
+         <tr class="row-even">
             <td>Horizon</td>
             <td><a href="https://api.testbed.osism.xyz" target="_blank">https://api.testbed.osism.xyz</a></td>
             <td>admin</td>
