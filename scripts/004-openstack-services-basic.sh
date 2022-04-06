@@ -15,6 +15,7 @@ osism apply designate
 osism apply heat
 osism apply octavia
 
+osism apply --environment openstack bootstrap-keystone
 osism apply --environment openstack bootstrap-basic
 osism apply --environment openstack bootstrap-ceph-rgw
 
