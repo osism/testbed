@@ -1,8 +1,6 @@
 {
   "extends": [
-    "github>osism/renovate-config"
-  ],
-  "pip_requierements": {
-    "fileMatch": ["docs/requirements.txt"]
-  }
+    "github>osism/renovate-config",
+    "github>osism/renovate-config:python"
+  ]
 }
