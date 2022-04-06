@@ -243,6 +243,13 @@ Webinterfaces
 
       make sshuttle ENVIRONMENT=betacloud
 
+.. note::
+
+   If only the identity services were deployed, an error message (``You are not authorized to access this page``)
+   appears after logging in to Horizon. This is not critical and results from the absence of the Nova service.
+
+   .. figure:: /images/horizon-login-identity-testbed.png
+
 ARA
 ---
 
