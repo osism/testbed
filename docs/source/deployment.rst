@@ -238,7 +238,15 @@ you can access hosts and servers by their hostname like ``ssh testbed-manager.te
 You can find the playbook that generated these DNS records in ``contrib/ansible/dns.yaml``.
 
 We also provide a wildcard TLS certificate signed by a custom CA for ``testbed.osism.xyz`` and
-``*.testbed.osism.xyz``. If you want to replace this with your own certificate, have a look
+``*.testbed.osism.xyz`` (see ``contrib/ownca`` for details).
+
+This CA is always used for each testbed. The CA is not regenerated and it is not planned to change
+for the next 10 years.
+
+In order for these certificates to be recognized locally as valid, this CA
+(``environments/kolla/certificates/ca/testbed.crt``) must be made known locally.
+
+If you want to replace this with your own certificate, have a look
 at the example playbooks in the ``contrib/ownca`` folder.
 
 In a future release we plan to make the used domain configurable.
