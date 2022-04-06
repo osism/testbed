@@ -178,9 +178,21 @@ Webinterfaces
             <td>-</td>
          </tr>
          <tr class="row-even">
-            <td>Horizon</td>
+            <td>Horizon (via Keystone)</td>
             <td><a href="https://api.testbed.osism.xyz" target="_blank">https://api.testbed.osism.xyz</a></td>
             <td>admin</td>
+            <td>password</td>
+         </tr>
+         <tr class="row-even">
+            <td>Horizon (via Keystone)</td>
+            <td><a href="https://api.testbed.osism.xyz" target="_blank">https://api.testbed.osism.xyz</a></td>
+            <td>test</td>
+            <td>test</td>
+         </tr>
+         <tr class="row-even">
+            <td>Horizon (via Keycloak)</td>
+            <td><a href="https://api.testbed.osism.xyz" target="_blank">https://api.testbed.osism.xyz</a></td>
+            <td>alice</td>
             <td>password</td>
          </tr>
          <tr class="row-odd">

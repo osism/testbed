@@ -335,8 +335,9 @@ the command below. The checks won't work until the deployment is fully completed
    created. The environment is only prepared and the manager is provided. This
    is customizable.
 
-   * Use ``deploy-identity`` to deploy identity services when building the environment.
-     This also includes all required infrastructure services.
+   * Use ``deploy-identity`` to deploy identity services (Keycloak, Keystone, LDAP)
+     when building the environment. This also includes all required infrastructure
+     services (MariaDB, RabbitMQ, ..).
    * Use ``deploy-infra`` to deploy infrastructure services when building the environment.
    * Use ``deploy-ceph`` to deploy Ceph when building the environment.
    * Use ``deploy-openstack`` to deploy OpenStack when building the environment.
