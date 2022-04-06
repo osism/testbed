@@ -1,0 +1,16 @@
+---
+# This is in an extra playbook and not in the bootstrap playbook for OpenStack
+# to be able to use it in the identity testbed as well.
+- name: Create roles
+  hosts: localhost
+  connection: local
+  collections:
+    - openstack.cloud
+
+  tasks:
+    # NOTE: this role is required by octavia
+    - name: Create load-balancer_member role
+      openstack.cloud.identity_role:
+        cloud: admin
+        state: present
+        name: load-balancer_member

@@ -207,13 +207,6 @@
         default_project: test
       no_log: true
 
-    # NOTE: this role is required by octavia
-    - name: Create load-balancer_member role
-      openstack.cloud.identity_role:
-        cloud: admin
-        state: present
-        name: load-balancer_member
-
     - name: Add member roles to user test
       openstack.cloud.role_assignment:
         cloud: admin
