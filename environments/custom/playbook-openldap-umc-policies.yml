@@ -8,7 +8,7 @@
 
   tasks:
     - name: Get UMC policies
-      command: >-
+      ansible.builtin.command: >-
         docker exec -i {{ openldap_service_container_name }}
           slapcat -f /etc/ldap/slapd.conf
                   -b "cn=UMC,cn=policies,{{ ldap_base }}"
@@ -18,16 +18,17 @@
       run_once: true
 
     - name: Filter UMC policies
-      set_fact:
+      ansible.builtin.set_fact:
         available_umc_policies:
           "{{ policies_json.stdout.split('\n')
               | select('match', 'dn: .*')
               | map('replace', 'dn: ', '')
               | list }}"
       run_once: true
+
     # This enables the User, Group, etc management modules
     - name: Add UMC modules for the Admin user
-      shell: >-
+      ansible.builtin.shell: >-
         set -o pipefail &&
         echo "{{ lookup('template', './files/openldap/umc-policies.ldif.j2') }}" |
           docker exec -i {{ openldap_service_container_name }} \

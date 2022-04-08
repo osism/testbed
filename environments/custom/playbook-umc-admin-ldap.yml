@@ -11,7 +11,7 @@
 
   tasks:
     - name: Get UMC's LDAP user
-      command: >-
+      ansible.builtin.command: >-
         docker exec -i {{ openldap_service_container_name }}
           slapcat -f /etc/ldap/slapd.conf
                   -b "{{ ldap_binddn }}"
@@ -21,7 +21,7 @@
       run_once: true
 
     - name: Filter LDAP users
-      set_fact:
+      ansible.builtin.set_fact:
         available_users:
           "{{ ldap_user_json.stdout.split('\n')
               | select('match', 'dn: .*')
@@ -33,7 +33,7 @@
     # Provision the LDAP user which will be used by UMC
     # If it doesn't exist yet
     - name: Add UMC's LDAP user
-      shell: >-
+      ansible.builtin.shell: >-
         set -o pipefail &&
         echo "{{ lookup('template', './files/openldap/user.ldif.j2') }}" |
           docker exec -i {{ openldap_service_container_name }} \
@@ -44,7 +44,7 @@
       run_once: true
 
     - name: Add the UMC Admin to the Domain Admins group
-      shell: >-
+      ansible.builtin.shell: >-
         set -o pipefail &&
         echo "{{ lookup('template', './files/openldap/domain-admin-policy.ldif.j2') }}" |
           docker exec -i {{ openldap_service_container_name }} \

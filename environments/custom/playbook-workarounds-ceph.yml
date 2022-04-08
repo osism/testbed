@@ -11,5 +11,5 @@
     #       mons are allowing insecure global_id reclaim
 
     - name: Fix 'insecure global_id reclaim' ceph health warning
-      command: ceph config set mon auth_allow_insecure_global_id_reclaim false
+      ansible.builtin.command: ceph config set mon auth_allow_insecure_global_id_reclaim false
       changed_when: false

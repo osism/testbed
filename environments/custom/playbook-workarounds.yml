@@ -5,7 +5,7 @@
 
   tasks:
     - name: Group hosts based on virtualization_role
-      group_by:
+      ansible.builtin.group_by:
         key: "{{ item }}"
       with_items:
         - virtualization_role_{{ ansible_virtualization_role }}
@@ -21,16 +21,16 @@
 
   tasks:
     - name: Slurp /etc/netplan/61-ifcfg-bond0.yaml
-      slurp:
+      ansible.builtin.slurp:
         path: /etc/netplan/61-ifcfg-bond0.yaml
       register: fp
 
     - name: Transfer slurped /etc/netplan/61-ifcfg-bond0.yaml to dictionary
-      set_fact:
+      ansible.builtin.set_fact:
         configuration: "{{ fp['content'] | b64decode | from_yaml }}"
 
     - name: Patch /etc/netplan/61-ifcfg-bond0.yaml dictionary
-      set_fact:
+      ansible.builtin.set_fact:
         configuration: "{{ configuration | combine(patch, recursive=True) }}"
       vars:
         patch:
@@ -44,7 +44,7 @@
 
     - name: Write back /etc/netplan/61-ifcfg-bond0.yaml
       become: true
-      copy:
+      ansible.builtin.copy:
         content: "{{ configuration | to_nice_yaml }}"
         dest: /etc/netplan/61-ifcfg-bond0.yaml
         mode: 0644
@@ -53,7 +53,7 @@
 
     - name: Disable the bms-network-setup service
       become: true
-      service:
+      ansible.builtin.service:
         name: bms-network-setup
         enabled: false
 
@@ -68,7 +68,7 @@
   tasks:
     - name: Apply netplan configuration
       become: true
-      command: netplan apply
+      ansible.builtin.command: netplan apply
       changed_when: false
       failed_when: false  # netplan apply can lead to disconnections, ignore them
 
@@ -79,7 +79,7 @@
   tasks:
     - name: Apply netplan configuration
       become: true
-      command: netplan apply
+      ansible.builtin.command: netplan apply
       changed_when: false
       failed_when: false  # netplan apply can lead to disconnections, ignore them
 
@@ -90,7 +90,7 @@
   tasks:
     - name: Copy workarounds.sh scripts
       become: true
-      template:
+      ansible.builtin.template:
         src: workarounds.sh.j2
         dest: /usr/local/bin/workarounds.sh
         mode: 0755
@@ -99,7 +99,7 @@
 
     - name: Copy workarounds systemd unit file
       become: true
-      template:
+      ansible.builtin.template:
         src: workarounds.service.j2
         dest: /etc/systemd/system/workarounds.service
         mode: 0644
@@ -108,11 +108,11 @@
 
     - name: Reload systemd daemon
       become: true
-      systemd:
+      ansible.builtin.systemd:
         daemon_reload: true
 
     - name: Enable workarounds.service
       become: true
-      service:
+      ansible.builtin.service:
         name: workarounds
         enabled: true
