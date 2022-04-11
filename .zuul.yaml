@@ -1,4 +1,13 @@
 ---
+- job:
+  name: testbed-test
+  nodeset:
+    nodes:
+      - name: orchestrator
+        label: static-testbed
+    run: playbooks/test-run.yaml
+    timeout: 36000
+
 - project:
     check:
       jobs:
