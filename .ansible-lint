@@ -3,8 +3,11 @@ exclude_paths:
   - .github/
   - contrib/rally
   - environments/kolla/files/overlays/prometheus/prometheus.yml.d/50-ceph.yml
+  - netbox
+  - playbooks
 mock_roles:
   - manager
+  - stage-output
 use_default_rules: true
 rulesdir:
   - ./.ansible-lint-rules/

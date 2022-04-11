@@ -1,0 +1,51 @@
+---
+- name: set up the manager part 1
+  hosts: testbed-manager.testbed.osism.xyz
+  gather_facts: false
+  vars:
+    operator_user: dragon
+    ansible_ssh_user: dragon
+    repo_path: /home/ubuntu/src/github.com
+  tasks:
+    - name: Copy SSH private key
+      ansible.builtin.copy:
+        content: "{{ lookup('file', '.id_rsa.betacloud') }}\n"
+        dest: .ssh/id_rsa
+        mode: '0600'
+        owner: "{{ operator_user }}"
+      no_log: true
+    - name: Copy SSH public key
+      ansible.builtin.copy:
+        content: "{{ lookup('file', '.id_rsa.betacloud.pub') }}\n"
+        dest: .ssh/id_rsa.pub
+        mode: '0644'
+        owner: "{{ operator_user }}"
+    - name: Create configuration directory
+      become: true
+      ansible.builtin.file:
+        state: directory
+        path: /opt/configuration
+        mode: '0755'
+        owner: "{{ operator_user }}"
+    - name: Copy testbed repo
+      become: true
+      become_user: dragon
+      ansible.builtin.synchronize:
+        src: "{{ repo_path }}/osism/testbed/"
+        delete: true
+        dest: /opt/configuration
+    - name: TODO set versions manager/ceph/openstack/secondary_nodes
+      debug:
+        msg: TODO
+    - name: Copy testbed crt
+      become: true
+      ansible.builtin.copy:
+        src: ../environments/kolla/certificates/ca/testbed.crt
+        dest: /usr/local/share/ca-certificates/
+        mode: '0644'
+        owner: root
+    - name: Run update-ca-certificates
+      become: true
+      ansible.builtin.command: update-ca-certificates
+    - name: Run part 2
+      ansible.builtin.command: ansible-playbook -i testbed-manager.testbed.osism.xyz, /opt/configuration/ansible/manager-part-2.yml
