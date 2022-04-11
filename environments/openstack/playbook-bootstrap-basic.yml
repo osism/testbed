@@ -217,7 +217,6 @@
       loop:
         - load-balancer_member
         - member
-        - _member_
 
     - name: Download cirros image
       ansible.builtin.get_url:
