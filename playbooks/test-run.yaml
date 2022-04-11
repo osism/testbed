@@ -1,0 +1,57 @@
+---
+- hosts: all
+  vars:
+    basepath: "{{ ansible_user_dir }}/src/github.com/osism/testbed"
+    manager_address_file: "{{ basepath }}/terraform/.MANAGER_ADDRESS.betacloud"
+    manual_deploy: false
+  tasks:
+    - name: make deploy
+      shell:
+        chdir: "{{ basepath }}/terraform"
+        cmd: make deploy
+    - name: fetch manager_host address
+      shell: cat "{{ manager_address_file }}"
+      register: manager_address
+    - debug:
+        var: manager_address
+    - name: set manager_host address
+      set_fact:
+        manager_host: "{{ manager_address.stdout.split('=')[1] }}"
+    - debug:
+        var: manager_host
+    - name: update ansible collections
+      shell:
+        chdir: "{{ ansible_user_dir }}"
+        cmd: |
+          venv/bin/ansible-galaxy collection install --force "{{ ansible_user_dir }}/src/github.com/osism/ansible-collection-commons"
+          venv/bin/ansible-galaxy collection install --force "{{ ansible_user_dir }}/src/github.com/osism/ansible-collection-services"
+    - name: Wait 300 seconds for port 22 to become open and contain "OpenSSH"
+      wait_for:
+        port: 22
+        host: '{{ manager_host }}'
+        search_regex: OpenSSH
+        delay: 10
+        timeout: 300
+    - name: fetch manager ssh hostkey
+      shell: "sleep 60; ssh-keyscan {{ manager_host }} >> {{ ansible_user_dir }}/.ssh/known_hosts"
+    - name: run part 0
+      shell:
+        chdir: "{{ basepath }}/ansible"
+        cmd: |
+          cp ../terraform/.id* .
+          ~/venv/bin/ansible-playbook -i ../terraform/inventory.betacloud --key-file .id_rsa.betacloud manager-part-0.yml
+    - name: run part 1+2
+      shell:
+        chdir: "{{ basepath }}/ansible"
+        cmd: |
+          ~/venv/bin/ansible-playbook -i ../terraform/inventory.betacloud --key-file .id_rsa.betacloud manager-part-1.yml
+    - name: run part 3
+      shell:
+        chdir: "{{ basepath }}/ansible"
+        cmd: "ssh -i .id_rsa.betacloud dragon@{{ manager_host }} /opt/configuration/ansible/manager.sh"
+      when: not manual_deploy
+    - name: make check
+      shell:
+        chdir: "{{ basepath }}/terraform"
+        cmd: make check
+      when: not manual_deploy

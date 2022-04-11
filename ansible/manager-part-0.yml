@@ -1,0 +1,89 @@
+---
+- name: set up the manager part 0
+  hosts: testbed-manager.testbed.osism.xyz
+  gather_facts: false
+  vars:
+    repo_path: /home/ubuntu/src/github.com
+  tasks:
+    - name: Update APT cache and run dist-upgrade
+      become: true
+      ansible.builtin.apt:
+        upgrade: dist
+        update_cache: true
+    - name: Set APT options on manager
+      become: true
+      ansible.builtin.shell: |
+        echo "APT::Acquire::Retries \"3\";" > /etc/apt/apt.conf.d/80-retries
+        echo '* libraries/restart-without-asking boolean true' | debconf-set-selections
+    - name: Install packages on manager
+      become: true
+      ansible.builtin.shell: |
+        export DEBIAN_FRONTEND=noninteractive
+        apt-get update
+        apt-get install --yes \
+          git-lfs \
+          python3-argcomplete \
+          python3-crypto \
+          python3-dnspython \
+          python3-jmespath \
+          python3-kerberos \
+          python3-libcloud \
+          python3-lockfile \
+          python3-netaddr \
+          python3-netifaces \
+          python3-ntlm-auth \
+          python3-pip \
+          python3-requests-kerberos \
+          python3-requests-ntlm \
+          python3-selinux \
+          python3-winrm \
+          python3-xmltodict
+          apt-get remove --yes ansible
+    - name: Install ansible on manager
+      become: true
+      ansible.builtin.shell: |
+          pip3 install --no-cache-dir 'ansible>=5.0.0,<6.0.0'
+    - name: Create source directories
+      become: true
+      ansible.builtin.file:
+        state: directory
+        path: "/opt/src/{{ item }}"
+        recurse: true
+        mode: '0755'
+        owner: ubuntu
+      with_items:
+        - osism/ansible-collection-commons
+        - osism/ansible-collection-services
+    - name: Copy sources
+      ansible.builtin.synchronize:
+        src: "{{ repo_path }}/{{ item }}"
+        delete: true
+        dest: "/opt/src/{{ item }}"
+      with_items:
+        - osism/ansible-collection-commons
+        - osism/ansible-collection-services
+
+    - name: Install collections
+      become: true
+      ansible.builtin.shell: |
+          mkdir -p /usr/share/ansible
+          ansible-galaxy collection install --collections-path /usr/share/ansible/collections ansible.netcommon
+          ansible-galaxy collection install --collections-path /usr/share/ansible/collections /opt/src/osism/ansible-collection-commons
+          ansible-galaxy collection install --collections-path /usr/share/ansible/collections /opt/src/osism/ansible-collection-services
+          chmod -R +r /usr/share/ansible
+
+- name: Create operator user
+  hosts: testbed-manager.testbed.osism.xyz
+  gather_facts: true
+
+  vars:
+    operator_user: dragon
+    operator_group: dragon
+    operator_authorized_keys:
+      - "{{ lookup('file', '.id_rsa.betacloud.pub') }}"
+
+  collections:
+    - osism.commons
+
+  roles:
+    - role: operator

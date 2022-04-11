@@ -39,8 +39,8 @@ resource "openstack_compute_instance_v2" "manager_server" {
 #cloud-config
 network:
    config: disabled
-package_update: true
-package_upgrade: true
+package_update: false
+package_upgrade: false
 write_files:
   - content: ${openstack_compute_keypair_v2.key.public_key}
     path: /home/ubuntu/.ssh/id_rsa.pub
@@ -49,26 +49,6 @@ write_files:
       ${indent(6, openstack_compute_keypair_v2.key.private_key)}
     path: /home/ubuntu/.ssh/id_rsa
     permissions: '0600'
-  - content: |
-      ${indent(6, file("files/manager-part-0.yml"))}
-    path: /opt/manager-part-0.yml
-    permissions: '0644'
-  - content: |
-      ${indent(6, file("files/manager-part-1.yml"))}
-    path: /opt/manager-part-1.yml
-    permissions: '0644'
-  - content: |
-      ${indent(6, file("files/manager-part-2.yml"))}
-    path: /opt/manager-part-2.yml
-    permissions: '0644'
-  - content: |
-      ${indent(6, file("files/manager-part-3.yml"))}
-    path: /opt/manager-part-3.yml
-    permissions: '0644'
-  - content: |
-      ${indent(6, file("files/manager.sh"))}
-    path: /root/manager.sh
-    permissions: '0700'
   - content: |
       #!/usr/bin/env bash
 
@@ -85,17 +65,12 @@ write_files:
       export DEPLOY_MONITORING=${var.deploy_monitoring}
       export DEPLOY_OPENSTACK=${var.deploy_openstack}
 
-      bash /root/manager.sh
-
-    path: /root/run-manager.sh
-    permissions: '0700'
+    path: /opt/manager-vars.sh
+    permissions: '0644'
 runcmd:
   - "echo 'network: {config: disabled}' > /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg"
-  - "/root/run-manager.sh"
+  - "chown -R ubuntu:ubuntu /home/ubuntu"
 final_message: "The system is finally up, after $UPTIME seconds"
-power_state:
-  mode: reboot
-  condition: True
 EOT
 
 }

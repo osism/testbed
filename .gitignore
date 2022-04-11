@@ -29,6 +29,7 @@ terraform.tfstate*
 terraform.tfstate.d
 terraform/*_custom.tf
 terraform/*_override.tf
+terraform/inventory.*
 terraformrc
 ironic-agent.initramfs
 ironic-agent.kernel
