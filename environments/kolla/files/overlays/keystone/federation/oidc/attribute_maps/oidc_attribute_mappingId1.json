@@ -20,9 +20,6 @@
                                 "name": "member"
                             },
                             {
-                                "name": "_member_"
-                            },
-                            {
                                 "name": "load-balancer_member"
                             }
                         ]

@@ -49,13 +49,10 @@
       openstack.cloud.identity_role:
         cloud: admin
         state: present
-        user: "{{ item.0 }}"
-        role: "{{ item.1 }}"
-        project: "{{ item.0 }}"
-      # loop: "{{ refstack_users|lookup('cartesian', ['member', '_member_']) }}"
-      with_cartesian:
-        - "{{ refstack_users }}"
-        - ['member', '_member_']
+        user: "{{ item }}"
+        role: member
+        project: "{{ item }}"
+      loop: "{{ refstack_users }}"
 
     - name: Create refstack keypairs
       openstack.cloud.keypair:
