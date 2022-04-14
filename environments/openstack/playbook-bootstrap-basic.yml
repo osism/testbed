@@ -440,7 +440,7 @@
         size: 1
         volume_type: LUKS
 
-    - name: Attach test volume
+    - name: Attach lukstest volume
       openstack.cloud.server_volume:
         cloud: test
         state: present
