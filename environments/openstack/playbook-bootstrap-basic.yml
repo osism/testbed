@@ -188,11 +188,11 @@
     - ansible.builtin
     - openstack.cloud
   vars:
-     os_luks_vt: "volume type create"
-     os_luks_pr: "--encryption-provider luks"
-     os_luks_ch: "--encryption-cipher aes-xts-plain64"
-     os_luks_ks: "--encryption-key-size 256"
-     os_luks_fe: "--encryption-control-location front-end"
+    os_luks_vt: "volume type create"
+    os_luks_pr: "--encryption-provider luks"
+    os_luks_ch: "--encryption-cipher aes-xts-plain64"
+    os_luks_ks: "--encryption-key-size 256"
+    os_luks_fe: "--encryption-control-location front-end"
   tasks:
     # NOTE: Volume type create not exist openstack.cloud
     - name: Encrypt Volume type named Luks creating
