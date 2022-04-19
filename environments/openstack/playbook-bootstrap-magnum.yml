@@ -11,6 +11,7 @@
       ansible.builtin.get_url:
         url: https://mirror.betacloud.io/fedora-coreos/fedora-coreos-31.20200407.3.0-openstack.x86_64.qcow2
         dest: /tmp/coreos.img
+        mode: 0644
 
     - name: Upload coreos image
       openstack.cloud.image:
