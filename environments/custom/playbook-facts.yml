@@ -6,13 +6,13 @@
   tasks:
     - name: Install required packages
       become: true
-      apt:
+      ansible.builtin.apt:
         name: python3-netifaces
         state: present
 
     - name: Create custom facts directory
       become: true
-      file:
+      ansible.builtin.file:
         path: /etc/ansible/facts.d
         state: "directory"
         owner: root
@@ -21,7 +21,7 @@
 
     - name: Copy fact file
       become: true
-      copy:
+      ansible.builtin.copy:
         src: testbed_network_devices.fact
         dest: /etc/ansible/facts.d/testbed_network_devices.fact
         owner: root
@@ -29,7 +29,7 @@
         mode: 0755
 
     - name: Gathers facts about remote hosts
-      setup:
+      ansible.builtin.setup:
 
 - name: Copy custom ceph devices facts
   hosts: ceph-resource
@@ -38,13 +38,13 @@
   tasks:
     - name: Install required packages
       become: true
-      apt:
+      ansible.builtin.apt:
         name: ["python3-dotenv", "hwinfo"]
         state: present
 
     - name: Create custom facts directory
       become: true
-      file:
+      ansible.builtin.file:
         path: /etc/ansible/facts.d
         state: "directory"
         owner: root
@@ -53,7 +53,7 @@
 
     - name: Copy fact files
       become: true
-      copy:
+      ansible.builtin.copy:
         src: "{{ item }}.fact"
         dest: "/etc/ansible/facts.d/{{ item }}.fact"
         owner: root
@@ -64,4 +64,4 @@
         - testbed_ceph_devices_all
 
     - name: Gathers facts about remote hosts
-      setup:
+      ansible.builtin.setup:

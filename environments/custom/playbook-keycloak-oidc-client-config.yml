@@ -5,7 +5,7 @@
 
   tasks:
     - name: Wait until service is available
-      command: >-
+      ansible.builtin.command: >-
         docker exec {{ keycloak_service_container_name }} bash -c
           'until echo > "/dev/tcp/127.0.0.1/8080"
           do
@@ -15,7 +15,7 @@
       run_once: true
 
     - name: Log in to Keycloak
-      command: >-
+      ansible.builtin.command: >-
         docker exec {{ keycloak_service_container_name }} {{ kcadm_binary }}
           config credentials --server "{{ keycloak_url }}/auth"
                              --realm master
@@ -26,7 +26,7 @@
       no_log: true
 
     - name: Get available realms
-      command: >-
+      ansible.builtin.command: >-
         docker exec {{ keycloak_service_container_name }} {{ kcadm_binary }}
           get realms --fields id
       register: available_realms_json
@@ -34,12 +34,12 @@
       run_once: true
 
     - name: Filter available realms
-      set_fact:
+      ansible.builtin.set_fact:
         available_realms: "{{ available_realms_json.stdout|from_json|map(attribute='id')|list }}"
       run_once: true
 
     - name: Create target realm if it doesn't exist
-      command: >-
+      ansible.builtin.command: >-
         docker exec {{ keycloak_service_container_name }} {{ kcadm_binary }}
           create realms
             --set id="{{ keycloak_realm }}"
@@ -49,7 +49,7 @@
       run_once: true
 
     - name: Get available clients in realm
-      command: >-
+      ansible.builtin.command: >-
         docker exec {{ keycloak_service_container_name }} {{ kcadm_binary }}
           get clients --target-realm {{ keycloak_realm }}
                 --query clientId={{ keystone_client_id }}
@@ -59,12 +59,12 @@
       run_once: true
 
     - name: Filter available clients in realm
-      set_fact:
+      ansible.builtin.set_fact:
         available_clients: "{{ available_clients_json.stdout|from_json|map(attribute='clientId')|list }}"
       run_once: true
 
     - name: Create OIDC client configuration
-      command: >-
+      ansible.builtin.command: >-
         docker exec {{ keycloak_service_container_name }} {{ kcadm_binary }}
           create clients --target-realm "{{ keycloak_realm }}"
             --set clientId={{ keystone_client_id }}
@@ -80,7 +80,7 @@
       no_log: true
 
     - name: "Get internal ID for {{ keystone_client_id }} client"
-      command: >-
+      ansible.builtin.command: >-
         docker exec {{ keycloak_service_container_name }} {{ kcadm_binary }}
           get clients --target-realm {{ keycloak_realm }}
                 --query clientId={{ keystone_client_id }}
@@ -92,12 +92,12 @@
       run_once: true
 
     - name: "Filter internal ID for {{ keystone_client_id }} client"
-      set_fact:
+      ansible.builtin.set_fact:
         internal_client_id: "{{ internal_client_id_json.stdout }}"
       run_once: true
 
     - name: Get available mappers for client
-      command: >-
+      ansible.builtin.command: >-
         docker exec {{ keycloak_service_container_name }} {{ kcadm_binary }}
           get "clients/{{ internal_client_id }}/protocol-mappers/models"
                  --target-realm {{ keycloak_realm }}
@@ -107,12 +107,12 @@
       run_once: true
 
     - name: Filter available mappers for client
-      set_fact:
+      ansible.builtin.set_fact:
         available_mappers: "{{ available_mappers_json.stdout|from_json|map(attribute='name')|list }}"
       run_once: true
 
     - name: Create mappers for client
-      command: >-
+      ansible.builtin.command: >-
         docker exec {{ keycloak_service_container_name }} {{ kcadm_binary }}
           create clients/{{ internal_client_id }}/protocol-mappers/models
             --target-realm "{{ keycloak_realm }}"
@@ -133,7 +133,7 @@
       run_once: true
 
     - name: Get available components in realm
-      command: >-
+      ansible.builtin.command: >-
         docker exec {{ keycloak_service_container_name }} {{ kcadm_binary }}
           get components --target-realm {{ keycloak_realm }}
                 --query name="{{ keycloak_key_provider_component_name }}"
@@ -143,12 +143,12 @@
       run_once: true
 
     - name: Filter available components in realm
-      set_fact:
+      ansible.builtin.set_fact:
         available_components: "{{ available_components_json.stdout|from_json|map(attribute='name')|list }}"
       run_once: true
 
     - name: Add privateKey and certificate to realm
-      command: >-
+      ansible.builtin.command: >-
         docker exec {{ keycloak_service_container_name }} {{ kcadm_binary }}
           create components --target-realm "{{ keycloak_realm }}"
             --set name="{{ keycloak_key_provider_component_name }}"
@@ -166,7 +166,7 @@
       no_log: true
 
     - name: Get available users in realm
-      command: >-
+      ansible.builtin.command: >-
         docker exec {{ keycloak_service_container_name }} {{ kcadm_binary }}
           get users --target-realm {{ keycloak_realm }}
                 --fields username
@@ -175,12 +175,12 @@
       run_once: true
 
     - name: Filter available users in realm
-      set_fact:
+      ansible.builtin.set_fact:
         available_users: "{{ available_users_json.stdout|from_json|map(attribute='username')|list }}"
       run_once: true
 
     - name: Create sample user
-      command: >-
+      ansible.builtin.command: >-
         docker exec {{ keycloak_service_container_name }} {{ kcadm_binary }}
           create users --target-realm "{{ keycloak_realm }}"
             --set username=alice
@@ -191,7 +191,7 @@
       when: "'alice' not in available_users"
 
     - name: Set password of sample user
-      command: >-
+      ansible.builtin.command: >-
         docker exec {{ keycloak_service_container_name }} {{ kcadm_binary }}
           set-password --target-realm "{{ keycloak_realm }}"
             --username=alice

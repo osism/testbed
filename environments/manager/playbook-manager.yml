@@ -16,6 +16,6 @@
   tasks:
     - name: Restart manager service
       become: true
-      service:
+      ansible.builtin.service:
         name: docker-compose@manager
         state: restarted

@@ -8,7 +8,7 @@
     # NOTE: the wireguard repository is only required on Bionic
     - name: Add wireguard repository
       become: true
-      apt_repository:
+      ansible.builtin.apt_repository:
         repo: ppa:wireguard/wireguard
         mode: 0600
       when: "ansible_distribution_release == 'bionic'"
@@ -16,32 +16,32 @@
     # NOTE: required by wireguard-dkms
     - name: Install kernel headers
       become: true
-      apt:
+      ansible.builtin.apt:
         name: linux-headers-generic
         state: present
       when: "ansible_distribution_release == 'bionic'"
 
     - name: Install wireguard package
       become: true
-      apt:
+      ansible.builtin.apt:
         name: wireguard
         state: present
 
     - name: Install wireguard dkms pkg
       become: true
-      apt:
+      ansible.builtin.apt:
         name: wireguard-dkms
         state: present
       when: "ansible_distribution_release == 'bionic'"
 
     - name: Build wireguard kernel module
       become: true
-      command: dpkg-reconfigure wireguard-dkms  # noqa 301
+      ansible.builtin.command: dpkg-reconfigure wireguard-dkms  # noqa 301
       when: "ansible_distribution_release == 'bionic'"
 
     - name: Create public and private key - client
       become: true
-      shell: |
+      ansible.builtin.shell: |
         set -o pipefail
         umask 077
         wg genkey | tee /etc/wireguard/client.key | wg pubkey > /etc/wireguard/client.pub
@@ -51,7 +51,7 @@
 
     - name: Create public and private key - server
       become: true
-      shell: |
+      ansible.builtin.shell: |
         set -o pipefail
         umask 077
         wg genkey | tee /etc/wireguard/server.key | wg pubkey > /etc/wireguard/server.pub
@@ -60,43 +60,43 @@
         executable: /bin/bash
 
     - name: Create preshared key
-      shell: umask 077; wg genpsk > /etc/wireguard/osism.psk
       become: true
+      ansible.builtin.shell: umask 077; wg genpsk > /etc/wireguard/osism.psk
       args:
         creates: /etc/wireguard/osism.psk
 
     - name: Get preshared key
       become: true
-      slurp:
+      ansible.builtin.slurp:
         src: /etc/wireguard/osism.psk
       register: preshared_key
 
     - name: Get public key - client
       become: true
-      slurp:
+      ansible.builtin.slurp:
         src: /etc/wireguard/client.pub
       register: public_key_client
 
     - name: Get private key - client
       become: true
-      slurp:
+      ansible.builtin.slurp:
         src: /etc/wireguard/client.key
       register: private_key_client
 
     - name: Get public key - server
       become: true
-      slurp:
+      ansible.builtin.slurp:
         src: /etc/wireguard/server.pub
       register: public_key_server
 
     - name: Get private key - server
       become: true
-      slurp:
+      ansible.builtin.slurp:
         src: /etc/wireguard/server.key
       register: private_key_server
 
     - name: Copy wireguard-client.conf configuration file
-      template:
+      ansible.builtin.template:
         src: wireguard/client.conf.j2
         dest: "/home/{{ operator_user }}/wireguard-client.conf"
         owner: "{{ operator_user }}"
@@ -105,7 +105,7 @@
 
     - name: Copy wg0.conf configuration file
       become: true
-      template:
+      ansible.builtin.template:
         src: wireguard/server.conf.j2
         dest: /etc/wireguard/wg0.conf
         owner: root
@@ -117,7 +117,7 @@
     #       after initial installation until after a reboot.
     - name: Start/enable wg-quick@wg0.service service
       become: true
-      systemd:
+      ansible.builtin.systemd:
         name: wg-quick@wg0.service
         state: started
         enabled: true
@@ -128,7 +128,7 @@
     #       after initial installation until after a reboot.
     - name: Restart wg0 service
       become: true
-      systemd:
+      ansible.builtin.systemd:
         name: wg-quick@wg0.service
         state: restarted
       failed_when: false
@@ -139,4 +139,4 @@
   tasks:
     - name: Add route to 192.168.48.0/20
       become: true
-      command: ip route replace 192.168.48.0/20 via 192.168.16.5  # noqa 301
+      ansible.builtin.command: ip route replace 192.168.48.0/20 via 192.168.16.5  # noqa 301

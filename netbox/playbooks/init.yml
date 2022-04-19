@@ -13,7 +13,7 @@
 
   tasks:
     - name: Wait for netbox service
-      uri:
+      ansible.builtin.uri:
         url: "{{ netbox_url }}/metrics"
         return_content: true
         status_code: [200]
