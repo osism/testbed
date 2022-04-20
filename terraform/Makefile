@@ -38,7 +38,7 @@ reset:
 	@rm -rf .terraform/providers
 
 init:
-	@if [ ! -d .terraform/providers ]; then $(TERRAFORM) init; fi
+	@if [ ! -d .terraform/providers ]; then $(TERRAFORM) init -upgrade; fi
 
 	@if [ ! -f backend.tf ]; then \
 		$(TERRAFORM) workspace select ${ENVIRONMENT} || $(TERRAFORM) workspace new ${ENVIRONMENT}; \
