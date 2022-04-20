@@ -187,7 +187,7 @@
   tasks:
     # NOTE: volume type not available in the openstack.cloud collection
     - name: Encrypt Volume type named Luks creating
-      ansible.builtin.command: openstack --os-cloud admin volume type create --encryption-provider luks --encryption-cipher aes-xts-plain64 --encryption-key-size 256 --encryption-control-location front-end LUKS # noqa 301
+      ansible.builtin.command: openstack --os-cloud admin volume type create --encryption-provider luks --encryption-cipher aes-xts-plain64 --encryption-key-size 256 --encryption-control-location front-end LUKS  # noqa 301
 
 - name: Bootstrap basic OpenStack services
   hosts: localhost
