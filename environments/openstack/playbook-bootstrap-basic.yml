@@ -181,6 +181,14 @@
         disk: 5
         ephemeral: 0
 
+- name: Create Encrypted Volume Type
+  hosts: localhost
+
+  tasks:
+    # NOTE: volume type not available in the openstack.cloud collection
+    - name: Encrypt Volume type named Luks creating
+      ansible.builtin.command: openstack --os-cloud admin volume type create --encryption-provider luks --encryption-cipher aes-xts-plain64 --encryption-key-size 256 --encryption-control-location front-end LUKS  # noqa 301
+
 - name: Bootstrap basic OpenStack services
   hosts: localhost
   connection: local
@@ -417,6 +425,21 @@
         state: present
         server: test
         volume: test
+
+    - name: Create encrypted test volume
+      openstack.cloud.volume:
+        cloud: test
+        state: present
+        name: lukstest
+        size: 1
+        volume_type: LUKS
+
+    - name: Attach lukstest volume
+      openstack.cloud.server_volume:
+        cloud: test
+        state: present
+        server: test
+        volume: lukstest
 
     - name: Get info of server test
       openstack.cloud.server_info:
