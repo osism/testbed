@@ -71,8 +71,13 @@ sudo -iu dragon ansible-playbook -i testbed-manager.testbed.osism.xyz, /opt/mana
 
 sudo -iu dragon cp /home/dragon/.ssh/id_rsa.pub /opt/ansible/secrets/id_rsa.operator.pub
 
-# NOTE(berendt): wait for ARA
+# NOTE(berendt): wait for ara-server service
 until [[ "$(/usr/bin/docker inspect -f '{{.State.Health.Status}}' manager_ara-server_1)" == "healthy" ]]; do
+    sleep 1;
+done;
+
+# NOTE(berendt): wait for netbox service
+until [[ "$(/usr/bin/docker inspect -f '{{.State.Health.Status}}' netbox_netbox_1)" == "healthy" ]]; do
     sleep 1;
 done;
 
@@ -101,7 +106,7 @@ sudo -iu dragon sh -c 'INTERACTIVE=false osism apply wait-for-connection -l test
 # NOTE: Restart the manager services to update the /etc/hosts file
 sudo -iu dragon sh -c 'docker compose -f /opt/manager/docker-compose.yml restart'
 
-# NOTE(berendt): wait for ARA
+# NOTE(berendt): wait for ara-server service
 until [[ "$(/usr/bin/docker inspect -f '{{.State.Health.Status}}' manager_ara-server_1)" == "healthy" ]];
 do
     sleep 1;
