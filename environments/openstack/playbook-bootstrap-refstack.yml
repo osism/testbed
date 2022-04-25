@@ -35,7 +35,7 @@
       no_log: true
 
     - name: Add admin role to required users
-      openstack.cloud.identity_role:
+      openstack.cloud.role_assignment:
         cloud: admin
         state: present
         user: "{{ item }}"
@@ -46,7 +46,7 @@
         - refstack-4
 
     - name: Add member roles to refstack users
-      openstack.cloud.identity_role:
+      openstack.cloud.role_assignment:
         cloud: admin
         state: present
         user: "{{ item }}"

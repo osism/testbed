@@ -17,7 +17,7 @@
       no_log: true
 
     - name: Add admin role to swift service account
-      openstack.cloud.identity_role:
+      openstack.cloud.role_assignment:
         cloud: admin
         state: present
         user: swift
