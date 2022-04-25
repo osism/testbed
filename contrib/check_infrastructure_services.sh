@@ -23,8 +23,8 @@ echo
 echo "# Prometheus"
 echo
 
-curl https://api-int.testbed.osism.xyz:9091/-/healthy
-curl https://api-int.testbed.osism.xyz:9091/-/ready
+curl -s https://api-int.testbed.osism.xyz:9091/-/healthy
+curl -s https://api-int.testbed.osism.xyz:9091/-/ready
 
 echo
 echo "# RabbitMQ"
