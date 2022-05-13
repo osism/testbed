@@ -267,7 +267,7 @@ flavor_manager            SCS-4V:8:50
 flavor_node               SCS-8V:32:50
 image                     Ubuntu 20.04
 network_availability_zone south-2
-openstack_version         wallaby
+openstack_version         xena
 public                    external
 volume_availability_zone  south-2
 volume_size_storage       10
