@@ -2,8 +2,8 @@
 
 export INTERACTIVE=false
 
-curl https://tarballs.opendev.org/openstack/ironic-python-agent/dib/files/ipa-centos8-stable-wallaby.kernel -o /opt/configuration/environments/kolla/files/overlays/ironic/ironic-agent.kernel
-curl https://tarballs.opendev.org/openstack/ironic-python-agent/dib/files/ipa-centos8-stable-wallaby.initramfs -o /opt/configuration/environments/kolla/files/overlays/ironic/ironic-agent.initramfs
+curl https://tarballs.opendev.org/openstack/ironic-python-agent/dib/files/ipa-centos8-stable-xena.kernel -o /opt/configuration/environments/kolla/files/overlays/ironic/ironic-agent.kernel
+curl https://tarballs.opendev.org/openstack/ironic-python-agent/dib/files/ipa-centos8-stable-xena.initramfs -o /opt/configuration/environments/kolla/files/overlays/ironic/ironic-agent.initramfs
 
 # NOTE: The docker-compose role is currently required for the
 #       virtualbmc service. Can be removed again when everything
