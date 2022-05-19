@@ -16,11 +16,6 @@ jobs:
     if: github.repository == 'osism/testbed'
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        openstack-version:
-          - wallaby
-
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -61,11 +56,6 @@ jobs:
     needs: daily-pluscloudopen-cleanup
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        openstack-version:
-          - wallaby
-
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -99,4 +89,4 @@ jobs:
         working-directory: ./terraform
       - name: Deploy environment
         working-directory: ./terraform
-        run: make ENVIRONMENT=pluscloudopen deploy-full OPENSTACK_VERSION=${{ matrix.openstack-version }}
+        run: make ENVIRONMENT=pluscloudopen deploy-full
