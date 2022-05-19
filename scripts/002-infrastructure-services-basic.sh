@@ -16,3 +16,6 @@ osism apply kibana
 osism apply ovn
 osism apply rabbitmq
 osism apply homer
+
+# NOTE: Run a backup of the database to test the backup function
+osism apply mariadb_backup
