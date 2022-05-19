@@ -1,9 +1,50 @@
 ---
+- secret:
+    name: osism_testbed_pass
+    data:
+      pass: !encrypted/pkcs1-oaep
+        - KIFgnZrrnq9cXfLtl6hZVvImrFDswc3VK947On4iQFMGIkqLlhL3chpUKEcYACRNp9JOu
+          BKoL97ePEkHN5e0KyB/ckTD7O0J30IyrgT68jzCJSChpCY0aYr6H0f3cwhfL4h7mBgT7q
+          A6qbHVAAzOHcpHM3NqbMMlwywPW6Ykt6WpyJW2/yu4PkufmpoRGRZ/b+Nx9nQpmaPGP1G
+          YQBUzbfP1EEV4ledpUvsGu5YfWRAERAZoz+4Hal5rj4L4p4LiotTZyhnl096MEe/KCuaH
+          de3Vs8l6j8KvOGnlR9tmZUuPUvBAczH3L7LXlNHaZ5js+P9uSaLiMJ502xav+lfzIRKkN
+          i487FiuOY5EoROikoYaZTBD8K9zZkT9EkngTj+Sqz90lm2q/k6uVSqcv12Dn7P9N0beIL
+          jkT1w4tgZtT3qsnKkd4T4ac5o+VFIdrhGb8NEOAY/Zr+WvM0KA1yHRm2ZxGydnVo1zM9N
+          g3JoJgnpp6xTBscZ+zPTxOnCHuv6zZPeMlXsn+no52Uj2V/AzIg1pXAum0sZThsT/BGg4
+          Pbnc2K0HaWc+hOdVe9IaGE07nLKJfJbP1Fxau5WhBJSRvBya3d0G6BUU0vU7qeG08xq6p
+          h2G84LTUmSXrIqq91M8ZySwzvkKwc7XP/XyUIe8sCdgbZhYvQrsAYCRPlxLtuo=
+- secret:
+    name: osism_testbed_user
+    data:
+      user: !encrypted/pkcs1-oaep
+        - o5Rdg0mtQWfo6uTangjviLVLHRGxFPW/oWlBXWbyCfSK55YdjVsmiYLUw79VuAZc4GN36
+          SzqeBVmiQKN8kCz6INOFTLQ55IQFw5qj+UY8AAzi4Xy2tJAw+tYJUByhYMq6hwRjYbP5G
+          u0MsTV4kFbL0SlmyGmEk/cMPSaf9TVnJ6sxq/uEAvFEPnQLq3MbABfPRDjLV965OSyHGM
+          i993ofnBpvb3C5PYuYWcOpnSpfQj23OVWFxTpSpEriinVobbbFjESGs73iPkSp1bA+kUk
+          bl2gyWYzUs3UcbdXWyjHq0OEJdWn4G+5W5ldn5iK5Xv8FFT+25LVuOqkbMReLZAy2il+F
+          63K/vYsi+2OLrzHkYPOfJe0rHjXMnnPEOn/fRZ+HQf1iuUjpSMDNnUXrGUr14P7OsZE4L
+          /AfAQ3wxRmnBOU4irjvSDttpaZPjBc9TnsE/klNfZKSv5fDFKWy/ED6Rs29HRvsbKdZpP
+          cMEcuFgNCiMfMb26QvBOUQ5kejGDvh7cjh6wfaeIJGXn+7ZrSl0GoMFdSPQJYBqgwrkuf
+          oMJLiKiraSrjX86RzD8F3ssk5Qz8iLNMsfSYVSghlOXY9KsV+8IUDn1cbi0XlBHIbULKO
+          4BpD/MWTVH0csOhpUBhfrhyvLwtrOgrNgM7JkJVhKlNN/PBt/AartlFoX9kheQ=
+- job:
+    name: osism-testbed-test-secret
+    secrets:
+      - name: sftp_password
+        secret: osism_testbed_pass
+      - name: sftp_user
+        secret: osism_testbed_user
+    run: playbooks/test-secret.yaml
+
 - project:
     check:
       jobs:
+        - tox-docs
         - tox-linters
     gate:
-
       jobs:
+        - tox-docs
         - tox-linters
+    post:
+      jobs:
+        - osism-testbed-test-secret
