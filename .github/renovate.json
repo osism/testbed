@@ -2,5 +2,15 @@
   "extends": [
     "github>osism/renovate-config",
     "github>osism/renovate-config:python"
+  ],
+  "regexManagers":[
+    {
+      "fileMatch":[
+        "^\\.github\\/workflows\\/.*\\.yml"
+      ],
+      "matchStrings":[
+        "terraform_version: (?<currentValue>.*?)  # renovate: datasource=(?<datasource>.*?) depName=(?<depName>.*?)\n"
+     ]
+    }
   ]
 }
