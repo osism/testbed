@@ -268,6 +268,7 @@ flavor_node               SCS-8V:32:50
 image                     Ubuntu 20.04
 network_availability_zone south-2
 openstack_version         xena
+prefix                    testbed
 public                    external
 volume_availability_zone  south-2
 volume_size_storage       10
@@ -292,6 +293,8 @@ Currently two such overrides exist:
 * ``neutron_router_enable_snat``: This passes ``enable_snat: true`` for the router. This is
   required by OTC.
 
+Via the variable ``prefix`` it is possible to change the name of the created resources. By default,
+``testbed`` is used. With this variable it is possible to run several testbeds within one project.
 
 Local Environment
 =================
