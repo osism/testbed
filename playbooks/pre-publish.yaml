@@ -1,0 +1,8 @@
+---
+- hosts: all
+  tasks:
+    - name: install rclone
+      become: true
+      ansible.builtin.package:
+        name: rclone
+        state: present

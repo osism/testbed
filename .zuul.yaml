@@ -1,9 +1,41 @@
 ---
+- secret:
+    name: osism_testbed_docs_creds
+    data:
+      rclone: !encrypted/pkcs1-oaep
+        - eTB6HBBx7bPfEiOYOBDUs06ZAeKQr6scJffqN/E8ojZ7kIG5oRml6VHPr3IXfsDjc3Dsi
+          S7fDhaV8qAp7ag4A6KxxUkzqTJFviIzLkDpldFV7WajVyp3e8Ak6Srkd+SEYGzAURSxrg
+          9PLBo5HZOP9RuwNtv8yNC8jNBxj1ZDgTOkeIDo4eDI1JReqO3ogXABZooYoZkLR+kqF4K
+          aX9QMCbNd7qt/Mg5Ez2NY94xN8p+lTq1vLSOpkfBdUeI4FGu+Vo+LCfshJyQ2gWD6BfCx
+          wLaW+dOkaNYL3zmaOsP0T+jdFdzZKjn7tVZ5oI6Mwe0nBfL0p5yckjXEcuHhjGxtgbcrX
+          oiyyCq6ouN1cHEz5QZrQpIBKJHmWJBr+ZVlqUGTTXIJaXuST/GjKFpWiVwnxOGLamH+RJ
+          VdjfSzIDwZuw7C4im8ZMZh9js1Tyw8oENGZMmg27ERwQZI0w+yrITBe3xnTWWjR986QNi
+          p7WunELl9AYayt5eKJ3msc6i9D0VaK4XVtPafMAs62ufErlwrDQpKlMIPh0ejvqtM1v5l
+          ATf8ip3kgqsDitOtVBEiSM5UanEVsszpl/kTA2+5l6SutVW24DJAuQp1zUk3RsMiKp+3C
+          LgqrJ2SA1MVt2jb8dhExjssntKKjwP97JLkFt9Q1V5e1n37xHV07W5PXxlSQEg=
+
+- job:
+    name: testbed-publish-tox-docs
+    parent: tox-docs
+    secrets:
+      - name: sftp_creds
+        secret: osism_testbed_docs_creds
+    pre-run: playbooks/pre-publish.yaml
+    post-run: playbooks/publish-docs.yaml
+
 - project:
+    merge-mode: squash-merge
+    vars:
+      sphinx_source_dir: docs/source
+      sphinx_build_dir: docs/build
     check:
       jobs:
+        - tox-docs
         - tox-linters
     gate:
-
       jobs:
+        - tox-docs
         - tox-linters
+    post:
+      jobs:
+        - testbed-publish-tox-docs
