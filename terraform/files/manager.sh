@@ -99,6 +99,10 @@ sudo -iu dragon sh -c 'INTERACTIVE=false osism apply network'
 # apply workarounds
 sudo -iu dragon sh -c 'INTERACTIVE=false osism apply --environment custom workarounds'
 
+# deploy wireguard
+sudo -iu dragon sh -c 'INTERACTIVE=false osism apply wireguard'
+sed -i -e s/WIREGUARD_PUBLIC_IP_ADDRESS/$(curl my.ip.fi)/ /home/dragon/wireguard-client.conf
+
 # reboot nodes
 sudo -iu dragon sh -c 'INTERACTIVE=false osism apply reboot -l testbed-nodes -e ireallymeanit=yes'
 sudo -iu dragon sh -c 'INTERACTIVE=false osism apply wait-for-connection -l testbed-nodes -e ireallymeanit=yes'
