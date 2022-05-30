@@ -13,7 +13,7 @@ mariadb_image: "{{ docker_registry }}/library/mariadb:{{ mariadb_tag }}"
 netbox_tag: "v3.2.3-ldap"
 netbox_image: "{{ docker_registry_netbox|default('quay.io') }}/osism/netbox:{{ netbox_tag }}"
 
-nginx_tag: "1.21.6-alpine"
+nginx_tag: "1.22.0-alpine"
 nginx_image: "{{ docker_registry }}/library/nginx:{{ nginx_tag }}"
 
 phpmyadmin_tag: "5.2.0"
