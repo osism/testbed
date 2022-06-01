@@ -15,3 +15,5 @@ osism apply patchman-client -- -e patchman_client_update_force=true
 #       its own.
 
 osism apply patchman -- -e patchman_update_force=true
+
+osism apply nexus
