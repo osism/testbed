@@ -3,7 +3,6 @@ def setup(app):
 
 
 extensions = [
-  'sphinx.ext.autosectionlabel',
   'sphinx.ext.todo',
   'sphinx_fontawesome',
   'sphinxcontrib.blockdiag',

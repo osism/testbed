@@ -9,3 +9,4 @@ ignore: |
   contrib/rally/tests/
   .git
   environments/infrastructure/secrets.yml
+  .tox
