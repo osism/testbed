@@ -19,3 +19,5 @@ osism apply homer
 
 # NOTE: Run a backup of the database to test the backup function
 osism apply mariadb_backup
+
+osism apply phpmyadmin
