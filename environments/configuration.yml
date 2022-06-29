@@ -73,3 +73,10 @@ osism_serial:
 
 ceph_share_directory: /share
 ceph_cluster_fsid: 11111111-1111-1111-1111-111111111111
+
+##########################
+# hardening
+
+# NOTE: Disabling hardening in the testbed to significantly reduce
+#       deployment time.
+enable_hardening: false
