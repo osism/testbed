@@ -135,6 +135,10 @@ Some services like phpMyAdmin or OpenStackClient will still run afterwards.
 Webinterfaces
 =============
 
+.. note::
+   All SSL enabled services within the testbed use certs which are signed by the self-signed
+   `OSISM Testbed CA <https://raw.githubusercontent.com/osism/testbed/main/environments/kolla/certificates/ca/testbed.crt>`
+
 .. raw:: html
 
    <table class="docutils align-default">
