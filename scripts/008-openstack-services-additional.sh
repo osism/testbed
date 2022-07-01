@@ -10,4 +10,4 @@ osism apply manila
 #       Therefore the agent is only started manually when needed.
 
 osism apply skydive
-osism apply generic manage-container -e container_action=stop -e container_name=skydive_agent -l skydive-agent
+osism apply --environment generic manage-container -e container_action=stop -e container_name=skydive_agent -l skydive-agent
