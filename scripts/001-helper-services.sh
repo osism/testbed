@@ -6,3 +6,4 @@ osism apply sshconfig
 osism apply known-hosts
 osism apply dotfiles
 osism apply cgit
+osism apply squid

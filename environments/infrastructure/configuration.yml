@@ -69,6 +69,11 @@ phpmyadmin_host: phpmyadmin.testbed.osism.xyz
 phpmyadmin_traefik: true
 
 ##########################
+# squid
+
+squid_host: "{{ hostvars[inventory_hostname]['ansible_' + internal_interface]['ipv4']['address'] }}"
+
+##########################
 # traefik
 
 traefik_enable: true
