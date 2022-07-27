@@ -45,6 +45,7 @@ openstack_logging_debug: "True"
 
 # elasticsearch
 es_heap_size: "1g"
+enable_elasticsearch_curator: "yes"
 
 # mariadb
 enable_mariabackup: "yes"
