@@ -22,7 +22,7 @@ jobs:
       - name: Setup terraform
         uses: hashicorp/setup-terraform@v2
         with:
-          terraform_version: 1.2.5  # renovate: datasource=github-releases depName=hashicorp/terraform
+          terraform_version: 1.2.6  # renovate: datasource=github-releases depName=hashicorp/terraform
       - name: Prepare use of openstack
         shell: bash
         working-directory: ./terraform
@@ -62,7 +62,7 @@ jobs:
       - name: Setup terraform
         uses: hashicorp/setup-terraform@v2
         with:
-          terraform_version: 1.2.5  # renovate: datasource=github-releases depName=hashicorp/terraform
+          terraform_version: 1.2.6  # renovate: datasource=github-releases depName=hashicorp/terraform
       - name: Prepare use of openstack
         shell: bash
         working-directory: ./terraform
