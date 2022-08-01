@@ -70,7 +70,6 @@ def cleanup_ports(conn, prefix):
     ports = list(conn.network.ports(status="DOWN"))
     for port in ports:
         port_dict = port.to_dict()
-        assert(port_dict["status"] == "DOWN")
         if (port_dict["device_owner"] != ""):
             continue
 
@@ -158,7 +157,6 @@ def cleanup_floating_ips(conn, prefix):
     for floating_ip in floating_ips:
         floating_ip_dict = dict(floating_ip)
         floating_ip_name = floating_ip["floating_ip_address"]
-        assert(not floating_ip_dict["attached"])
         logging.info(floating_ip_name)
         conn.delete_floating_ip(floating_ip_dict["id"])
 
@@ -172,7 +170,7 @@ def main():
             OSENV = os.environ['ENVIRONMENT']
         except KeyError as e:
             logging.error("Need to have OS_CLOUD or ENVIRONMENT set!")
-            raise(e)
+            raise e
     conn = openstack.connect(cloud=OSENV)
     cleanup_servers(conn, PREFIX)
     cleanup_keypairs(conn, PREFIX)
