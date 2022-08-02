@@ -4,9 +4,6 @@
   hosts: localhost
   gather_facts: false
 
-  collections:
-    - netbox.netbox
-
   vars:
     site: Discworld
     location: Ankh-Morpork
@@ -14,7 +11,7 @@
 
   tasks:
     - name: "Manage rack {{ rack }}"
-      netbox_rack:
+      netbox.netbox.netbox_rack:
         netbox_url: "{{ netbox_url }}"
         netbox_token: "{{ netbox_token }}"
         validate_certs: false
@@ -25,7 +22,7 @@
         state: present
 
     - name: Manage testbed-switch-0
-      netbox_device:
+      netbox.netbox.netbox_device:
         netbox_url: "{{ netbox_url }}"
         netbox_token: "{{ netbox_token }}"
         validate_certs: false
@@ -46,7 +43,7 @@
         state: present
 
     - name: Manage testbed-switch-1
-      netbox_device:
+      netbox.netbox.netbox_device:
         netbox_url: "{{ netbox_url }}"
         netbox_token: "{{ netbox_token }}"
         validate_certs: false
@@ -67,7 +64,7 @@
         state: present
 
     - name: Manage testbed-switch-2
-      netbox_device:
+      netbox.netbox.netbox_device:
         netbox_url: "{{ netbox_url }}"
         netbox_token: "{{ netbox_token }}"
         validate_certs: false
@@ -88,7 +85,7 @@
         state: present
 
     - name: Manage testbed-manager
-      netbox_device:
+      netbox.netbox.netbox_device:
         netbox_url: "{{ netbox_url }}"
         netbox_token: "{{ netbox_token }}"
         validate_certs: false
@@ -112,7 +109,7 @@
         state: present
 
     - name: Manage testbed-node-0
-      netbox_device:
+      netbox.netbox.netbox_device:
         netbox_url: "{{ netbox_url }}"
         netbox_token: "{{ netbox_token }}"
         validate_certs: false
@@ -140,7 +137,7 @@
         state: present
 
     - name: Manage testbed-node-1
-      netbox_device:
+      netbox.netbox.netbox_device:
         netbox_url: "{{ netbox_url }}"
         netbox_token: "{{ netbox_token }}"
         validate_certs: false
@@ -168,7 +165,7 @@
         state: present
 
     - name: Manage testbed-node-2
-      netbox_device:
+      netbox.netbox.netbox_device:
         netbox_url: "{{ netbox_url }}"
         netbox_token: "{{ netbox_token }}"
         validate_certs: false
@@ -196,7 +193,7 @@
         state: present
 
     - name: Manage testbed-node-3
-      netbox_device:
+      netbox.netbox.netbox_device:
         netbox_url: "{{ netbox_url }}"
         netbox_token: "{{ netbox_token }}"
         validate_certs: false
@@ -220,7 +217,7 @@
         state: present
 
     - name: Manage testbed-node-4
-      netbox_device:
+      netbox.netbox.netbox_device:
         netbox_url: "{{ netbox_url }}"
         netbox_token: "{{ netbox_token }}"
         validate_certs: false
@@ -244,7 +241,7 @@
         state: present
 
     - name: Manage testbed-node-5
-      netbox_device:
+      netbox.netbox.netbox_device:
         netbox_url: "{{ netbox_url }}"
         netbox_token: "{{ netbox_token }}"
         validate_certs: false
@@ -268,7 +265,7 @@
         state: present
 
     - name: Manage testbed-node-6
-      netbox_device:
+      netbox.netbox.netbox_device:
         netbox_url: "{{ netbox_url }}"
         netbox_token: "{{ netbox_token }}"
         validate_certs: false
@@ -292,7 +289,7 @@
         state: present
 
     - name: Manage testbed-node-7
-      netbox_device:
+      netbox.netbox.netbox_device:
         netbox_url: "{{ netbox_url }}"
         netbox_token: "{{ netbox_token }}"
         validate_certs: false
@@ -316,7 +313,7 @@
         state: present
 
     - name: Manage testbed-node-8
-      netbox_device:
+      netbox.netbox.netbox_device:
         netbox_url: "{{ netbox_url }}"
         netbox_token: "{{ netbox_token }}"
         validate_certs: false
