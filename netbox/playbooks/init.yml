@@ -28,12 +28,9 @@
   hosts: localhost
   gather_facts: false
 
-  collections:
-    - netbox.netbox
-
   tasks:
     - name: Manage Discworld site
-      netbox_site:
+      netbox.netbox.netbox_site:
         netbox_url: "{{ netbox_url }}"
         netbox_token: "{{ netbox_token }}"
         validate_certs: false
@@ -43,7 +40,7 @@
         state: present
 
     - name: Manage Ankh-Morpork location
-      netbox_location:
+      netbox.netbox.netbox_location:
         netbox_url: "{{ netbox_url }}"
         netbox_token: "{{ netbox_token }}"
         validate_certs: false
@@ -58,12 +55,9 @@
   hosts: localhost
   gather_facts: false
 
-  collections:
-    - netbox.netbox
-
   tasks:
     - name: Manage 192.168.16.0/20
-      netbox_prefix:
+      netbox.netbox.netbox_prefix:
         netbox_url: "{{ netbox_url }}"
         netbox_token: "{{ netbox_token }}"
         validate_certs: false
@@ -74,7 +68,7 @@
         state: present
 
     - name: Manage 192.168.112.0/20
-      netbox_prefix:
+      netbox.netbox.netbox_prefix:
         netbox_url: "{{ netbox_url }}"
         netbox_token: "{{ netbox_token }}"
         validate_certs: false
@@ -89,12 +83,9 @@
   hosts: localhost
   gather_facts: false
 
-  collections:
-    - netbox.netbox
-
   tasks:
     - name: Manage api.testbed.osism.xyz IP address
-      netbox_ip_address:
+      netbox.netbox.netbox_ip_address:
         netbox_url: "{{ netbox_url }}"
         netbox_token: "{{ netbox_token }}"
         validate_certs: false
@@ -104,7 +95,7 @@
         state: present
 
     - name: Manage api-int.testbed.osism.xyz IP address
-      netbox_ip_address:
+      netbox.netbox.netbox_ip_address:
         netbox_url: "{{ netbox_url }}"
         netbox_token: "{{ netbox_token }}"
         validate_certs: false
