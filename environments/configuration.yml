@@ -57,7 +57,6 @@ osism_serial:
 ##########################
 # ceph
 
-ceph_share_directory: /share
 ceph_cluster_fsid: 11111111-1111-1111-1111-111111111111
 
 ##########################
