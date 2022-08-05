@@ -1,5 +1,12 @@
 ---
 ##########################
+# docker registries
+
+docker_registry: index.docker.io
+docker_registry_ansible: quay.io
+docker_registry_service: index.docker.io
+
+##########################
 # versions
 
 ceph_version: pacific

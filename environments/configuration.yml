@@ -13,14 +13,6 @@ docker_version: "5:20.10.17"
 docker_user: "{{ operator_user }}"
 
 ##########################
-# docker registries
-
-ceph_docker_registry: quay.io
-docker_registry: index.docker.io
-docker_registry_ansible: quay.io
-docker_registry_service: index.docker.io
-
-##########################
 # operator
 
 operator_user: dragon
