@@ -10,8 +10,8 @@ INSTALL_LOG=/opt/refstack/refstack-install-$(date +%Y-%m-%d).log
 sudo mkdir -p /opt/refstack
 sudo chown dragon: /opt/refstack
 
-INTERACTIVE=false osism-run openstack bootstrap-basic >>$INSTALL_LOG 2>&1
-INTERACTIVE=false osism-run openstack bootstrap-refstack >>$INSTALL_LOG 2>&1
+INTERACTIVE=false osism apply --environment openstack bootstrap-basic >>$INSTALL_LOG 2>&1
+INTERACTIVE=false osism apply --environment openstack bootstrap-refstack >>$INSTALL_LOG 2>&1
 
 # NOTE: create RGW user accounts
 for username in refstack-0 refstack-1 refstack-2 refstack-3 refstack-4; do
