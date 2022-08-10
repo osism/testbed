@@ -11,52 +11,6 @@
         - virtualization_role_{{ ansible_virtualization_role }}
       tags: always
 
-# NOTE: On OTC BMS nodes it is necessary to extend the automatically generated Netplan configuration
-#       by the additionally required addresses. Furthermore the service bms-network-setup must be
-#       deactivated to not overwrite the modified network configuration after a reboot of the nodes.
-
-- name: Expand existing network configuration on OTC BMS nodes
-  hosts: virtualization_role_host
-  gather_facts: false
-
-  tasks:
-    - name: Slurp /etc/netplan/61-ifcfg-bond0.yaml
-      ansible.builtin.slurp:
-        path: /etc/netplan/61-ifcfg-bond0.yaml
-      register: fp
-
-    - name: Transfer slurped /etc/netplan/61-ifcfg-bond0.yaml to dictionary
-      ansible.builtin.set_fact:
-        configuration: "{{ fp['content'] | b64decode | from_yaml }}"
-
-    - name: Patch /etc/netplan/61-ifcfg-bond0.yaml dictionary
-      ansible.builtin.set_fact:
-        configuration: "{{ configuration | combine(patch, recursive=True) }}"
-      vars:
-        patch:
-          network:
-            bonds:
-              bond0:
-                dhcp4: false
-                gateway4: "{{ '192.168.16.0/20' | ansible.utils.ipaddr('net') | ansible.utils.ipaddr('1') | ansible.utils.ipaddr('address') }}"
-                addresses:
-                  - "{{ '192.168.16.0/20' | ansible.utils.ipaddr('net') | ansible.utils.ipaddr(node_id) | ansible.utils.ipaddr('address') }}/20"
-
-    - name: Write back /etc/netplan/61-ifcfg-bond0.yaml
-      become: true
-      ansible.builtin.copy:
-        content: "{{ configuration | to_nice_yaml }}"
-        dest: /etc/netplan/61-ifcfg-bond0.yaml
-        mode: 0644
-        owner: root
-        group: root
-
-    - name: Disable the bms-network-setup service
-      become: true
-      ansible.builtin.service:
-        name: bms-network-setup
-        enabled: false
-
 # NOTE: The netplan apply call is made separately and not via the osism.commons.network role in order
 #       to keep the default configuration in the testbed. In the default configuration, network restarts
 #       are deactivated.
