@@ -123,6 +123,11 @@ sudo -iu dragon sh -c 'INTERACTIVE=false osism netbox disable testbed-switch-0'
 sudo -iu dragon sh -c 'INTERACTIVE=false osism netbox disable testbed-switch-1'
 sudo -iu dragon sh -c 'INTERACTIVE=false osism netbox disable testbed-switch-2'
 
+# NOTE: It is not possible to use nested virtualization @ OTC
+if [[ -e /etc/OTC_region ]]; then
+    echo "nova_compute_virt_type: qemu" >> /opt/configuration/environments/kolla/configuration.yml
+fi
+
 # deploy helper services
 sudo -iu dragon sh -c '/opt/configuration/scripts/001-helper-services.sh'
 
