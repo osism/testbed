@@ -94,7 +94,6 @@ nova_libvirt_extra_volumes:
 
 # nova
 nova_console: novnc
-nova_virt_type: kvm
 
 # octavia
 octavia_network_type: tenant
