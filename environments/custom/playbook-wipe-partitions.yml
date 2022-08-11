@@ -1,0 +1,13 @@
+---
+- name: Wipe partitions
+  hosts: ceph-resource
+  gather_facts: false
+
+  tasks:
+    - name: Wipe partitions
+      become: true
+      ansible.builtin.shell: |
+        wipefs --all "{{ item }}"
+        dd if=/dev/zero of="{{ item }}" bs=1 count=4096
+      changed_when: false
+      with_items: "{{ ansible_local.testbed_ceph_devices_all }}"
