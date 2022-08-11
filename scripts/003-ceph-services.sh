@@ -2,6 +2,13 @@
 
 export INTERACTIVE=false
 
+# NOTE: On the OTC, sometimes old partition entries are still
+#       present on physical disks. Therefore they are removed
+#       at this point.
+if [[ -e /etc/OTC_region ]]; then
+    osism apply --environment custom wipe-partitions
+fi
+
 osism apply ceph-mons
 osism apply ceph-mgrs
 osism apply ceph-osds
