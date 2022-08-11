@@ -10,7 +10,6 @@ INSTALL_LOG=/opt/refstack/refstack-install-$(date +%Y-%m-%d).log
 sudo mkdir -p /opt/refstack
 sudo chown dragon: /opt/refstack
 
-INTERACTIVE=false osism apply --environment openstack bootstrap-basic >>$INSTALL_LOG 2>&1
 INTERACTIVE=false osism apply --environment openstack bootstrap-refstack >>$INSTALL_LOG 2>&1
 
 # NOTE: create RGW user accounts
@@ -61,3 +60,8 @@ curl -s "https://refstack.openstack.org/v1/guidelines/orchestration.${GUIDELINE}
 # NOTE: Manila currently not functional, therefore not activated
 # curl -s "https://refstack.openstack.org/v1/guidelines/shared_file_system.${GUIDELINE}.json/tests?target=shared_file_system&type=required&alias=true&flag=false" \
 #    >> /opt/refstack/test-list.txt
+
+# NOTE: inject testbed CA into the virtual python environments
+for fp in $(find /opt/refstack/client -name cacert.pem); do
+    cat /opt/configuration/environments/kolla/certificates/ca/testbed.crt >> $fp
+done
