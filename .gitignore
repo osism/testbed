@@ -16,7 +16,7 @@ contrib/es_test_data.py
 contrib/mysql_random_data_load
 contrib/ownca/testbed-*.key
 contrib/ownca/testbed-*.pem
-docs/build
+doc/build
 environment-local.tfvars
 environments/**/ceph.client.*.keyring
 errored.tfstate
