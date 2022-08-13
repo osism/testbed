@@ -19,7 +19,7 @@ nginx_image: "{{ docker_registry }}/library/nginx:{{ nginx_tag }}"
 phpmyadmin_tag: "5.2.0"
 phpmyadmin_image: "{{ docker_registry }}/phpmyadmin/phpmyadmin:{{ phpmyadmin_tag }}"
 
-postgres_tag: "14.4-alpine"
+postgres_tag: "14.5-alpine"
 postgres_image: "{{ docker_registry }}/library/postgres:{{ postgres_tag }}"
 
 redis_tag: "7.0.4-alpine"
@@ -43,7 +43,7 @@ osism_netbox_image: "{{ docker_registry_ansible }}/osism/osism-netbox:{{ osism_n
 vault_tag: "1.11.2"
 vault_image: "{{ docker_registry }}/hashicorp/vault:{{ vault_tag }}"
 
-traefik_tag: "v2.8.1"
+traefik_tag: "v2.8.3"
 traefik_image: "{{ docker_registry }}/library/traefik:{{ traefik_tag }}"
 
 # image tag depends on CEPH_VERSION or OPENSTACK_VERSION
