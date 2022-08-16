@@ -14,7 +14,7 @@ STATE = errored.tfstate
 
 VERSION_CEPH ?= pacific
 VERSION_MANAGER ?= latest
-VERSION_OPENSTACK ?= xena
+VERSION_OPENSTACK ?= yoga
 
 RALLY ?= false
 REFSTACK ?= false

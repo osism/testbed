@@ -109,7 +109,7 @@ variable "manager_version" {
 
 variable "openstack_version" {
   type    = string
-  default = "xena"
+  default = "yoga"
 }
 
 variable "number_of_nodes" {
