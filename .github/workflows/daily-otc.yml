@@ -85,8 +85,8 @@ jobs:
         run: |
           echo "$BACKEND" > terraformrc
       - name: Initialization
-        run: make ENVIRONMENT=otc init
+        run: make ENVIRONMENT=otc VERSION_OPENSTACK=yoga init
         working-directory: ./terraform
       - name: Deploy environment
         working-directory: ./terraform
-        run: make ENVIRONMENT=otc deploy-full
+        run: make ENVIRONMENT=otc VERSION_OPENSTACK=yoga deploy-full
