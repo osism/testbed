@@ -3,13 +3,13 @@
 [![Documentation](https://img.shields.io/static/v1?label=&message=documentation&color=blue)](https://docs.osism.tech/testbed)
 
 With this testbed, it is possible to run a full OSISM installation, the baseline
-of the Sovereign Cloud Stack, on an existing OpenStack environment such as City
-Cloud or Open Telekom Cloud.
+of the Sovereign Cloud Stack, on an existing OpenStack environment such as Cleura
+or Open Telekom Cloud.
 
 The testbed is intended as a playground. Further services and integration will be
 added over time. More and more best practices and experiences from the productive
 installations will be included here in the future. It will become more production-like
-over time. However, at no point does it claim to represent a production exactly.
+over time. However, at no point does it claim to represent a production setup exactly.
 
 Open Source Software lives from participation. We welcome any issues, change requests
 or general feedback. Do not hesitate to open an issue.
@@ -41,6 +41,6 @@ getting started with the testbed after full deployment.
 [![Daily pluscloudopen](https://github.com/osism/testbed/actions/workflows/daily-pluscloudopen.yml/badge.svg)](https://github.com/osism/testbed/actions/workflows/daily-pluscloudopen.yml)
 [![Update manager images](https://github.com/osism/testbed/actions/workflows/update-manager-images.yml/badge.svg)](https://github.com/osism/testbed/actions/workflows/update-manager-images.yml)
 
-### Other tasks
+## Zuul job results
 
-[![Build documentation](https://github.com/osism/testbed/actions/workflows/build-documentation.yml/badge.svg)](https://github.com/osism/testbed/actions/workflows/build-documentation.yml)
+https://zuul.osism.xyz/t/osism/builds?project=osism%2Ftestbed&skip=0
