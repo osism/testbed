@@ -20,8 +20,7 @@
       jobs:
         - tox-docs
         - tox-linters
-        - testbed-deploy:
-            branches: main
+        - testbed-deploy
     gate:
       jobs:
         - tox-docs

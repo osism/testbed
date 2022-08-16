@@ -49,8 +49,8 @@
         chdir: "{{ basepath }}/ansible"
         cmd: "ssh -i .id_rsa.{{ cloud_env }} dragon@{{ manager_host }} /opt/configuration/ansible/manager.sh"
       when: not manual_deploy
-    - name: make check
+    - name: run deployment checks
       shell:
         chdir: "{{ basepath }}/terraform"
-        cmd: make check
+        cmd: make ENVIRONMENT={{ cloud_env }} check
       when: not manual_deploy
