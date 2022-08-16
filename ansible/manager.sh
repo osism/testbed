@@ -2,6 +2,8 @@
 set -x
 set -e
 
+source /opt/manager-vars.sh
+
 wait_for_container_healthy() {
     local max_attempts="$1"
     local name="$2"
@@ -76,31 +78,31 @@ sh -c '/opt/configuration/scripts/001-helper-services.sh'
 
 # deploy identity services
 # NOTE: All necessary infrastructure services are also deployed.
-#if [[ "$DEPLOY_IDENTITY" == "true" ]]; then
+if [[ "$DEPLOY_IDENTITY" == "true" ]]; then
     sh -c '/opt/configuration/scripts/999-identity-services.sh'
-#fi
+fi
 
 # deploy infrastructure services
-#if [[ "$DEPLOY_INFRASTRUCTURE" == "true" ]]; then
+if [[ "$DEPLOY_INFRASTRUCTURE" == "true" ]]; then
     sh -c '/opt/configuration/scripts/002-infrastructure-services-basic.sh'
-#fi
+fi
 
 # deploy ceph services
-#if [[ "$DEPLOY_CEPH" == "true" ]]; then
+if [[ "$DEPLOY_CEPH" == "true" ]]; then
     sh -c '/opt/configuration/scripts/003-ceph-services.sh'
-#fi
+fi
 
 # deploy openstack services
-#if [[ "$DEPLOY_OPENSTACK" == "true" ]]; then
-#    if [[ "$DEPLOY_INFRASTRUCTURE" != "true" ]]; then
-#        echo "infrastructure services are necessary for the deployment of OpenStack"
-#    else
+if [[ "$DEPLOY_OPENSTACK" == "true" ]]; then
+    if [[ "$DEPLOY_INFRASTRUCTURE" != "true" ]]; then
+        echo "infrastructure services are necessary for the deployment of OpenStack"
+    else
         sh -c '/opt/configuration/scripts/004-openstack-services-basic.sh'
         sh -c '/opt/configuration/scripts/009-openstack-services-baremetal.sh'
-#    fi
-#fi
+    fi
+fi
 
 # deploy monitoring services
-#if [[ "$DEPLOY_MONITORING" == "true" ]]; then
+if [[ "$DEPLOY_MONITORING" == "true" ]]; then
     sh -c '/opt/configuration/scripts/005-monitoring-services.sh'
-#fi
+fi

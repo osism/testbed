@@ -1,12 +1,12 @@
 ---
 - job:
-    name: testbed-deploy-full
+    name: testbed-deploy
     parent: base-extra-logs
     nodeset:
       nodes:
         - name: orchestrator
           label: static-testbed
-    run: playbooks/test-run.yaml
+    run: playbooks/run.yaml
     post-run: playbooks/post.yaml
     required-projects:
       - osism/ansible-collection-commons
@@ -20,13 +20,13 @@
       jobs:
         - tox-docs
         - tox-linters
-        - testbed-deploy-full:
+        - testbed-deploy:
             branches: main
     gate:
       jobs:
         - tox-docs
         - tox-linters
-        - testbed-deploy-full:
+        - testbed-deploy:
             branches: main
     post:
       jobs:
@@ -34,4 +34,4 @@
             branches: main
     periodic-daily:
       jobs:
-        - testbed-deploy-full
+        - testbed-deploy

@@ -50,8 +50,6 @@ write_files:
     path: /home/ubuntu/.ssh/id_rsa
     permissions: '0600'
   - content: |
-      #!/usr/bin/env bash
-
       export NUMBER_OF_NODES=${var.number_of_nodes}
 
       export CEPH_VERSION=${var.ceph_version}
