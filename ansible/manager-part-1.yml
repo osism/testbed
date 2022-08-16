@@ -7,19 +7,19 @@
     ansible_ssh_user: dragon
     repo_path: /home/ubuntu/src/github.com
   tasks:
+    - name: Copy SSH public key
+      ansible.builtin.copy:
+        content: "{{ lookup('file', '.id_rsa.' + cloud_env + '.pub') }}\n"
+        dest: .ssh/id_rsa.pub
+        mode: '0644'
+        owner: "{{ operator_user }}"
     - name: Copy SSH private key
       ansible.builtin.copy:
-        content: "{{ lookup('file', '.id_rsa.betacloud') }}\n"
+        content: "{{ lookup('file', '.id_rsa.' + cloud_env ) }}\n"
         dest: .ssh/id_rsa
         mode: '0600'
         owner: "{{ operator_user }}"
       no_log: true
-    - name: Copy SSH public key
-      ansible.builtin.copy:
-        content: "{{ lookup('file', '.id_rsa.betacloud.pub') }}\n"
-        dest: .ssh/id_rsa.pub
-        mode: '0644'
-        owner: "{{ operator_user }}"
     - name: Create configuration directory
       become: true
       ansible.builtin.file:
@@ -34,9 +34,6 @@
         src: "{{ repo_path }}/osism/testbed/"
         delete: true
         dest: /opt/configuration
-    - name: TODO set versions manager/ceph/openstack/secondary_nodes
-      debug:
-        msg: TODO
     - name: Copy testbed crt
       become: true
       ansible.builtin.copy:
