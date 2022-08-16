@@ -80,7 +80,7 @@
     operator_user: dragon
     operator_group: dragon
     operator_authorized_keys:
-      - "{{ lookup('file', '.id_rsa.betacloud.pub') }}"
+      - "{{ lookup('file', '.id_rsa.' + cloud_env + '.pub') }}"
 
   collections:
     - osism.commons

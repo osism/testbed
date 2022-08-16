@@ -2,14 +2,14 @@
 - hosts: all
   vars:
     basepath: "{{ ansible_user_dir }}/src/github.com/osism/testbed"
-    environment: betacloud-ci
-    manager_address_file: "{{ basepath }}/terraform/.MANAGER_ADDRESS.{{ environment }}"
+    cloud_env: betacloud-ci
+    manager_address_file: "{{ basepath }}/terraform/.MANAGER_ADDRESS.{{ cloud_env }}"
     manual_deploy: false
   tasks:
     - name: make CI deployment with terraform
       shell:
         chdir: "{{ basepath }}/terraform"
-        cmd: make ENVIRONMENT={{ environment }} deploy-openstack
+        cmd: make ENVIRONMENT={{ cloud_env }} deploy-openstack
       when: not manual_deploy
     - name: fetch manager_host address
       shell: cat "{{ manager_address_file }}"
@@ -38,16 +38,16 @@
         chdir: "{{ basepath }}/ansible"
         cmd: |
           cp ../terraform/.id* .
-          ~/venv/bin/ansible-playbook -i ../terraform/inventory.{{ environment }} --key-file .id_rsa.{{ environment }} manager-part-0.yml
+          ~/venv/bin/ansible-playbook -i ../terraform/inventory.{{ cloud_env }} --key-file .id_rsa.{{ cloud_env }} manager-part-0.yml -e cloud_env={{ cloud_env }}
     - name: run part 1+2
       shell:
         chdir: "{{ basepath }}/ansible"
         cmd: |
-          ~/venv/bin/ansible-playbook -i ../terraform/inventory.{{ environment }} --key-file .id_rsa.{{ environment }} manager-part-1.yml
+          ~/venv/bin/ansible-playbook -i ../terraform/inventory.{{ cloud_env }} --key-file .id_rsa.{{ cloud_env }} manager-part-1.yml -e cloud_env={{ cloud_env }}
     - name: run part 3
       shell:
         chdir: "{{ basepath }}/ansible"
-        cmd: "ssh -i .id_rsa.{{ environment }} dragon@{{ manager_host }} /opt/configuration/ansible/manager.sh"
+        cmd: "ssh -i .id_rsa.{{ cloud_env }} dragon@{{ manager_host }} /opt/configuration/ansible/manager.sh"
       when: not manual_deploy
     - name: make check
       shell:
