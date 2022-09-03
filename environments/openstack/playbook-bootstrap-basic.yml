@@ -188,12 +188,13 @@
     # NOTE: volume type not available in the openstack.cloud collection
     - name: Get volume type LUKS
       ansible.builtin.command: openstack --os-cloud admin volume type show LUKS  # noqa 301
-      register: result
+      register: volume_type_result
       changed_when: false
+      failed_when: false
 
     - name: Create volume type LUKS
       ansible.builtin.command: openstack --os-cloud admin volume type create --encryption-provider luks --encryption-cipher aes-xts-plain64 --encryption-key-size 256 --encryption-control-location front-end LUKS  # noqa 301
-      when: result.rc == 2
+      when: volume_type_result.rc == 1
 
 - name: Bootstrap basic OpenStack services
   hosts: localhost
@@ -432,13 +433,6 @@
         server: test
         volume: test
 
-
-    # NOTE: volume type not available in the openstack.cloud collection
-    - name: Get volume type LUKS
-      ansible.builtin.command: openstack --os-cloud test volume type show LUKS  # noqa 301
-      register: result
-      changed_when: false
-
     - name: Create encrypted test volume
       openstack.cloud.volume:
         cloud: test
@@ -446,7 +440,6 @@
         name: lukstest
         size: 1
         volume_type: LUKS
-      when: result.rc == 0
 
     - name: Attach encrypted test volume
       openstack.cloud.server_volume:
@@ -454,7 +447,6 @@
         state: present
         server: test
         volume: lukstest
-      when: result.rc == 0
 
     - name: Get info of server test
       openstack.cloud.server_info:
