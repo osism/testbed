@@ -22,7 +22,7 @@
 
     - name: Log in to Keycloak
       ansible.builtin.command: >-
-        docker exec {{ keycloak_service_container_name }} {{ kcadm_binary }}
+        docker exec {{ keycloak_service_container_name }} {{ keycloak_kcadm_binary }}
           config credentials --server "{{ keycloak_url }}/auth"
                              --realm master
                              --user "{{ keycloak_admin_id }}"
@@ -33,7 +33,7 @@
 
     - name: Get available realms
       ansible.builtin.command: >-
-        docker exec {{ keycloak_service_container_name }} {{ kcadm_binary }}
+        docker exec {{ keycloak_service_container_name }} {{ keycloak_kcadm_binary }}
           get realms --fields id
       register: available_realms_json
       changed_when: false
@@ -46,7 +46,7 @@
 
     - name: Create target realm if it doesn't exist
       ansible.builtin.command: >-
-        docker exec {{ keycloak_service_container_name }} {{ kcadm_binary }}
+        docker exec {{ keycloak_service_container_name }} {{ keycloak_kcadm_binary }}
           create realms
             --set id="{{ keycloak_realm }}"
             --set realm="{{ keycloak_realm }}"
@@ -57,7 +57,7 @@
 
     - name: Get available components in realm
       ansible.builtin.command: >-
-        docker exec {{ keycloak_service_container_name }} {{ kcadm_binary }}
+        docker exec {{ keycloak_service_container_name }} {{ keycloak_kcadm_binary }}
           get components --target-realm {{ keycloak_realm }}
                 --query name="{{ keycloak_ldap_storage_provider_component_name }}"
                 --fields name
@@ -74,7 +74,7 @@
 
     - name: Add LDAP user storage provider component to realm
       ansible.builtin.command: >-
-        docker exec {{ keycloak_service_container_name }} {{ kcadm_binary }}
+        docker exec {{ keycloak_service_container_name }} {{ keycloak_kcadm_binary }}
           create components --target-realm {{ keycloak_realm }}
             --set name="{{ keycloak_ldap_storage_provider_component_name }}"
             --set providerId=ldap
@@ -117,7 +117,7 @@
 
     - name: Get LDAP provider id
       ansible.builtin.command: >-
-        docker exec {{ keycloak_service_container_name }} {{ kcadm_binary }}
+        docker exec {{ keycloak_service_container_name }} {{ keycloak_kcadm_binary }}
           get "realms/{{ keycloak_realm }}/components"
             --query name="{{ keycloak_ldap_storage_provider_component_name }}"
             --fields id
@@ -134,7 +134,7 @@
 
     - name: Get "first name" LDAP mapper id
       ansible.builtin.command: >-
-        docker exec {{ keycloak_service_container_name }} {{ kcadm_binary }}
+        docker exec {{ keycloak_service_container_name }} {{ keycloak_kcadm_binary }}
           get "realms/{{ keycloak_realm }}/components"
             --query name="first name"
             --query providerId="user-attribute-ldap-mapper"
@@ -156,7 +156,7 @@
     # Map LDAP attribute givenName to user.model.attribute "firstName"
     - name: Add first name mapper to LDAP storage provider
       ansible.builtin.command: >-
-        docker exec {{ keycloak_service_container_name }} {{ kcadm_binary }}
+        docker exec {{ keycloak_service_container_name }} {{ keycloak_kcadm_binary }}
           update "realms/{{ keycloak_realm }}/components/{{ first_name_mapper_id }}"
             --set providerId=user-attribute-ldap-mapper
             --set providerType=org.keycloak.storage.ldap.mappers.LDAPStorageMapper
@@ -168,7 +168,7 @@
 
     - name: Get e-mail LDAP mapper id
       ansible.builtin.command: >-
-        docker exec {{ keycloak_service_container_name }} {{ kcadm_binary }}
+        docker exec {{ keycloak_service_container_name }} {{ keycloak_kcadm_binary }}
           get "realms/{{ keycloak_realm }}/components"
             --query name="email"
             --query providerId="user-attribute-ldap-mapper"
@@ -190,7 +190,7 @@
     # Map LDAP attribute mailPrimaryAddress to user.model.attribute "email"
     - name: Add e-mail mapper to LDAP storage provider
       ansible.builtin.command: >-
-        docker exec {{ keycloak_service_container_name }} {{ kcadm_binary }}
+        docker exec {{ keycloak_service_container_name }} {{ keycloak_kcadm_binary }}
           update "realms/{{ keycloak_realm }}/components/{{ email_mapper_id }}"
             --set providerId=user-attribute-ldap-mapper
             --set providerType=org.keycloak.storage.ldap.mappers.LDAPStorageMapper
@@ -202,7 +202,7 @@
     # Check if openstack-default-project mapper exists
     - name: Get the openstack-default-project mapper ID
       ansible.builtin.command: >-
-        docker exec {{ keycloak_service_container_name }} {{ kcadm_binary }}
+        docker exec {{ keycloak_service_container_name }} {{ keycloak_kcadm_binary }}
           get "realms/{{ keycloak_realm }}/components"
             --query name="openstack-default-project"
             --query providerId="hardcoded-attribute-mapper"
@@ -224,7 +224,7 @@
     # and have it unconditionally map to the "admin" project
     - name: Add openstack-default-project mapper to LDAP storage provider
       ansible.builtin.command: >-
-        docker exec {{ keycloak_service_container_name }} {{ kcadm_binary }}
+        docker exec {{ keycloak_service_container_name }} {{ keycloak_kcadm_binary }}
           create "realms/{{ keycloak_realm }}/components"
             --set name="openstack-default-project"
             --set parentId="{{ ldap_provider_id[0] }}"
@@ -239,7 +239,7 @@
     # Check if openstack-user-domain mapper exists
     - name: Get the openstack-user-domain mapper ID
       ansible.builtin.command: >-
-        docker exec {{ keycloak_service_container_name }} {{ kcadm_binary }}
+        docker exec {{ keycloak_service_container_name }} {{ keycloak_kcadm_binary }}
           get "realms/{{ keycloak_realm }}/components"
             --query name="openstack-user-domain"
             --query providerId="hardcoded-attribute-mapper"
@@ -261,7 +261,7 @@
     # and have it unconditionally map to the "default" domain
     - name: Add openstack-user-domain mapper to LDAP storage provider
       ansible.builtin.command: >-
-        docker exec {{ keycloak_service_container_name }} {{ kcadm_binary }}
+        docker exec {{ keycloak_service_container_name }} {{ keycloak_kcadm_binary }}
           create "realms/{{ keycloak_realm }}/components"
             --set name="openstack-user-domain"
             --set parentId="{{ ldap_provider_id[0] }}"

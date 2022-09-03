@@ -8,30 +8,6 @@ Notes
 
    **Therefore do not use the testbed publicly.**
 
-.. note::
-
-   The Keycloak private key stored in ``environments/custom/files/keycloak/private_key.pem``
-   and the certificate stored in ``environments/custom/files/keycloak/cert.crt``,
-   can be regenerated with the following commands:
-
-   1) Generate the private key:
-
-   .. code-block:: bash
-
-      openssl genrsa -out private_key.pem 2048
-
-   2) Generate a certificate signing request:
-
-   .. code-block:: bash
-
-      openssl req -new -key  private_key.pem -out  csr.csr
-
-   3) Generate the certificate file:
-
-   .. code-block:: bash
-
-      openssl x509 -req -days 365 -in csr.csr -signkey  private_key.pem -out cert.crt
-
 
 * The configuration is intentionally kept quite static. Please create no PRs to make the
   configuration more flexible/dynamic.
