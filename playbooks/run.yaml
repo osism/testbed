@@ -7,6 +7,7 @@
     cloud_env: betacloud-ci
     manager_address_file: "{{ basepath }}/terraform/.MANAGER_ADDRESS.{{ cloud_env }}"
     manual_deploy: false
+    repo_path: "{{ ansible_user_dir }}/src/github.com"
   tasks:
     - name: make CI deployment with terraform
       shell:
@@ -40,12 +41,12 @@
         chdir: "{{ basepath }}/ansible"
         cmd: |
           cp ../terraform/.id* .
-          {{ ansible_playbook }} -i ../terraform/inventory.{{ cloud_env }} --key-file .id_rsa.{{ cloud_env }} manager-part-0.yml -e cloud_env={{ cloud_env }}
+          {{ ansible_playbook }} -i ../terraform/inventory.{{ cloud_env }} --key-file .id_rsa.{{ cloud_env }} manager-part-0.yml -e cloud_env={{ cloud_env }} -e repo_path={{ repo_path }}
     - name: run part 1+2
       shell:
         chdir: "{{ basepath }}/ansible"
         cmd: |
-          {{ ansible_playbook }} -i ../terraform/inventory.{{ cloud_env }} --key-file .id_rsa.{{ cloud_env }} manager-part-1.yml -e cloud_env={{ cloud_env }}
+          {{ ansible_playbook }} -i ../terraform/inventory.{{ cloud_env }} --key-file .id_rsa.{{ cloud_env }} manager-part-1.yml -e cloud_env={{ cloud_env }} -e repo_path={{ repo_path }}
     - name: run part 3
       shell:
         chdir: "{{ basepath }}/ansible"
