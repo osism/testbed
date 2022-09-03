@@ -1,6 +1,8 @@
 ---
 - hosts: all
   vars:
+    ansible_galaxy: ~/venv/bin/ansible-galaxy
+    ansible_playbook: ~/venv/bin/ansible-playbook
     basepath: "{{ ansible_user_dir }}/src/github.com/osism/testbed"
     cloud_env: betacloud-ci
     manager_address_file: "{{ basepath }}/terraform/.MANAGER_ADDRESS.{{ cloud_env }}"
@@ -21,8 +23,8 @@
       shell:
         chdir: "{{ ansible_user_dir }}"
         cmd: |
-          venv/bin/ansible-galaxy collection install --force "{{ ansible_user_dir }}/src/github.com/osism/ansible-collection-commons"
-          venv/bin/ansible-galaxy collection install --force "{{ ansible_user_dir }}/src/github.com/osism/ansible-collection-services"
+          {{ ansible_galaxy }} collection install --force "{{ ansible_user_dir }}/src/github.com/osism/ansible-collection-commons"
+          {{ ansible_galaxy }} collection install --force "{{ ansible_user_dir }}/src/github.com/osism/ansible-collection-services"
       when: not manual_deploy
     - name: Wait 300 seconds for port 22 to become open and contain "OpenSSH"
       wait_for:
@@ -38,12 +40,12 @@
         chdir: "{{ basepath }}/ansible"
         cmd: |
           cp ../terraform/.id* .
-          ~/venv/bin/ansible-playbook -i ../terraform/inventory.{{ cloud_env }} --key-file .id_rsa.{{ cloud_env }} manager-part-0.yml -e cloud_env={{ cloud_env }}
+          {{ ansible_playbook }} -i ../terraform/inventory.{{ cloud_env }} --key-file .id_rsa.{{ cloud_env }} manager-part-0.yml -e cloud_env={{ cloud_env }}
     - name: run part 1+2
       shell:
         chdir: "{{ basepath }}/ansible"
         cmd: |
-          ~/venv/bin/ansible-playbook -i ../terraform/inventory.{{ cloud_env }} --key-file .id_rsa.{{ cloud_env }} manager-part-1.yml -e cloud_env={{ cloud_env }}
+          {{ ansible_playbook }} -i ../terraform/inventory.{{ cloud_env }} --key-file .id_rsa.{{ cloud_env }} manager-part-1.yml -e cloud_env={{ cloud_env }}
     - name: run part 3
       shell:
         chdir: "{{ basepath }}/ansible"
