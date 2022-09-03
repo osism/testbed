@@ -53,7 +53,3 @@ Notes
 * To speed up the Ansible playbooks, `ARA <https://ara.recordsansible.org>`_ can be disabled. This
   is done by executing ``/opt/configuration/scripts/disable-ara.sh``. Afterwards no more logs are
   available in the ARA web interface.
-* There is a prepared OpenStack base image. This will create the testbed a bit faster. On the
-  Betacloud this image is available as ``OSISM base``. It is used as default in the
-  Betacloud environment files. Further details can be found in the repository
-  `osism/testbed-image <https://github.com/osism/testbed-image>`_.
