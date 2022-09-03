@@ -1,11 +1,10 @@
 ---
 - name: set up the manager part 1
   hosts: testbed-manager.testbed.osism.xyz
-  gather_facts: false
   vars:
     operator_user: dragon
     ansible_ssh_user: dragon
-    repo_path: /home/ubuntu/src/github.com
+    repo_path: "{{ ansible_user_dir }}/src/github.com"
   tasks:
     - name: Copy SSH public key
       ansible.builtin.copy:

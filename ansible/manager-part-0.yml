@@ -1,9 +1,8 @@
 ---
 - name: set up the manager part 0
   hosts: testbed-manager.testbed.osism.xyz
-  gather_facts: false
   vars:
-    repo_path: /home/ubuntu/src/github.com
+    repo_path: "{{ ansible_user_dir }}/src/github.com"
   tasks:
     - name: Update APT cache and run dist-upgrade
       become: true
