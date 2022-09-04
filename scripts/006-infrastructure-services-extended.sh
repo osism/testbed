@@ -3,7 +3,11 @@ set -e
 
 export INTERACTIVE=false
 
-osism apply patchman
+task_ids=$(osism apply --no-wait --format script patchman 2>&1)
+task_ids+=" "$(osism apply --no-wait --format script nexus 2>&1)
+
+osism wait --output --format script --delay 2 $task_ids
+
 osism apply patchman-client -- -e patchman_client_update_force=true
 
 # NOTE: After all clients have transferred their data with the
@@ -14,5 +18,3 @@ osism apply patchman-client -- -e patchman_client_update_force=true
 #       its own.
 
 osism apply patchman -- -e patchman_update_force=true
-
-osism apply nexus
