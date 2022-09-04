@@ -1,11 +1,7 @@
 ---
-# bootstrap-ceph-dashboard
-
-ceph_dashboard_username: admin
-
 # keycloak
 
-kcadm_binary: "/opt/jboss/keycloak/bin/kcadm.sh"
+keycloak_kcadm_binary: "/opt/jboss/keycloak/bin/kcadm.sh"
 keycloak_realm: "osism"
 keycloak_url: "http://localhost:8080"
 keycloak_service_container_name: "keycloak"
@@ -28,13 +24,14 @@ keystone_redirect_uris:
   - "https://192.168.16.254:5000/redirect_uri"
   - "https://192.168.16.254"
 
-private_key_file_path: "{{ configuration_directory }}/environments/custom/files/keycloak/private_key.pem"
-private_key_data: "{{ lookup('file', private_key_file_path)| regex_replace('\n', '\\\\n') }}"
+keycloak_private_key_file_path: "{{ configuration_directory }}/environments/custom/files/keycloak/private_key.pem"
+keycloak_private_key_data: "{{ lookup('file', keycloak_private_key_file_path)| regex_replace('\n', '\\\\n') }}"
 
-certificate_file_path: "{{ configuration_directory }}/environments/custom/files/keycloak/cert.crt"
-certificate_data: "{{ lookup('file', certificate_file_path)| regex_replace('\n', '\\\\n') }}"
+keycloak_certificate_file_path: "{{ configuration_directory }}/environments/custom/files/keycloak/cert.crt"
+keycloak_certificate_data: "{{ lookup('file', keycloak_certificate_file_path)| regex_replace('\n', '\\\\n') }}"
 
 # openldap
+
 openldap_service_container_name: "openldap"
 ldap_base: "dc=osism,dc=local"
 # In case of OpenLDAP this should be {{ openldap_password }}
@@ -43,5 +40,6 @@ ldap_url: "ldap://{{ openldap_host }}:389"
 ldap_users: "cn=users,{{ ldap_base }}"
 
 # umc-config
+
 umc_ldap_user: "umc-admin"
 umc_ldap_binddn: "uid={{ umc_ldap_user }},{{ ldap_users }}"
