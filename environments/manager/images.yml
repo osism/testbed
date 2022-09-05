@@ -7,7 +7,7 @@ adminer_image: "{{ docker_registry }}/library/adminer:{{ adminer_tag }}"
 ara_server_tag: "1.5.8"
 ara_server_image: "{{ docker_registry_ansible|default('quay.io') }}/osism/ara-server:{{ ara_server_tag }}"
 
-mariadb_tag: "10.8.3"
+mariadb_tag: "10.9.2"
 mariadb_image: "{{ docker_registry }}/library/mariadb:{{ mariadb_tag }}"
 
 netbox_tag: "v3.2.5-ldap"
@@ -40,7 +40,7 @@ osism_image: "{{ docker_registry_ansible }}/osism/osism:{{ osism_tag }}"
 osism_netbox_tag: "{{ osism_version|default('latest') }}"
 osism_netbox_image: "{{ docker_registry_ansible }}/osism/osism-netbox:{{ osism_netbox_tag }}"
 
-vault_tag: "1.11.2"
+vault_tag: "1.11.3"
 vault_image: "{{ docker_registry }}/hashicorp/vault:{{ vault_tag }}"
 
 traefik_tag: "v2.8.4"
