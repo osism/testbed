@@ -12,6 +12,10 @@
       - osism/ansible-collection-commons
       - osism/ansible-collection-services
       - osism/testbed
+    irrelevant-files:
+      - ^LICENSE$
+      - ^README.md$
+      - ^doc/.*$
     timeout: 10800
 
 - project:
