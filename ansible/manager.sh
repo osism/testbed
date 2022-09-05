@@ -73,6 +73,9 @@ if [[ -e /etc/OTC_region ]]; then
     echo "nova_compute_virt_type: qemu" >> /opt/configuration/environments/kolla/configuration.yml
 fi
 
+# pull images
+sh -c '/opt/configuration/scripts/000-pull-images.sh'
+
 # deploy helper services
 sh -c '/opt/configuration/scripts/001-helper-services.sh'
 
