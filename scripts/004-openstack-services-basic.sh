@@ -4,17 +4,19 @@ set -e
 export INTERACTIVE=false
 
 osism apply keystone
-osism apply horizon
 osism apply placement
-osism apply glance
-osism apply cinder
-osism apply neutron
 osism apply nova
 
-osism apply barbican
-osism apply designate
-osism apply heat
-osism apply octavia
+task_ids=$(osism apply --no-wait --format script horizon 2>&1)
+task_ids+=" "$(osism apply --no-wait --format script glance 2>&1)
+task_ids+=" "$(osism apply --no-wait --format script neutron 2>&1)
+task_ids+=" "$(osism apply --no-wait --format script cinder 2>&1)
+task_ids+=" "$(osism apply --no-wait --format script barbican 2>&1)
+task_ids+=" "$(osism apply --no-wait --format script designate 2>&1)
+task_ids+=" "$(osism apply --no-wait --format script heat 2>&1)
+task_ids+=" "$(osism apply --no-wait --format script octavia 2>&1)
+
+osism wait --output --format script --delay 2 $task_ids
 
 osism apply --environment openstack bootstrap-keystone
 osism apply --environment openstack bootstrap-basic
