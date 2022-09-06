@@ -92,6 +92,10 @@ enable_neutron_qos: "yes"
 nova_libvirt_extra_volumes:
   - "nova_libvirt_run:/var/run/libvirt"
 
+# NOTE: Disable the debugging logs for Libvirt as Libvirt writes a lot of logs
+#       that are not of interest.
+nova_libvirt_logging_debug: "no"
+
 # nova
 nova_console: novnc
 
