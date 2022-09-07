@@ -254,7 +254,7 @@ flavor_manager            SCS-4V:8:50
 flavor_node               SCS-8V:32:50
 image                     Ubuntu 20.04
 network_availability_zone south-2
-openstack_version         xena
+openstack_version         yoga
 prefix                    testbed
 public                    external
 volume_availability_zone  south-2
@@ -267,7 +267,7 @@ With the file ``environments/CLOUDPROVIDER.tfvars`` the parameters of the enviro
 .. code-block:: ini
 
    image             = "OSISM base"
-   openstack_version = "xena"
+   openstack_version = "yoga"
 
 Beyond the terraform variables, you can enable special overrides by adding special
 comments into the .tfvars files. The syntax is ``# override:XXXX``. This will

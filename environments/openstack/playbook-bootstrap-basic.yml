@@ -302,7 +302,7 @@
 
     - name: Download amphora image
       ansible.builtin.get_url:
-        url: https://minio.services.osism.tech/openstack-octavia-amphora-image/octavia-amphora-haproxy-xena.qcow2
+        url: https://minio.services.osism.tech/openstack-octavia-amphora-image/octavia-amphora-haproxy-yoga.qcow2
         dest: /tmp/amphora.img
         mode: 0644
 
