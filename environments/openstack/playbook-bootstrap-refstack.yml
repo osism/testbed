@@ -109,12 +109,6 @@
         - refstack-1
       register: flavors
 
-    # - name: Download image
-    #   ansible.builtin.get_url:
-    #     url: http://cloud-images.ubuntu.com/focal/current/focal-server-cloudimg-amd64.img
-    #     dest: /tmp/image.img
-    #     mode: 0644
-
     - name: Download image
       ansible.builtin.get_url:
         url: https://github.com/cirros-dev/cirros/releases/download/0.5.2/cirros-0.5.2-x86_64-disk.img

@@ -203,6 +203,10 @@
     - ansible.builtin
     - openstack.cloud
 
+  vars:
+    url_ubuntu_image: https://cloud-images.ubuntu.com/minimal/releases/jammy/release/ubuntu-22.04-minimal-cloudimg-amd64.img
+    url_cirros_image: https://github.com/cirros-dev/cirros/releases/download/0.5.2/cirros-0.5.2-x86_64-disk.img
+
   tasks:
     - name: Create test project
       openstack.cloud.project:
@@ -235,7 +239,7 @@
 
     - name: Download cirros image
       ansible.builtin.get_url:
-        url: https://github.com/cirros-dev/cirros/releases/download/0.5.2/cirros-0.5.2-x86_64-disk.img
+        url: "{{ url_cirros_image }}"
         dest: /tmp/cirros.img
         mode: 0644
 
@@ -257,9 +261,9 @@
     - name: Make cirros image visible
       ansible.builtin.command: openstack --os-cloud admin image set --public cirros  # noqa 301
 
-    - name: Download ubuntu minimal 20.04 image
+    - name: Download ubuntu minimal 22.04 image
       ansible.builtin.get_url:
-        url: http://cloud-images.ubuntu.com/minimal/releases/focal/release/ubuntu-20.04-minimal-cloudimg-amd64.img
+        url: "{{ url_ubuntu_image }}"
         dest: /tmp/ubuntu.img
         mode: 0644
 
@@ -268,11 +272,11 @@
       register: date
       changed_when: false
 
-    - name: Upload ubuntu minimal 20.04 image
+    - name: Upload ubuntu minimal 22.04 image
       openstack.cloud.image:
         cloud: admin
         state: present
-        name: "Ubuntu 20.04"
+        name: "Ubuntu 22.04"
         container_format: bare
         disk_format: qcow2
         filename: /tmp/ubuntu.img
@@ -290,15 +294,15 @@
           image_build_date: "{{ date.stdout }}"
           image_description: https://launchpad.net/cloud-images
           image_original_user: ubuntu
-          image_source: http://cloud-images.ubuntu.com/minimal/releases/focal/release/ubuntu-20.04-minimal-cloudimg-amd64.img
+          image_source: "{{ url_ubuntu_image }}"
           os_distro: ubuntu
-          os_version: "20.04"
+          os_version: "22.04"
           replace_frequency: never
           uuid_validity: forever
 
     # NOTE: is_public from os_image is not working like expected
-    - name: Make ubuntu minimal 20.04 image visible
-      ansible.builtin.command: openstack --os-cloud admin image set --public 'Ubuntu 20.04'  # noqa 301
+    - name: Make ubuntu minimal 22.04 image visible
+      ansible.builtin.command: openstack --os-cloud admin image set --public 'Ubuntu 22.04'  # noqa 301
 
     - name: Download amphora image
       ansible.builtin.get_url:
