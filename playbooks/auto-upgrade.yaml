@@ -1,0 +1,89 @@
+---
+- name: auto-upgrade
+  hosts: localhost
+  vars:
+    upgrade_path:
+      - /opt/configuration/terraform/betacloud-ci.auto.tfvars
+      - /opt/openstackclient/docker-compose.yml
+      - /opt/manager/docker-compose.yml
+      - /opt/configuration/environments/manager/configuration.yml
+      - /opt/configuration/environments/manager/images.yml
+      - /opt/configuration/environments/openstack/playbook-bootstrap-basic.yml
+      - /opt/configuration/terraform/variables.tf
+      - /opt/configuration/terraform/Makefile
+      - /opt/configuration/scripts/009-openstack-services-baremetal.sh
+
+    extended_upgrade_path:
+      - /opt/manager-vars.sh
+      - /opt/src/osism/ansible-collection-services/ansible-collection-services/roles/openstackclient/defaults/main.yml
+      - /opt/src/osism/ansible-collection-services/ansible-collection-services/roles/manager/defaults/main.yml
+
+    old_version: "xena"
+    new_version: "yoga"  # Please configure here the new Version
+
+  tasks:
+    - name: Change OpenStack Version
+      ansible.builtin.replace:
+        path: "{{ item }}"
+        regexp: '^(.*){{ old_version }}(.*)$'
+        replace: '\1{{ new_version }}\2'
+      loop: "{{ upgrade_path }}"
+
+    - name: Change OpenStack Verison
+      become: true
+      ansible.builtin.replace:
+        path: "{{ item }}"
+        regexp: '^(.*){{ old_version }}(.*)$'
+        replace: '\1{{ new_version }}\2'
+        group: root
+        owner: root
+        mode: 0644
+      loop: "{{ extended_upgrade_path }}"
+
+    - name: run manager update
+      ansible.builtin.command: osism-update-manager
+
+    - name: Sync reconciler
+      ansible.builtin.command: osism reconciler sync
+
+    - name: Gather facts
+      ansible.builtin.command: osism apply facts
+
+    - name: run infrastructure script
+      ansible.builtin.command: "./scripts/002-infrastructure-services-basic.sh"
+      args:
+        chdir: /opt/configuration
+
+    - name: Fix keystone config failure
+      ansible.builtin.command: "rm environments/kolla/files/overlays/keystone/wsgi-keystone.conf"
+      args:
+        chdir: /opt/configuration
+
+    - name: run openstack-services script
+      ansible.builtin.command: "./scripts/004-openstack-services-basic.sh"
+      args:
+        chdir: /opt/configuration
+
+    - name: run monitoring-services script
+      ansible.builtin.command: "./scripts/005-monitoring-services.sh"
+      args:
+        chdir: /opt/configuration
+
+    - name: run openstack-services-baremetal script
+      ansible.builtin.command: "./scripts/009-openstack-services-baremetal.sh"
+      args:
+        chdir: /opt/configuration
+
+- name: kill old containers
+  hosts:
+    - testbed-node-0
+    - testbed-node-1
+    - testbed-node-2
+  tasks:
+    - name: kill ironic-containers
+      community.docker.docker_container:
+        name: "{{ item }}"
+        state: absent
+      loop:
+        - ironic_pxe
+        - ironic_ipxe
