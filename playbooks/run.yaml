@@ -12,7 +12,7 @@
     - name: make CI deployment with terraform
       shell:
         chdir: "{{ basepath }}/terraform"
-        cmd: make ENVIRONMENT={{ cloud_env }} deploy-openstack
+        cmd: make ENVIRONMENT={{ cloud_env }} deploy
       when: not manual_deploy
     - name: fetch manager_host address
       shell: cat "{{ manager_address_file }}"

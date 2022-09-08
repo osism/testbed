@@ -57,11 +57,8 @@ write_files:
       export MANAGER_VERSION=${var.manager_version}
       export OPENSTACK_VERSION=${var.openstack_version}
 
-      export DEPLOY_CEPH=${var.deploy_ceph}
       export DEPLOY_IDENTITY=${var.deploy_identity}
-      export DEPLOY_INFRASTRUCTURE=${var.deploy_infrastructure}
       export DEPLOY_MONITORING=${var.deploy_monitoring}
-      export DEPLOY_OPENSTACK=${var.deploy_openstack}
 
     path: /opt/manager-vars.sh
     permissions: '0644'

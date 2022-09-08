@@ -73,39 +73,5 @@ if [[ -e /etc/OTC_region ]]; then
     echo "nova_compute_virt_type: qemu" >> /opt/configuration/environments/kolla/configuration.yml
 fi
 
-# pull images
-sh -c '/opt/configuration/scripts/000-pull-images.sh'
-
-# deploy helper services
-sh -c '/opt/configuration/scripts/001-helper-services.sh'
-
-# deploy identity services
-# NOTE: All necessary infrastructure services are also deployed.
-if [[ "$DEPLOY_IDENTITY" == "true" ]]; then
-    sh -c '/opt/configuration/scripts/999-identity-services.sh'
-fi
-
-# deploy infrastructure services
-if [[ "$DEPLOY_INFRASTRUCTURE" == "true" ]]; then
-    sh -c '/opt/configuration/scripts/002-infrastructure-services-basic.sh'
-fi
-
-# deploy ceph services
-if [[ "$DEPLOY_CEPH" == "true" ]]; then
-    sh -c '/opt/configuration/scripts/003-ceph-services.sh'
-fi
-
-# deploy openstack services
-if [[ "$DEPLOY_OPENSTACK" == "true" ]]; then
-    if [[ "$DEPLOY_INFRASTRUCTURE" != "true" ]]; then
-        echo "infrastructure services are necessary for the deployment of OpenStack"
-    else
-        sh -c '/opt/configuration/scripts/004-openstack-services-basic.sh'
-        sh -c '/opt/configuration/scripts/009-openstack-services-baremetal.sh'
-    fi
-fi
-
-# deploy monitoring services
-if [[ "$DEPLOY_MONITORING" == "true" ]]; then
-    sh -c '/opt/configuration/scripts/005-monitoring-services.sh'
-fi
+# deploy services
+sh -c '/opt/configuration/scripts/deploy-services.sh'
