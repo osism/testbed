@@ -204,6 +204,7 @@
     - openstack.cloud
 
   vars:
+    openstack_version: yoga
     url_ubuntu_image: https://cloud-images.ubuntu.com/minimal/releases/jammy/release/ubuntu-22.04-minimal-cloudimg-amd64.img
     url_cirros_image: https://github.com/cirros-dev/cirros/releases/download/0.5.2/cirros-0.5.2-x86_64-disk.img
 
@@ -300,7 +301,7 @@
 
     - name: Download amphora image
       ansible.builtin.get_url:
-        url: https://minio.services.osism.tech/openstack-octavia-amphora-image/octavia-amphora-haproxy-yoga.qcow2
+        url: "https://minio.services.osism.tech/openstack-octavia-amphora-image/octavia-amphora-haproxy-{{ openstack_version }}.qcow2"
         dest: /tmp/amphora.img
         mode: 0644
 

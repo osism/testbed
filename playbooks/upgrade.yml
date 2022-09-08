@@ -1,0 +1,29 @@
+---
+- name: Deploy testbed
+  ansible.builtin.import_playbook: deploy.yml
+  vars:
+    version_ceph: pacific
+    version_manager: latest
+    version_openstack: xena
+
+- name: Upgrade testbed
+  hosts: all
+
+  vars:
+    basepath: "{{ ansible_user_dir }}/src/github.com/osism/testbed"
+    cloud_env: betacloud-ci
+
+    version_ceph_next: pacific
+    version_manager_next: latest
+    version_openstack_next: yoga
+
+  tasks:
+    - name: Run upgrade
+      shell:
+        chdir: "{{ basepath }}/terraform"
+        cmd: make ENVIRONMENT={{ cloud_env }} VERSION_MANAGER={{ version_manager_next }} VERSION_CEPH={{ version_ceph_next }} VERSION_OPENSTACK={{ version_openstack_next }} upgrade
+
+    - name: Run checks after the upgrade
+      shell:
+        chdir: "{{ basepath }}/terraform"
+        cmd: make ENVIRONMENT={{ cloud_env }} check

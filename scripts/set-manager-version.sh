@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
+set -x
+set -e
 
-DEFAULT_VERSION=latest
 VERSION=${1:-latest}
 
-sed -i "s/manager_version: ${DEFAULT_VERSION}/manager_version: ${VERSION}/g" environments/manager/configuration.yml
+sed -i "s/manager_version: .*/manager_version: ${VERSION}/g" /opt/configuration/environments/manager/configuration.yml

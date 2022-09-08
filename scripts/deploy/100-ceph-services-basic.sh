@@ -13,11 +13,6 @@ fi
 # NOTE: ceph-base = ceph-mons + ceph-mgrs + ceph-osds
 osism apply ceph-base
 
-task_ids=$(osism apply --no-wait --format script ceph-mdss 2>&1)
-task_ids+=" "$(osism apply --no-wait --format script ceph-rgws 2>&1)
-
-osism wait --output --format script --delay 2 $task_ids
-
 osism apply copy-ceph-keys
 osism apply cephclient
 osism apply ceph-bootstrap-dashboard

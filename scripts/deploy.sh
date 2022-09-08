@@ -2,7 +2,15 @@
 set -x
 set -e
 
+echo
+echo "# DEPLOY"
+echo
+
 source /opt/manager-vars.sh
+
+/opt/configuration/scripts/set-ceph-version.sh $CEPH_VERSION
+/opt/configuration/scripts/set-manager-version.sh $MANAGER_VERSION
+/opt/configuration/scripts/set-openstack-version.sh $OPENSTACK_VERSION
 
 wait_for_container_healthy() {
     local max_attempts="$1"

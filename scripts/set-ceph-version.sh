@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
+set -x
+set -e
 
-DEFAULT_VERSION=pacific
 VERSION=${1:-pacific}
 
-sed -i "s/ceph_version: ${DEFAULT_VERSION}/ceph_version: ${VERSION}/g" environments/manager/configuration.yml
+sed -i "s/ceph_version: .*/ceph_version: ${VERSION}/g" /opt/configuration/environments/manager/configuration.yml

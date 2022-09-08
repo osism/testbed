@@ -38,47 +38,53 @@ Deploy services
 On the testbed, the services can currently be deployed manually. In the future, these manual
 steps will be automated by Zuul CI.
 
+* Basic Ceph services
+
+  .. code-block:: console
+
+     /opt/configuration/scripts/deploy/100-ceph-services-basic.sh
+
+* Extended Ceph services (RGW + MDS)
+
+  .. code-block:: console
+
+     /opt/configuration/scripts/deploy/110-ceph-services-extended.sh
+
 * Basic infrastructure services (MariaDB, RabbitMQ, Redis, ...)
 
   .. code-block:: console
 
-     /opt/configuration/scripts/002-infrastructure-services-basic.sh
+     /opt/configuration/scripts/deploy/200-infrastructure-services-basic.sh
 
 * Extended infrastructure services (Patchman, phpMyAdmin, ...)
 
   .. code-block:: console
 
-     /opt/configuration/scripts/006-infrastructure-services-extended.sh
-
-* Ceph services
-
-  .. code-block:: console
-
-     /opt/configuration/scripts/003-ceph-services.sh
+     /opt/configuration/scripts/deploy/210-infrastructure-services-extended.sh
 
 * Basic OpenStack services (Compute, Storage, ...)
 
   .. code-block:: console
 
-     /opt/configuration/scripts/004-openstack-services-basic.sh
+     /opt/configuration/scripts/deploy/300-openstack-services-basic.sh
 
 * Extended OpenStack services (Telemetry, Kubernetes, ...)
 
   .. code-block:: console
 
-     /opt/configuration/scripts/007-openstack-services-extended.sh
+     /opt/configuration/scripts/deploy/310-openstack-services-extended.sh
 
 * Additional OpenStack services (Rating, Container, ...)
 
   .. code-block:: console
 
-     /opt/configuration/scripts/008-openstack-services-additional.sh
+     /opt/configuration/scripts/deploy/330-openstack-services-additional.sh
 
 * Monitoring services (Netdata, Prometheus exporters, ...)
 
   .. code-block:: console
 
-     /opt/configuration/scripts/005-monitoring-services.sh
+     /opt/configuration/scripts/deploy/400-monitoring-services.sh
 
 Update services
 ===============
