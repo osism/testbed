@@ -67,21 +67,6 @@ variable "port_security_enabled" {
   default = false
 }
 
-variable "deploy_infrastructure" {
-  type    = bool
-  default = false
-}
-
-variable "deploy_openstack" {
-  type    = bool
-  default = false
-}
-
-variable "deploy_ceph" {
-  type    = bool
-  default = false
-}
-
 variable "deploy_monitoring" {
   type    = bool
   default = false

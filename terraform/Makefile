@@ -88,35 +88,6 @@ deploy-identity: init
 	@echo "deploy_identity = true" >> $(ENVIRONMENT).auto.tfvars
 	@$(TERRAFORM) apply $(APPLY_PARAMS) $(PARAMS)
 
-deploy-infra: init
-	@touch .deploy.$(ENVIRONMENT)
-	@echo "configuration_version = \"$(CONFIGURATION)\"" >> $(ENVIRONMENT).auto.tfvars
-	@echo "deploy_infrastructure = true" >> $(ENVIRONMENT).auto.tfvars
-	@$(TERRAFORM) apply $(APPLY_PARAMS) $(PARAMS)
-
-deploy-ceph: init
-	@touch .deploy.$(ENVIRONMENT)
-	@echo "configuration_version = \"$(CONFIGURATION)\"" >> $(ENVIRONMENT).auto.tfvars
-	@echo "deploy_ceph = true" >> $(ENVIRONMENT).auto.tfvars
-	@$(TERRAFORM) apply $(APPLY_PARAMS) $(PARAMS)
-
-deploy-openstack: init
-	@touch .deploy.$(ENVIRONMENT)
-	@echo "configuration_version = \"$(CONFIGURATION)\"" >> $(ENVIRONMENT).auto.tfvars
-	@echo "deploy_ceph = true" >> $(ENVIRONMENT).auto.tfvars
-	@echo "deploy_infrastructure = true" >> $(ENVIRONMENT).auto.tfvars
-	@echo "deploy_openstack = true" >> $(ENVIRONMENT).auto.tfvars
-	@$(TERRAFORM) apply $(APPLY_PARAMS) $(PARAMS)
-
-deploy-full: init
-	@touch .deploy.$(ENVIRONMENT)
-	@echo "configuration_version = \"$(CONFIGURATION)\"" >> $(ENVIRONMENT).auto.tfvars
-	@echo "deploy_ceph = true" >> $(ENVIRONMENT).auto.tfvars
-	@echo "deploy_infrastructure = true" >> $(ENVIRONMENT).auto.tfvars
-	@echo "deploy_monitoring = true" >> $(ENVIRONMENT).auto.tfvars
-	@echo "deploy_openstack = true" >> $(ENVIRONMENT).auto.tfvars
-	@$(TERRAFORM) apply $(APPLY_PARAMS) $(PARAMS)
-
 check: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
 	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
 	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(ENVIRONMENT) $(USERNAME)@$$MANAGER_ADDRESS /opt/configuration/contrib/check_openstack_services.sh; \
@@ -176,7 +147,7 @@ log: .deploy.$(ENVIRONMENT)
 
 .deploy.$(ENVIRONMENT): init
 	@STAT=$$($(TERRAFORM) state list); \
-	if test -n "$$STAT"; then touch .deploy.$(ENVIRONMENT); else echo "use make deploy or deploy-infra or ...."; exit 1; fi
+	if test -n "$$STAT"; then touch .deploy.$(ENVIRONMENT); else echo "use make deploy or deploy-identity"; exit 1; fi
 
 .MANAGER_ADDRESS.$(ENVIRONMENT): .deploy.$(ENVIRONMENT)
 	@MANAGER_ADDRESS=$$($(TERRAFORM) output manager_address); \
@@ -225,4 +196,4 @@ plan: dry-run
 push: state-push
 tunnel: sshuttle
 
-PHONY: clean console attach detach sshuttle ssh dry-run list deploy deploy-infra deploy-ceph deploy-openstack watch openstack create log login scp copy address check rally refstack
+PHONY: clean console attach detach sshuttle ssh dry-run list deploy deploy-identity watch openstack create log login scp copy address check rally refstack
