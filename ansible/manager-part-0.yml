@@ -2,19 +2,23 @@
 - name: set up the manager part 0
   hosts: testbed-manager.testbed.osism.xyz
   gather_facts: false
+
   vars:
     repo_path: /home/ubuntu/src/github.com
+
   tasks:
     - name: Update APT cache and run dist-upgrade
       become: true
       ansible.builtin.apt:
         upgrade: dist
         update_cache: true
+
     - name: Set APT options on manager
       become: true
       ansible.builtin.shell: |
         echo "APT::Acquire::Retries \"3\";" > /etc/apt/apt.conf.d/80-retries
         echo '* libraries/restart-without-asking boolean true' | debconf-set-selections
+
     - name: Install packages on manager
       become: true
       ansible.builtin.shell: |
@@ -39,10 +43,12 @@
           python3-winrm \
           python3-xmltodict
           apt-get remove --yes ansible
+
     - name: Install ansible on manager
       become: true
       ansible.builtin.shell: |
           pip3 install --no-cache-dir 'ansible>=5.0.0,<6.0.0'
+
     - name: Create source directories
       become: true
       ansible.builtin.file:
@@ -54,6 +60,7 @@
       with_items:
         - osism/ansible-collection-commons
         - osism/ansible-collection-services
+
     - name: Copy sources
       ansible.builtin.synchronize:
         src: "{{ repo_path }}/{{ item }}"

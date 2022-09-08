@@ -51,7 +51,7 @@ steps need to be performed for a deployment:
 
      ```
      cd ~/src/github.com/osism/testbed
-     ~/venv/bin/ansible-playbook playbooks/run.yaml -i ansible/localhost_inventory.yaml -e cloud_env=$ENVIRONMENT
+     ~/venv/bin/ansible-playbook playbooks/run.yml -i ansible/localhost_inventory.yml -e cloud_env=$ENVIRONMENT
      ```
 
 ## Point of entry
