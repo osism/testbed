@@ -1,5 +1,5 @@
 ---
-- name: keycloak - configure OIDC Client for Keystone
+- name: Keycloak - configure OIDC Client for Keystone
   hosts: manager
   gather_facts: false
 
