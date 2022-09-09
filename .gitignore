@@ -1,3 +1,4 @@
+.ansible-lint-rules/__pycache__/
 *.auto.tfvars
 .*.swp
 .MANAGER_ADDRESS.*

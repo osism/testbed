@@ -120,6 +120,7 @@
         cloud: admin
         state: present
         name: "{{ item }}"
+        is_public: true
         container_format: bare
         disk_format: qcow2
         filename: /tmp/image.img
@@ -130,14 +131,6 @@
         - refstack-0
         - refstack-1
       register: images
-
-    # NOTE: is_public from os_image is not working like expected
-
-    - name: Make images visible
-      ansible.builtin.command: "openstack --os-cloud admin image set --public {{ item }}"  # noqa 301
-      loop:
-        - refstack-0
-        - refstack-1
 
     - name: Get public network
       openstack.cloud.networks_info:
@@ -209,8 +202,9 @@
       delegate_to: testbed-manager
 
     - name: Check swift endpoint
-      ansible.builtin.command: openstack --os-cloud admin endpoint list --service swift  # noqa 301
+      ansible.builtin.command: openstack --os-cloud admin endpoint list --service swift
       register: result
+      changed_when: false
       delegate_to: testbed-manager
 
     - name: Set swift in tempest.conf

@@ -1,5 +1,5 @@
 ---
-- name: keycloak - configure LDAP federation for Keystone
+- name: Keycloak - configure LDAP federation for Keystone
   hosts: manager
   gather_facts: false
 
