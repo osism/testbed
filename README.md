@@ -68,12 +68,7 @@ getting started with the testbed after full deployment.
 
 ### Syntax checks
 
-[![Check ansible inventory](https://github.com/osism/testbed/actions/workflows/check-ansible-inventory.yml/badge.svg)](https://github.com/osism/testbed/actions/workflows/check-ansible-inventory.yml)
-[![Check ansible syntax](https://github.com/osism/testbed/actions/workflows/check-ansible-syntax.yml/badge.svg)](https://github.com/osism/testbed/actions/workflows/check-ansible-syntax.yml)
-[![Check python syntax](https://github.com/osism/testbed/actions/workflows/check-python-syntax.yml/badge.svg)](https://github.com/osism/testbed/actions/workflows/check-python-syntax.yml)
-[![Check rst syntax](https://github.com/osism/testbed/actions/workflows/check-rst-syntax.yml/badge.svg)](https://github.com/osism/testbed/actions/workflows/check-rst-syntax.yml)
 [![Check terraform syntax](https://github.com/osism/testbed/actions/workflows/check-terraform-syntax.yml/badge.svg)](https://github.com/osism/testbed/actions/workflows/check-terraform-syntax.yml)
-[![Check yaml syntax](https://github.com/osism/testbed/actions/workflows/check-yaml-syntax.yml/badge.svg)](https://github.com/osism/testbed/actions/workflows/check-yaml-syntax.yml)
 
 ### Regular tasks
 
