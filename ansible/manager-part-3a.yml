@@ -1,11 +1,12 @@
 ---
-- name: set up the manager part 3
+- name: Set up the manager part 3
   hosts: testbed-manager.testbed.osism.xyz
+
   tasks:
     - name: Run part 3
       become: true
       become_user: dragon
       ansible.builtin.shell:
-        chdir: /opt/configuration/ansible
+        chdir: /opt/configuration/scripts
         cmd: |
-          ./manager.sh
+          ./deploy.sh

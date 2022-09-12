@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
+set -x
+set -e
 
-DEFAULT_VERSION=yoga
 VERSION=${1:-yoga}
 
-sed -i "s/openstack_version: ${DEFAULT_VERSION}/openstack_version: ${VERSION}/g" environments/manager/configuration.yml
+sed -i "s/openstack_version: .*/openstack_version: ${VERSION}/g" /opt/configuration/environments/manager/configuration.yml

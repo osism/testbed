@@ -1,16 +1,19 @@
 ---
 - hosts: all
+
   vars:
     cloud_env: betacloud-ci
 
   tasks:
-    - name: make clean
+    - name: Make clean
       ansible.builtin.shell:
         chdir: "{{ ansible_user_dir }}/src/github.com/osism/testbed/terraform"
         cmd: make ENVIRONMENT={{ cloud_env }} clean 2>&1
 
 - hosts: all
-  roles:
-    - stage-output
+
   vars:
     stage_dir: "{{ ansible_user_dir }}/zuul-output"
+
+  roles:
+    - stage-output

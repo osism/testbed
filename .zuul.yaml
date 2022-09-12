@@ -1,13 +1,32 @@
 ---
 - job:
+    name: testbed-upgrade
+    parent: base-extra-logs
+    nodeset:
+      nodes:
+        - name: orchestrator
+          label: static-testbed
+    run: playbooks/upgrade.yml
+    post-run: playbooks/post.yml
+    required-projects:
+      - osism/ansible-collection-commons
+      - osism/ansible-collection-services
+      - osism/testbed
+    irrelevant-files:
+      - ^LICENSE$
+      - ^README.md$
+      - ^doc/.*$
+    timeout: 10800
+
+- job:
     name: testbed-deploy
     parent: base-extra-logs
     nodeset:
       nodes:
         - name: orchestrator
           label: static-testbed
-    run: playbooks/run.yaml
-    post-run: playbooks/post.yaml
+    run: playbooks/deploy.yml
+    post-run: playbooks/post.yml
     required-projects:
       - osism/ansible-collection-commons
       - osism/ansible-collection-services
@@ -25,6 +44,7 @@
         - tox-docs
         - tox-linters
         - testbed-deploy
+        - testbed-upgrade
     gate:
       jobs:
         - tox-docs
