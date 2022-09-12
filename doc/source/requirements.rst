@@ -56,6 +56,8 @@ Ansible
 
 Ansible in a current version must be installed and usable on the local workstation.
 
+Currently Ansible 6.x is supported.
+
 Information on installing Ansible can be found in the Ansible
 documentation: https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html
 
@@ -63,6 +65,8 @@ Terraform
 ---------
 
 Terraform in a current version must be installed and usable on the local workstation.
+
+Currently Terraform 1.2.x is supported.
 
 Information on installing Terraform can be found in the Terraform
 documentation: https://learn.hashicorp.com/tutorials/terraform/install-cli
