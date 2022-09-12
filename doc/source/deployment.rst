@@ -74,14 +74,8 @@ a local copy of it by running:
 
 .. code-block:: console
 
-   git clone https://github.com/osism/testbed
-
-The remainder of this document assumes that your working directory is the ``terraform``
-sub-directory of this repository, i.e. do:
-
-.. code-block:: console
-
-   cd testbed/terraform
+   mkdir -p ~/src/github.com/osism
+   git clone https://github.com/osism/testbed ~/src/github.com/osism/testbed
 
 Cloud access
 ------------
@@ -89,24 +83,11 @@ Cloud access
 There is a separate environment file, e.g. ``environments/betacloud.tfvars``, for
 each supported cloud provider.
 
-If the name of the cloud provider in ``clouds.yaml`` differs from the intended default, e.g.
-``betacloud`` for Betacloud, this can be adjusted as follows.
+The environment to be used is set via the ``ENVIRONMENT`` environment variable.
 
 .. code-block:: console
 
-   PARAMS="-var 'cloud_provider=the-name-of-the-entry'"
-
-A complete example with the environment for the Betacloud and a cloud provider with the name
-``the-name-of-the-entry`` looks like this:
-
-.. code-block:: console
-
-   make deploy ENVIRONMENT=betacloud PARAMS="-var 'cloud_provider=the-name-of-the-entry'"
-
-Alternatively, you can also just set the ``OS_CLOUD`` environment
-(``export OS_CLOUD=the-name-of-the-entry`` in bash), so your ``openstack`` command line
-client works without passing ``--os-cloud=``.
-
+   export ENVIRONMENT=betacloud
 
 * `Betacloud <https://www.betacloud.de>`_
 
@@ -159,28 +140,6 @@ client works without passing ``--os-cloud=``.
 
      * Registration is possible at the following URL: https://www.websso.t-systems.com/eshop/agb/de/public/configcart/show
 
-     * You will need to create your own Ubuntu 20.04 image to make sure that you have a larger
-       min-disk (20GB recommended). You can base it on the OTC Ubuntu images by creating a volume
-       from the OTC Ubuntu image and then create an image from it again (with ``--min-disk 20``).
-       This has the advantage of having all the drivers and settings needed for all kind of
-       flavors on OTC and using the local repository mirrors. For the KVM based flavors, you can
-       also use downloaded images from upstream and register them. Note the ``__os_distro``
-       property that you need to set on OTC.
-
-       The management console is accessible at https://auth.otc.t-systems.com/authui/login.action.
-
-       Due to a few characteristics of the OTC, the deployment of the testbed there currently
-       takes significantly longer than on other OpenStack-based clouds.
-
-  .. warning::
-
-     The OTC has strange rate limits on their API servers. Therefore it is required to limit
-     the number of concurrent operations by setting ``PARALLELISM=1``.
-
-     .. code-block:: console
-
-        make deploy ENVIRONMENT=otc PARALLELISM=1
-
 * `SCS Demonstrator <https://ui.gx-scs.sovereignit.cloud/>`_
 
   .. note::
@@ -197,7 +156,18 @@ client works without passing ``--os-cloud=``.
 Preparations
 ============
 
+* Clone required repositories
+
+  .. code-block:: console
+
+     mkdir -p ~/src/github.com/osism
+     cd ~/src/github.com/osism
+     git clone https://github.com/osism/testbed
+     git clone https://github.com/osism/ansible-collection-commons
+     git clone https://github.com/osism/ansible-collection-services
+
 * `Terraform <https://www.terraform.io>`_ must be installed (https://learn.hashicorp.com/tutorials/terraform/install-cli)
+* `Ansible <https://www.ansible.com>`_ must be installed (https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)
 * ``clouds.yaml`` and ``secure.yaml`` files must be created
   (https://docs.openstack.org/python-openstackclient/latest/configuration/index.html#clouds-yaml).
   If available, check that your openstack client tools work to validate the settings with
@@ -283,6 +253,7 @@ Currently two such overrides exist:
 Via the variable ``prefix`` it is possible to change the name of the created resources. By default,
 ``testbed`` is used. With this variable it is possible to run several testbeds within one project.
 
+
 Local Environment
 =================
 
@@ -294,47 +265,32 @@ also add a ``local`` entry to clouds.yaml.
    cp environments/local.tfvars.sample environments/local.tfvars
    echo ENVIRONMENT=local >> local.env
 
+Deployment
+==========
 
-Initialization
-==============
+Deployment is controlled via Ansible with the ``deploy.yml`` playbook.
 
-.. code-block:: console
-
-   make dry-run ENVIRONMENT=betacloud
-   make plan ENVIRONMENT=betacloud  # this is just an alias for "make dry-run"
-
-The most basic deployment can be achived with the code below. It should
-take about half an hour to finish. For more advanced deployments take a look
-at the note box.
+The following command is executed from the ``testbed`` repository directory.
+It creates the necessary infrastructure using Terraform and then deploys all
+services using Ansible.
 
 .. code-block:: console
 
-   make deploy ENVIRONMENT=betacloud
-   make create ENVIRONMENT=betacloud  # this is just an alias for "make deploy"
-
-When the terraform deployment is complete, you can watch the ansible deployment with
-the command below. The checks won't work until the deployment is fully completed.
-
-.. code-block:: console
-
-   make watch ENVIRONMENT=betacloud
+   ansible-playbook playbooks/deploy.yml \
+       -i ansible/localhost_inventory.yaml \
+       -e cloud_env=$ENVIRONMENT \
+       -e ansible_galaxy=ansible-galaxy \
+       -e ansible_playbook=ansible-playbook
 
 .. note::
 
-   * Use ``deploy-identity`` to deploy identity services (Keycloak, Keystone, LDAP)
-     when building the environment. This also includes all required infrastructure
-     services (MariaDB, RabbitMQ, ..).
-
-   To deploy additional services after initial deployment, please see :ref:`Deploy services`.
-
-This video shows a code record of how your terraform deployment should look like.
-
-.. raw:: html
-   :file: html/asciinema-tf-deployment.html
-
+   Path to the ``ansible-galaxy`` binary or the ``ansible-playbook`` only needs to be
+   adjusted if the binaries are not findable via ``PATH``.
 
 Usage
 =====
+
+The following commands are executed from the ``testbed/terraform`` repository directory.
 
 Get the URL for the VNC console from an instance (by default from the manager):
 
@@ -363,38 +319,38 @@ via sshuttle (https://github.com/sshuttle/sshuttle):
 .. code-block:: console
 
    make sshuttle ENVIRONMENT=betacloud
-   make tunnel ENVIRONMENT=betacloud  # this is just an alias for "make sshuttle"
+   make tunnel ENVIRONMENT=betacloud   # this is just an alias for "make sshuttle"
 
 
 Checks
 ======
 
-Most of the checks require a full installation of openstack and ceph.
+Most of the checks require a full installation of OpenStack and Ceph.
 Only ``ping`` works without them.
 
 Check the installation via ping:
 
 .. code-block:: console
 
-   make ping
+   make ping ENVIRONMENT=betacloud
 
 Run check script for openstack and infrastructure components:
 
 .. code-block:: console
 
-   make check
+   make check ENVIRONMENT=betacloud
 
 Run rally script (benchmark openstack):
 
 .. code-block:: console
 
-   make rally
+   make rally ENVIRONMENT=betacloud
 
 Run refstack script:
 
 .. code-block:: console
 
-   make refstack
+   make refstack ENVIRONMENT=betacloud
 
 
 General Management
@@ -404,26 +360,26 @@ Show endpoint URLs (ara, phpmyadmin):
 
 .. code-block:: console
 
-   make endpoints
+   make endpoints ENVIRONMENT=betacloud
 
 Show manager address:
 
 .. code-block:: console
 
-   make address
+   make address ENVIRONMENT=betacloud
 
 Open an Openstack Client Console:
 
 .. code-block:: console
 
-   make openstack
+   make openstack ENVIRONMENT=betacloud
 
 Copy a file to the manager:
 
 .. code-block:: console
 
-   make scp PARAMS=/file/to/be/copied SOURCE=/path/to/destination
-   make copy PARAMS=/file/to/be/copied SOURCE=/path/to/destination # this is just an alias for "make scp"
+   make scp PARAMS=/file/to/be/copied SOURCE=/path/to/destination ENVIRONMENT=betacloud
+   make copy PARAMS=/file/to/be/copied SOURCE=/path/to/destination ENVIRONMENT=betacloud # this is just an alias for "make scp"
 
 
 Terraform Management
@@ -433,56 +389,56 @@ Delete providers:
 
 .. code-block:: console
 
-   make reset
+   make reset ENVIRONMENT=betacloud
 
 Init terraform, select workspace and copy override and custom files:
 
 .. code-block:: console
 
-   make init
+   make init ENVIRONMENT=betacloud
 
 Init terraform and validate:
 
 .. code-block:: console
 
-   make validate
+   make validate ENVIRONMENT=betacloud
 
 Init terraform and import a resource:
 
 .. code-block:: console
 
-   make attach
+   make attach ENVIRONMENT=betacloud
 
 Init terraform and remove a resource:
 
 .. code-block:: console
 
-   make detach
+   make detach ENVIRONMENT=betacloud
 
 Init terraform and push a state to a remote backend:
 
 .. code-block:: console
 
-   make state-push
-   make push # this is just an alias for "make state-push"
+   make state-push ENVIRONMENT=betacloud
+   make push ENVIRONMENT=betacloud       # this is just an alias for "make state-push"
 
 Init terraform and generate a graph in DOT format:
 
 .. code-block:: console
 
-   make graph
+   make graph ENVIRONMENT=betacloud
 
 Init terraform and show the current state:
 
 .. code-block:: console
 
-   make show
+   make show ENVIRONMENT=betacloud
 
 Init terraform and show the configuration of a specific resource:
 
 .. code-block:: console
 
-   make list
+   make list ENVIRONMENT=betacloud
 
 
 Internals
@@ -492,9 +448,10 @@ These are used for make internal functions and not supposed to be used by a user
 
 .. code-block:: console
 
-   make .deploy.$(ENVIRONMENT) # check if a deployment is present
+   make .deploy.$(ENVIRONMENT)          # check if a deployment is present
    make .MANAGER_ADDRESS.$(ENVIRONMENT) # return manager address
-   make .id_rsa.$(ENVIRONMENT) # write private key
+   make .id_rsa.$(ENVIRONMENT)          # write private key
+
 
 Decommissioning
 ===============

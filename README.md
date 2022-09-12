@@ -14,46 +14,6 @@ over time. However, at no point does it claim to represent a production setup ex
 Open Source Software lives from participation. We welcome any issues, change requests
 or general feedback. Do not hesitate to open an issue.
 
-## Notes for deployment
-
-The previous method of deploying the testbed environment via terraform orchestrated
-by a Makefile is currently being reworked. Until this is finished, the following
-steps need to be performed for a deployment:
-
-- Install terraform like before.
-- Install ansible using a virtual environment and using the latest version:
-     ```
-     python3 -m venv ~/venv
-     ~/venv/bin/pip install ansible
-     ```
-
-- Create a directory path and clone these repositories:
-
-     ```
-     mkdir -p ~/src/github.com/osism
-     cd ~/src/github.com/osism
-     git clone https://github.com/osism/ansible-collection-commons
-     git clone https://github.com/osism/ansible-collection-services
-     git clone https://github.com/osism/testbed
-
-     ```
-  Note: These paths are currently hardcoded.
-
-- Install the ansible collections:
-
-     ```
-     cd ~/src/github.com/osism
-     ~/venv/bin/ansible-galaxy collection install ./ansible-collection-commons
-     ~/venv/bin/ansible-galaxy collection install ./ansible-collection-services
-     ```
-
-- Execute the installation playbook:
-
-     ```
-     cd ~/src/github.com/osism/testbed
-     ~/venv/bin/ansible-playbook playbooks/deploy.yml -i ansible/localhost_inventory.yaml -e cloud_env=$ENVIRONMENT
-     ```
-
 ## Point of entry
 
 The [Homer: Operations Dashboard](https://homer.testbed.osism.xyz) is best for
