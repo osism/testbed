@@ -19,6 +19,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Setup python
+        uses: actions/setup-python@v4
+      - name: Setup ansible
+        run:  python3 -m pip install ansible~=6.3.0
       - name: Setup terraform
         uses: hashicorp/setup-terraform@v2
         with:
@@ -84,9 +88,11 @@ jobs:
           BACKEND: ${{ secrets.TF_CLI_CONFIG_DAILY_OTC }}
         run: |
           echo "$BACKEND" > terraformrc
-      - name: Initialization
-        run: make ENVIRONMENT=otc VERSION_OPENSTACK=yoga init
-        working-directory: ./terraform
       - name: Deploy environment
-        working-directory: ./terraform
-        run: make ENVIRONMENT=otc VERSION_OPENSTACK=yoga deploy-full
+        run: |
+          ansible-playbook playbooks/deploy.yml \
+            -i ansible/localhost_inventory.yaml \
+            -e cloud_env=otc \
+            -e ansible_galaxy=ansible-galaxy \
+            -e ansible_playbook=ansible-playbook \
+            -e manual_deploy=True

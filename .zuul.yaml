@@ -16,6 +16,7 @@
       - ^LICENSE$
       - ^README.md$
       - ^doc/.*$
+      - ^.github/.*$
     timeout: 10800
 
 - job:
@@ -35,6 +36,7 @@
       - ^LICENSE$
       - ^README.md$
       - ^doc/.*$
+      - ^.github/.*$
     timeout: 10800
 
 - project:
