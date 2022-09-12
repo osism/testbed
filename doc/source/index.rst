@@ -26,6 +26,9 @@ in which, among other things, the OSISM testbed is briefly introduced.
 
    overview
    networking
+   requirements
+   preparations
+   configuration
    deployment
    usage
    authentication
