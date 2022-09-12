@@ -5,6 +5,179 @@ Usage
 .. contents::
    :local:
 
+
+Infrastructure management
+=========================
+
+.. note::
+
+   The following commands are executed from the ``testbed/terraform`` repository directory.
+
+Get the URL for the VNC console from an instance (by default from the manager):
+
+.. code-block:: console
+
+   make console ENVIRONMENT=betacloud
+   make console ENVIRONMENT=betacloud CONSOLE=node-0
+
+Get the console log from an instance (by default from the manager):
+
+.. code-block:: console
+
+   make log ENVIRONMENT=betacloud
+   make log ENVIRONMENT=betacloud CONSOLE=node-0
+
+Open a login shell on the manager via SSH:
+
+.. code-block:: console
+
+   make ssh ENVIRONMENT=betacloud
+   make login ENVIRONMENT=betacloud  # this is just an alias for "make ssh"
+
+Create a tunnel for the internal networks (``192.168.16.0/20``,  ``192.168.112.0/20``)
+via sshuttle (https://github.com/sshuttle/sshuttle):
+
+.. code-block:: console
+
+   make sshuttle ENVIRONMENT=betacloud
+   make tunnel ENVIRONMENT=betacloud   # this is just an alias for "make sshuttle"
+
+Show endpoint URLs (ara, phpmyadmin):
+
+.. code-block:: console
+
+   make endpoints ENVIRONMENT=betacloud
+
+Show manager address:
+
+.. code-block:: console
+
+   make address ENVIRONMENT=betacloud
+
+Open an Openstack Client Console:
+
+.. code-block:: console
+
+   make openstack ENVIRONMENT=betacloud
+
+Copy a file to the manager:
+
+.. code-block:: console
+
+   make scp PARAMS=/file/to/be/copied SOURCE=/path/to/destination ENVIRONMENT=betacloud
+   make copy PARAMS=/file/to/be/copied SOURCE=/path/to/destination ENVIRONMENT=betacloud # this is just an alias for "make scp"
+
+Terraform
+---------
+
+Delete providers:
+
+.. code-block:: console
+
+   make reset ENVIRONMENT=betacloud
+
+Init terraform, select workspace and copy override and custom files:
+
+.. code-block:: console
+
+   make init ENVIRONMENT=betacloud
+
+Init terraform and validate:
+
+.. code-block:: console
+
+   make validate ENVIRONMENT=betacloud
+
+Init terraform and import a resource:
+
+.. code-block:: console
+
+   make attach ENVIRONMENT=betacloud
+
+Init terraform and remove a resource:
+
+.. code-block:: console
+
+   make detach ENVIRONMENT=betacloud
+
+Init terraform and push a state to a remote backend:
+
+.. code-block:: console
+
+   make state-push ENVIRONMENT=betacloud
+   make push ENVIRONMENT=betacloud       # this is just an alias for "make state-push"
+
+Init terraform and generate a graph in DOT format:
+
+.. code-block:: console
+
+   make graph ENVIRONMENT=betacloud
+
+Init terraform and show the current state:
+
+.. code-block:: console
+
+   make show ENVIRONMENT=betacloud
+
+Init terraform and show the configuration of a specific resource:
+
+.. code-block:: console
+
+   make list ENVIRONMENT=betacloud
+
+Decommissioning:
+
+.. code-block:: console
+
+   make clean ENVIRONMENT=betacloud
+
+.. raw:: html
+   :file: html/asciinema-tf-clean.html
+
+
+Checks
+------
+
+Most of the checks require a full installation of OpenStack and Ceph.
+Only ``ping`` works without them.
+
+Check the installation via ping:
+
+.. code-block:: console
+
+   make ping ENVIRONMENT=betacloud
+
+Run check script for openstack and infrastructure components:
+
+.. code-block:: console
+
+   make check ENVIRONMENT=betacloud
+
+Run rally script (benchmark openstack):
+
+.. code-block:: console
+
+   make rally ENVIRONMENT=betacloud
+
+Run refstack script:
+
+.. code-block:: console
+
+   make refstack ENVIRONMENT=betacloud
+
+
+Internals
+---------
+
+These are used for make internal functions and not supposed to be used by a user:
+
+.. code-block:: console
+
+   make .deploy.$(ENVIRONMENT)          # check if a deployment is present
+   make .MANAGER_ADDRESS.$(ENVIRONMENT) # return manager address
+   make .id_rsa.$(ENVIRONMENT)          # write private key
+
+
 Wireguard
 =========
 
