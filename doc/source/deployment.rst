@@ -34,3 +34,9 @@ The ``Run part 3`` task takes some time to complete, depending on the cloud. Run
 
    Path to the ``ansible-galaxy`` binary or the ``ansible-playbook`` only needs to be
    adjusted if the binaries are not findable via ``PATH``.
+
+.. note::
+
+   Add ``-e manual_deploy=true`` if only the necessary infrastructure should be created.
+   Other services such as OpenStack or Ceph are then not deployed and can be added
+   manually afterwards.
