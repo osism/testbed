@@ -93,6 +93,8 @@
     vars:
       openstack_version: yoga
       openstack_version_next: zed
+      ceph_version: pacific
+      ceph_version_next: quincy
     nodeset: testbed-orchestrator-upgrade-next
 
 - job:
@@ -143,12 +145,12 @@
     merge-mode: squash-merge
     check:
       jobs:
-        - tox-docs
-        - tox-linters
-        - testbed-deploy
-        - testbed-deploy-next
-        - testbed-deploy-stable
-        - testbed-upgrade
+        # - tox-docs
+        # - tox-linters
+        # - testbed-deploy
+        # - testbed-deploy-next
+        # - testbed-deploy-stable
+        # - testbed-upgrade
         - testbed-upgrade-next
     gate:
       jobs:
