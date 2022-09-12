@@ -282,6 +282,9 @@ services using Ansible.
        -e ansible_galaxy=ansible-galaxy \
        -e ansible_playbook=ansible-playbook
 
+The ``Run part 3`` task takes some time to complete, depending on the cloud. Run times of
+60-80 minutes are not unusual. Don't get impatient and have a coffee in the meantime.
+
 .. note::
 
    Path to the ``ansible-galaxy`` binary or the ``ansible-playbook`` only needs to be
