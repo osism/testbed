@@ -74,6 +74,12 @@ steps will be automated by Zuul CI.
 
      /opt/configuration/scripts/deploy/310-openstack-services-extended.sh
 
+* Baremetal OpenStack service
+
+  .. code-block:: console
+
+     /opt/configuration/scripts/deploy/320-openstack-services-baremetal.sh
+
 * Additional OpenStack services (Rating, Container, ...)
 
   .. code-block:: console
@@ -86,11 +92,36 @@ steps will be automated by Zuul CI.
 
      /opt/configuration/scripts/deploy/400-monitoring-services.sh
 
+.. _Update services:
+
 Update services
 ===============
 
-The update of the services is done in the same way as the deployment of the services.
-Simply re-run the scripts listed in :ref:`Deploy services`.
+* Ceph services
+
+  .. code-block:: console
+
+     /opt/configuration/scripts/upgrade/100-ceph-services.sh
+
+* Basic infrastructure services (MariaDB, RabbitMQ, Redis, ...)
+
+  .. code-block:: console
+
+     /opt/configuration/scripts/upgrade/200-infrastructure-services-basic.sh
+
+* Basic OpenStack services (Compute, Storage, ...)
+
+  .. code-block:: console
+
+     /opt/configuration/scripts/upgrade/300-openstack-services-basic.sh
+
+* Baremetal OpenStack service
+
+  .. code-block:: console
+
+     /opt/configuration/scripts/upgrade/320-openstack-services-baremetal.sh
+
+.. _Upgrade services:
 
 Upgrade services
 ================
@@ -99,8 +130,8 @@ For an upgrade, the manager itself is updated first. Set the ``manager_version``
 ``environments/manager/configuration.yml`` to the new version and execute ``osism-update-manager``
 afterwards.
 
-The upgrade of the services is then done in the same way as the deployment of the services.
-Simply re-run the scripts listed in :ref:`Deploy services`.
+The upgrade of the services is then done in the same way as the update of the services.
+Simply re-run the scripts listed in :ref:`Update services`.
 
 Purge services
 ==============
