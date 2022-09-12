@@ -30,4 +30,8 @@ else:
 
 devices = result.stdout.strip().split("\n")
 
-print(json.dumps([f"/dev/{x}" for x in devices[:-1]]))
+if len(devices) > 1:
+    print(json.dumps([f"/dev/{x}" for x in devices[:-1]]))
+else:
+    # NOTE: If there is only one device for Ceph, this is always used.
+    print(json.dumps([f"/dev/{x}" for x in devices]))

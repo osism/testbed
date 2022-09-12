@@ -22,6 +22,8 @@ resource "openstack_compute_instance_v2" "node_server" {
 #cloud-config
 network:
    config: disabled
+mounts:
+  - [ ephemeral0, null ]
 package_update: true
 package_upgrade: true
 runcmd:
