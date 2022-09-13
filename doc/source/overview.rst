@@ -30,6 +30,7 @@ The deployment of Ceph is based on `ceph-ansible <https://github.com/ceph/ceph-a
 * Nautilus
 * Octopus
 * Pacific (**default**)
+* Quincy
 
 OpenStack
 ---------
@@ -42,7 +43,8 @@ The deployment of OpenStack is based on `kolla-ansible <https://opendev.org/open
 * Ussuri
 * Victoria
 * Wallaby
-* Xena (**default**)
+* Xena
+* Yoga (**default**)
 
 Software Bill Of Materials (SBOM)
 =================================
