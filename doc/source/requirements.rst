@@ -51,6 +51,8 @@ Ubuntu 20.04 is to be used as the base image for the virtual systems.
 Software
 ========
 
+* ``make`` must be installed on the system
+
 Ansible
 -------
 
