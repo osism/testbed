@@ -1,0 +1,11 @@
+---
+- git: https://github.com/osism/cfg-generics.git
+  version: main
+  files:
+    - src: src/render-images.py
+      dst: ./environments/manager/render-images.py
+    - src: environments/manager/images.yml
+      dst: environments/manager/
+      post_commands:
+        - python3 render-images.py
+        - rm render-images.py
