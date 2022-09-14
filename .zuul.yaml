@@ -58,3 +58,4 @@
     periodic-daily:
       jobs:
         - testbed-deploy
+        - testbed-upgrade
