@@ -16,11 +16,10 @@
     version_openstack: yoga
 
   tasks:
-    - name: Make CI deployment with terraform
+    - name: Create infrastructure with terraform
       shell:
         chdir: "{{ basepath }}/terraform"
         cmd: make ENVIRONMENT={{ cloud_env }} VERSION_CEPH={{ version_ceph }} VERSION_MANAGER={{ version_manager }} VERSION_OPENSTACK={{ version_openstack }} create
-      when: not manual_deploy
 
     - name: Fetch manager_host address
       shell: cat "{{ manager_address_file }}"
@@ -36,7 +35,6 @@
         cmd: |
           {{ ansible_galaxy }} collection install --force "{{ ansible_user_dir }}/src/github.com/osism/ansible-collection-commons"
           {{ ansible_galaxy }} collection install --force "{{ ansible_user_dir }}/src/github.com/osism/ansible-collection-services"
-      when: not manual_deploy
 
     - name: Wait 300 seconds for port 22 to become open and contain "OpenSSH"
       wait_for:
