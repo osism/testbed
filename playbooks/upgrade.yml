@@ -19,11 +19,11 @@
 
   tasks:
     - name: Run upgrade
-      shell:
+      ansible.builtin.shell:
         chdir: "{{ basepath }}/terraform"
         cmd: make ENVIRONMENT={{ cloud_env }} VERSION_MANAGER={{ version_manager_next }} VERSION_CEPH={{ version_ceph_next }} VERSION_OPENSTACK={{ version_openstack_next }} upgrade
 
     - name: Run checks after the upgrade
-      shell:
+      ansible.builtin.shell:
         chdir: "{{ basepath }}/terraform"
         cmd: make ENVIRONMENT={{ cloud_env }} check

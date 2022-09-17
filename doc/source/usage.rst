@@ -306,6 +306,14 @@ afterwards.
 The upgrade of the services is then done in the same way as the update of the services.
 Simply re-run the scripts listed in :ref:`Update services`.
 
+..note::
+
+  When upgrading from a rolling release (``latest``, ``xena``, ..) to a stable release
+  (``3.2.0``, ``4.0.0``, ..), it is important to remove the parameters ``ceph_version``
+  and ``openstack_version`` from  ``environments/manager/configuration.yml``.
+  For a stable release, the versions of Ceph and OpenStack to use are set by the version
+  of the stable release (set via the ``manager_version`` parameter) and not by release names.
+
 Purge services
 ==============
 

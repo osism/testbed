@@ -10,13 +10,13 @@
   tasks:
     - name: Install required packages
       become: true
-      apt:
+      ansible.builtin.apt:
         name: python3-netifaces
         state: present
 
     - name: Create custom facts directory
       become: true
-      file:
+      ansible.builtin.file:
         path: /etc/ansible/facts.d
         state: directory
         owner: root
@@ -25,7 +25,7 @@
 
     - name: Copy fact files
       become: true
-      copy:
+      ansible.builtin.copy:
         src: /opt/configuration/environments/custom/files/testbed_network_devices.fact
         dest: /etc/ansible/facts.d/testbed_network_devices.fact
         owner: root

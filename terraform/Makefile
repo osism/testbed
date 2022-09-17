@@ -48,6 +48,7 @@ init:
 	@cp environments/$(ENVIRONMENT).tfvars $(ENVIRONMENT).auto.tfvars
 	@echo "cloud_provider = \"$(OS_CLOUD)\"" >> $(ENVIRONMENT).auto.tfvars
 	@echo "ceph_version = \"$(VERSION_CEPH)\"" >> $(ENVIRONMENT).auto.tfvars
+	@echo "manager_version = \"$(VERSION_MANAGER)\"" >> $(ENVIRONMENT).auto.tfvars
 	@echo "openstack_version = \"$(VERSION_OPENSTACK)\"" >> $(ENVIRONMENT).auto.tfvars
 
 	@rm -f *_custom.tf
