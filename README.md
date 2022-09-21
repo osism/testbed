@@ -32,8 +32,6 @@ getting started with the testbed after full deployment.
 
 ### Regular tasks
 
-[![Daily citycloud](https://github.com/osism/testbed/actions/workflows/daily-citycloud.yml/badge.svg)](https://github.com/osism/testbed/actions/workflows/daily-citycloud.yml)
-[![Daily pluscloudopen](https://github.com/osism/testbed/actions/workflows/daily-pluscloudopen.yml/badge.svg)](https://github.com/osism/testbed/actions/workflows/daily-pluscloudopen.yml)
 [![Update manager images](https://github.com/osism/testbed/actions/workflows/update-manager-images.yml/badge.svg)](https://github.com/osism/testbed/actions/workflows/update-manager-images.yml)
 
 ## Zuul job results
