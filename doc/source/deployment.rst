@@ -48,6 +48,9 @@ By default, the latest manager service, Ceph Pacific and OpenStack Yoga are depl
 This can be customised via the parameters ``version_ceph``, ``version_manager``, and
 ``version_openstack``.
 
+Changing the Ceph or OpenStack release
+--------------------------------------
+
 Deploy OpenStack in the ``xena`` version:
 
 .. code-block:: console
@@ -60,11 +63,14 @@ Deploy Ceph in the ``quincy`` version:
 
    -e version_ceph=quincy
 
-Deploy the pre release ``4.0.0a`` of the stable release ``4.0.0``:
+Deploying a stable OSISM release
+--------------------------------
+
+Deploy the stable release ``4.0.0``:
 
 .. code-block:: console
 
-   -e version_manager=4.0.0a
+   -e version_manager=4.0.0
 
 .. note::
 
@@ -73,3 +79,7 @@ Deploy the pre release ``4.0.0a`` of the stable release ``4.0.0``:
    is not possible. The versions of Ceph and OpenStack are then determined from the stable
    release of OSISM. For OSISM version 4.0.0, for example, this is Ceph Pacific and OpenStack
    Yoga.
+
+.. warning::
+
+   Do not set ``-e version_openstack`` and ``-e version_ceph`` when deploying a stable release.
