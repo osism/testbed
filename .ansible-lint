@@ -16,3 +16,4 @@ skip_list:
   - var-spacing  # Variables should have spaces before and after: {{ var_name }}.
   - fqcn-builtins
   - yaml
+  - name[template]
