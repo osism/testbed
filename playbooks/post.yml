@@ -2,7 +2,7 @@
 - hosts: all
 
   vars:
-    cloud_env: betacloud-ci
+    cloud_env: ci
 
   tasks:
     - name: Make clean

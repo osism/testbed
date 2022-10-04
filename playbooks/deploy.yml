@@ -6,7 +6,7 @@
     ansible_galaxy: ~/venv/bin/ansible-galaxy
     ansible_playbook: ~/venv/bin/ansible-playbook
     basepath: "{{ ansible_user_dir }}/src/github.com/osism/testbed"
-    cloud_env: betacloud-ci
+    cloud_env: ci
     manager_address_file: "{{ basepath }}/terraform/.MANAGER_ADDRESS.{{ cloud_env }}"
     manual_deploy: false
     repo_path: "{{ ansible_user_dir }}/src/github.com"
