@@ -11,7 +11,7 @@
 
   vars:
     basepath: "{{ ansible_user_dir }}/src/github.com/osism/testbed"
-    cloud_env: betacloud-ci
+    cloud_env: ci
 
     version_ceph_next: pacific
     version_manager_next: latest

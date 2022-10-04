@@ -5,7 +5,7 @@
     nodeset:
       nodes:
         - name: orchestrator
-          label: static-testbed
+          label: testbed-orchestrator
     run: playbooks/upgrade.yml
     post-run: playbooks/post.yml
     required-projects:
@@ -16,7 +16,9 @@
       - ^LICENSE$
       - ^README.md$
       - ^doc/.*$
-    timeout: 10800
+    # NOTE(frickler): Default zuul maximum timeout is 3h, this needs to
+    # be explictly bumped in the tenant configuration
+    timeout: 14400
 
 - job:
     name: testbed-deploy
@@ -24,7 +26,7 @@
     nodeset:
       nodes:
         - name: orchestrator
-          label: static-testbed
+          label: testbed-orchestrator
     run: playbooks/deploy.yml
     post-run: playbooks/post.yml
     required-projects:
