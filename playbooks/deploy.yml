@@ -27,7 +27,7 @@
 
     - name: Set manager_host address
       ansible.builtin.set_fact:
-        manager_host: "{{ manager_address.stdout.split('=')[1] }}"
+        manager_host: "{{ manager_address.stdout | split('=') | last }}"
 
     - name: Update ansible collections
       ansible.builtin.shell:
