@@ -1,0 +1,11 @@
+---
+clouds:
+  testbed-admin:
+    auth:
+      password: password
+  testbed-test:
+    auth:
+      password: test
+  testbed-alice:
+    auth:
+      password: password
