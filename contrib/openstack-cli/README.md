@@ -8,7 +8,9 @@ ref:
 
 ### testbed SSL CA
 
-> :note: place the testbd SSL CA in ~/.config/openstack or adjust the files accordingly
+> **Note**
+> place the testbd SSL CA in ~/.config/openstack or adjust the files
+> accordingly
 
 ```bash
 mkdir -p ~/.config/openstack
@@ -18,12 +20,14 @@ wget https://github.com/osism/testbed/raw/main/environments/kolla/certificates/c
 
 ### clouds-public.yml, clouds.yaml + secure.yaml
 
-> :note: this also works if clouds-public.yml, clouds.yaml + secure.yaml
-are place in your current working directory if you don't want to place
-them in ~/.config/openstack.
+> **Note**
+> this also works if clouds-public.yml, clouds.yaml + secure.yaml
+> are place in your current working directory if you don't want to place
+> them in ~/.config/openstack.
 
-> :warning: **this overwrites your local openstack cli config, use with
-caution or adjust accordingly**
+> **Warning**
+> **this overwrites your local openstack cli config, use with caution
+> or adjust accordingly**
 
 ```bash
 wget -O clouds-public.yaml https://github.com/osism/testbed/raw/main/contrib/openstack-cli/clouds-public.yaml
