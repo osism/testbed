@@ -85,6 +85,11 @@ a local copy of it by running:
    mkdir -p ~/src/github.com/osism
    git clone https://github.com/osism/testbed ~/src/github.com/osism/testbed
 
+.. note::
+
+   The repository can also be cloned to any other location. The path to this repository
+   is set via the parameter ``basepath``.
+
 
 Cloud access
 ============

@@ -15,6 +15,11 @@ Preparations
      git clone https://github.com/osism/ansible-collection-commons
      git clone https://github.com/osism/ansible-collection-services
 
+  .. note::
+
+     The repositories can also be cloned to any other location.
+     The path to the repositories is set via the parameter ``repo_path``.
+
 * `Terraform <https://www.terraform.io>`_ must be installed (https://learn.hashicorp.com/tutorials/terraform/install-cli)
 * `Ansible <https://www.ansible.com>`_ must be installed (https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)
 * ``clouds.yaml`` and ``secure.yaml`` files must be created

@@ -41,6 +41,17 @@ The ``Run part 3`` task takes some time to complete, depending on the cloud. Run
    Other services such as OpenStack or Ceph are then not deployed and can be added
    manually afterwards.
 
+.. note::
+
+   If the testbed repository was not cloned to the default location (``~/src/github.com/osism/testbed``)
+   the path must be set accordingly via the ``basepath`` parameter.
+
+.. note::
+
+   If the ansible collection repositories were not cloned to the default location
+   (``~/src/github.com/osism``) the path must be set accordingly via the ``repo_path``
+   parameter.
+
 Customise versions
 ==================
 
