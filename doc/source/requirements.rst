@@ -111,13 +111,13 @@ The environment to be used is set via the ``ENVIRONMENT`` environment variable.
      * To use the Betacloud, please send an email to support@betacloud.de. Please state that you are
        interested in using the OSISM testbed.
 
-* `Citycloud <https://www.citycloud.com>`_
+* `Cleura <https://cleura.com/>`_
 
   .. note::
 
-     * The credentials are stored in ``clouds.yaml`` and ``secure.yaml`` with the name ``citycloud``.
+     * The credentials are stored in ``clouds.yaml`` and ``secure.yaml`` with the name ``cleura``.
 
-     * Registration is possible at the following URL: https://admin.citycloud.com/login?register=true
+     * Registration is possible at the following URL: https://cleura.cloud/login
 
 * `OVH <https://www.ovhcloud.com>`_
 
