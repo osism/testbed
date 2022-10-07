@@ -1,0 +1,20 @@
+public-clouds:
+  testbed:
+    cacert: ~/.config/openstack/testbed.crt
+    auth:
+      auth_url: https://api.testbed.osism.xyz:5000
+    interface: 'public'
+    identity_api_version: 3
+  testbed-keycloak:
+    cacert: ~/.config/openstack/testbed.crt
+    auth:
+      auth_url: https://api.testbed.osism.xyz:5000
+      discovery_endpoint: https://keycloak.testbed.osism.xyz/auth/realms/osism/.well-known/openid-configuration
+      protocol: openid
+      client_id: keystone
+      client_secret: 0056b89c-030f-486b-a6ad-f0fa398fa4ad
+    interface: 'public'
+    identity_api_version: 3
+    auth_type: v3oidcpassword
+    identity_provider: keycloak
+
