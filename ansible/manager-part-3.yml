@@ -6,6 +6,7 @@
 
   vars:
     ansible_python_interpreter: /usr/bin/python3
+    apt_lock_timeout: 300
 
   tasks:
     - name: Install required packages
@@ -13,6 +14,7 @@
       ansible.builtin.apt:
         name: python3-netifaces
         state: present
+        lock_timeout: "{{ apt_lock_timeout }}"
 
     - name: Create custom facts directory
       become: true
