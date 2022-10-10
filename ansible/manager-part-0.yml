@@ -5,6 +5,7 @@
 
   vars:
     repo_path: /home/ubuntu/src/github.com
+    apt_lock_timeout: 300
 
   tasks:
     - name: Update APT cache and run dist-upgrade
@@ -12,6 +13,7 @@
       ansible.builtin.apt:
         upgrade: dist
         update_cache: true
+        lock_timeout: "{{ apt_lock_timeout }}"
 
     - name: Set APT options on manager
       become: true
