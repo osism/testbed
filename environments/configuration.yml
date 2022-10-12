@@ -48,11 +48,12 @@ cleanup_packages_extra:
 systohc: false
 
 ##########################
-# serial
+# ansible
 
 osism_serial_default: 100%
 osism_serial:
   docker: 100%
+osism_strategy: mitogen_linear
 
 ##########################
 # ceph
