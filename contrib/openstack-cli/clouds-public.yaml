@@ -1,3 +1,4 @@
+---
 public-clouds:
   testbed:
     cacert: ~/.config/openstack/testbed.crt
@@ -9,6 +10,7 @@ public-clouds:
     cacert: ~/.config/openstack/testbed.crt
     auth:
       auth_url: https://api.testbed.osism.xyz:5000
+      # yamllint disable-line rule:line-length
       discovery_endpoint: https://keycloak.testbed.osism.xyz/auth/realms/osism/.well-known/openid-configuration
       protocol: openid
       client_id: keystone
@@ -17,4 +19,3 @@ public-clouds:
     identity_api_version: 3
     auth_type: v3oidcpassword
     identity_provider: keycloak
-
