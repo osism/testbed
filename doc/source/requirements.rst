@@ -12,10 +12,9 @@ Infrastructure resources
 For an environment on a cloud
 -----------------------------
 
-To use this testbed, a project on an OpenStack cloud environment is required. Cinder
-must be usable there as additional service.
+To use this testbed, a project on an OpenStack cloud environment is required.
 
-The testbed requires the following resources when using the default flavors.
+The testbed requires the following virtual resources when using the default flavors.
 
 * 1 keypair
 * 6 security groups (50 security group rules)
@@ -24,7 +23,12 @@ The testbed requires the following resources when using the default flavors.
 * 30 ports
 * 1 floating IP address
 * 9 volumes (min 90 GB) plus 140GB root disks (depends on flavors)
-* 4 instances (28 VCPUs, 104 GByte memory)
+* 4 instances (with 28 VCPUs and 104 GByte memory in total)
+
+.. note::
+
+   If the cloud you are using does not offer a block storage service (Cinder),
+   you can work with Ephemeral Volumes from the compute service (Nova).
 
 For an environment on physical hardware
 ---------------------------------------
