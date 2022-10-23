@@ -24,6 +24,7 @@ in which, among other things, the OSISM testbed is briefly introduced.
 .. toctree::
    :maxdepth: 2
 
+   quickstart
    overview
    networking
    requirements

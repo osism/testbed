@@ -78,10 +78,14 @@ state-push: init
 dry-run: init
 	@$(TERRAFORM) plan $(PARAMS)
 
-deploy: init
+create: init
 	@touch .deploy.$(ENVIRONMENT)
 	@echo "configuration_version = \"$(CONFIGURATION)\"" >> $(ENVIRONMENT).auto.tfvars
 	@$(TERRAFORM) apply $(APPLY_PARAMS) $(PARAMS)
+
+deploy: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
+	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
+	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(ENVIRONMENT) $(USERNAME)@$$MANAGER_ADDRESS "/opt/configuration/scripts/deploy.sh"
 
 deploy-identity: init
 	@touch .deploy.$(ENVIRONMENT)
@@ -194,7 +198,6 @@ endpoints: init
 	echo "| phpMyAdmin | http://$$MANAGER_ADDRESS:8110  |";
 
 copy: scp
-create: deploy
 login: ssh
 plan: dry-run
 push: state-push

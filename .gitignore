@@ -1,9 +1,10 @@
-.ansible-lint-rules/__pycache__/
 *.auto.tfvars
 .*.swp
 .MANAGER_ADDRESS.*
+.ansible-lint-rules/__pycache__/
 .deploy.*
 .id_rsa.*
+.src
 .terraform
 .terraform.lock.hcl
 .tox
@@ -21,6 +22,8 @@ doc/build
 environment-local.tfvars
 environments/**/ceph.client.*.keyring
 errored.tfstate
+ironic-agent.initramfs
+ironic-agent.kernel
 local.env
 roles
 secrets
@@ -32,5 +35,3 @@ terraform/*_custom.tf
 terraform/*_override.tf
 terraform/inventory.*
 terraformrc
-ironic-agent.initramfs
-ironic-agent.kernel
