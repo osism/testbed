@@ -4,12 +4,14 @@
 
   vars:
     ansible_galaxy: ~/venv/bin/ansible-galaxy
+    ansible_path: "{{ basepath }}/ansible"
     ansible_playbook: ~/venv/bin/ansible-playbook
     basepath: "{{ ansible_user_dir }}/src/github.com/osism/testbed"
     cloud_env: ci
-    manager_address_file: "{{ basepath }}/terraform/.MANAGER_ADDRESS.{{ cloud_env }}"
+    manager_address_file: "{{ terraform_path }}/.MANAGER_ADDRESS.{{ cloud_env }}"
     manual_deploy: false
     repo_path: "{{ ansible_user_dir }}/src/github.com"
+    terraform_path: "{{ basepath }}/terraform"
 
     version_ceph: pacific
     version_manager: latest
@@ -18,7 +20,7 @@
   tasks:
     - name: Create infrastructure with terraform
       ansible.builtin.shell:
-        chdir: "{{ basepath }}/terraform"
+        chdir: "{{ terraform_path }}"
         cmd: make ENVIRONMENT={{ cloud_env }} VERSION_CEPH={{ version_ceph }} VERSION_MANAGER={{ version_manager }} VERSION_OPENSTACK={{ version_openstack }} create
 
     - name: Fetch manager_host address
@@ -33,8 +35,8 @@
       ansible.builtin.shell:
         chdir: "{{ ansible_user_dir }}"
         cmd: |
-          {{ ansible_galaxy }} collection install --force "{{ ansible_user_dir }}/src/github.com/osism/ansible-collection-commons"
-          {{ ansible_galaxy }} collection install --force "{{ ansible_user_dir }}/src/github.com/osism/ansible-collection-services"
+          {{ ansible_galaxy }} collection install --force "{{ repo_path }}/osism/ansible-collection-commons"
+          {{ ansible_galaxy }} collection install --force "{{ repo_path }}/osism/ansible-collection-services"
 
     - name: Wait 300 seconds for port 22 to become open and contain "OpenSSH"
       ansible.builtin.wait_for:
@@ -44,30 +46,39 @@
         delay: 10
         timeout: 300
 
+    - name: Wait a little longer for the manager so that everything is ready
+      ansible.builtin.pause:
+        seconds: 60
+
     - name: Fetch manager ssh hostkey
-      ansible.builtin.shell: "sleep 60; ssh-keyscan {{ manager_host }} >> {{ ansible_user_dir }}/.ssh/known_hosts"
+      ansible.builtin.shell: "ssh-keyscan {{ manager_host }} >> {{ ansible_user_dir }}/.ssh/known_hosts"
+
+    - name: Get ssh keypair from terraform environment
+      ansible.builtin.shell:
+        chdir: "{{ ansible_path }}"
+        cmd: |
+          cp {{ terraform_path }}/.id* .
 
     - name: Run part 0
       ansible.builtin.shell:
-        chdir: "{{ basepath }}/ansible"
+        chdir: "{{ ansible_path }}"
         cmd: |
-          cp ../terraform/.id* .
-          {{ ansible_playbook }} -i ../terraform/inventory.{{ cloud_env }} --key-file .id_rsa.{{ cloud_env }} manager-part-0.yml -e cloud_env={{ cloud_env }} -e repo_path={{ repo_path }}
+          {{ ansible_playbook }} -i {{ terraform_path }}/inventory.{{ cloud_env }} --key-file {{ terraform_path }}/.id_rsa.{{ cloud_env }} manager-part-0.yml -e cloud_env={{ cloud_env }} -e repo_path={{ repo_path }}
 
     - name: Run part 1 + 2
       ansible.builtin.shell:
-        chdir: "{{ basepath }}/ansible"
+        chdir: "{{ ansible_path }}"
         cmd: |
-          {{ ansible_playbook }} -i ../terraform/inventory.{{ cloud_env }} --key-file .id_rsa.{{ cloud_env }} manager-part-1.yml -e cloud_env={{ cloud_env }} -e repo_path={{ repo_path }} -e version_manager={{ version_manager }}
+          {{ ansible_playbook }} -i {{ terraform_path }}/inventory.{{ cloud_env }} --key-file {{ terraform_path }}/.id_rsa.{{ cloud_env }} manager-part-1.yml -e cloud_env={{ cloud_env }} -e repo_path={{ repo_path }} -e version_manager={{ version_manager }}
 
     - name: Run part 3
       ansible.builtin.shell:
-        chdir: "{{ basepath }}/ansible"
-        cmd: "ssh -i .id_rsa.{{ cloud_env }} dragon@{{ manager_host }} /opt/configuration/scripts/deploy.sh"
+        chdir: "{{ ansible_path }}"
+        cmd: "ssh -i {{ terraform_path }}/.id_rsa.{{ cloud_env }} dragon@{{ manager_host }} /opt/configuration/scripts/deploy.sh"
       when: not manual_deploy
 
     - name: Run checks
       ansible.builtin.shell:
-        chdir: "{{ basepath }}/terraform"
+        chdir: "{{ terraform_path }}"
         cmd: make ENVIRONMENT={{ cloud_env }} check
       when: not manual_deploy
