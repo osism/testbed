@@ -64,7 +64,7 @@
         - osism/ansible-collection-services
 
     - name: Copy sources
-      ansible.builtin.synchronize:
+      ansible.posix.synchronize:
         src: "{{ repo_path }}/{{ item }}"
         delete: true
         dest: "/opt/src/{{ item }}"

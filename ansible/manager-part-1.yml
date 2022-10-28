@@ -36,7 +36,7 @@
     - name: Copy testbed repo
       become: true
       become_user: dragon
-      ansible.builtin.synchronize:
+      ansible.posix.synchronize:
         src: "{{ repo_path }}/osism/testbed/"
         delete: true
         dest: /opt/configuration
