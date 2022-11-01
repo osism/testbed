@@ -173,3 +173,26 @@ The environment to be used is set via the ``ENVIRONMENT`` environment variable.
   .. note::
 
      * The credentials are stored in ``clouds.yaml`` and ``secure.yaml`` with the name ``wavestack``.
+
+* `Fuga Cloud <https://fuga.cloud>`_
+
+  .. note::
+
+     * The credentials are stored in ``clouds.yaml`` and ``secure.yaml`` with the name ``fuga``.
+     * Per project, 50 GBytes of memory are available by default. Therefore, the flavor ``t3.small``
+       is used by default. If you have increased the quota via support it is better to use the flavor
+       ``t3.medium`` for the nodes.
+     * You have to use application credentials: https://my.fuga.cloud/account/application-credentials
+
+       .. code-block:: yaml
+
+          ---
+          clouds:
+            fuga:
+              auth:
+                auth_url: https://core.fuga.cloud:5000/v3
+                application_credential_id: "ID"
+                application_credential_secret: "SECRET"
+              interface: public
+              identity_api_version: 3
+              auth_type: "v3applicationcredential"
