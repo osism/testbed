@@ -43,7 +43,7 @@ osism_netbox_image: "{{ docker_registry_ansible }}/osism/osism-netbox:{{ osism_n
 vault_tag: "1.12.0"
 vault_image: "{{ docker_registry }}/hashicorp/vault:{{ vault_tag }}"
 
-traefik_tag: "v2.9.1"
+traefik_tag: "v2.9.4"
 traefik_image: "{{ docker_registry }}/library/traefik:{{ traefik_tag }}"
 
 # image tag depends on CEPH_VERSION or OPENSTACK_VERSION
