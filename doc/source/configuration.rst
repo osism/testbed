@@ -37,7 +37,7 @@ include the file ``overrides/XXXX_override.tf`` into the terraform deployment.
 Currently two such overrides exist:
 
 * ``neutron_availability_zone_hints``: This enables using network availability zone hints.
-  betacloud and citycloud benefit from this.
+  betacloud and cleura benefit from this.
 * ``neutron_router_enable_snat``: This passes ``enable_snat: true`` for the router. This is
   required by OTC.
 
