@@ -2,7 +2,7 @@
 - hosts: all
 
   vars:
-    cloud_env: ci
+    cloud_env: "{{ testbed_environment | default('ci') }}"
 
   tasks:
     - name: Clean the cloud environment

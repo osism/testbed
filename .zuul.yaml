@@ -1,33 +1,15 @@
 ---
-- job:
-    name: testbed-upgrade
-    parent: base-extra-logs
-    nodeset:
-      nodes:
-        - name: orchestrator
-          label: testbed-orchestrator
-    run: playbooks/upgrade.yml
-    post-run: playbooks/post.yml
-    required-projects:
-      - osism/ansible-collection-commons
-      - osism/ansible-collection-services
-      - osism/testbed
-    irrelevant-files:
-      - ^LICENSE$
-      - ^README.md$
-      - ^doc/.*$
-    # NOTE(frickler): Default zuul maximum timeout is 3h, this needs to
-    # be explictly bumped in the tenant configuration
-    timeout: 14400
+- nodeset:
+    name: testbed-orchestrator
+    nodes:
+      - name: orchestrator
+        label: testbed-orchestrator
 
 - job:
     name: testbed-deploy
     parent: base-extra-logs
-    nodeset:
-      nodes:
-        - name: orchestrator
-          label: testbed-orchestrator
     pre-run: playbooks/pre.yml
+    nodeset: testbed-orchestrator
     run: playbooks/deploy.yml
     post-run: playbooks/post.yml
     required-projects:
@@ -39,6 +21,74 @@
       - ^README.md$
       - ^doc/.*$
     timeout: 10800
+
+- job:
+    name: testbed-upgrade
+    parent: testbed-deploy
+    run: playbooks/upgrade.yml
+    # NOTE(frickler): Default zuul maximum timeout is 3h, this needs to
+    # be explictly bumped in the tenant configuration
+    timeout: 14400
+
+- job:
+    name: testbed-deploy-cleura
+    parent: testbed-deploy
+    vars:
+      testbed_environment: cleura
+    nodeset:
+      nodes:
+        - name: orchestrator
+          label: testbed-orchestrator-cleura
+
+- job:
+    name: testbed-deploy-pco
+    parent: testbed-deploy
+    vars:
+      testbed_environment: pluscloudopen
+    nodeset:
+      nodes:
+        - name: orchestrator
+          label: testbed-orchestrator-pco
+
+- job:
+    name: testbed-deploy-wavestack
+    parent: testbed-deploy
+    vars:
+      testbed_environment: wavestack
+    nodeset:
+      nodes:
+        - name: orchestrator
+          label: testbed-orchestrator-wavecon
+
+- job:
+    name: testbed-upgrade-cleura
+    parent: testbed-upgrade
+    vars:
+      testbed_environment: cleura
+    nodeset:
+      nodes:
+        - name: orchestrator
+          label: testbed-orchestrator-cleura
+
+- job:
+    name: testbed-upgrade-pco
+    parent: testbed-upgrade
+    vars:
+      testbed_environment: pluscloudopen
+    nodeset:
+      nodes:
+        - name: orchestrator
+          label: testbed-orchestrator-pco
+
+- job:
+    name: testbed-upgrade-wavestack
+    parent: testbed-upgrade
+    vars:
+      testbed_environment: wavestack
+    nodeset:
+      nodes:
+        - name: orchestrator
+          label: testbed-orchestrator-wavecon
 
 - project:
     merge-mode: squash-merge
@@ -61,4 +111,10 @@
     periodic-daily:
       jobs:
         - testbed-deploy
+        - testbed-deploy-cleura
+        - testbed-deploy-pco
+        - testbed-deploy-wavestack
         - testbed-upgrade
+        - testbed-upgrade-cleura
+        - testbed-upgrade-pco
+        - testbed-upgrade-wavestack
