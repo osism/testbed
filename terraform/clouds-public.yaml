@@ -32,3 +32,11 @@ public-clouds:
     identity_api_version: 3
     image_format: raw
     block_storage_api_version: 3
+  cah-f1a:
+    auth:
+      auth_url: https://identity-f1a.cloudandheat.com:5000
+    regions:
+      - name: f1a
+    identity_api_version: 3
+    image_format: raw
+    block_storage_api_version: 3
