@@ -8,14 +8,13 @@ OPENSTACK_VERSION=$(docker inspect --format '{{ index .Config.Labels "de.osism.r
 osism apply keystone
 osism apply placement
 osism apply nova
+osism apply neutron
 
 task_ids=$(osism apply --no-wait --format script horizon 2>&1)
 task_ids+=" "$(osism apply --no-wait --format script glance 2>&1)
-task_ids+=" "$(osism apply --no-wait --format script neutron 2>&1)
 task_ids+=" "$(osism apply --no-wait --format script cinder 2>&1)
 task_ids+=" "$(osism apply --no-wait --format script barbican 2>&1)
 task_ids+=" "$(osism apply --no-wait --format script designate 2>&1)
-task_ids+=" "$(osism apply --no-wait --format script heat 2>&1)
 task_ids+=" "$(osism apply --no-wait --format script octavia 2>&1)
 
 osism wait --output --format script --delay 2 $task_ids

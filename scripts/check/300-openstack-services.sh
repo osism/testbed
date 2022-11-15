@@ -11,12 +11,6 @@ echo
 openstack --os-cloud admin endpoint list
 
 echo
-echo "# Heat"
-echo
-
-openstack --os-cloud admin orchestration service list
-
-echo
 echo "# Cinder"
 echo
 
