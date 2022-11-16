@@ -27,6 +27,7 @@
       nodes:
         - name: orchestrator
           label: testbed-orchestrator
+    pre-run: playbooks/pre.yml
     run: playbooks/deploy.yml
     post-run: playbooks/post.yml
     required-projects:

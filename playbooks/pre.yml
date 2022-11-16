@@ -1,0 +1,17 @@
+---
+- hosts: all
+
+  vars:
+    cloud_env: ci
+
+  tasks:
+    - name: Clean the cloud environment
+      ansible.builtin.shell:
+        cmd: |
+          echo y | ~/venv/bin/openstack --os-cloud {{ cloud_env }} project cleanup --auth-project
+          ~/venv/bin/openstack --os-cloud {{ cloud_env }} port list -f value -c id | xargs -l1 ~/venv/bin/openstack --os-cloud {{ cloud_env }} port delete
+          ~/venv/bin/openstack --os-cloud {{ cloud_env }} router remove subnet testbed subnet-testbed-management
+          ~/venv/bin/openstack --os-cloud {{ cloud_env }} router delete testbed
+          echo y | ~/venv/bin/openstack --os-cloud {{ cloud_env }} project cleanup --auth-project
+          ~/venv/bin/openstack --os-cloud {{ cloud_env }} keypair delete testbed
+      failed_when: false
