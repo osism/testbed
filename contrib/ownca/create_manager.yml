@@ -17,6 +17,7 @@
         subject_alt_name:
           - "DNS:testbed-manager.testbed.osism.xyz"
           - "IP:192.168.16.5"
+        subject_alt_name_critical: true
       run_once: true
       register: csr
 
