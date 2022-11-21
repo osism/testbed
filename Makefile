@@ -30,8 +30,8 @@ deploy:
 
 prepare:
 	mkdir -p .src/github.com/osism
-	if [[ ! -e .src/github.com/osism/testbed ]]; then git clone https://github.com/osism/testbed .src/github.com/osism/testbed; fi
-	if [[ ! -e .src/github.com/osism/ansible-collection-commons ]]; then git clone https://github.com/osism/ansible-collection-commons .src/github.com/osism/ansible-collection-commons; fi
-	if [[ ! -e .src/github.com/osism/ansible-collection-services ]]; then git clone https://github.com/osism/ansible-collection-services .src/github.com/osism/ansible-collection-services; fi
+	if [ ! -e .src/github.com/osism/testbed ]; then git clone https://github.com/osism/testbed .src/github.com/osism/testbed; fi
+	if [ ! -e .src/github.com/osism/ansible-collection-commons ]; then git clone https://github.com/osism/ansible-collection-commons .src/github.com/osism/ansible-collection-commons; fi
+	if [ ! -e .src/github.com/osism/ansible-collection-services ]; then git clone https://github.com/osism/ansible-collection-services .src/github.com/osism/ansible-collection-services; fi
 
 phony: clean create deploy login prepare
