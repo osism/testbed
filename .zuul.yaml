@@ -112,9 +112,7 @@
       jobs:
         - testbed-deploy
         - testbed-deploy-cleura
-        - testbed-deploy-pco
         - testbed-deploy-wavestack
         - testbed-upgrade
         - testbed-upgrade-cleura
-        - testbed-upgrade-pco
         - testbed-upgrade-wavestack
