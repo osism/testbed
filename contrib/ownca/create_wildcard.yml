@@ -16,6 +16,7 @@
         privatekey_path: testbed-certificate.key
         subject_alt_name:
           - "DNS:*.testbed.osism.xyz"
+        subject_alt_name_critical: true
       run_once: true
       register: csr
 

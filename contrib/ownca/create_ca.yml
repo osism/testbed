@@ -18,7 +18,6 @@
         privatekey_passphrase: "{{ secret_ca_passphrase }}"
         common_name: OSISM Testbed CA
         use_common_name_for_san: false  # since we do not specify SANs, don't use CN as a SAN
-        subject_alt_name_critical: true
         basic_constraints:
           - 'CA:TRUE'
         basic_constraints_critical: true
