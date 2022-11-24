@@ -61,7 +61,7 @@ testbed/contrib/ownca$ ansible-playbook create_manager.yml
 ...
 ```
 
-Install the new certificates into the environment:
+Install the new certificates into the environments:
 
 ```
 testbed$ cp contrib/ownca/testbed-ca-certificate.pem environments/kolla/certificates/ca/testbed.crt
@@ -69,7 +69,13 @@ testbed$ cp contrib/ownca/testbed-ca-certificate.pem environments/openstack/test
 testbed$ cat contrib/ownca/testbed-{certificate.key,certificate.pem,ca-certificate.pem} > environments/kolla/certificates/haproxy.pem
 testbed$ ansible-vault encrypt --vault-pass-file environments/.vault_pass environments/kolla/certificates/haproxy.pem
 testbed$ cp environments/kolla/certificates/haproxy.pem environments/kolla/certificates/haproxy-internal.pem
+testbed$ cat contrib/ownca/testbed-{manager,ca-certificate}.pem > environments/custom/files/keycloak/cert.crt
+testbed$ cp environments/custom/files/keycloak/cert.crt environments/kolla/files/overlays/keystone/federation/oidc/keycloak-cert.pem
+testbed$ cp contrib/ownca/testbed-manager.key environments/custom/files/keycloak/private_key.pem 
+testbed$ ansible-vault encrypt --vault-pass-file environments/.vault_pass environments/custom/files/keycloak/private_key.pem
 ```
+
+Edit `environments/infrastructure/secrets.yml` to contain the new manager key and certificate.
 
 ## TODO
 
