@@ -14,8 +14,19 @@
     - name: Create certificate signing request (CSR) for new manager certificate
       community.crypto.openssl_csr_pipe:
         privatekey_path: testbed-manager.key
+        common_name: "testbed-manager.testbed.osism.xyz"
         subject_alt_name:
           - "DNS:testbed-manager.testbed.osism.xyz"
+          - "DNS:ara.testbed.osism.xyz"
+          - "DNS:cgit.testbed.osism.xyz"
+          - "DNS:flower.testbed.osism.xyz"
+          - "DNS:homer.testbed.osism.xyz"
+          - "DNS:keycloak.testbed.osism.xyz"
+          - "DNS:netbox.testbed.osism.xyz"
+          - "DNS:netdata.testbed.osism.xyz"
+          - "DNS:nexus.testbed.osism.xyz"
+          - "DNS:patchman.testbed.osism.xyz"
+          - "DNS:phpmyadmin.testbed.osism.xyz"
           - "IP:192.168.16.5"
         subject_alt_name_critical: true
       run_once: true

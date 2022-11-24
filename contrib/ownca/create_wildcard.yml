@@ -14,6 +14,7 @@
     - name: Create certificate signing request (CSR) for new certificate
       community.crypto.openssl_csr_pipe:
         privatekey_path: testbed-certificate.key
+        subject_alt_name_critical: true
         subject_alt_name:
           - "DNS:*.testbed.osism.xyz"
       run_once: true

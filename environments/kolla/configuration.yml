@@ -51,7 +51,7 @@ keystone_identity_providers:
     public_name: "Authenticate via Keycloak"
     attribute_mapping: "mappingId1"
     metadata_folder: "{{ node_custom_config }}/keystone/federation/oidc/metadata"
-    certificate_file: "{{ node_custom_config }}/keystone/federation/oidc/kD9RIBcPiCOVO8wOM2VbZD5XnpgSkf-tWdSmhurxmJo.pem"
+    certificate_file: "{{ node_custom_config }}/keystone/federation/oidc/keycloak-cert.pem"
 keystone_identity_mappings:
   - name: "mappingId1"
     file: "{{ node_custom_config }}/keystone/federation/oidc/attribute_maps/oidc_attribute_mappingId1.json"
