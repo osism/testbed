@@ -134,19 +134,12 @@ The environment to be used is set via the ``ENVIRONMENT`` environment variable.
 
      * The credentials are stored in ``clouds.yaml`` and ``secure.yaml`` with the name ``ovh``.
 
-     * Registration is possible at the following URL: https://us.ovhcloud.com/auth/signup/#/
+     * Registration is possible at the following URL: https://www.ovhcloud.com/en/
 
      * The public L3 network services at OVH are currently still in beta. For more details, please
        visit https://labs.ovh.com/public-cloud-l3-services.
 
      * The use of private networks must be explicitly activated at OVH. A so-called vRack is created for this purpose.
-
-     * There is a problem with creating multiple networks at once on OVH. Therefore the creation of the networks must
-       be started several times
-
-       .. code-block:: json
-
-          {"NeutronError": {"message": "Invalid input for operation: Can not get vracks for tenant xxx from DB!.", "type": "InvalidInput", "detail": ""}}
 
 * `pluscloud open <https://www.plusserver.com/produkte/pluscloud-open>`_
 
