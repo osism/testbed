@@ -40,8 +40,12 @@ wait_for_container_healthy 60 manager-ara-server-1
 # NOTE(berendt): wait for netbox service
 wait_for_container_healthy 30 netbox-netbox-1
 
-osism netbox import --vendors Arista
-osism netbox import --vendors Other --no-library
+osism netbox import --vendors Arista --library
+osism netbox import --vendors Other
 osism netbox init
 osism netbox manage 1000
 osism netbox connect 1000 --state a
+
+osism apply --no-wait sshconfig
+osism apply --no-wait known-hosts
+osism apply --no-wait dotfiles
