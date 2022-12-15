@@ -2,6 +2,10 @@
 set -x
 set -e
 
+echo
+echo "# DEPLOY SERVICES"
+echo
+
 source /opt/manager-vars.sh
 
 # pull images

@@ -11,6 +11,8 @@ testbed_mtu_node: "{{ testbed_mtu }}"
 
 docker_version: "5:20.10.17"
 docker_user: "{{ operator_user }}"
+docker_opts:
+  max-concurrent-downloads: 20
 
 ##########################
 # operator

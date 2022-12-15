@@ -17,3 +17,5 @@ skip_list:
   - fqcn-builtins
   - yaml
   - name[template]
+warn_list:
+  - experimental  # all rules tagged as experimental
