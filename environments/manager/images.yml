@@ -4,7 +4,7 @@
 adminer_tag: "4.8.1"
 adminer_image: "{{ docker_registry }}/library/adminer:{{ adminer_tag }}"
 
-ara_server_tag: "1.5.8"
+ara_server_tag: "1.6.1"
 ara_server_image: "{{ docker_registry_ansible|default('quay.io') }}/osism/ara-server:{{ ara_server_tag }}"
 
 mariadb_tag: "10.10.2"
