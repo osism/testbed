@@ -14,7 +14,7 @@ for node in testbed-manager testbed-node-0 testbed-node-1 testbed-node-2; do
     echo
     echo "# Containers @ $node"
     echo
-    osism container $node
+    osism container $node ps
 done
 
 
