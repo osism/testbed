@@ -44,9 +44,8 @@ osism apply --environment custom workarounds
 osism apply reboot -l testbed-nodes -e ireallymeanit=yes
 osism apply wait-for-connection -l testbed-nodes -e ireallymeanit=yes
 
-# TODO(frickler): Restart systemd service instead?
 # NOTE: Restart the manager services to update the /etc/hosts file
-docker compose -f /opt/manager/docker-compose.yml restart
+sudo systemctl restart docker-compose@manager
 
 # NOTE(berendt): wait for ara-server service
 wait_for_container_healthy 60 manager-ara-server-1
