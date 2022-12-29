@@ -16,5 +16,4 @@ osism apply rabbitmq
 osism apply keystone
 osism apply horizon
 
-osism apply --environment openstack bootstrap-keystone
 osism apply homer
