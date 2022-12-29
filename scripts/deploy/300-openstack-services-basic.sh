@@ -19,7 +19,6 @@ task_ids+=" "$(osism apply --no-wait --format script octavia 2>&1)
 
 osism wait --output --format script --delay 2 $task_ids
 
-osism apply --environment openstack bootstrap-keystone
 osism apply --environment openstack bootstrap-basic -e openstack_version=$OPENSTACK_VERSION
 osism apply --environment openstack bootstrap-ceph-rgw
 
