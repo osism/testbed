@@ -44,6 +44,11 @@ manager: bootstrap ## Deploy only the manager service.
 	  ENVIRONMENT=$(ENVIRONMENT) \
 	  deploy-manager
 
+identity: manager ## Deploy only identity services.
+	make -C terraform \
+	  ENVIRONMENT=$(ENVIRONMENT) \
+	  deploy-identity
+
 deploy: bootstrap ## Deploy everything and then check it.
 	make -C terraform \
 	  ENVIRONMENT=$(ENVIRONMENT) \
@@ -58,4 +63,4 @@ prepare: ## Run local preparations.
 	if [ ! -e .src/github.com/osism/ansible-collection-commons ]; then git clone https://github.com/osism/ansible-collection-commons .src/github.com/osism/ansible-collection-commons; fi
 	if [ ! -e .src/github.com/osism/ansible-collection-services ]; then git clone https://github.com/osism/ansible-collection-services .src/github.com/osism/ansible-collection-services; fi
 
-phony: bootstrap clean create deploy login manager prepare
+phony: bootstrap clean create deploy identity login manager prepare

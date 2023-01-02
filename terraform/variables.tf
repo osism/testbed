@@ -72,11 +72,6 @@ variable "deploy_monitoring" {
   default = false
 }
 
-variable "deploy_identity" {
-  type    = bool
-  default = false
-}
-
 variable "configuration_version" {
   type    = string
   default = "main"
