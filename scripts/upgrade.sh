@@ -8,7 +8,7 @@ echo
 
 MANAGER_VERSION=${1:-latest}
 CEPH_VERSION=${2:-pacific}
-OPENSTACK_VERSION=${3:-yoga}
+OPENSTACK_VERSION=${3:-zed}
 
 /opt/configuration/scripts/set-manager-version.sh $MANAGER_VERSION
 

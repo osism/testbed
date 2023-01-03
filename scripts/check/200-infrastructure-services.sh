@@ -11,11 +11,13 @@ fi
 
 pushd /opt/configuration/contrib > /dev/null
 
-echo
-echo "# Status of Elasticsearch"
-echo
-
-bash nagios-plugins/check_elasticsearch -H api-int.testbed.osism.xyz -s
+# ES is no longer available in Zed
+# TODO: check status of opensearch instead
+#echo
+#echo "# Status of Elasticsearch"
+#echo
+#
+#bash nagios-plugins/check_elasticsearch -H api-int.testbed.osism.xyz -s
 
 echo
 echo "# Status of MariaDB"

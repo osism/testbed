@@ -2,7 +2,7 @@
 set -x
 set -e
 
-VERSION=${1:-yoga}
+VERSION=${1:-zed}
 
 if [[ $(grep "^openstack_version:" /opt/configuration/environments/manager/configuration.yml) ]]; then
     sed -i "s/openstack_version: .*/openstack_version: ${VERSION}/g" /opt/configuration/environments/manager/configuration.yml

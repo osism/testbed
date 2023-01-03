@@ -9,12 +9,12 @@ variable "prefix" {
 
 variable "image" {
   type    = string
-  default = "Ubuntu 20.04"
+  default = "Ubuntu 22.04"
 }
 
 variable "image_node" {
   type    = string
-  default = "Ubuntu 20.04"
+  default = "Ubuntu 22.04"
 }
 
 variable "volume_size_base" {
@@ -89,7 +89,7 @@ variable "manager_version" {
 
 variable "openstack_version" {
   type    = string
-  default = "yoga"
+  default = "zed"
 }
 
 variable "number_of_nodes" {

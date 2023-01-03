@@ -4,7 +4,7 @@
   vars:
     version_ceph: pacific
     version_manager: latest
-    version_openstack: xena
+    version_openstack: yoga
 
 - name: Upgrade testbed
   hosts: all
@@ -15,7 +15,7 @@
 
     version_ceph_next: pacific
     version_manager_next: latest
-    version_openstack_next: yoga
+    version_openstack_next: zed
 
   tasks:
     - name: Run upgrade

@@ -16,7 +16,7 @@
 
     version_ceph: pacific
     version_manager: latest
-    version_openstack: yoga
+    version_openstack: "{{ openstack_version | default('zed') }}"
 
   tasks:
     - name: Create infrastructure with terraform

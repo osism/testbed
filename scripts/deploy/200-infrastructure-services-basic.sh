@@ -2,6 +2,8 @@
 set -e
 
 export INTERACTIVE=false
+OPENSTACK_VERSION=$(docker inspect --format '{{ index .Config.Labels "de.osism.release.openstack"}}' kolla-ansible)
+
 
 osism apply common
 osism apply loadbalancer
@@ -20,7 +22,13 @@ task_ids+=" "$(osism apply --no-wait --format script openvswitch 2>&1)
 
 osism wait --output --format script --delay 2 $task_ids
 
-osism apply ovn
+if [[ $OPENSTACK_VERSION =~ (xena|yoga) ]]; then
+    osism apply ovn
+else
+    osism apply ovn-db
+    osism apply ovn-controller
+fi
+
 osism apply --environment custom keycloak-oidc-client-config
 
 # NOTE: Run a backup of the database to test the backup function
