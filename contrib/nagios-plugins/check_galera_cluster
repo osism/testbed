@@ -158,6 +158,7 @@ fi
 rClusterSize=$(mysql $param_mysql -B -N -e "show status like 'wsrep_cluster_size'"|cut -f 2)
 rClusterStatus=$(mysql $param_mysql -B -N -e "show status like 'wsrep_cluster_status'"|cut -f 2) # Primary
 rFlowControl=$(mysql $param_mysql -B -N -e "show status like 'wsrep_flow_control_paused'"|cut -f 2) # < 0.1
+rFlowControl=$(printf "%.14f" $rFlowControl)
 rReady=$(mysql $param_mysql -B -N -e "show status like 'wsrep_ready'"|cut -f 2)  # ON
 rConnected=$(mysql $param_mysql -B -N -e "show status like 'wsrep_connected'"|cut -f 2)  # ON
 rLocalStateComment=$(mysql $param_mysql -B -N -e "show status like 'wsrep_local_state_comment'"|cut -f 2)  # Synced
