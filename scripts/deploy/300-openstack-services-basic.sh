@@ -19,6 +19,9 @@ task_ids+=" "$(osism apply --no-wait --format script octavia 2>&1)
 
 osism wait --output --format script --delay 2 $task_ids
 
+osism manage images --cloud admin --filter Cirros
+osism manage images --cloud admin --name "Ubuntu 22.04 Minimal"
+
 osism apply --environment openstack bootstrap-basic -e openstack_version=$OPENSTACK_VERSION
 osism apply --environment openstack bootstrap-ceph-rgw
 
