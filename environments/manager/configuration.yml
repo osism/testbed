@@ -54,6 +54,10 @@ netbox_enable: true
 netbox_host: "netbox.testbed.osism.xyz"
 netbox_api_url: "https://{{ netbox_host }}"
 
+# TODO: drop again once role is fixed
+netbox_plugins:
+  - netbox_plugin_osism
+
 ##########################
 # configuration
 
