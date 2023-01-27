@@ -62,8 +62,12 @@ osism_serial:
 ceph_cluster_fsid: 11111111-1111-1111-1111-111111111111
 
 ##########################
-# hardening
+# other
 
 # NOTE: Disabling hardening in the testbed to significantly reduce
 #       deployment time.
 enable_hardening: false
+
+# NOTE: Disabling auditd in the testbed to significantly reduce
+#       waste of resources (in the context of CI).
+enable_auditd: false
