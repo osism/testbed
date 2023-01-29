@@ -1,10 +1,8 @@
 ---
 ##########################
-# docker registries
+# docker registry
 
-docker_registry: index.docker.io
-docker_registry_ansible: quay.io
-docker_registry_service: index.docker.io
+docker_registry_ansible: harbor.services.osism.tech
 
 ##########################
 # versions

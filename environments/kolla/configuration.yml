@@ -1,5 +1,11 @@
 ---
 ##########################################################
+# docker registry
+
+docker_registry_kolla: harbor.services.osism.tech
+docker_namespace: osism
+
+##########################################################
 # loadbalancer
 
 kolla_internal_vip_address: 192.168.16.9

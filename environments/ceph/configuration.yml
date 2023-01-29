@@ -1,5 +1,10 @@
 ---
 ##########################
+# docker registry
+
+ceph_docker_registry: harbor.services.osism.tech
+
+##########################
 # generic
 
 fsid: 11111111-1111-1111-1111-111111111111
