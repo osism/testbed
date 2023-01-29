@@ -3,7 +3,7 @@
 # docker registry
 
 docker_registry_kolla: harbor.services.osism.tech
-docker_namespace: osism
+docker_namespace: kolla
 
 ##########################################################
 # loadbalancer
