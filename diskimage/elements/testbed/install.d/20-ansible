@@ -1,0 +1,20 @@
+#!/bin/bash
+
+if [ ${DIB_DEBUG_TRACE:-0} -gt 0 ]; then
+    set -x
+fi
+set -eu
+set -o pipefail
+
+# install required ansible collections
+
+ansible-galaxy collection install git+https://github.com/osism/ansible-collection-services
+ansible-galaxy collection install git+https://github.com/osism/ansible-collection-commons
+
+# run ansible playbook
+
+ansible-playbook -i localhost, /tmp/in_target.d/diskimage.yml
+
+# cleanup
+
+rm -rf /root/.ansible

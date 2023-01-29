@@ -20,6 +20,8 @@
       - ^LICENSE$
       - ^README.md$
       - ^doc/.*$
+      - ^diskimage/.*$
+      - ^.github/.*$
     timeout: 10800
 
 - job:

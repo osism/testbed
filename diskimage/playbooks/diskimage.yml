@@ -1,0 +1,33 @@
+---
+- name: Apply role docker
+  hosts: localhost
+  connection: local
+  gather_facts: true
+
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+    docker_configure_repository: true
+    docker_configure_storage_driver: true
+    docker_storage_driver: overlay2
+    docker_user: dragon
+    docker_version: "5:20.10.17"
+
+  collections:
+    - osism.services
+
+  roles:
+    - docker
+
+- name: Apply role docker_compose
+  hosts: localhost
+  connection: local
+  gather_facts: true
+
+  vars:
+    docker_compose_install_type: package
+
+  collections:
+    - osism.commons
+
+  roles:
+    - role: docker_compose
