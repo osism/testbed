@@ -539,25 +539,6 @@ Netdata
 
 .. figure:: /images/netdata.png
 
-Skydive
--------
-
-Deploy `Clustered infrastructure services`, `Infrastructure services`, and
-`Basic OpenStack services` first.
-
-.. code-block:: console
-
-   osism apply skydive
-
-The Skydive agent creates a high load on the Open vSwitch services. Therefore
-the agent is only started manually when needed.
-
-.. code-block:: console
-
-   osism apply manage-container -e container_action=stop -e container_name=skydive_agent -l skydive-agent
-
-.. figure:: /images/skydive.png
-
 Patchman
 --------
 
