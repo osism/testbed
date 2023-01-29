@@ -35,9 +35,7 @@ netdata_host_type: server
 network_type: netplan
 network_ethernets:
   "{{ ansible_local.testbed_network_devices.management }}":
-    addresses:
-      - "192.168.16.{{ node_id }}/20"
-    gateway4: "192.168.16.1"
+    dhcp4: true
     mtu: "{{ testbed_mtu_manager }}"
 network_dispatcher_scripts:
   - src: /opt/configuration/network/vxlan.sh
