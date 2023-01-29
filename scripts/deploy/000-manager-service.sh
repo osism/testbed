@@ -38,7 +38,7 @@ cp /home/dragon/.ssh/id_rsa.pub /opt/ansible/secrets/id_rsa.operator.pub
 wait_for_container_healthy 60 manager-ara-server-1
 
 # NOTE(berendt): wait for netbox service
-wait_for_container_healthy 30 netbox-netbox-1
+wait_for_container_healthy 60 netbox-netbox-1
 
 osism netbox import
 osism netbox init
