@@ -26,9 +26,10 @@ wait_for_container_healthy() {
 # deploy manager service
 sh -c '/opt/configuration/scripts/deploy/000-manager-service.sh'
 
-osism apply operator -l "all:!manager" -u ubuntu
+osism apply operator -u ubuntu
 osism apply --environment custom facts
 osism apply bootstrap
+osism apply hosts
 
 # copy network configuration
 osism apply network
