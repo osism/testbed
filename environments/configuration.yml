@@ -55,6 +55,7 @@ systohc: false
 osism_serial_default: 100%
 osism_serial:
   docker: 100%
+  network: 100%
 
 ##########################
 # ceph
