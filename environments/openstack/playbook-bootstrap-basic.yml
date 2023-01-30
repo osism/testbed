@@ -235,6 +235,13 @@
       loop:
         - load-balancer_member
         - member
+        # NOTE The role creator is required to be able to create encrypted volumes
+        #      If this role is not assigned the following error happens inside the
+        #      cinder-volume service:
+        #
+        #      Forbidden: Order creation attempt not allowed - please review your
+        #      user/project privileges
+        - creator
 
     - name: Download amphora image
       ansible.builtin.get_url:
