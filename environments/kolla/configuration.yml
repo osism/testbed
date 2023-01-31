@@ -32,8 +32,6 @@ enable_ironic: "yes"
 enable_manila: "yes"
 enable_senlin: "yes"
 
-enable_skydive: "yes"
-
 # generic
 
 openstack_service_workers: 2
