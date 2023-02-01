@@ -21,6 +21,7 @@ else
     sed -i "s/docker_registry_ansible: .*/docker_registry_ansible: quay.io/g" /opt/configuration/environments/manager/configuration.yml
     sed -i "s/ceph_docker_registry: .*/ceph_docker_registry: quay.io/g" /opt/configuration/environments/ceph/configuration.yml
     sed -i "s/docker_registry_kolla: .*/docker_registry_kolla: quay.io/g" /opt/configuration/environments/kolla/configuration.yml
+    sed -i "s/docker_namespace: .*/docker_namespace: osism/g" /opt/configuration/environments/kolla/configuration.yml
 fi
 
 wait_for_container_healthy() {
