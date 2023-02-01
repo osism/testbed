@@ -28,5 +28,5 @@ redis
 )
 
 for kolla_service in ${kolla_services[*]}; do
-    osism apply -a pull --no-wait $kolla_service
+    osism apply --no-wait $kolla_service -e kolla_action=pull
 done
