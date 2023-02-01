@@ -114,3 +114,8 @@ ceph_public_network: 192.168.16.0/20
 
 ##########################################################
 # other
+
+# This is a workaround for the missing parameter om_enable_rabbitmq_high_availability
+# in the defaults of the 4.2.0 release. The parameter is required at this point so that
+# the 4.2.0 release can be used with the testbed.
+om_enable_rabbitmq_high_availability: false
