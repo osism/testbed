@@ -19,3 +19,11 @@ skip_list:
   - name[template]
 warn_list:
   - experimental  # all rules tagged as experimental
+  - command-instead-of-shell  # Use shell only when shell functionality is required.
+  - deprecated-command-syntax  # Using command rather than an argument to e.g. file.
+  - experimental  # all rules tagged as experimental
+  - fqcn[keyword]  # Use FQCN for builtin actions.
+  - name[casing]  # Rule for checking task and play names.
+  - name[missing]  # Rule for checking task and play names.
+  - no-changed-when  # Commands should not change things if nothing needs doing.
+  - risky-shell-pipe  # Shells that use pipes should set the pipefail option.
