@@ -4,11 +4,8 @@
 - name: Apply role manager
   hosts: manager
 
-  collections:
-    - osism.services
-
   roles:
-    - role: manager
+    - role: osism.services.manager
 
 - name: Restart manager service
   hosts: manager

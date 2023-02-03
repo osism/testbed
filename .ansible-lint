@@ -1,29 +1,30 @@
 ---
 exclude_paths:
-  - .github/
-  - contrib/rally
+  - .github
+  - .src
+  - .tox
+  - contrib
+  - doc
   - environments/kolla/files/overlays/prometheus/prometheus.yml.d/50-ceph.yml
   - netbox
-  - playbooks
+  - network
+  - scripts
+  - terraform
 mock_roles:
   - manager
+  - osism.commons.docker_compose
+  - osism.commons.operator
+  - osism.services.docker
+  - osism.services.manager
+  - osism.services.netbox
+  - osism.services.traefik
   - stage-output
 use_default_rules: true
 rulesdir:
   - ./.ansible-lint-rules/
 skip_list:
-  - parser-error  # AnsibleParserError.
-  - var-spacing  # Variables should have spaces before and after: {{ var_name }}.
-  - fqcn-builtins
   - yaml
-  - name[template]
 warn_list:
-  - experimental  # all rules tagged as experimental
   - command-instead-of-shell  # Use shell only when shell functionality is required.
-  - deprecated-command-syntax  # Using command rather than an argument to e.g. file.
-  - experimental  # all rules tagged as experimental
-  - fqcn[keyword]  # Use FQCN for builtin actions.
-  - name[casing]  # Rule for checking task and play names.
-  - name[missing]  # Rule for checking task and play names.
-  - no-changed-when  # Commands should not change things if nothing needs doing.
-  - risky-shell-pipe  # Shells that use pipes should set the pipefail option.
+  - no-changed-when           # Commands should not change things if nothing needs doing.
+  - run-once[task]            # Run once should use strategy other than free.

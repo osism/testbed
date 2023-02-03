@@ -32,7 +32,7 @@
       register: certificate
 
     - name: Write certificate file
-      copy:
+      ansible.builtin.copy:
         dest: testbed-certificate.pem
         content: "{{ certificate.certificate }}"
       run_once: true

@@ -55,12 +55,9 @@
     - /opt/configuration/environments/configuration.yml
     - /opt/configuration/environments/secrets.yml
 
-  collections:
-    - osism.services
-
   roles:
-    - traefik
-    - netbox
+    - osism.services.traefik
+    - osism.services.netbox
 
 - name: Apply role manager
   hosts: testbed-manager.testbed.osism.xyz
@@ -80,8 +77,5 @@
     - /opt/configuration/environments/configuration.yml
     - /opt/configuration/environments/secrets.yml
 
-  collections:
-    - osism.services
-
   roles:
-    - manager
+    - osism.services.manager
