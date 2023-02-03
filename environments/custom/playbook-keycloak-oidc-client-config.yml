@@ -69,7 +69,7 @@
           create clients --target-realm "{{ keycloak_realm }}"
             --set clientId={{ keystone_client_id }}
             --set protocol=openid-connect
-            --set 'redirectUris={{ keystone_redirect_uris|tojson }}'
+            --set 'redirectUris={{ keystone_redirect_uris | tojson }}'
             --set standardFlowEnabled=true
             --set implicitFlowEnabled=true
             --set directAccessGrantsEnabled=true
@@ -79,7 +79,7 @@
       run_once: true
       no_log: true
 
-    - name: "Get internal ID for {{ keystone_client_id }} client"
+    - name: "Get internal ID for client {{ keystone_client_id }}"
       ansible.builtin.command: >-
         docker exec {{ keycloak_service_container_name }} {{ keycloak_kcadm_binary }}
           get clients --target-realm {{ keycloak_realm }}
@@ -91,7 +91,7 @@
       changed_when: false
       run_once: true
 
-    - name: "Filter internal ID for {{ keystone_client_id }} client"
+    - name: "Filter internal ID for client {{ keystone_client_id }}"
       ansible.builtin.set_fact:
         internal_client_id: "{{ internal_client_id_json.stdout }}"
       run_once: true

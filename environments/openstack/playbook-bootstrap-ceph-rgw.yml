@@ -2,8 +2,6 @@
 - name: Bootstrap ceph rgw
   hosts: localhost
   connection: local
-  collections:
-    - openstack.cloud
 
   tasks:
     - name: Create swift service account

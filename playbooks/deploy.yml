@@ -34,11 +34,13 @@
         manager_host: "{{ manager_address.stdout | split('=') | last }}"
 
     - name: Update ansible collections
-      ansible.builtin.shell:
+      ansible.builtin.command:
         chdir: "{{ ansible_user_dir }}"
         cmd: |
-          {{ ansible_galaxy }} collection install --force "{{ repo_path }}/osism/ansible-collection-commons"
-          {{ ansible_galaxy }} collection install --force "{{ repo_path }}/osism/ansible-collection-services"
+          {{ ansible_galaxy }} collection install --force "{{ repo_path }}/osism/ansible-collection-{{ item }}"
+      loop:
+        - commons
+        - services
 
     - name: Wait up to 300 seconds for port 22 to become open and contain "OpenSSH"
       ansible.builtin.wait_for:
@@ -58,8 +60,7 @@
     - name: Get ssh keypair from terraform environment
       ansible.builtin.shell:
         chdir: "{{ ansible_path }}"
-        cmd: |
-          cp {{ terraform_path }}/.id* .
+        cmd: cp {{ terraform_path }}/.id* .
 
     - name: Point out that the following task takes some time and does not give any output
       ansible.builtin.debug:

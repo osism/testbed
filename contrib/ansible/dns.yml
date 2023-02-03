@@ -1,5 +1,5 @@
 ---
-- name: set up DNS for testbed
+- name: Set up DNS for testbed
   hosts: localhost
   vars:
     cloud_provider: betacloud
@@ -35,14 +35,17 @@
       "testbed-node-9": "19"
 
   tasks:
-    - openstack.cloud.dns_zone:
+    - name: Create DNS zone
+      openstack.cloud.dns_zone:
         cloud: "{{ cloud_provider }}"
         state: present
         name: "{{ basedomain }}"
         zone_type: primary
         email: "{{ soa_email }}"
         ttl: "{{ ttl }}"
-    - openstack.cloud.recordset:
+
+    - name: Create DNS recordsets
+      openstack.cloud.recordset:
         cloud: "{{ cloud_provider }}"
         state: present
         zone: "{{ basedomain }}"

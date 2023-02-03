@@ -1,8 +1,6 @@
 ---
 - name: Prepare masquerading on the manager node
   hosts: testbed-managers
-  collections:
-    - ansible.builtin
 
   tasks:
     - name: Accpet FORWARD on the management interface (incoming)
@@ -30,8 +28,6 @@
 - name: Create SCS flavors
   hosts: localhost
   connection: local
-  collections:
-    - openstack.cloud
 
   tasks:
     # vCPU:RAM ratio: 4:8
@@ -199,9 +195,6 @@
 - name: Bootstrap basic OpenStack services
   hosts: localhost
   connection: local
-  collections:
-    - ansible.builtin
-    - openstack.cloud
 
   vars:
     openstack_version: yoga

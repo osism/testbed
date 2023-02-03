@@ -15,7 +15,7 @@
         update_cache: true
         lock_timeout: "{{ apt_lock_timeout }}"
 
-    - name: Set APT options on manager
+    - name: Set APT options on manager  # noqa risky-shell-pipe
       become: true
       ansible.builtin.shell: |
         echo "APT::Acquire::Retries \"3\";" > /etc/apt/apt.conf.d/80-retries
@@ -72,10 +72,16 @@
         - osism/ansible-collection-commons
         - osism/ansible-collection-services
 
+    - name: Create /usr/share/ansible directory
+      become: true
+      ansible.builtin.file:
+        state: directory
+        path: /usr/share/ansible
+        mode: '0755'
+
     - name: Install collections
       become: true
       ansible.builtin.shell: |
-          mkdir -p /usr/share/ansible
           ansible-galaxy collection install --collections-path /usr/share/ansible/collections ansible.netcommon
           ansible-galaxy collection install --collections-path /usr/share/ansible/collections /opt/src/osism/ansible-collection-commons
           ansible-galaxy collection install --collections-path /usr/share/ansible/collections /opt/src/osism/ansible-collection-services
@@ -91,8 +97,5 @@
     operator_authorized_keys:
       - "{{ lookup('file', '.id_rsa.' + cloud_env + '.pub') }}"
 
-  collections:
-    - osism.commons
-
   roles:
-    - role: operator
+    - role: osism.commons.operator

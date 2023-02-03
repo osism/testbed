@@ -1,10 +1,6 @@
 ---
 - name: Bootstrap refstack
   hosts: localhost
-  collections:
-    - ansible.builtin
-    - community.general
-    - openstack.cloud
 
   vars:
     refstack_users:

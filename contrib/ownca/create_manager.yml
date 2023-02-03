@@ -34,7 +34,7 @@
       register: certificate
 
     - name: Write manager certificate file
-      copy:
+      ansible.builtin.copy:
         dest: testbed-manager.pem
         content: "{{ certificate.certificate }}"
       run_once: true
