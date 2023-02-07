@@ -58,6 +58,7 @@ deploy: bootstrap ## Deploy everything and then check it.
 	  check
 
 prepare: ## Run local preparations.
+	ansible-playbook -i localhost, ansible/check-local-versions.yml
 	mkdir -p .src/github.com/osism
 	if [ ! -e .src/github.com/osism/testbed ]; then git clone https://github.com/osism/testbed .src/github.com/osism/testbed; else git -C .src/github.com/osism/testbed pull; fi
 	if [ ! -e .src/github.com/osism/ansible-collection-commons ]; then git clone https://github.com/osism/ansible-collection-commons .src/github.com/osism/ansible-collection-commons; else git -C .src/github.com/osism/ansible-collection-commons pull; fi
