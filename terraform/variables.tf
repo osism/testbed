@@ -47,6 +47,11 @@ variable "volume_availability_zone" {
   default = "south-2"
 }
 
+variable "network_availability_zone" {
+  type    = string
+  default = "south-2"
+}
+
 variable "public" {
   type    = string
   default = "external"
