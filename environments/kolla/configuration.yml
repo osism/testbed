@@ -1,8 +1,9 @@
 ---
 ##########################################################
-# docker
+# docker registry
 
-docker_registry: quay.io
+docker_registry_kolla: harbor.services.osism.tech
+docker_namespace: kolla
 
 ##########################################################
 # loadbalancer
@@ -26,20 +27,10 @@ openstack_cacert: /etc/ssl/certs/ca-certificates.crt
 enable_aodh: "yes"
 enable_barbican: "yes"
 enable_ceilometer: "yes"
-enable_cinder: "yes"
-enable_cinder_backup: "yes"
-enable_designate: "yes"
 enable_gnocchi: "yes"
-enable_heat: "yes"
 enable_ironic: "yes"
 enable_manila: "yes"
-enable_octavia: "yes"
 enable_senlin: "yes"
-
-enable_grafana: "yes"
-enable_prometheus: "yes"
-enable_redis: "yes"
-enable_skydive: "yes"
 
 # generic
 
@@ -49,20 +40,10 @@ openstack_logging_debug: "True"
 # elasticsearch
 es_heap_size: "1g"
 
-enable_elasticsearch_curator: "yes"
-
 elasticsearch_curator_soft_retention_period_days: 1
 elasticsearch_curator_hard_retention_period_days: 1
 
-# mariadb
-enable_mariabackup: "yes"
-
-# horizon
-horizon_backend_database: "yes"
-
 # keystone
-keystone_token_provider: "fernet"
-
 enable_keystone_federation: "yes"
 keystone_enable_federation_openid: "yes"
 keystone_identity_providers:
@@ -86,9 +67,10 @@ libvirt_enable_sasl: "no"
 neutron_plugin_agent: ovn
 
 enable_neutron_agent_ha: "yes"
-enable_neutron_qos: "yes"
 
-# NOTE: This volume is only needed in the testbed so that the virtualbmc service can access the Libvirt sockets.
+# nova
+# NOTE: This volume is only needed in the testbed so that the virtualbmc service
+#       can access the Libvirt sockets.
 nova_libvirt_extra_volumes:
   - "nova_libvirt_run:/var/run/libvirt"
 
@@ -96,12 +78,8 @@ nova_libvirt_extra_volumes:
 #       that are not of interest.
 nova_libvirt_logging_debug: "no"
 
-# nova
-nova_console: novnc
-
 # octavia
 octavia_network_type: tenant
-octavia_loadbalancer_topology: "ACTIVE_STANDBY"
 
 # designate
 designate_ns_record: openstack.testbed.osism.xyz
@@ -136,4 +114,9 @@ ceph_public_network: 192.168.16.0/20
 
 ##########################################################
 # other
-#
+
+# This is a workaround for the missings in the defaults of the 4.2.0 release.
+# The parameter is required at this point so that the 4.2.0 release can be used
+# with the testbed.
+om_enable_rabbitmq_high_availability: false
+external_ceph_always_copy_cinder_keyring: "no"

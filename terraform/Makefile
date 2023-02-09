@@ -87,11 +87,13 @@ deploy: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
 	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
 	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(ENVIRONMENT) $(USERNAME)@$$MANAGER_ADDRESS "/opt/configuration/scripts/deploy.sh"
 
-deploy-identity: init
-	@touch .deploy.$(ENVIRONMENT)
-	@echo "configuration_version = \"$(CONFIGURATION)\"" >> $(ENVIRONMENT).auto.tfvars
-	@echo "deploy_identity = true" >> $(ENVIRONMENT).auto.tfvars
-	@$(TERRAFORM) apply $(APPLY_PARAMS) $(PARAMS)
+deploy-manager: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
+	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
+	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(ENVIRONMENT) $(USERNAME)@$$MANAGER_ADDRESS "/opt/configuration/scripts/deploy-manager.sh"
+
+deploy-identity: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
+	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
+	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(ENVIRONMENT) $(USERNAME)@$$MANAGER_ADDRESS "/opt/configuration/scripts/deploy-identity-services.sh"
 
 upgrade: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
 	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
@@ -203,4 +205,4 @@ plan: dry-run
 push: state-push
 tunnel: sshuttle
 
-PHONY: clean console attach detach sshuttle ssh dry-run list deploy deploy-identity upgrade watch openstack create log login scp copy address check rally refstack
+PHONY: clean console attach detach sshuttle ssh dry-run list deploy deploy-identity deploy-manager upgrade watch openstack create log login scp copy address check rally refstack

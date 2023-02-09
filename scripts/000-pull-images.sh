@@ -3,12 +3,10 @@ set -e
 
 export INTERACTIVE=false
 
-# NOTE: common + loadbalancer are purposely missing here, as these services
-#       are rolled out first.
-
 kolla_services=(
 barbican
 cinder
+common
 designate
 elasticsearch
 glance
@@ -16,6 +14,7 @@ heat
 horizon
 keystone
 kibana
+loadbalancer
 mariadb
 memcached
 neutron

@@ -11,7 +11,7 @@
 
   vars:
     basepath: "{{ ansible_user_dir }}/src/github.com/osism/testbed"
-    cloud_env: ci
+    cloud_env: "{{ testbed_environment | default('ci') }}"
 
     version_ceph_next: pacific
     version_manager_next: latest
@@ -19,11 +19,11 @@
 
   tasks:
     - name: Run upgrade
-      ansible.builtin.shell:
+      ansible.builtin.command:
         chdir: "{{ basepath }}/terraform"
         cmd: make ENVIRONMENT={{ cloud_env }} VERSION_MANAGER={{ version_manager_next }} VERSION_CEPH={{ version_ceph_next }} VERSION_OPENSTACK={{ version_openstack_next }} upgrade
 
     - name: Run checks after the upgrade
-      ansible.builtin.shell:
+      ansible.builtin.command:
         chdir: "{{ basepath }}/terraform"
         cmd: make ENVIRONMENT={{ cloud_env }} check

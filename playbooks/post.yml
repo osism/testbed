@@ -1,8 +1,9 @@
 ---
-- hosts: all
+- name: Post clean play
+  hosts: all
 
   vars:
-    cloud_env: ci
+    cloud_env: "{{ testbed_environment | default('ci') }}"
 
   tasks:
     - name: Make clean
@@ -10,7 +11,8 @@
         chdir: "{{ ansible_user_dir }}/src/github.com/osism/testbed/terraform"
         cmd: make ENVIRONMENT={{ cloud_env }} clean 2>&1
 
-- hosts: all
+- name: Post output play
+  hosts: all
 
   vars:
     stage_dir: "{{ ansible_user_dir }}/zuul-output"

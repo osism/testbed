@@ -19,7 +19,7 @@
 
     - name: Copy SSH private key
       ansible.builtin.copy:
-        content: "{{ lookup('file', '.id_rsa.' + cloud_env ) }}\n"
+        content: "{{ lookup('file', '.id_rsa.' + cloud_env) }}\n"
         dest: .ssh/id_rsa
         mode: '0600'
         owner: "{{ operator_user }}"
@@ -47,7 +47,9 @@
           pip3 install --no-cache-dir python-gilt
       when: version_manager != "latest"
 
-    - name: Sync testbed repo with generics
+    # shell required because of: command module does not accept
+    # setting environment variables inline.
+    - name: Sync testbed repo with generics  # noqa command-instead-of-shell
       ansible.builtin.shell:
         chdir: /opt/configuration
         cmd: MANAGER_VERSION={{ version_manager }} gilt overlay

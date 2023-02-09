@@ -57,7 +57,6 @@ write_files:
       export MANAGER_VERSION=${var.manager_version}
       export OPENSTACK_VERSION=${var.openstack_version}
 
-      export DEPLOY_IDENTITY=${var.deploy_identity}
       export DEPLOY_MONITORING=${var.deploy_monitoring}
 
     path: /opt/manager-vars.sh

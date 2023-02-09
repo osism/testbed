@@ -12,11 +12,8 @@
     docker_user: dragon
     docker_version: "5:20.10.17"
 
-  collections:
-    - osism.services
-
   roles:
-    - docker
+    - osism.services.docker
 
 - name: Apply role docker_compose
   hosts: testbed-manager.testbed.osism.xyz
@@ -26,8 +23,5 @@
   vars:
     docker_compose_install_type: package
 
-  collections:
-    - osism.commons
-
   roles:
-    - role: docker_compose
+    - role: osism.commons.docker_compose

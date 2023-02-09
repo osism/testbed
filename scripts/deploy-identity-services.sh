@@ -1,5 +1,12 @@
 #!/usr/bin/env bash
+set -x
 set -e
+
+echo
+echo "# DEPLOY IDENTITY SERVICES"
+echo
+
+source /opt/manager-vars.sh
 
 export INTERACTIVE=false
 
@@ -16,5 +23,4 @@ osism apply rabbitmq
 osism apply keystone
 osism apply horizon
 
-osism apply --environment openstack bootstrap-keystone
 osism apply homer
