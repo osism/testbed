@@ -2,10 +2,14 @@
 - name: Post clean play
   hosts: all
 
-  vars:
-    cloud_env: "{{ testbed_environment | default('ci') }}"
+  vars_files:
+    - vars/cloud_envs.yml
 
   tasks:
+    - name: Set cloud_env fact
+      ansible.builtin.set_fact:
+        cloud_env: "{{ cloud_envs[hostvars[groups['all'][0]]['nodepool']['label']] }}"
+
     - name: Make clean
       ansible.builtin.shell:
         chdir: "{{ ansible_user_dir }}/src/github.com/osism/testbed/terraform"
