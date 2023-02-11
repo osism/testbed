@@ -61,6 +61,17 @@
           label: testbed-orchestrator-wavecon
 
 - job:
+    name: testbed-deploy-wavestack-zed
+    parent: testbed-deploy
+    vars:
+      testbed_environment: wavestack
+      version_openstack: zed
+    nodeset:
+      nodes:
+        - name: orchestrator
+          label: testbed-orchestrator-wavecon
+
+- job:
     name: testbed-upgrade-cleura
     parent: testbed-upgrade
     vars:
@@ -112,7 +123,10 @@
       jobs:
         - testbed-deploy
         - testbed-deploy-cleura
+        - testbed-deploy-pco
         - testbed-deploy-wavestack
+        - testbed-deploy-wavestack-zed
         - testbed-upgrade
         - testbed-upgrade-cleura
+        - testbed-upgrade-pco
         - testbed-upgrade-wavestack
