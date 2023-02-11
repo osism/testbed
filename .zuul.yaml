@@ -5,6 +5,24 @@
       - name: orchestrator
         label: testbed-orchestrator
 
+- nodeset:
+    name: testbed-orchestrator-cleura
+    nodes:
+      - name: orchestrator
+        label: testbed-orchestrator-cleura
+
+- nodeset:
+    name: testbed-orchestrator-pco
+    nodes:
+      - name: orchestrator
+        label: testbed-orchestrator-pco
+
+- nodeset:
+    name: testbed-orchestrator-wavestack
+    nodes:
+      - name: orchestrator
+        label: testbed-orchestrator-wavecon
+
 - job:
     name: testbed-deploy
     parent: base-extra-logs
@@ -29,77 +47,67 @@
     # NOTE(frickler): Default zuul maximum timeout is 3h, this needs to
     # be explictly bumped in the tenant configuration
     timeout: 16200
+    nodeset: testbed-orchestrator-wavestack
+    vars:
+      testbed_environment: wavestack
+
+- job:
+    name: testbed-deploy-stable
+    parent: testbed-deploy
+    vars:
+      testbed_environment: pluscloudopen
+      manager_version: "4.2.0"
+    nodeset: testbed-orchestrator-pco
 
 - job:
     name: testbed-deploy-cleura
     parent: testbed-deploy
     vars:
       testbed_environment: cleura
-    nodeset:
-      nodes:
-        - name: orchestrator
-          label: testbed-orchestrator-cleura
+    nodeset: testbed-orchestrator-cleura
 
 - job:
     name: testbed-deploy-pco
     parent: testbed-deploy
     vars:
       testbed_environment: pluscloudopen
-    nodeset:
-      nodes:
-        - name: orchestrator
-          label: testbed-orchestrator-pco
+    nodeset: testbed-orchestrator-pco
 
 - job:
     name: testbed-deploy-wavestack
     parent: testbed-deploy
     vars:
       testbed_environment: wavestack
-    nodeset:
-      nodes:
-        - name: orchestrator
-          label: testbed-orchestrator-wavecon
+    nodeset: testbed-orchestrator-wavestack
 
 - job:
     name: testbed-deploy-wavestack-zed
     parent: testbed-deploy
     vars:
       testbed_environment: wavestack
-      version_openstack: zed
-    nodeset:
-      nodes:
-        - name: orchestrator
-          label: testbed-orchestrator-wavecon
+      openstack_version: zed
+    nodeset: testbed-orchestrator-wavestack
 
 - job:
     name: testbed-upgrade-cleura
     parent: testbed-upgrade
     vars:
       testbed_environment: cleura
-    nodeset:
-      nodes:
-        - name: orchestrator
-          label: testbed-orchestrator-cleura
+    nodeset: testbed-orchestrator-cleura
 
 - job:
     name: testbed-upgrade-pco
     parent: testbed-upgrade
     vars:
       testbed_environment: pluscloudopen
-    nodeset:
-      nodes:
-        - name: orchestrator
-          label: testbed-orchestrator-pco
+    nodeset: testbed-orchestrator-pco
 
 - job:
     name: testbed-upgrade-wavestack
     parent: testbed-upgrade
     vars:
       testbed_environment: wavestack
-    nodeset:
-      nodes:
-        - name: orchestrator
-          label: testbed-orchestrator-wavecon
+    nodeset: testbed-orchestrator-wavestack
 
 - project:
     merge-mode: squash-merge
@@ -108,12 +116,15 @@
         - tox-docs
         - tox-linters
         - testbed-deploy
+        - testbed-deploy-stable
         - testbed-upgrade
     gate:
       jobs:
         - tox-docs
         - tox-linters
         - testbed-deploy:
+            branches: main
+        - testbed-deploy-stable:
             branches: main
     post:
       jobs:
@@ -122,6 +133,7 @@
     periodic-daily:
       jobs:
         - testbed-deploy
+        - testbed-deploy-stable
         - testbed-deploy-cleura
         - testbed-deploy-pco
         - testbed-deploy-wavestack
