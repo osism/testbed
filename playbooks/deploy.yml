@@ -14,9 +14,9 @@
     repo_path: "{{ ansible_user_dir }}/src/github.com"
     terraform_path: "{{ basepath }}/terraform"
 
-    version_ceph: pacific
-    version_manager: latest
-    version_openstack: yoga
+    version_ceph: "{{ ceph_version | default('pacific') }}"
+    version_manager: "{{ manager_version | default('latest') }}"
+    version_openstack: "{{ openstack_version | default('yoga') }}"
 
   tasks:
     - name: Create infrastructure with terraform

@@ -48,6 +48,8 @@ wait_for_container_healthy 60 manager-ara-server-1
 # wait for netbox service
 wait_for_container_healthy 60 netbox-netbox-1
 
+docker compose --project-directory /opt/manager ps
+
 osism netbox import
 osism netbox init
 osism netbox manage 1000
