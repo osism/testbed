@@ -51,6 +51,12 @@
       - name: orchestrator-wavestack
         label: testbed-orchestrator-wavecon
 
+- nodeset:
+    name: testbed-orchestrator-upgrade-next
+    nodes:
+      - name: orchestrator-wavestack
+        label: testbed-orchestrator-pco
+
 - job:
     name: testbed-deploy
     parent: base-extra-logs
@@ -76,6 +82,18 @@
     # be explictly bumped in the tenant configuration
     timeout: 16200
     nodeset: testbed-orchestrator-upgrade
+
+- job:
+    name: testbed-upgrade-next
+    parent: testbed-deploy
+    run: playbooks/upgrade.yml
+    # NOTE(frickler): Default zuul maximum timeout is 3h, this needs to
+    # be explictly bumped in the tenant configuration
+    timeout: 16200
+    vars:
+      openstack_version: yoga
+      openstack_version_next: zed
+    nodeset: testbed-orchestrator-upgrade-next
 
 - job:
     name: testbed-deploy-stable
@@ -131,6 +149,7 @@
         - testbed-deploy-next
         - testbed-deploy-stable
         - testbed-upgrade
+        - testbed-upgrade-next
     gate:
       jobs:
         - tox-docs
@@ -152,6 +171,7 @@
         - testbed-deploy-cleura
         - testbed-deploy-pco
         - testbed-deploy-wavestack
+        - testbed-upgrade-next
         - testbed-upgrade-cleura
         - testbed-upgrade-pco
         - testbed-upgrade-wavestack
