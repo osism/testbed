@@ -32,11 +32,6 @@ variable "flavor_node" {
   default = "SCS-8V:32:50"
 }
 
-variable "flavor_node_alt" {
-  type    = string
-  default = "SCS-8V:32:50"
-}
-
 variable "flavor_manager" {
   type    = string
   default = "SCS-4V:8:50"
@@ -60,11 +55,6 @@ variable "network_availability_zone" {
 variable "public" {
   type    = string
   default = "external"
-}
-
-variable "port_security_enabled" {
-  type    = bool
-  default = false
 }
 
 variable "deploy_monitoring" {
@@ -100,11 +90,6 @@ variable "number_of_nodes" {
 variable "number_of_volumes" {
   type    = number
   default = 3
-}
-
-variable "enable_dhcp" {
-  type    = bool
-  default = false
 }
 
 variable "enable_config_drive" {
