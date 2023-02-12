@@ -1,0 +1,8 @@
+# Mapping of the labels of the used nodes to the cloud
+# environment to be used.
+---
+cloud_envs:
+  testbed-orchestrator: ci
+  testbed-orchestrator-pco: pluscloudopen
+  testbed-orchestrator-cleura: cleura
+  testbed-orchestrator-wavecon: wavestack

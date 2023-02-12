@@ -7,7 +7,6 @@
     ansible_path: "{{ basepath }}/ansible"
     ansible_playbook: ~/venv/bin/ansible-playbook
     basepath: "{{ ansible_user_dir }}/src/github.com/osism/testbed"
-    cloud_env: "{{ testbed_environment | default('ci') }}"
     manager_address_file: "{{ terraform_path }}/.MANAGER_ADDRESS.{{ cloud_env }}"
     manual_create: false
     manual_deploy: false
@@ -18,7 +17,14 @@
     version_manager: "{{ manager_version | default('latest') }}"
     version_openstack: "{{ openstack_version | default('yoga') }}"
 
+  vars_files:
+    - vars/cloud_envs.yml
+
   tasks:
+    - name: Set cloud_env fact
+      ansible.builtin.set_fact:
+        cloud_env: "{{ cloud_envs[hostvars[groups['all'][0]]['nodepool']['label']] }}"
+
     - name: Create infrastructure with terraform
       ansible.builtin.shell:
         chdir: "{{ terraform_path }}"
