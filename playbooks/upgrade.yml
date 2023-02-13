@@ -20,9 +20,15 @@
     - vars/cloud_envs.yml
 
   tasks:
-    - name: Set cloud_env fact
+    - name: Set cloud_env fact (Zuul deployment)
       ansible.builtin.set_fact:
         cloud_env: "{{ cloud_envs[hostvars[groups['all'][0]]['nodepool']['label']] }}"
+      when: "'nodepool' in hostvars[groups['all'][0]]"
+
+    - name: Set cloud_env fact (local deployment)
+      ansible.builtin.set_fact:
+        cloud_env: "{{ testbed_environment | default('ci') }}"
+      when: "'nodepool' not in hostvars[groups['all'][0]]"
 
     - name: Run upgrade
       ansible.builtin.command:
