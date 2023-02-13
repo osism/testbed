@@ -4,19 +4,40 @@ set -e
 
 export INTERACTIVE=false
 
+MANAGER_VERSION=$(docker inspect --format '{{ index .Config.Labels "org.opencontainers.image.version"}}' osism-ansible)
+
 echo
 echo "# CHECK"
 echo
 
-# list containers
+# list containers & images
 
 for node in testbed-manager testbed-node-0 testbed-node-1 testbed-node-2; do
-    echo
-    echo "# Containers @ $node"
-    echo
-    osism container $node ps
-done
+    # osism container is only available since 4.3.0. To enable the
+    # testbed to be used with < 4.3.0, here is this check.
+    if [[ $MANAGER_VERSION == "4.0.0" || $MANAGER_VERSION == "4.1.0" || $MANAGER_VERSION == "4.2.0" ]]; then
+        echo
+        echo "## Containers @ $node"
+        echo
+        ssh $node docker ps
 
+        echo
+        echo "## Images @ $node"
+        echo
+        ssh $node docker images
+    else
+        echo
+        echo "## Containers @ $node"
+        echo
+        osism container $node ps
+
+        echo
+        echo "## Images @ $node"
+        echo
+        osism container $node images
+    fi
+
+done
 
 # check services
 sh -c '/opt/configuration/scripts/check-services.sh'

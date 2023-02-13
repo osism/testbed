@@ -12,4 +12,3 @@ image                     = "Ubuntu 20.04"
 image_node                = "Ubuntu 20.04"
 public                    = "Ext-Net"
 volume_size_storage       = "10"
-port_security_enabled     = null

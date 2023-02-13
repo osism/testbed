@@ -6,6 +6,9 @@ echo
 echo "# DEPLOY MANAGER"
 echo
 
+cat /opt/manager-vars.sh
+echo
+
 source /opt/manager-vars.sh
 export INTERACTIVE=false
 

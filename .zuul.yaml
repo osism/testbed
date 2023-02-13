@@ -1,15 +1,67 @@
 ---
+# Betacloud
 - nodeset:
     name: testbed-orchestrator
     nodes:
       - name: orchestrator
         label: testbed-orchestrator
 
+# Cleura
+- nodeset:
+    name: testbed-orchestrator-cleura
+    nodes:
+      - name: orchestrator
+        label: testbed-orchestrator-cleura
+
+# PCO
+- nodeset:
+    name: testbed-orchestrator-pco
+    nodes:
+      - name: orchestrator
+        label: testbed-orchestrator-pco
+
+# Wavestack
+- nodeset:
+    name: testbed-orchestrator-wavestack
+    nodes:
+      - name: orchestrator
+        label: testbed-orchestrator-wavecon
+
+- nodeset:
+    name: testbed-orchestrator-deploy-stable
+    nodes:
+      - name: orchestrator
+        label: testbed-orchestrator
+
+- nodeset:
+    name: testbed-orchestrator-deploy-next
+    nodes:
+      - name: orchestrator-cleura
+        label: testbed-orchestrator-cleura
+
+- nodeset:
+    name: testbed-orchestrator-deploy
+    nodes:
+      - name: orchestrator-pco
+        label: testbed-orchestrator-pco
+
+- nodeset:
+    name: testbed-orchestrator-upgrade
+    nodes:
+      - name: orchestrator-wavestack
+        label: testbed-orchestrator-wavecon
+
+- nodeset:
+    name: testbed-orchestrator-upgrade-next
+    nodes:
+      - name: orchestrator-wavestack
+        label: testbed-orchestrator-pco
+
 - job:
     name: testbed-deploy
     parent: base-extra-logs
     pre-run: playbooks/pre.yml
-    nodeset: testbed-orchestrator
+    nodeset: testbed-orchestrator-deploy
     run: playbooks/deploy.yml
     post-run: playbooks/post.yml
     required-projects:
@@ -29,66 +81,63 @@
     # NOTE(frickler): Default zuul maximum timeout is 3h, this needs to
     # be explictly bumped in the tenant configuration
     timeout: 16200
+    nodeset: testbed-orchestrator-upgrade
+
+- job:
+    name: testbed-upgrade-next
+    parent: testbed-deploy
+    run: playbooks/upgrade.yml
+    # NOTE(frickler): Default zuul maximum timeout is 3h, this needs to
+    # be explictly bumped in the tenant configuration
+    timeout: 16200
+    vars:
+      openstack_version: yoga
+      openstack_version_next: zed
+    nodeset: testbed-orchestrator-upgrade-next
+
+- job:
+    name: testbed-deploy-stable
+    parent: testbed-deploy
+    vars:
+      manager_version: "4.2.0"
+    nodeset: testbed-orchestrator-deploy-stable
+
+- job:
+    name: testbed-deploy-next
+    parent: testbed-deploy
+    vars:
+      openstack_version: zed
+    nodeset: testbed-orchestrator-deploy-next
 
 - job:
     name: testbed-deploy-cleura
     parent: testbed-deploy
-    vars:
-      testbed_environment: cleura
-    nodeset:
-      nodes:
-        - name: orchestrator
-          label: testbed-orchestrator-cleura
+    nodeset: testbed-orchestrator-cleura
 
 - job:
     name: testbed-deploy-pco
     parent: testbed-deploy
-    vars:
-      testbed_environment: pluscloudopen
-    nodeset:
-      nodes:
-        - name: orchestrator
-          label: testbed-orchestrator-pco
+    nodeset: testbed-orchestrator-pco
 
 - job:
     name: testbed-deploy-wavestack
     parent: testbed-deploy
-    vars:
-      testbed_environment: wavestack
-    nodeset:
-      nodes:
-        - name: orchestrator
-          label: testbed-orchestrator-wavecon
+    nodeset: testbed-orchestrator-wavestack
 
 - job:
     name: testbed-upgrade-cleura
     parent: testbed-upgrade
-    vars:
-      testbed_environment: cleura
-    nodeset:
-      nodes:
-        - name: orchestrator
-          label: testbed-orchestrator-cleura
+    nodeset: testbed-orchestrator-cleura
 
 - job:
     name: testbed-upgrade-pco
     parent: testbed-upgrade
-    vars:
-      testbed_environment: pluscloudopen
-    nodeset:
-      nodes:
-        - name: orchestrator
-          label: testbed-orchestrator-pco
+    nodeset: testbed-orchestrator-pco
 
 - job:
     name: testbed-upgrade-wavestack
     parent: testbed-upgrade
-    vars:
-      testbed_environment: wavestack
-    nodeset:
-      nodes:
-        - name: orchestrator
-          label: testbed-orchestrator-wavecon
+    nodeset: testbed-orchestrator-wavestack
 
 - project:
     merge-mode: squash-merge
@@ -97,12 +146,19 @@
         - tox-docs
         - tox-linters
         - testbed-deploy
+        - testbed-deploy-next
+        - testbed-deploy-stable
         - testbed-upgrade
+        - testbed-upgrade-next
     gate:
       jobs:
         - tox-docs
         - tox-linters
         - testbed-deploy:
+            branches: main
+        - testbed-deploy-next:
+            branches: main
+        - testbed-deploy-stable:
             branches: main
     post:
       jobs:
@@ -110,9 +166,12 @@
             branches: main
     periodic-daily:
       jobs:
-        - testbed-deploy
+        - testbed-deploy-next
+        - testbed-deploy-stable
         - testbed-deploy-cleura
+        - testbed-deploy-pco
         - testbed-deploy-wavestack
-        - testbed-upgrade
+        - testbed-upgrade-next
         - testbed-upgrade-cleura
+        - testbed-upgrade-pco
         - testbed-upgrade-wavestack

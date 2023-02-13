@@ -19,7 +19,7 @@ nginx_image: "{{ docker_registry }}/library/nginx:{{ nginx_tag }}"
 phpmyadmin_tag: "5.2.1"
 phpmyadmin_image: "{{ docker_registry }}/phpmyadmin/phpmyadmin:{{ phpmyadmin_tag }}"
 
-postgres_tag: "15.1-alpine"
+postgres_tag: "15.2-alpine"
 postgres_image: "{{ docker_registry }}/library/postgres:{{ postgres_tag }}"
 
 redis_tag: "7.0.8-alpine"

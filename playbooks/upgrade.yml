@@ -2,22 +2,28 @@
 - name: Deploy testbed
   ansible.builtin.import_playbook: deploy.yml
   vars:
-    version_ceph: pacific
-    version_manager: latest
-    version_openstack: xena
+    version_ceph: "{{ ceph_version | default('pacific') }}"
+    version_manager: "{{ manager_version | default('latest') }}"
+    version_openstack: "{{ openstack_version | default('xena') }}"
 
 - name: Upgrade testbed
   hosts: all
 
   vars:
     basepath: "{{ ansible_user_dir }}/src/github.com/osism/testbed"
-    cloud_env: "{{ testbed_environment | default('ci') }}"
 
-    version_ceph_next: pacific
-    version_manager_next: latest
-    version_openstack_next: yoga
+    version_ceph_next: "{{ ceph_version_next | default('pacific') }}"
+    version_manager_next: "{{ manager_version_next | default('latest') }}"
+    version_openstack_next: "{{ openstack_version_next | default('yoga') }}"
+
+  vars_files:
+    - vars/cloud_envs.yml
 
   tasks:
+    - name: Set cloud_env fact
+      ansible.builtin.set_fact:
+        cloud_env: "{{ cloud_envs[hostvars[groups['all'][0]]['nodepool']['label']] }}"
+
     - name: Run upgrade
       ansible.builtin.command:
         chdir: "{{ basepath }}/terraform"
