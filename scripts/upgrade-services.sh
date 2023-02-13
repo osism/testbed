@@ -13,4 +13,5 @@ sh -c '/opt/configuration/scripts/upgrade/200-infrastructure-services-basic.sh'
 
 # upgrade openstack services
 sh -c '/opt/configuration/scripts/upgrade/300-openstack-services-basic.sh'
+sh -c '/opt/configuration/scripts/upgrade/310-openstack-services-extended.sh'
 sh -c '/opt/configuration/scripts/upgrade/320-openstack-services-baremetal.sh'
