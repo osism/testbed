@@ -145,17 +145,19 @@
       jobs:
         - tox-docs
         - tox-linters
+        - ansible-lint
+        - yamllint
         - testbed-deploy
         - testbed-deploy-next
         - testbed-deploy-stable
         - testbed-upgrade
         - testbed-upgrade-next
-        - ansible-lint
     gate:
       jobs:
         - tox-docs
         - tox-linters
         - ansible-lint
+        - yamllint
         - testbed-deploy:
             branches: main
         - testbed-deploy-next:
