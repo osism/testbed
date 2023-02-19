@@ -44,12 +44,18 @@
           python3-selinux \
           python3-winrm \
           python3-xmltodict
-          apt-get remove --yes ansible
 
-    - name: Install ansible on manager
+    - name: Remove existing Ansible package if necessary
       become: true
-      ansible.builtin.shell: |
-          pip3 install --no-cache-dir 'ansible>=6.0.0,<7.0.0'
+      ansible.builtin.command: apt-get remove --yes ansible
+
+    # ansible-core >= 2.14.0 requires Python >= 3.9. This is not yet available on Ubuntu 20.04.
+    # Therefore, we use ansible-core >= 2.13.0 here to be able to test on Ubuntu 20.04 as well.
+    # This can be changed when we no longer support Ubuntu 20.04.
+    - name: Install ansible-core on manager
+      become: true
+      ansible.builtin.command: |
+          pip3 install --no-cache-dir 'ansible-core>=2.13.0,<2.15.0'
 
     - name: Create source directories
       become: true
@@ -83,6 +89,8 @@
       become: true
       ansible.builtin.shell: |
           ansible-galaxy collection install --collections-path /usr/share/ansible/collections ansible.netcommon
+          ansible-galaxy collection install --collections-path /usr/share/ansible/collections ansible.posix
+          ansible-galaxy collection install --collections-path /usr/share/ansible/collections community.docker
           ansible-galaxy collection install --collections-path /usr/share/ansible/collections /opt/src/osism/ansible-collection-commons
           ansible-galaxy collection install --collections-path /usr/share/ansible/collections /opt/src/osism/ansible-collection-services
           chmod -R +r /usr/share/ansible
