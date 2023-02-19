@@ -62,6 +62,11 @@ variable "deploy_monitoring" {
   default = false
 }
 
+variable "refstack" {
+  type    = bool
+  default = false
+}
+
 variable "configuration_version" {
   type    = string
   default = "main"

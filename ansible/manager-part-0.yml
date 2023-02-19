@@ -1,5 +1,5 @@
 ---
-- name: Set up the manager part 0
+- name: Run manager part 0
   hosts: testbed-manager.testbed.osism.xyz
   gather_facts: false
 

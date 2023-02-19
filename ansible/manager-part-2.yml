@@ -1,27 +1,20 @@
 ---
-- name: Apply role docker
+- name: Run manager part 2
   hosts: testbed-manager.testbed.osism.xyz
   connection: local
   gather_facts: true
 
   vars:
     ansible_python_interpreter: /usr/bin/python3
+
     docker_configure_repository: true
     docker_configure_storage_driver: true
     docker_storage_driver: overlay2
     docker_user: dragon
     docker_version: "5:20.10.17"
 
-  roles:
-    - osism.services.docker
-
-- name: Apply role docker_compose
-  hosts: testbed-manager.testbed.osism.xyz
-  connection: local
-  gather_facts: true
-
-  vars:
     docker_compose_install_type: package
 
   roles:
+    - role: osism.services.docker
     - role: osism.commons.docker_compose

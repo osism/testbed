@@ -59,6 +59,8 @@ write_files:
 
       export DEPLOY_MONITORING=${var.deploy_monitoring}
 
+      export REFSTACK=${var.refstack}
+
     path: /opt/manager-vars.sh
     permissions: '0644'
 runcmd:

@@ -12,16 +12,21 @@ task_ids+=" "$(osism apply --no-wait --format script elasticsearch 2>&1)
 task_ids+=" "$(osism apply --no-wait --format script memcached 2>&1)
 task_ids+=" "$(osism apply --no-wait --format script redis 2>&1)
 task_ids+=" "$(osism apply --no-wait --format script mariadb 2>&1)
-task_ids+=" "$(osism apply --no-wait --format script kibana 2>&1)
 task_ids+=" "$(osism apply --no-wait --format script rabbitmq 2>&1)
-task_ids+=" "$(osism apply --no-wait --format script homer 2>&1)
-task_ids+=" "$(osism apply --no-wait --format script phpmyadmin 2>&1)
 task_ids+=" "$(osism apply --no-wait --format script openvswitch 2>&1)
+
+if [[ "$REFSTACK" == "false" ]]; then
+    task_ids+=" "$(osism apply --no-wait --format script homer 2>&1)
+    task_ids+=" "$(osism apply --no-wait --format script kibana 2>&1)
+    task_ids+=" "$(osism apply --no-wait --format script phpmyadmin 2>&1)
+fi
 
 osism wait --output --format script --delay 2 $task_ids
 
 osism apply ovn
 osism apply --environment custom keycloak-oidc-client-config
 
-# NOTE: Run a backup of the database to test the backup function
-osism apply mariadb_backup
+if [[ "$REFSTACK" == "false" ]]; then
+    # NOTE: Run a backup of the database to test the backup function
+    osism apply mariadb_backup
+fi

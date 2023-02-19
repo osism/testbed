@@ -14,11 +14,18 @@ osism apply neutron
 task_ids=$(osism apply --no-wait --format script horizon 2>&1)
 task_ids+=" "$(osism apply --no-wait --format script glance 2>&1)
 task_ids+=" "$(osism apply --no-wait --format script cinder 2>&1)
-task_ids+=" "$(osism apply --no-wait --format script barbican 2>&1)
 task_ids+=" "$(osism apply --no-wait --format script designate 2>&1)
 task_ids+=" "$(osism apply --no-wait --format script octavia 2>&1)
 
+if [[ "$REFSTACK" == "false" ]]; then
+    task_ids+=" "$(osism apply --no-wait --format script barbican 2>&1)
+fi
+
 osism wait --output --format script --delay 2 $task_ids
+
+osism apply --environment openstack bootstrap-flavors
+osism apply --environment openstack bootstrap-basic -e openstack_version=$OPENSTACK_VERSION
+osism apply --environment openstack bootstrap-ceph-rgw
 
 # osism manage images is only available since 4.3.0. To enable the
 # testbed to be used with < 4.3.0, here is this check.
@@ -29,7 +36,7 @@ else
     osism manage images --cloud admin --filter "Ubuntu 22.04 Minimal"
 fi
 
-osism apply --environment openstack bootstrap-basic -e openstack_version=$OPENSTACK_VERSION
-osism apply --environment openstack bootstrap-ceph-rgw
-
-osism apply openstack-health-monitor
+if [[ "$REFSTACK" == "false" ]]; then
+    osism apply --environment openstack test
+    osism apply openstack-health-monitor
+fi
