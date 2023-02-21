@@ -4,7 +4,7 @@ set -e
 
 source /opt/manager-vars.sh
 
-packages='libmonitoring-plugin-perl libwww-perl libjson-perl monitoring-plugins mysql-client'
+packages='libmonitoring-plugin-perl libwww-perl libjson-perl monitoring-plugins-basic mysql-client'
 if ! dpkg -s $packages >/dev/null 2>&1; then
   sudo apt-get install -y $packages >/dev/null 2>&1
 fi
