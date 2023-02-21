@@ -34,6 +34,17 @@
         group: root
         mode: 0755
 
+- name: Apply role squid
+  hosts: testbed-manager.testbed.osism.xyz
+  connection: local
+  gather_facts: true
+
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+
+  roles:
+    - osism.services.squid
+
 - name: Apply role traefik & netbox
   hosts: testbed-manager.testbed.osism.xyz
   connection: local
