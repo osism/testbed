@@ -9,6 +9,7 @@ cinder
 common
 designate
 glance
+grafana
 heat
 horizon
 keystone
@@ -18,6 +19,7 @@ memcached
 neutron
 nova
 octavia
+opensearch
 openvswitch
 ovn
 placement

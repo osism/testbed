@@ -40,7 +40,6 @@ osism apply network
 # deploy wireguard
 osism apply wireguard
 
-
 # On OSISM < 5.0.0 this file is not yet present.
 if [[ -e /home/dragon/wg0-dragon.conf ]]; then
     mv /home/dragon/wg0-dragon.conf /home/dragon/wireguard-client.conf
