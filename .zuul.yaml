@@ -147,6 +147,7 @@
         - tox-linters
         - ansible-lint
         - yamllint
+        - flake8
         - testbed-deploy
         - testbed-deploy-next
         - testbed-deploy-stable
@@ -158,6 +159,7 @@
         - tox-linters
         - ansible-lint
         - yamllint
+        - flake8
         - testbed-deploy:
             branches: main
         - testbed-deploy-next:
