@@ -242,7 +242,7 @@
         dest: /tmp/amphora.img
         mode: 0644
 
-    - name: Upload amphora image
+    - name: Upload amphora image  # noqa args[module]
       openstack.cloud.image:
         cloud: octavia
         state: present
