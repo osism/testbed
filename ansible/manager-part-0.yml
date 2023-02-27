@@ -47,7 +47,9 @@
 
     - name: Remove existing Ansible package if necessary
       become: true
-      ansible.builtin.command: apt-get remove --yes ansible
+      ansible.builtin.apt:
+        name: ansible
+        state: absent
 
     # ansible-core >= 2.14.0 requires Python >= 3.9. This is not yet available on Ubuntu 20.04.
     # Therefore, we use ansible-core >= 2.13.0 here to be able to test on Ubuntu 20.04 as well.
