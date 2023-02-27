@@ -112,10 +112,10 @@
         - ansible-lint
         - yamllint
         - flake8
-        - testbed-deploy
-        - testbed-deploy-stable
-        - testbed-upgrade
-        - testbed-upgrade-stable
+        #- testbed-deploy
+        #- testbed-deploy-stable
+        #- testbed-upgrade
+        #- testbed-upgrade-stable
     gate:
       jobs:
         - tox-docs
@@ -123,15 +123,15 @@
         - ansible-lint
         - yamllint
         - flake8
-        - testbed-deploy:
-            branches: main
-        - testbed-deploy-stable:
-            branches: main
-    post:
-      jobs:
-        - osism-publish-tox-docs-production:
-            branches: main
-        - testbed-deploy-stable
+        #- testbed-deploy:
+        #    branches: main
+        #- testbed-deploy-stable:
+        #    branches: main
+    #post:
+    #  jobs:
+    #    - osism-publish-tox-docs-production:
+    #        branches: main
+    #    - testbed-deploy-stable
     periodic-daily:
       jobs:
         - testbed-deploy

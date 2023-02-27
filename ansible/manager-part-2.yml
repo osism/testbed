@@ -12,6 +12,12 @@
     docker_storage_driver: overlay2
     docker_user: dragon
     docker_version: "5:20.10.17"
+    docker_proxy_http: "http://{{ inventory_hostname }}:3128"
+    docker_proxy_no_proxy:
+      - "localhost"
+      - "127.0.0.1"
+      - "0.0.0.0"
+      - "registry.airgap.services.osism.tech"
 
     docker_compose_install_type: package
 

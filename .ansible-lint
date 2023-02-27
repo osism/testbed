@@ -17,6 +17,7 @@ mock_roles:
   - osism.services.docker
   - osism.services.manager
   - osism.services.netbox
+  - osism.services.squid
   - osism.services.traefik
   - stage-output
 use_default_rules: true

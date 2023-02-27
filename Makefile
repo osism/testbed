@@ -60,8 +60,8 @@ deploy: bootstrap ## Deploy everything and then check it.
 prepare: ## Run local preparations.
 	ansible-playbook -i localhost, ansible/check-local-versions.yml
 	mkdir -p .src/github.com/osism
-	if [ ! -e .src/github.com/osism/testbed ]; then git clone https://github.com/osism/testbed .src/github.com/osism/testbed; else git -C .src/github.com/osism/testbed pull; fi
+	if [ ! -e .src/github.com/osism/testbed ]; then git clone -b dnm/test_squid https://github.com/osism/testbed .src/github.com/osism/testbed; else git -C .src/github.com/osism/testbed pull; fi
 	if [ ! -e .src/github.com/osism/ansible-collection-commons ]; then git clone https://github.com/osism/ansible-collection-commons .src/github.com/osism/ansible-collection-commons; else git -C .src/github.com/osism/ansible-collection-commons pull; fi
-	if [ ! -e .src/github.com/osism/ansible-collection-services ]; then git clone https://github.com/osism/ansible-collection-services .src/github.com/osism/ansible-collection-services; else git -C .src/github.com/osism/ansible-collection-services pull; fi
+	if [ ! -e .src/github.com/osism/ansible-collection-services ]; then git clone -b feat/enable_proxy_for_container_pulling https://github.com/osism/ansible-collection-services .src/github.com/osism/ansible-collection-services; else git -C .src/github.com/osism/ansible-collection-services pull; fi
 
 phony: bootstrap clean create deploy identity login manager prepare
