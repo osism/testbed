@@ -116,6 +116,8 @@ ceph_nova_keyring: ceph.client.nova.keyring
 # NOTE: public_network from environments/ceph/configuration.yml
 ceph_public_network: 192.168.16.0/20
 
+ceph_cluster_fsid: 11111111-1111-1111-1111-111111111111
+
 ##########################################################
 # other
 
