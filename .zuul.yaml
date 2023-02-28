@@ -27,41 +27,11 @@
       - name: orchestrator
         label: testbed-orchestrator-wavecon
 
-- nodeset:
-    name: testbed-orchestrator-deploy-stable
-    nodes:
-      - name: orchestrator
-        label: testbed-orchestrator
-
-- nodeset:
-    name: testbed-orchestrator-deploy-next
-    nodes:
-      - name: orchestrator-cleura
-        label: testbed-orchestrator-cleura
-
-- nodeset:
-    name: testbed-orchestrator-deploy
-    nodes:
-      - name: orchestrator-pco
-        label: testbed-orchestrator-pco
-
-- nodeset:
-    name: testbed-orchestrator-upgrade
-    nodes:
-      - name: orchestrator-wavestack
-        label: testbed-orchestrator-wavecon
-
-- nodeset:
-    name: testbed-orchestrator-upgrade-next
-    nodes:
-      - name: orchestrator-wavestack
-        label: testbed-orchestrator-pco
-
 - job:
     name: testbed-deploy
     parent: base-extra-logs
     pre-run: playbooks/pre.yml
-    nodeset: testbed-orchestrator-deploy
+    nodeset: testbed-orchestrator
     run: playbooks/deploy.yml
     post-run: playbooks/post.yml
     required-projects:
@@ -81,7 +51,7 @@
     # NOTE(frickler): Default zuul maximum timeout is 3h, this needs to
     # be explictly bumped in the tenant configuration
     timeout: 16200
-    nodeset: testbed-orchestrator-upgrade
+    nodeset: testbed-orchestrator
 
 - job:
     name: testbed-upgrade-next
@@ -93,21 +63,21 @@
     vars:
       openstack_version: yoga
       openstack_version_next: zed
-    nodeset: testbed-orchestrator-upgrade-next
+    nodeset: testbed-orchestrator
 
 - job:
     name: testbed-deploy-stable
     parent: testbed-deploy
     vars:
       manager_version: "4.2.0"
-    nodeset: testbed-orchestrator-deploy-stable
+    nodeset: testbed-orchestrator
 
 - job:
     name: testbed-deploy-next
     parent: testbed-deploy
     vars:
       openstack_version: zed
-    nodeset: testbed-orchestrator-deploy-next
+    nodeset: testbed-orchestrator
 
 - job:
     name: testbed-deploy-cleura
