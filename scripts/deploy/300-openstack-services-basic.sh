@@ -11,14 +11,12 @@ osism apply placement
 osism apply nova
 osism apply neutron
 
-task_ids=$(osism apply --no-wait --format script horizon 2>&1)
-task_ids+=" "$(osism apply --no-wait --format script glance 2>&1)
-task_ids+=" "$(osism apply --no-wait --format script cinder 2>&1)
-task_ids+=" "$(osism apply --no-wait --format script barbican 2>&1)
-task_ids+=" "$(osism apply --no-wait --format script designate 2>&1)
-task_ids+=" "$(osism apply --no-wait --format script octavia 2>&1)
-
-osism wait --output --format script --delay 2 $task_ids
+osism apply horizon
+osism apply glance
+osism apply cinder
+osism apply barbican
+osism apply designate
+osism apply octavia
 
 # osism manage images is only available since 4.3.0. To enable the
 # testbed to be used with < 4.3.0, here is this check.

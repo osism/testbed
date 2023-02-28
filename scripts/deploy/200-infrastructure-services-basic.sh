@@ -5,23 +5,22 @@ export INTERACTIVE=false
 
 osism apply common
 osism apply loadbalancer
+osism apply elasticsearch
+osism apply kibana
+osism apply memcached
+osism apply redis
+osism apply rabbitmq
 
-task_ids=$(osism apply --no-wait --format script keycloak 2>&1)
-task_ids+=" "$(osism apply --no-wait --format script openstackclient 2>&1)
-task_ids+=" "$(osism apply --no-wait --format script elasticsearch 2>&1)
-task_ids+=" "$(osism apply --no-wait --format script memcached 2>&1)
-task_ids+=" "$(osism apply --no-wait --format script redis 2>&1)
-task_ids+=" "$(osism apply --no-wait --format script mariadb 2>&1)
-task_ids+=" "$(osism apply --no-wait --format script kibana 2>&1)
-task_ids+=" "$(osism apply --no-wait --format script rabbitmq 2>&1)
-task_ids+=" "$(osism apply --no-wait --format script homer 2>&1)
-task_ids+=" "$(osism apply --no-wait --format script phpmyadmin 2>&1)
-task_ids+=" "$(osism apply --no-wait --format script openvswitch 2>&1)
+osism apply openstackclient
+osism apply homer
+osism apply phpmyadmin
 
-osism wait --output --format script --delay 2 $task_ids
-
+osism apply openvswitch
 osism apply ovn
+
+osism apply keycloak
 osism apply --environment custom keycloak-oidc-client-config
 
+osism apply mariadb
 # NOTE: Run a backup of the database to test the backup function
 osism apply mariadb_backup
