@@ -5,7 +5,11 @@ sources:
       - "*"
     sinks:
       - meter_sink
+      - gnocchi
 sinks:
   - name: meter_sink
     publishers:
       - prometheus://testbed-manager-0.testbed.osism.xyz/metrics/job/openstack-telemetry
+  - name: gnocchi
+    publishers:
+      - gnocchi://testbed-manager-0.testbed.osism.xyz
