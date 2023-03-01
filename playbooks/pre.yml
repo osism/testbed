@@ -2,6 +2,9 @@
 - name: Pre play
   hosts: all
 
+  vars:
+    basepath: "{{ ansible_user_dir }}/src/github.com/osism/testbed"
+
   vars_files:
     - vars/cloud_envs.yml
 
@@ -19,10 +22,6 @@
     - name: Clean the cloud environment
       ansible.builtin.shell:
         cmd: |
-          echo y | ~/venv/bin/openstack --os-cloud {{ cloud_env }} project cleanup --auth-project
-          ~/venv/bin/openstack --os-cloud {{ cloud_env }} port list -f value -c id | xargs -l1 ~/venv/bin/openstack --os-cloud {{ cloud_env }} port delete
-          ~/venv/bin/openstack --os-cloud {{ cloud_env }} router remove subnet testbed subnet-testbed-management
-          ~/venv/bin/openstack --os-cloud {{ cloud_env }} router delete testbed
-          echo y | ~/venv/bin/openstack --os-cloud {{ cloud_env }} project cleanup --auth-project
-          ~/venv/bin/openstack --os-cloud {{ cloud_env }} keypair delete testbed
+          OS_CLOUD={{ cloud_env }} ~/venv/bin/python3 cleanup.py
+        chdir: "{{ basepath }}/terraform/scripts"
       failed_when: false
