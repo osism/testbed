@@ -1,5 +1,0 @@
----
-osism_attribute_order_list:
-  - name
-  - become
-  - when
