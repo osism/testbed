@@ -26,7 +26,7 @@ if [[ $MANAGER_VERSION == "4.0.0" || $MANAGER_VERSION == "4.1.0" || $MANAGER_VER
     osism apply --environment openstack bootstrap-images
 else
     osism manage images --cloud admin --filter Cirros
-    osism manage images --cloud admin --name "Ubuntu 22.04 Minimal"
+    osism manage images --cloud admin --filter "Ubuntu 22.04 Minimal"
 fi
 
 osism apply --environment openstack bootstrap-basic -e openstack_version=$OPENSTACK_VERSION
