@@ -6,22 +6,20 @@ export INTERACTIVE=false
 osism apply common
 osism apply loadbalancer
 
-task_ids=$(osism apply --no-wait --format script keycloak 2>&1)
-task_ids+=" "$(osism apply --no-wait --format script openstackclient 2>&1)
-task_ids+=" "$(osism apply --no-wait --format script elasticsearch 2>&1)
-task_ids+=" "$(osism apply --no-wait --format script memcached 2>&1)
-task_ids+=" "$(osism apply --no-wait --format script redis 2>&1)
-task_ids+=" "$(osism apply --no-wait --format script mariadb 2>&1)
-task_ids+=" "$(osism apply --no-wait --format script rabbitmq 2>&1)
-task_ids+=" "$(osism apply --no-wait --format script openvswitch 2>&1)
+osism apply keycloak
+osism apply openstackclient
+osism apply elasticsearch
+osism apply memcached
+osism apply redis
+osism apply mariadb
+osism apply rabbitmq
+osism apply openvswitch
 
 if [[ "$REFSTACK" == "false" ]]; then
-    task_ids+=" "$(osism apply --no-wait --format script homer 2>&1)
-    task_ids+=" "$(osism apply --no-wait --format script kibana 2>&1)
-    task_ids+=" "$(osism apply --no-wait --format script phpmyadmin 2>&1)
+    osism apply homer
+    osism apply kibana
+    osism apply phpmyadmin
 fi
-
-osism wait --output --format script --delay 2 $task_ids
 
 osism apply ovn
 osism apply --environment custom keycloak-oidc-client-config
