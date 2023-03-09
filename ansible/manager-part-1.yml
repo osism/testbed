@@ -1,5 +1,5 @@
 ---
-- name: Set up the manager part 1
+- name: Run manager part 1
   hosts: testbed-manager.testbed.osism.xyz
   gather_facts: false
 
@@ -67,5 +67,5 @@
       become: true
       ansible.builtin.command: update-ca-certificates
 
-    - name: Run part 2
+    - name: Run manager part 2
       ansible.builtin.command: ansible-playbook -i testbed-manager.testbed.osism.xyz, /opt/configuration/ansible/manager-part-2.yml

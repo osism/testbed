@@ -73,6 +73,14 @@
     nodeset: testbed-orchestrator
 
 - job:
+    name: testbed-deploy-stable-next
+    parent: testbed-deploy
+    vars:
+      manager_version: "5.0.0a"
+      refstack: true
+    nodeset: testbed-orchestrator
+
+- job:
     name: testbed-deploy-next
     parent: testbed-deploy
     vars:
@@ -121,6 +129,7 @@
         - testbed-deploy
         - testbed-deploy-next
         - testbed-deploy-stable
+        - testbed-deploy-stable-next
         - testbed-upgrade
         - testbed-upgrade-next
     gate:

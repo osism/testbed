@@ -1,0 +1,155 @@
+---
+- name: Create test project
+  hosts: localhost
+  connection: local
+
+  tasks:
+    - name: Create test project
+      openstack.cloud.project:
+        cloud: admin
+        state: present
+        name: test
+        domain_id: default
+
+    - name: Create test user
+      openstack.cloud.identity_user:
+        cloud: admin
+        state: present
+        name: test
+        password: test
+        email: test@testbed.osism.xyz
+        domain: default
+        default_project: test
+      no_log: true
+
+    - name: Add member roles to user test
+      openstack.cloud.role_assignment:
+        cloud: admin
+        state: present
+        user: test
+        role: "{{ item }}"
+        project: test
+      loop:
+        - load-balancer_member
+        - member
+        # NOTE The role creator is required to be able to create encrypted volumes
+        #      If this role is not assigned the following error happens inside the
+        #      cinder-volume service:
+        #
+        #      Forbidden: Order creation attempt not allowed - please review your
+        #      user/project privileges
+        - creator
+
+    - name: Create test network
+      openstack.cloud.network:
+        cloud: test
+        state: present
+        name: test
+        mtu: 1300  # NOTE: necessary because Geneve/VxLAN in Geneve/VxLAN
+
+    - name: Create test subnet
+      openstack.cloud.subnet:
+        cloud: test
+        state: present
+        name: subnet-test
+        network_name: test
+        cidr: 192.168.200.0/24
+
+    - name: Create test router
+      openstack.cloud.router:
+        cloud: test
+        state: present
+        name: router-test
+        network: public
+        interfaces:
+          - subnet-test
+
+    - name: Create ssh security group
+      openstack.cloud.security_group:
+        cloud: test
+        state: present
+        name: ssh
+
+    - name: Add rule to ssh security group
+      openstack.cloud.security_group_rule:
+        cloud: test
+        state: present
+        security_group: ssh
+        protocol: tcp
+        port_range_min: 22
+        port_range_max: 22
+        remote_ip_prefix: 0.0.0.0/0
+
+    - name: Create icmp security group
+      openstack.cloud.security_group:
+        cloud: test
+        state: present
+        name: icmp
+
+    - name: Add rule to icmp security group
+      openstack.cloud.security_group_rule:
+        cloud: test
+        state: present
+        security_group: icmp
+        protocol: icmp
+        remote_ip_prefix: 0.0.0.0/0
+
+    - name: Create test keypair
+      openstack.cloud.keypair:
+        cloud: test
+        state: present
+        name: test
+        public_key_file: /opt/configuration/environments/openstack/id_rsa.test.pub
+
+    - name: Create test port
+      openstack.cloud.port:
+        name: test-port
+        network: test
+        cloud: test
+        state: present
+        fixed_ips:
+          - ip_address: 192.168.200.10
+
+    - name: Create test instance
+      openstack.cloud.server:
+        cloud: test
+        state: present
+        name: test
+        image: "Cirros 0.6.0"
+        flavor: "SCS-1L:1:5"
+        delete_fip: true
+        key_name: test
+        security_groups:
+          - icmp
+          - ssh
+        nics:
+          - port-name: test-port
+
+    - name: Create test volume
+      openstack.cloud.volume:
+        cloud: test
+        state: present
+        name: test
+        size: 1
+
+    - name: Attach test volume
+      openstack.cloud.server_volume:
+        cloud: test
+        state: present
+        server: test
+        volume: test
+
+    - name: Create encrypted test volume
+      openstack.cloud.volume:
+        cloud: test
+        state: present
+        name: lukstest
+        size: 1
+        volume_type: LUKS
+
+    - name: Attach encrypted test volume
+      openstack.cloud.server_volume:
+        cloud: test
+        state: present
+        server: test
+        volume: lukstest

@@ -17,6 +17,8 @@
     version_manager: "{{ manager_version | default('latest') }}"
     version_openstack: "{{ openstack_version | default('yoga') }}"
 
+    run_refstack: "{{ refstack | default(false) | bool }}"
+
   vars_files:
     - vars/cloud_envs.yml
 
@@ -34,8 +36,8 @@
     - name: Create infrastructure with terraform
       ansible.builtin.shell:
         chdir: "{{ terraform_path }}"
-        cmd: make ENVIRONMENT={{ cloud_env }} VERSION_CEPH={{ version_ceph }} VERSION_MANAGER={{ version_manager }} VERSION_OPENSTACK={{ version_openstack }} create
-      when: not manual_create
+        cmd: make ENVIRONMENT={{ cloud_env }} VERSION_CEPH={{ version_ceph }} VERSION_MANAGER={{ version_manager }} VERSION_OPENSTACK={{ version_openstack }} REFSTACK={{ run_refstack | lower }} create
+      when: not manual_create | bool
 
     - name: Fetch manager_host address
       ansible.builtin.shell: cat "{{ manager_address_file }}"
@@ -76,9 +78,9 @@
 
     - name: Point out that the following task takes some time and does not give any output
       ansible.builtin.debug:
-        msg: "The task 'Run part 0' runs an Ansible playbook on the manager. There is no further output of this here. It takes a few minutes for this task to complete."
+        msg: "The task 'Run manager part 0' runs an Ansible playbook on the manager. There is no further output of this here. It takes a few minutes for this task to complete."
 
-    - name: Run part 0
+    - name: Run manager part 0
       ansible.builtin.shell:
         chdir: "{{ ansible_path }}"
         cmd: |
@@ -90,22 +92,36 @@
 
     - name: Point out that the following task takes some time and does not give any output
       ansible.builtin.debug:
-        msg: "The task 'Run part 1 + 2' runs an Ansible playbook on the manager. There is no further output of this here. It takes a few minuts for this task to complete."
+        msg: "The task 'Run manager part 1 + 2' runs an Ansible playbook on the manager. There is no further output of this here. It takes a few minuts for this task to complete."
 
-    - name: Run part 1 + 2
+    - name: Run manager part 1 + 2
       ansible.builtin.shell:
         chdir: "{{ ansible_path }}"
         cmd: |
           {{ ansible_playbook }} -i {{ terraform_path }}/inventory.{{ cloud_env }} --key-file {{ terraform_path }}/.id_rsa.{{ cloud_env }} manager-part-1.yml -e cloud_env={{ cloud_env }} -e repo_path={{ repo_path }} -e version_manager={{ version_manager }}
 
-    - name: Run part 3
+    - name: Deploy manager + bootstrap nodes
       ansible.builtin.shell:
         chdir: "{{ ansible_path }}"
-        cmd: "ssh -i {{ terraform_path }}/.id_rsa.{{ cloud_env }} dragon@{{ manager_host }} /opt/configuration/scripts/deploy.sh"
-      when: not manual_deploy
+        cmd: "ssh -i {{ terraform_path }}/.id_rsa.{{ cloud_env }} dragon@{{ manager_host }} /opt/configuration/scripts/deploy-manager.sh"
+      when: not manual_deploy | bool
+
+    - name: Deploy services
+      ansible.builtin.shell:
+        chdir: "{{ ansible_path }}"
+        cmd: "ssh -i {{ terraform_path }}/.id_rsa.{{ cloud_env }} dragon@{{ manager_host }} /opt/configuration/scripts/deploy-services.sh"
+      when: not manual_deploy | bool
 
     - name: Run checks
       ansible.builtin.shell:
         chdir: "{{ terraform_path }}"
         cmd: make ENVIRONMENT={{ cloud_env }} check
-      when: not manual_deploy
+      when: not manual_deploy | bool
+
+    - name: Run refstack
+      ansible.builtin.shell:
+        chdir: "{{ terraform_path }}"
+        cmd: make ENVIRONMENT={{ cloud_env }} refstack
+      when:
+        - not manual_deploy | bool
+        - run_refstack | bool

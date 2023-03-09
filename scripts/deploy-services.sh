@@ -15,11 +15,18 @@ sh -c '/opt/configuration/scripts/000-pull-images.sh'
 sh -c '/opt/configuration/scripts/deploy/001-helper-services.sh'
 
 sh -c '/opt/configuration/scripts/deploy/100-ceph-services-basic.sh'
-sh -c '/opt/configuration/scripts/deploy/110-ceph-services-extended.sh'
+
+if [[ "$REFSTACK" == "false" ]]; then
+    sh -c '/opt/configuration/scripts/deploy/110-ceph-services-extended.sh'
+fi
+
 sh -c '/opt/configuration/scripts/deploy/200-infrastructure-services-basic.sh'
 sh -c '/opt/configuration/scripts/deploy/300-openstack-services-basic.sh'
-sh -c '/opt/configuration/scripts/deploy/310-openstack-services-extended.sh'
-sh -c '/opt/configuration/scripts/deploy/320-openstack-services-baremetal.sh'
+
+if [[ "$REFSTACK" == "false" ]]; then
+    sh -c '/opt/configuration/scripts/deploy/310-openstack-services-extended.sh'
+    sh -c '/opt/configuration/scripts/deploy/320-openstack-services-baremetal.sh'
+fi
 
 # deploy monitoring services
 if [[ "$DEPLOY_MONITORING" == "true" ]]; then

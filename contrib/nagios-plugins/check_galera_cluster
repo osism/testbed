@@ -67,6 +67,9 @@ check_executable() {
     fi
 }
 
+# ensure that bc is installed
+sudo apt-get install -y bc
+
 check_executable mysql
 check_executable bc
 
