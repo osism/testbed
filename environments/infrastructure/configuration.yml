@@ -79,3 +79,12 @@ squid_host: "{{ hostvars[inventory_hostname]['ansible_' + internal_interface]['i
 traefik_enable: true
 
 traefik_host: "{{ hostvars[inventory_hostname]['ansible_' + internal_interface]['ipv4']['address'] }}"
+
+##########################
+# wireguard
+
+wireguard_users:
+  - name: dragon
+    key: LDweUZxqy/0AieSVw3baZmbRMPBqhfDUcuLAwSYyQkE=
+    ip: 192.168.48.4
+wireguard_create_client_config: true
