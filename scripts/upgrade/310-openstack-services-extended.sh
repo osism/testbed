@@ -3,8 +3,9 @@ set -e
 
 export INTERACTIVE=false
 
-task_ids=$(osism apply --no-wait --format script gnocchi -e kolla_action=upgrade 2>&1)
-task_ids+=" "$(osism apply --no-wait --format script ceilometer -e kolla_action=upgrade 2>&1)
+osism apply gnocchi -e kolla_action=upgrade
+
+task_ids=$(osism apply --no-wait --format script ceilometer-e kolla_action=upgrade 2>&1)
 task_ids+=" "$(osism apply --no-wait --format script heat -e kolla_action=upgrade 2>&1)
 task_ids+=" "$(osism apply --no-wait --format script senlin -e kolla_action=upgrade 2>&1)
 
