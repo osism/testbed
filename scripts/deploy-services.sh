@@ -16,10 +16,6 @@ sh -c '/opt/configuration/scripts/deploy/001-helper-services.sh'
 
 sh -c '/opt/configuration/scripts/deploy/100-ceph-services-basic.sh'
 
-if [[ "$REFSTACK" == "false" ]]; then
-    sh -c '/opt/configuration/scripts/deploy/110-ceph-services-extended.sh'
-fi
-
 sh -c '/opt/configuration/scripts/deploy/200-infrastructure-services-basic.sh'
 sh -c '/opt/configuration/scripts/deploy/300-openstack-services-basic.sh'
 

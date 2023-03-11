@@ -10,8 +10,24 @@ if [[ -e /etc/OTC_region ]]; then
     osism apply --environment custom wipe-partitions
 fi
 
-# NOTE: ceph-base = ceph-mons + ceph-mgrs + ceph-osds
-osism apply ceph-base
+MANAGER_VERSION=$(docker inspect --format '{{ index .Config.Labels "org.opencontainers.image.version"}}' osism-ansible)
+if [[ "$REFSTACK" == "false" ]]; then
+    if [[ $MANAGER_VERSION == "4.0.0" || $MANAGER_VERSION == "4.1.0" || $MANAGER_VERSION == "4.2.0" || $MANAGER_VERSION == "5.0.0a" ]]; then
+        osism apply ceph-base
+        task_ids=$(osism apply --no-wait --format script ceph-mdss 2>&1)
+        task_ids+=" "$(osism apply --no-wait --format script ceph-rgws 2>&1)
+
+        osism wait --output --format script --delay 2 $task_ids
+    else
+        osism apply ceph -e enable_ceph_mds=true -e enable_ceph_rgw=true
+    fi
+else
+    if [[ $MANAGER_VERSION == "4.0.0" || $MANAGER_VERSION == "4.1.0" || $MANAGER_VERSION == "4.2.0" || $MANAGER_VERSION == "5.0.0a" ]]; then
+        osism apply ceph-base
+    else
+        osism apply ceph
+    fi
+fi
 
 osism apply copy-ceph-keys
 osism apply cephclient
