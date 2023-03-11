@@ -65,6 +65,8 @@ libvirt_enable_sasl: "no"
 
 # neutron
 neutron_plugin_agent: ovn
+neutron_ovn_availability_zones:
+  - nova
 
 enable_neutron_agent_ha: "yes"
 
