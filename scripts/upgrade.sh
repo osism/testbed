@@ -25,6 +25,7 @@ export INTERACTIVE=false
 
 # Sync testbed repo with generics
 pushd /opt/configuration
+pip3 install --no-cache-dir python-gilt
 gilt overlay
 gilt overlay
 popd
