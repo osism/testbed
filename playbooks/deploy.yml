@@ -33,11 +33,21 @@
         cloud_env: "{{ testbed_environment | default('ci') }}"
       when: "'nodepool' not in hostvars[groups['all'][0]]"
 
-    - name: Create infrastructure with terraform
+    - name: Create infrastructure (latest)
       ansible.builtin.shell:
         chdir: "{{ terraform_path }}"
         cmd: make ENVIRONMENT={{ cloud_env }} VERSION_CEPH={{ version_ceph }} VERSION_MANAGER={{ version_manager }} VERSION_OPENSTACK={{ version_openstack }} REFSTACK={{ run_refstack | lower }} create
-      when: not manual_create | bool
+      when:
+        - not manual_create | bool
+        - version_manager == "latest"
+
+    - name: Create infrastructure (stable)
+      ansible.builtin.shell:
+        chdir: "{{ terraform_path }}"
+        cmd: make ENVIRONMENT={{ cloud_env }} VERSION_MANAGER={{ version_manager }} REFSTACK={{ run_refstack | lower }} create
+      when:
+        - not manual_create | bool
+        - version_manager != "latest"
 
     - name: Fetch manager_host address
       ansible.builtin.shell: cat "{{ manager_address_file }}"

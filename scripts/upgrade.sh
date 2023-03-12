@@ -6,7 +6,7 @@ echo
 echo "# UPGRADE"
 echo
 
-MANAGER_VERSION=${1:-latest}
+export MANAGER_VERSION=${1:-latest}
 CEPH_VERSION=${2:-pacific}
 OPENSTACK_VERSION=${3:-yoga}
 
@@ -23,8 +23,17 @@ fi
 
 export INTERACTIVE=false
 
+# Sync testbed repo with generics
+pushd /opt/configuration
+gilt overlay
+gilt overlay
+popd
+
 # upgrade manager
+docker compose --project-directory /opt/manager down -v
 osism-update-manager
+docker compose --project-directory /opt/manager ps
+
 osism reconciler sync
 osism apply facts
 

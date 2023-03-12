@@ -1,0 +1,37 @@
+---
+- name: Deploy testbed
+  ansible.builtin.import_playbook: deploy.yml
+  vars:
+    version_manager: "{{ manager_version | default('latest') }}"
+
+- name: Upgrade testbed
+  hosts: all
+
+  vars:
+    basepath: "{{ ansible_user_dir }}/src/github.com/osism/testbed"
+
+    version_manager_next: "{{ manager_version_next | default('latest') }}"
+
+  vars_files:
+    - vars/cloud_envs.yml
+
+  tasks:
+    - name: Set cloud_env fact (Zuul deployment)
+      ansible.builtin.set_fact:
+        cloud_env: "{{ cloud_envs[hostvars[groups['all'][0]]['nodepool']['label']] }}"
+      when: "'nodepool' in hostvars[groups['all'][0]]"
+
+    - name: Set cloud_env fact (local deployment)
+      ansible.builtin.set_fact:
+        cloud_env: "{{ testbed_environment | default('ci') }}"
+      when: "'nodepool' not in hostvars[groups['all'][0]]"
+
+    - name: Run upgrade
+      ansible.builtin.command:
+        chdir: "{{ basepath }}/terraform"
+        cmd: make ENVIRONMENT={{ cloud_env }} VERSION_MANAGER={{ version_manager_next }} upgrade
+
+    - name: Run checks after the upgrade
+      ansible.builtin.command:
+        chdir: "{{ basepath }}/terraform"
+        cmd: make ENVIRONMENT={{ cloud_env }} check
