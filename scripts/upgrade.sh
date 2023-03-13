@@ -26,8 +26,10 @@ export INTERACTIVE=false
 # Sync testbed repo with generics
 pushd /opt/configuration
 pip3 install --no-cache-dir python-gilt
-/home/dragon/.local/bin/gilt overlay
-/home/dragon/.local/bin/gilt overlay
+export PATH=$PATH:/home/dragon/.local/bin
+GILT=$(which gilt)
+${GILT} overlay
+${GILT} overlay
 popd
 
 # upgrade manager
