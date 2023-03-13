@@ -1,6 +1,6 @@
 {%- set glance_image_location = glance_image_location|default("https://github.com/cirros-dev/cirros/releases/download/0.5.2/cirros-0.5.2-x86_64-disk.img") %}
 {%- set image_name = image_name|default("^(Cirros|cirros).*$") %}
-{%- set flavor_name = flavor_name|default("SCS-1L:1:5") %}
+{%- set flavor_name = flavor_name|default("SCS-1L-1-5") %}
 {%- set use_existing_users = use_existing_users|default(false) %}
 {%- set service_list = service_list|default(["authentication", "quota", "cinder", "keystone", "nova", "glance", "neutron", "heat"]) %}
 {%- set smoke = smoke|default(true) %}

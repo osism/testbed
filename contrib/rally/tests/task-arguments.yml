@@ -11,7 +11,7 @@ service_list:
 #  - nova
 use_existing_users: false
 image_name: "^(Cirros|cirros).*$"
-flavor_name: "SCS-1L:1:5"
+flavor_name: "SCS-1L-1-5"
 glance_image_location: "https://github.com/cirros-dev/cirros/releases/download/0.5.2/cirros-0.5.2-x86_64-disk.img"
 smoke: true
 users_amount: 1

@@ -1,4 +1,6 @@
 ---
-# Dummy variable to avoid error because ansible does not recognize the
-# file as a good configuration file when no variable in it.
-dummy:
+# refstack
+
+refstack_flavors:
+  - SCS-1V-4-10
+  - SCS-2V-4-10
