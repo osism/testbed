@@ -33,7 +33,6 @@ ${GILT} overlay
 popd
 
 # upgrade manager
-docker compose --project-directory /opt/manager down -v
 osism-update-manager
 docker compose --project-directory /opt/manager ps
 
