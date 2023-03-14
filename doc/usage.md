@@ -1,4 +1,4 @@
-# Usage
+# Working with the Testbed
 
 ## Infrastructure management
 

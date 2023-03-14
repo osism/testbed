@@ -1,4 +1,4 @@
-# Notes
+# Important Notes
 
 :::warning
 
