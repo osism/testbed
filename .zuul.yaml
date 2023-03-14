@@ -54,26 +54,7 @@
     nodeset: testbed-orchestrator
 
 - job:
-    name: testbed-upgrade-next
-    parent: testbed-deploy
-    run: playbooks/upgrade.yml
-    # NOTE(frickler): Default zuul maximum timeout is 3h, this needs to
-    # be explictly bumped in the tenant configuration
-    timeout: 16200
-    vars:
-      openstack_version: yoga
-      openstack_version_next: zed
-    nodeset: testbed-orchestrator
-
-- job:
     name: testbed-deploy-stable
-    parent: testbed-deploy
-    vars:
-      manager_version: "4.2.0"
-    nodeset: testbed-orchestrator
-
-- job:
-    name: testbed-deploy-stable-next
     parent: testbed-deploy
     vars:
       manager_version: "5.0.0c"
@@ -90,13 +71,6 @@
     vars:
       manager_version: 4.2.0
       manager_version_next: 5.0.0c
-    nodeset: testbed-orchestrator
-
-- job:
-    name: testbed-deploy-next
-    parent: testbed-deploy
-    vars:
-      openstack_version: zed
     nodeset: testbed-orchestrator
 
 - job:
@@ -139,11 +113,8 @@
         - yamllint
         - flake8
         - testbed-deploy
-        - testbed-deploy-next
         - testbed-deploy-stable
-        - testbed-deploy-stable-next
         - testbed-upgrade
-        - testbed-upgrade-next
         - testbed-upgrade-stable
     gate:
       jobs:
@@ -154,23 +125,22 @@
         - flake8
         - testbed-deploy:
             branches: main
-        - testbed-deploy-next:
-            branches: main
         - testbed-deploy-stable:
             branches: main
     post:
       jobs:
         - osism-publish-tox-docs-production:
             branches: main
+        - testbed-deploy-stable
     periodic-daily:
       jobs:
+        - testbed-deploy
         - testbed-deploy-cleura
-        - testbed-deploy-next
         - testbed-deploy-pco
         - testbed-deploy-stable
         - testbed-deploy-wavestack
+        - testbed-upgrade
         - testbed-upgrade-cleura
-        - testbed-upgrade-next
         - testbed-upgrade-pco
         - testbed-upgrade-stable
         - testbed-upgrade-wavestack

@@ -15,7 +15,7 @@
 
     version_ceph: "{{ ceph_version | default('pacific') }}"
     version_manager: "{{ manager_version | default('latest') }}"
-    version_openstack: "{{ openstack_version | default('yoga') }}"
+    version_openstack: "{{ openstack_version | default('zed') }}"
 
     run_refstack: "{{ refstack | default(false) | bool }}"
 
