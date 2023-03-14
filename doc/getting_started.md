@@ -1,4 +1,6 @@
-# Deployment
+# Getting Started
+
+Before you follow this guide, please be aware to do all steps from the [preparation guideline](/preparation.md).
 
 :::note
 
