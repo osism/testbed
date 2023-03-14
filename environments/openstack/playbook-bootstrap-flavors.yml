@@ -5,147 +5,147 @@
 
   tasks:
     # vCPU:RAM ratio: 4:8
-    - name: "Create SCS-4V:8 SCS flavor"
+    - name: "Create SCS-4V-8 SCS flavor"
       openstack.cloud.compute_flavor:
         cloud: admin
         state: present
-        name: "SCS-4V:8"
+        name: "SCS-4V-8"
         ram: 8192
         vcpus: 4
         disk: 0
         ephemeral: 0
 
-    - name: "Create SCS-4V:8:20 SCS flavor"
+    - name: "Create SCS-4V-8-20 SCS flavor"
       openstack.cloud.compute_flavor:
         cloud: admin
         state: present
-        name: "SCS-4V:8:20"
+        name: "SCS-4V-8-20"
         ram: 8192
         vcpus: 4
         disk: 20
         ephemeral: 0
 
     # vCPU:RAM ratio: 2:8
-    - name: "Create SCS-2V:8 SCS flavor"
+    - name: "Create SCS-2V-8 SCS flavor"
       openstack.cloud.compute_flavor:
         cloud: admin
         state: present
-        name: "SCS-2V:8"
+        name: "SCS-2V-8"
         ram: 8192
         vcpus: 2
         disk: 0
         ephemeral: 0
 
-    - name: "Create SCS-2V:8:20 SCS flavor"
+    - name: "Create SCS-2V-8-20 SCS flavor"
       openstack.cloud.compute_flavor:
         cloud: admin
         state: present
-        name: "SCS-2V:8:20"
+        name: "SCS-2V-8-20"
         ram: 8192
         vcpus: 2
         disk: 20
         ephemeral: 0
 
     # vCPU:RAM ratio: 1:8
-    - name: "Create SCS-1V:8 SCS flavor"
+    - name: "Create SCS-1V-8 SCS flavor"
       openstack.cloud.compute_flavor:
         cloud: admin
         state: present
-        name: "SCS-1V:8"
+        name: "SCS-1V-8"
         ram: 8192
         vcpus: 1
         disk: 0
         ephemeral: 0
 
-    - name: "Create SCS-1V:8:20 SCS flavor"
+    - name: "Create SCS-1V-8-20 SCS flavor"
       openstack.cloud.compute_flavor:
         cloud: admin
         state: present
-        name: "SCS-1V:8:20"
+        name: "SCS-1V-8-20"
         ram: 8192
         vcpus: 1
         disk: 20
         ephemeral: 0
 
     # vCPU:RAM ratio: 2:4
-    - name: "Create SCS-2V:4 SCS flavor"
+    - name: "Create SCS-2V-4 SCS flavor"
       openstack.cloud.compute_flavor:
         cloud: admin
         state: present
-        name: "SCS-2V:4"
+        name: "SCS-2V-4"
         ram: 4096
         vcpus: 2
         disk: 0
         ephemeral: 0
 
-    - name: "Create SCS-2V:4:10 SCS flavor"
+    - name: "Create SCS-2V-4-10 SCS flavor"
       openstack.cloud.compute_flavor:
         cloud: admin
         state: present
-        name: "SCS-2V:4:10"
+        name: "SCS-2V-4-10"
         ram: 4096
         vcpus: 2
         disk: 10
         ephemeral: 0
 
     # vCPU:RAM ratio: 1:4
-    - name: "Create SCS-1V:4 SCS flavor"
+    - name: "Create SCS-1V-4 SCS flavor"
       openstack.cloud.compute_flavor:
         cloud: admin
         state: present
-        name: "SCS-1V:4"
+        name: "SCS-1V-4"
         ram: 4096
         vcpus: 1
         disk: 0
         ephemeral: 0
 
-    - name: "Create SCS-1V:4:10 SCS flavor"
+    - name: "Create SCS-1V-4-10 SCS flavor"
       openstack.cloud.compute_flavor:
         cloud: admin
         state: present
-        name: "SCS-1V:4:10"
+        name: "SCS-1V-4-10"
         ram: 4096
         vcpus: 1
         disk: 10
         ephemeral: 0
 
     # vCPU:RAM ratio: 1:2
-    - name: "Create SCS-1V:2 SCS flavor"
+    - name: "Create SCS-1V-2 SCS flavor"
       openstack.cloud.compute_flavor:
         cloud: admin
         state: present
-        name: "SCS-1V:2"
+        name: "SCS-1V-2"
         ram: 2048
         vcpus: 1
         disk: 0
         ephemeral: 0
 
-    - name: "Create SCS-1V:2:5 SCS flavor"
+    - name: "Create SCS-1V-2-5 SCS flavor"
       openstack.cloud.compute_flavor:
         cloud: admin
         state: present
-        name: "SCS-1V:2:5"
+        name: "SCS-1V-2-5"
         ram: 2048
         vcpus: 1
         disk: 5
         ephemeral: 0
 
     # vCPU:RAM ratio: 1:1
-    - name: "Create SCS-1L:1 SCS flavor"
+    - name: "Create SCS-1L-1 SCS flavor"
       openstack.cloud.compute_flavor:
         cloud: admin
         state: present
-        name: "SCS-1L:1"
+        name: "SCS-1L-1"
         ram: 1024
         vcpus: 1
         disk: 0
         ephemeral: 0
 
-    - name: "Create SCS-1L:1:5 SCS flavor"
+    - name: "Create SCS-1L-1-5 SCS flavor"
       openstack.cloud.compute_flavor:
         cloud: admin
         state: present
-        name: "SCS-1L:1:5"
+        name: "SCS-1L-1-5"
         ram: 1024
         vcpus: 1
         disk: 5

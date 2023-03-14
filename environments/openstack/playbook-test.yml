@@ -116,7 +116,7 @@
         state: present
         name: test
         image: "Cirros 0.6.0"
-        flavor: "SCS-1L:1:5"
+        flavor: "SCS-1L-1-5"
         delete_fip: true
         key_name: test
         security_groups:
