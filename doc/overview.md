@@ -10,7 +10,7 @@ The testbed is intended as a playground. Further services and integration will b
 and experiences from the productive installations will be included here in the future. It will become more production-like over
 time. However, at no point does it claim to represent a production exactly.
 
-The section [How to contribute](/contributing.md) describes how to contribute to this testbed. Open Source Software lives from
+The section [How to contribute](./contribute.md) describes how to contribute to this testbed. Open Source Software lives from
 participation. We welcome any issues, change requests or general feedback. Do not hestiate to open an issue.
 
 For the German-speaking readers, [iX 2020/12](https://www.osism.tech/files/ix.2020.12.048_059.pdf_kiosk.pdf) contains an article
@@ -22,12 +22,12 @@ things, the OSISM testbed is briefly introduced.
 By default the testbed consists of a manager and three HCI nodes, each with three block devices.
 The manager serves as a central entry point into the environment.
 
-![Overview](/images/overview.png)
+![Overview](./images/overview.png)
 
 The virtual testbed provides an up-to-date, fully functional Ceph and OpenStack environment. It is possible to evaluate
 workloads like Kubernetes on the basis of this virtual testbed.
 
-![Horizon](/images/horizon.png)
+![Horizon](./images/horizon.png)
 
 ## Supported releases
 

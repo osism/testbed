@@ -368,13 +368,13 @@ RabbitMQ               | <https://api-int.testbed.osism.xyz:15672/>        | ope
 >**note:**
 >If only the identity services were deployed, an error message (**You are not authorized to access this page**)
 >appears after logging in to Horizon. This is not critical and results from the absence of the Nova service.
->![horizon-login-identity-testbed](/images/horizon-login-identity-testbed.png)
+>![horizon-login-identity-testbed](./images/horizon-login-identity-testbed.png)
 
 :::
 
 ### ARA
 
-![Ara](/images/ara.png)
+![Ara](./images/ara.png)
 
 ### Ceph
 
@@ -384,11 +384,11 @@ Deploy *Ceph* first.
    osism apply bootstraph-ceph-dashboard
 ```
 
-![Ceph-dashboard](/images/ceph-dashboard.png)
+![Ceph-dashboard](./images/ceph-dashboard.png)
 
 ### Grafana
 
-![Grafana](/images/grafana.png)
+![Grafana](./images/grafana.png)
 
 ### Homer
 
@@ -396,7 +396,7 @@ Deploy *Ceph* first.
    osism apply homer
 ```
 
-![Homer](/images/homer.png)
+![Homer](./images/homer.png)
 
 ### Keycloak
 
@@ -404,13 +404,13 @@ Deploy *Ceph* first.
    osism apply keycloak
 ```
 
-![Keycloak](/images/keycloak.png)
+![Keycloak](./images/keycloak.png)
 
 ### Netbox
 
 Netbox is part of the manager and does not need to be deployed individually.
 
-![Netbox](/images/netbox.png)
+![Netbox](./images/netbox.png)
 
 ### Netdata
 
@@ -418,7 +418,7 @@ Netbox is part of the manager and does not need to be deployed individually.
    osism apply netdata
 ```
 
-![Netdata](/images/netdata.png)
+![Netdata](./images/netdata.png)
 
 ### Patchman
 
@@ -447,7 +447,7 @@ The previous steps can also be done with a custom playbook.
    osism apply bootstrap-patchman
 ```
 
-![Patchman](/images/patchman.png)
+![Patchman](./images/patchman.png)
 
 ### Prometheus exporters
 
