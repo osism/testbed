@@ -73,8 +73,9 @@
             --set standardFlowEnabled=true
             --set implicitFlowEnabled=true
             --set directAccessGrantsEnabled=true
-            --set publicClient=false
+            --set publicClient=true
             --set secret="{{ keystone_container_federation_oidc_client_secret }}"
+            --set 'attributes."pkce.code.challenge.method"="plain"'
       when: keystone_client_id not in available_clients
       run_once: true
       no_log: true
