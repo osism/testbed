@@ -1,5 +1,5 @@
 ---
-- name: Deploy testbed
+- name: Deploy ceph testbed
   hosts: all
 
   vars:
@@ -11,15 +11,10 @@
     manual_create: false
     manual_deploy: false
     repo_path: "{{ ansible_user_dir }}/src/github.com"
-
-    terraform_binary: "{{ ansible_user_dir }}/terragrunt"
     terraform_path: "{{ basepath }}/terraform"
 
-    version_ceph: "{{ ceph_version | default('pacific') }}"
+    version_ceph: "{{ ceph_version | default('quincy') }}"
     version_manager: "{{ manager_version | default('latest') }}"
-    version_openstack: "{{ openstack_version | default('zed') }}"
-
-    run_refstack: "{{ refstack | default(false) | bool }}"
 
   vars_files:
     - vars/cloud_envs.yml
@@ -38,7 +33,7 @@
     - name: Create infrastructure (latest)
       ansible.builtin.shell:
         chdir: "{{ terraform_path }}"
-        cmd: make ENVIRONMENT={{ cloud_env }} TERRAFORM={{ terraform_binary }} VERSION_CEPH={{ version_ceph }} VERSION_MANAGER={{ version_manager }} VERSION_OPENSTACK={{ version_openstack }} REFSTACK={{ run_refstack | lower }} create
+        cmd: make ENVIRONMENT={{ cloud_env }} VERSION_CEPH={{ version_ceph }} VERSION_MANAGER={{ version_manager }} create
       when:
         - not manual_create | bool
         - version_manager == "latest"
@@ -46,7 +41,7 @@
     - name: Create infrastructure (stable)
       ansible.builtin.shell:
         chdir: "{{ terraform_path }}"
-        cmd: make ENVIRONMENT={{ cloud_env }} TERRAFORM={{ terraform_binary }} VERSION_MANAGER={{ version_manager }} REFSTACK={{ run_refstack | lower }} create
+        cmd: make ENVIRONMENT={{ cloud_env }} VERSION_MANAGER={{ version_manager }} create
       when:
         - not manual_create | bool
         - version_manager != "latest"
@@ -119,19 +114,10 @@
 
     - name: Deploy services
       ansible.builtin.shell:
-        cmd: "ssh -i {{ terraform_path }}/.id_rsa.{{ cloud_env }} dragon@{{ manager_host }} /opt/configuration/scripts/deploy-services.sh"
+        cmd: "ssh -i {{ terraform_path }}/.id_rsa.{{ cloud_env }} dragon@{{ manager_host }} /opt/configuration/scripts/deploy-ceph-services.sh"
       when: not manual_deploy | bool
 
-    - name: Run checks
+    - name: Check services
       ansible.builtin.shell:
-        chdir: "{{ terraform_path }}"
-        cmd: make ENVIRONMENT={{ cloud_env }} TERRAFORM={{ terraform_binary }} check
+        cmd: "ssh -i {{ terraform_path }}/.id_rsa.{{ cloud_env }} dragon@{{ manager_host }} /opt/configuration/scripts/check-ceph-services.sh"
       when: not manual_deploy | bool
-
-    - name: Run refstack
-      ansible.builtin.shell:
-        chdir: "{{ terraform_path }}"
-        cmd: make ENVIRONMENT={{ cloud_env }} TERRAFORM={{ terraform_binary }} refstack
-      when:
-        - not manual_deploy | bool
-        - run_refstack | bool

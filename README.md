@@ -1,6 +1,6 @@
 # OSISM testbed
 
-[![Installation guide](https://img.shields.io/static/v1?label=&message=documentation&color=blue)](https://docs.osism.tech/testbed)
+[![Documentation](https://img.shields.io/static/v1?label=&message=documentation&color=blue)](https://docs.scs.community/docs/category/osism-testbed)
 
 With this testbed, it is possible to run a full OSISM installation, the baseline
 of the Sovereign Cloud Stack, on an existing OpenStack environment such as Cleura

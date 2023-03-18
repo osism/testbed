@@ -55,6 +55,11 @@ identity: manager ## Deploy only identity services.
 	  TERRAFORM=$(TERRAFORM) \
 	  deploy-identity
 
+ceph: manager ## Deploy only ceph services.
+	make -C terraform \
+	  ENVIRONMENT=$(ENVIRONMENT) \
+	  deploy-ceph
+
 deploy: bootstrap ## Deploy everything and then check it.
 	make -C terraform \
 	  ENVIRONMENT=$(ENVIRONMENT) \
@@ -72,4 +77,4 @@ prepare: ## Run local preparations.
 	if [ ! -e .src/github.com/osism/ansible-collection-commons ]; then git clone https://github.com/osism/ansible-collection-commons .src/github.com/osism/ansible-collection-commons; else git -C .src/github.com/osism/ansible-collection-commons pull; fi
 	if [ ! -e .src/github.com/osism/ansible-collection-services ]; then git clone https://github.com/osism/ansible-collection-services .src/github.com/osism/ansible-collection-services; else git -C .src/github.com/osism/ansible-collection-services pull; fi
 
-phony: bootstrap clean create deploy identity login manager prepare
+phony: bootstrap clean create deploy identity login manager prepare ceph

@@ -1,8 +1,8 @@
 # testbed openstack-cli examples outside the testbed-manager
 
 ref:
-*  [preparations.html#tls-certificates-and-hostnames](https://docs.osism.tech/testbed/preparations.html#tls-certificates-and-hostnames)
-*  [authentication.html#authentication-with-openid-connect](https://docs.osism.tech/testbed/authentication.html#authentication-with-openid-connect)
+* [TLS certificates and hostnames](https://docs.scs.community/docs/testbed/doc/preparations#tls-certificates-and-hostnames)
+* [Authentication with OpenID Connect](https://docs.scs.community/docs/testbed/doc/authentication#authentication-with-openid-connect)
 
 ## Usage:
 

@@ -1,23 +1,19 @@
 ---
-- name: Deploy testbed
-  ansible.builtin.import_playbook: deploy.yml
+- name: Deploy ceph testbed
+  ansible.builtin.import_playbook: deploy-ceph.yml
   vars:
     version_ceph: "{{ ceph_version | default('pacific') }}"
     version_manager: "{{ manager_version | default('latest') }}"
-    version_openstack: "{{ openstack_version | default('yoga') }}"
 
-- name: Upgrade testbed
+- name: Upgrade ceph testbed
   hosts: all
 
   vars:
     basepath: "{{ ansible_user_dir }}/src/github.com/osism/testbed"
     terraform_path: "{{ basepath }}/terraform"
 
-    terraform_binary: "{{ ansible_user_dir }}/terragrunt"
-
-    version_ceph_next: "{{ ceph_version_next | default('pacific') }}"
+    version_ceph_next: "{{ ceph_version_next | default('quincy') }}"
     version_manager_next: "{{ manager_version_next | default('latest') }}"
-    version_openstack_next: "{{ openstack_version_next | default('zed') }}"
 
   vars_files:
     - vars/cloud_envs.yml
@@ -36,9 +32,8 @@
     - name: Run upgrade
       ansible.builtin.command:
         chdir: "{{ terraform_path }}"
-        cmd: make ENVIRONMENT={{ cloud_env }} TERRAFORM={{ terraform_binary }} VERSION_MANAGER={{ version_manager_next }} VERSION_CEPH={{ version_ceph_next }} VERSION_OPENSTACK={{ version_openstack_next }} upgrade
+        cmd: make ENVIRONMENT={{ cloud_env }} VERSION_MANAGER={{ version_manager_next }} VERSION_CEPH={{ version_ceph_next }} upgrade-ceph
 
-    - name: Run checks after the upgrade
-      ansible.builtin.command:
-        chdir: "{{ terraform_path }}"
-        cmd: make ENVIRONMENT={{ cloud_env }} TERRAFORM={{ terraform_binary }} check
+    - name: Check services
+      ansible.builtin.shell:
+        cmd: "ssh -i {{ terraform_path }}/.id_rsa.{{ cloud_env }} dragon@{{ manager_host }} /opt/configuration/scripts/check-ceph-services.sh"
