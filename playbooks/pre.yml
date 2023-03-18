@@ -4,6 +4,8 @@
 
   vars:
     basepath: "{{ ansible_user_dir }}/src/github.com/osism/testbed"
+    terragrunt_version: "0.45.0"
+    terragrunt_download_url: "https://github.com/gruntwork-io/terragrunt/releases/download/v{{ terragrunt_version }}/terragrunt_linux_amd64"
 
   vars_files:
     - vars/cloud_envs.yml
@@ -25,3 +27,9 @@
           OS_CLOUD={{ cloud_env }} ~/venv/bin/python3 cleanup.py
         chdir: "{{ basepath }}/terraform/scripts"
       failed_when: false
+
+    - name: Download terragrunt
+      ansible.builtin.get_url:
+        url: "{{ terragrunt_download_url }}"
+        dest: "{{ ansible_user_dir }}/terragrunt"
+        mode: "0755"
