@@ -6,7 +6,7 @@ ENVIRONMENT ?= betacloud
 USERNAME = dragon
 
 OPENSTACK = openstack
-TERRAFORM = terraform
+TERRAFORM ?= terraform
 
 PARALLELISM = 10
 RESOURCE = openstack_networking_floatingip_v2.manager_floating_ip

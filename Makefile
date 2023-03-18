@@ -4,17 +4,21 @@ VERSION_CEPH ?= pacific
 VERSION_MANAGER ?= latest
 VERSION_OPENSTACK ?= yoga
 
+TERRAFORM ?= terraform
+
 help:  ## Display this help.
 	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target>\033[0m\n"} /^[a-zA-Z_0-9-]+:.*?##/ { printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
 
 clean: ## Destroy infrastructure with Terraform.
 	make -C terraform \
 	  ENVIRONMENT=$(ENVIRONMENT) \
+	  TERRAFORM=$(TERRAFORM) \
 	  clean
 
 create: prepare ## Create required infrastructure with Terraform.
 	make -C terraform \
 	  ENVIRONMENT=$(ENVIRONMENT) \
+	  TERRAFORM=$(TERRAFORM) \
 	  VERSION_CEPH=$(VERSION_CEPH) \
 	  VERSION_MANAGER=$(VERSION_MANAGER) \
 	  VERSION_OPENSTACK=$(VERSION_OPENSTACK) \
@@ -42,19 +46,23 @@ bootstrap: create ## Bootstrap everything.
 manager: bootstrap ## Deploy only the manager service.
 	make -C terraform \
 	  ENVIRONMENT=$(ENVIRONMENT) \
+	  TERRAFORM=$(TERRAFORM) \
 	  deploy-manager
 
 identity: manager ## Deploy only identity services.
 	make -C terraform \
 	  ENVIRONMENT=$(ENVIRONMENT) \
+	  TERRAFORM=$(TERRAFORM) \
 	  deploy-identity
 
 deploy: bootstrap ## Deploy everything and then check it.
 	make -C terraform \
 	  ENVIRONMENT=$(ENVIRONMENT) \
+	  TERRAFORM=$(TERRAFORM) \
 	  deploy
 	make -C terraform \
 	  ENVIRONMENT=$(ENVIRONMENT) \
+	  TERRAFORM=$(TERRAFORM) \
 	  check
 
 prepare: ## Run local preparations.
