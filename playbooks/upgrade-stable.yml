@@ -9,6 +9,7 @@
 
   vars:
     basepath: "{{ ansible_user_dir }}/src/github.com/osism/testbed"
+    terraform_path: "{{ basepath }}/terraform"
 
     version_manager_next: "{{ manager_version_next | default('latest') }}"
 
@@ -28,10 +29,10 @@
 
     - name: Run upgrade
       ansible.builtin.command:
-        chdir: "{{ basepath }}/terraform"
+        chdir: "{{ terraform_path }}"
         cmd: make ENVIRONMENT={{ cloud_env }} VERSION_MANAGER={{ version_manager_next }} upgrade
 
     - name: Run checks after the upgrade
       ansible.builtin.command:
-        chdir: "{{ basepath }}/terraform"
+        chdir: "{{ terraform_path }}"
         cmd: make ENVIRONMENT={{ cloud_env }} check

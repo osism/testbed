@@ -74,6 +74,16 @@
     nodeset: testbed-orchestrator
 
 - job:
+    name: testbed-upgrade-ceph
+    parent: testbed-upgrade
+    run: playbooks/upgrade-ceph.yml
+
+- job:
+    name: testbed-deploy-ceph
+    parent: testbed-deploy
+    run: playbooks/deploy-ceph.yml
+
+- job:
     name: testbed-deploy-cleura
     parent: testbed-deploy
     nodeset: testbed-orchestrator-cleura
@@ -113,8 +123,10 @@
         - yamllint
         - flake8
         - testbed-deploy
+        - testbed-deploy-ceph
         - testbed-deploy-stable
         - testbed-upgrade
+        - testbed-upgrade-ceph
         - testbed-upgrade-stable
     gate:
       jobs:
