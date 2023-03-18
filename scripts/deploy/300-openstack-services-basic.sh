@@ -25,7 +25,7 @@ osism wait --output --format script --delay 2 $task_ids
 
 osism apply --environment openstack bootstrap-flavors
 osism apply --environment openstack bootstrap-basic -e openstack_version=$OPENSTACK_VERSION
-osism apply --environment openstack bootstrap-ceph-rgw
+osism apply rgw-endpoint
 
 # osism manage images is only available since 4.3.0. To enable the
 # testbed to be used with < 4.3.0, here is this check.
