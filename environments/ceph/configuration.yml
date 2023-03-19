@@ -49,7 +49,7 @@ ceph_conf_overrides:
     "rgw keystone accepted roles": "member, admin"
     "rgw keystone accepted admin roles": "admin"
     "rgw keystone admin domain": "default"
-    "rgw keystone admin password": "hF6NWPG4rWTpK00oANEcRAiKbwbEcKFHHYYskar2"
+    "rgw keystone admin password": "{{ swift_keystone_password }}"
     "rgw keystone admin project": "service"
     "rgw keystone admin tenant": "service"
     "rgw keystone admin user": "swift"
