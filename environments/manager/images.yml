@@ -51,5 +51,5 @@ traefik_image: "{{ docker_registry }}/library/traefik:{{ traefik_tag }}"
 ceph_ansible_tag: "{{ ceph_version|default('pacific') }}"
 ceph_ansible_image: "{{ docker_registry_ansible|default('quay.io') }}/osism/ceph-ansible:{{ ceph_ansible_tag }}"
 
-kolla_ansible_tag: "{{ openstack_version|default('yoga') }}"
+kolla_ansible_tag: "{{ openstack_version|default('zed') }}"
 kolla_ansible_image: "{{ docker_registry_ansible|default('quay.io') }}/osism/kolla-ansible:{{ kolla_ansible_tag }}"
