@@ -84,7 +84,7 @@ variable "manager_version" {
 
 variable "openstack_version" {
   type    = string
-  default = "yoga"
+  default = "zed"
 }
 
 variable "number_of_nodes" {
