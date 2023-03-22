@@ -17,6 +17,7 @@ OVH              | OVH           | **ovh**
 OpenTelekomCloud | T-Systems     | **otc**
 Wavestack        | noris network | **wavestack**
 pluscloud open   | plusserver    | **pluscloudopen**
+HuaweiCloud      | HuaweiCloud   | **huaweicloud**
 
 Terraform must be installed and usable. Information on installing Terraform can be found in the [Terraform documentation](https://learn.hashicorp.com/tutorials/terraform/install-cli)
 Currently Terraform **>= 1.2.0** is supported.
