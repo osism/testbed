@@ -203,4 +203,32 @@ export ENVIRONMENT=betacloud
 >     auth_type: "v3applicationcredential"
 > ```
 
+* [HuaweiCloud](https://www.huaweicloud.com/eu/)
+
+:::note
+
+>**note:**
+>
+> * Registration is possible via https://www.huaweicloud.com/eu/
+> * The credentials are stored in **clouds.yaml** and **secure.yaml** with the name **huaweicloud**.
+> * Credential details can be taken from the "MyCredentials" option in the admin console: <https://console.eu.huaweicloud.com/iam>.
+>
+> ```yaml
+> ---
+> clouds:
+>   huaweicloud:
+>     auth:
+>       auth_url: https://iam.myhuaweicloud.eu/
+>       password: xxxx
+>       username: xxxx
+>       project_name: 'PROJECT_NAME'
+>       project_domain_name: 'PROJECT_DOMAIN_NAME'
+>       user_domain_name: 'USER_DOMAIN_NAME'
+>       identity_api_version: 3
+>       block_storage_api_version: 3
+>       regions:
+>         - name: Dublin
+
+
+
 :::
