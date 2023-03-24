@@ -90,24 +90,22 @@ git clone https://github.com/osism/testbed ~/src/github.com/osism/testbed
 
 :::
 
-There is a separate environment file, e.g. **environments/betacloud.tfvars**, for
+There is a separate environment file, e.g. **environments/regiocloud.tfvars**, for
 each supported cloud provider.
 
 The environment to be used is set via the **ENVIRONMENT** environment variable.
 
 ```sh
-export ENVIRONMENT=betacloud
+export ENVIRONMENT=regiocloud
 ```
 
-* [Betacloud](https://www.betacloud.de)
+* [REGIO.cloud](https://regio.digital)
 
 :::note
 
 >**note:**
 >
-> * The credentials are stored in **clouds.yaml** and **secure.yaml** with the name **betacloud**.
-> * To use the Betacloud, please send an email to support@betacloud.de. Please state that you are interested in using the OSISM
-> testbed.
+> * The credentials are stored in **clouds.yaml** and **secure.yaml** with the name **regiocloud**.
 
 :::
 

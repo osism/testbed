@@ -1,12 +1,11 @@
 ---
 public-clouds:
-  betacloud:
+  regiocloud:
     auth:
-      auth_url: https://api-1.betacloud.de:5000
+      auth_url: https://keystone.services.a.regiocloud.tech/v3
     regions:
-      - name: betacloud-1
+      - name: RegionA
     identity_api_version: 3
-    image_format: raw
     block_storage_api_version: 3
   pluscloudopen:
     auth:

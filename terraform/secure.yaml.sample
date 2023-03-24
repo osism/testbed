@@ -1,6 +1,6 @@
 ---
 clouds:
-  betacloud:
+  regiocloud:
     auth:
       password: PASSWORD
   pluscloudopen:

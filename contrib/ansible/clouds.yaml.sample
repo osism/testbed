@@ -1,7 +1,7 @@
 ---
 clouds:
-  betacloud:
-    profile: betacloud
+  regiocloud:
+    profile: regiocloud
     auth:
       username: USERNAME
       project_name: PROJECT

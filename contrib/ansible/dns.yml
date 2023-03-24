@@ -2,7 +2,7 @@
 - name: Set up DNS for testbed
   hosts: localhost
   vars:
-    cloud_provider: betacloud
+    cloud_provider: regiocloud
     basedomain: "osism.xyz."
     subdomain: "testbed."
     fulldomain: "{{ subdomain }}{{ basedomain }}"

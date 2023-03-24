@@ -1,8 +1,8 @@
-ENVIRONMENT ?= betacloud
+ENVIRONMENT ?= regiocloud
 
 VERSION_CEPH ?= pacific
 VERSION_MANAGER ?= latest
-VERSION_OPENSTACK ?= yoga
+VERSION_OPENSTACK ?= zed
 
 TERRAFORM ?= terraform
 
