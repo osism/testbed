@@ -2,7 +2,7 @@
 
 CONFIGURATION = main
 CONSOLE = manager
-ENVIRONMENT ?= betacloud
+ENVIRONMENT ?= regiocloud
 USERNAME = dragon
 
 OPENSTACK = openstack

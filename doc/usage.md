@@ -12,55 +12,55 @@
 Get the URL for the VNC console from an instance (by default from the manager):
 
 ```sh
-   make console ENVIRONMENT=betacloud
-   make console ENVIRONMENT=betacloud CONSOLE=node-0
+   make console ENVIRONMENT=regiocloud
+   make console ENVIRONMENT=regiocloud CONSOLE=node-0
 ```
 
 Get the console log from an instance (by default from the manager):
 
 ```sh
-   make log ENVIRONMENT=betacloud
-   make log ENVIRONMENT=betacloud CONSOLE=node-0
+   make log ENVIRONMENT=regiocloud
+   make log ENVIRONMENT=regiocloud CONSOLE=node-0
 ```
 
 Open a login shell on the manager via SSH:
 
 ```sh
-   make ssh ENVIRONMENT=betacloud
-   make login ENVIRONMENT=betacloud  # this is just an alias for "make ssh"
+   make ssh ENVIRONMENT=regiocloud
+   make login ENVIRONMENT=regiocloud  # this is just an alias for "make ssh"
 ```
 
 Create a tunnel for the internal networks (**192.168.16.0/20**,  **192.168.112.0/20**) via sshuttle
 <https://github.com/sshuttle/sshuttle>:
 
 ```sh
-   make sshuttle ENVIRONMENT=betacloud
-   make tunnel ENVIRONMENT=betacloud   # this is just an alias for "make sshuttle"
+   make sshuttle ENVIRONMENT=regiocloud
+   make tunnel ENVIRONMENT=regiocloud   # this is just an alias for "make sshuttle"
 ```
 
 Show endpoint URLs (ara, phpmyadmin):
 
 ```sh
-   make endpoints ENVIRONMENT=betacloud
+   make endpoints ENVIRONMENT=regiocloud
 ```
 
 Show manager address:
 
 ```sh
-   make address ENVIRONMENT=betacloud
+   make address ENVIRONMENT=regiocloud
 ```
 
 Open an Openstack Client Console:
 
 ```sh
-   make openstack ENVIRONMENT=betacloud
+   make openstack ENVIRONMENT=regiocloud
 ```
 
 Copy a file to the manager:
 
 ```sh
-   make scp PARAMS=/file/to/be/copied SOURCE=/path/to/destination ENVIRONMENT=betacloud
-   make copy PARAMS=/file/to/be/copied SOURCE=/path/to/destination ENVIRONMENT=betacloud # this is just an alias for "make scp"
+   make scp PARAMS=/file/to/be/copied SOURCE=/path/to/destination ENVIRONMENT=regiocloud
+   make copy PARAMS=/file/to/be/copied SOURCE=/path/to/destination ENVIRONMENT=regiocloud # this is just an alias for "make scp"
 ```
 
 ### Terraform
@@ -68,62 +68,62 @@ Copy a file to the manager:
 Delete providers:
 
 ```sh
-   make reset ENVIRONMENT=betacloud
+   make reset ENVIRONMENT=regiocloud
 ```
 
 Init terraform, select workspace and copy override and custom files:
 
 ```sh
-   make init ENVIRONMENT=betacloud
+   make init ENVIRONMENT=regiocloud
 ```
 
 Init terraform and validate:
 
 ```sh
-   make validate ENVIRONMENT=betacloud
+   make validate ENVIRONMENT=regiocloud
 ```
 
 Init terraform and import a resource:
 
 ```sh
-   make attach ENVIRONMENT=betacloud
+   make attach ENVIRONMENT=regiocloud
 ```
 
 Init terraform and remove a resource:
 
 ```sh
-   make detach ENVIRONMENT=betacloud
+   make detach ENVIRONMENT=regiocloud
 ```
 
 Init terraform and push a state to a remote backend:
 
 ```sh
-   make state-push ENVIRONMENT=betacloud
-   make push ENVIRONMENT=betacloud       # this is just an alias for "make state-push"
+   make state-push ENVIRONMENT=regiocloud
+   make push ENVIRONMENT=regiocloud       # this is just an alias for "make state-push"
 ```
 
 Init terraform and generate a graph in DOT format:
 
 ```sh
-   make graph ENVIRONMENT=betacloud
+   make graph ENVIRONMENT=regiocloud
 ```
 
 Init terraform and show the current state:
 
 ```sh
-   make show ENVIRONMENT=betacloud
+   make show ENVIRONMENT=regiocloud
 ```
 
 Init terraform and show the configuration of a specific resource:
 
 ```sh
-   make list ENVIRONMENT=betacloud
+   make list ENVIRONMENT=regiocloud
 ```
 
 Decommissioning:
 
 ```sh
-   make clean ENVIRONMENT=betacloud
+   make clean ENVIRONMENT=regiocloud
 ```
 
 [![asciicast](https://asciinema.org/a/9YR0fAukUitMlryGKlexWz17k.svg)](https://asciinema.org/a/9YR0fAukUitMlryGKlexWz17k)
@@ -136,25 +136,25 @@ Only **ping** works without them.
 Check the installation via ping:
 
 ```sh
-   make ping ENVIRONMENT=betacloud
+   make ping ENVIRONMENT=regiocloud
 ```
 
 Run check script for openstack and infrastructure components:
 
 ```sh
-   make check ENVIRONMENT=betacloud
+   make check ENVIRONMENT=regiocloud
 ```
 
 Run rally script (benchmark openstack):
 
 ```sh
-   make rally ENVIRONMENT=betacloud
+   make rally ENVIRONMENT=regiocloud
 ```
 
 Run refstack script:
 
 ```sh
-   make refstack ENVIRONMENT=betacloud
+   make refstack ENVIRONMENT=regiocloud
 ```
 
 ### Internals
@@ -358,7 +358,7 @@ RabbitMQ               | <https://api-int.testbed.osism.xyz:15672/>        | ope
 >To access the webinterfaces, make sure that you have a tunnel up and running for the internal networks.
 >
 >```sh
->make sshuttle ENVIRONMENT=betacloud
+>make sshuttle ENVIRONMENT=regiocloud
 >```
 
 :::

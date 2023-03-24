@@ -10,7 +10,7 @@ respective cloud provider for this.
 
 Product          | Provider      | Profile name
 -----------------|---------------|--------------
-Betacloud        | OSISM         | **betacloud**
+REGIO.cloud      | OSISM         | **regiocloud**
 Cleura           | Cleura        | **cleura**
 Fuga Cloud       | FUGA          | **fuga**
 OVH              | OVH           | **ovh**
