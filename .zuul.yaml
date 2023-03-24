@@ -118,7 +118,6 @@
     merge-mode: squash-merge
     check:
       jobs:
-        - tox-docs
         - tox-linters
         - ansible-lint
         - yamllint
@@ -131,7 +130,6 @@
         - testbed-upgrade-stable
     gate:
       jobs:
-        - tox-docs
         - tox-linters
         - ansible-lint
         - yamllint
@@ -142,8 +140,6 @@
             branches: main
     post:
       jobs:
-        - osism-publish-tox-docs-production:
-            branches: main
         - testbed-deploy-stable
     periodic-daily:
       jobs:
