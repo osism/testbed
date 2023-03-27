@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        terraform-version:
+        terraform_version:
           - 1.2.7
 
     steps:
@@ -27,7 +27,7 @@ jobs:
       - name: Setup terraform
         uses: hashicorp/setup-terraform@v2
         with:
-          terraform_version: ${{ matrix.terraform-version }}
+          terraform_version: ${{ matrix.terraform_version }}
       - name: Terraform validate
         run: make validate
         working-directory: ./terraform
