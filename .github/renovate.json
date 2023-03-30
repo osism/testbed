@@ -12,6 +12,15 @@
         "terraform_version: (?<currentValue>.*?)  # renovate: datasource=(?<datasource>.*?) depName=(?<depName>.*?)\n"
      ],
      "extractVersionTemplate": "^v(?<version>.*)$"
+    },
+    {
+      "fileMatch":[
+        "^\\playbooks\\/.*\\.yml"
+      ],
+      "matchStrings":[
+        "terragrunt_version: (?<currentValue>.*?)  # renovate: datasource=github-tags depName=gruntwork-io/terragrunt\n"
+      ],
+      "extractVersionTemplate": "^v(?<version>.*)$"
     }
   ]
 }
