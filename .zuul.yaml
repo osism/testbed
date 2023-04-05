@@ -118,7 +118,6 @@
     merge-mode: squash-merge
     check:
       jobs:
-        - tox-linters
         - ansible-lint
         - yamllint
         - flake8
@@ -130,7 +129,6 @@
         - testbed-upgrade-stable
     gate:
       jobs:
-        - tox-linters
         - ansible-lint
         - yamllint
         - flake8
@@ -153,3 +151,6 @@
         - testbed-upgrade-pco
         - testbed-upgrade-stable
         - testbed-upgrade-wavestack
+        - ansible-lint
+        - yamllint
+        - flake8
