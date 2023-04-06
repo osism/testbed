@@ -28,7 +28,9 @@ endif
 export OS_CLOUD ?= $(ENVIRONMENT)
 
 export TF_VAR_cloud_provider=$(ENVIRONMENT)
-export TF_CLI_CONFIG_FILE=terraformrc
+ifneq (,$(wildcard terraformrc))
+  export TF_CLI_CONFIG_FILE ?= terraformrc
+endif
 
 ifneq (,$(wildcard ./backend.env))
   include backend.env
