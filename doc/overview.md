@@ -37,8 +37,6 @@ The following stable Ceph and OpenStack releases are supported. The development 
 
 The deployment of Ceph is based on [ceph-ansible](https://github.com/ceph/ceph-ansible).
 
-* Luminous
-* Nautilus
 * Octopus
 * Pacific (**default**)
 * Quincy
@@ -47,14 +45,9 @@ The deployment of Ceph is based on [ceph-ansible](https://github.com/ceph/ceph-a
 
 The deployment of OpenStack is based on [kolla-ansible](https://opendev.org/openstack/kolla-ansible).
 
-* Rocky
-* Stein
-* Train
-* Ussuri
-* Victoria
-* Wallaby
 * Xena
-* Yoga (**default**)
+* Yoga
+* Zed (**default**)
 
 ## Software Bill Of Materials (SBOM)
 
