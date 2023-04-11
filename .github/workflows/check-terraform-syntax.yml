@@ -16,18 +16,13 @@ name: Check terraform syntax
 jobs:
   check-terraform-syntax:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        terraform_version:
-          - 1.4.2
-
     steps:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Setup terraform
         uses: hashicorp/setup-terraform@v2
         with:
-          terraform_version: ${{ matrix.terraform_version }}
+          terraform_version: 1.4.2 # renovate: datasource=github-tags depName=hashicorp/terraform
       - name: Terraform validate
         run: make validate
         working-directory: ./terraform
