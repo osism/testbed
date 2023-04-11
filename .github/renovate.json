@@ -18,9 +18,8 @@
         "^\\playbooks\\/.*\\.yml"
       ],
       "matchStrings":[
-        "terragrunt_version: (?<currentValue>.*?)  # renovate: datasource=github-tags depName=gruntwork-io/terragrunt\n"
-      ],
-      "extractVersionTemplate": "^v(?<version>.*)$"
+        "terragrunt_version: (?<currentValue>.*?) # renovate: datasource=(?<datasource>.*?) depName=(?<depName>.*?)?\\s"
+      ]
     }
   ]
 }
