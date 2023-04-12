@@ -15,7 +15,7 @@
     },
     {
       "fileMatch":[
-        "^\\playbooks\\/.*\\.yml"
+        "^playbooks\\/.*\\.yml"
       ],
       "matchStrings":[
         "terragrunt_version: (?<currentValue>.*?)  # renovate: datasource=github-tags depName=gruntwork-io/terragrunt\n"
