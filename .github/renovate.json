@@ -11,7 +11,7 @@
       "matchStrings":[
         "terraform_version: (?<currentValue>.*?) # renovate: datasource=(?<datasource>.*?) depName=(?<depName>.*?)?\\s"
      ],
-     "extractVersionTemplate": "^(?<version>.*)$"
+     "extractVersionTemplate": "^v(?<version>.*)$"
     },
     {
       "fileMatch":[
