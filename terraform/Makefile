@@ -43,7 +43,7 @@ init:
 	@if [ ! -d .terraform/providers ]; then $(TERRAFORM) init -upgrade; fi
 
 	@if [ ! -f backend.tf ]; then \
-		$(TERRAFORM) workspace select ${ENVIRONMENT} || $(TERRAFORM) workspace new ${ENVIRONMENT}; \
+		$(TERRAFORM) workspace select -or-create ${ENVIRONMENT}; \
 	fi
 
 	@rm -f *.auto.tfvars
