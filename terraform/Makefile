@@ -7,6 +7,7 @@ USERNAME = dragon
 
 OPENSTACK = openstack
 TERRAFORM ?= terraform
+export TF_CLI_ARGS ?= -no-color
 
 PARALLELISM = 10
 RESOURCE = openstack_networking_floatingip_v2.manager_floating_ip
