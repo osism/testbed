@@ -100,6 +100,10 @@ ironic_dnsmasq_dhcp_ranges:
   - range: "192.168.112.50,192.168.112.60"
 ironic_cleaning_network: "public"
 
+# ceilometer
+enable_ceilometer_prometheus_pushgateway: "yes"
+ceilometer_prometheus_pushgateway_host: "testbed-manager.testbed.osism.xyz"
+
 ##########################################################
 # external ceph
 
