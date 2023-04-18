@@ -4,8 +4,11 @@
 
   vars:
     basepath: "{{ ansible_user_dir }}/src/github.com/osism/testbed"
+    terraform_path: "{{ basepath }}/terraform"
     terragrunt_version: v0.45.3 # renovate: datasource=github-releases depName=gruntwork-io/terragrunt
     terragrunt_download_url: "https://github.com/gruntwork-io/terragrunt/releases/download/{{ terragrunt_version }}/terragrunt_linux_amd64"
+    terraform_version: 1.4.5 # renovate: datasource=github-releases depName=hashicorp/terraform
+    terraform_download_url: "https://releases.hashicorp.com/terraform/{{ terraform_version }}/terraform_{{ terraform_version }}_linux_amd64.zip"
 
   vars_files:
     - vars/cloud_envs.yml
@@ -28,8 +31,21 @@
         chdir: "{{ basepath }}/terraform/scripts"
       failed_when: false
 
+    - name: Download terraform
+      ansible.builtin.unarchive:
+        src: "{{ terraform_download_url }}"
+        dest: "{{ ansible_user_dir }}"
+        remote_src: true
+        mode: "0755"
+
     - name: Download terragrunt
       ansible.builtin.get_url:
         url: "{{ terragrunt_download_url }}"
         dest: "{{ ansible_user_dir }}/terragrunt"
         mode: "0755"
+
+    - name: Create local.env file
+      ansible.builtin.template:
+        src: local.env.j2
+        dest: "{{ terraform_path }}/local.env"
+        mode: "0644"
