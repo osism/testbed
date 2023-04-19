@@ -82,6 +82,16 @@ git clone https://github.com/osism/testbed ~/src/github.com/osism/testbed
 
 :::
 
+## Other needed repositories
+
+The following two repositories are needed as well.
+Keep their copies relative to the testbed path from above:
+
+```sh
+git clone https://github.com/osism/ansible-collection-commons ~/src/github.com/osism/ansible-collection-commons
+git clone https://github.com/osism/ansible-collection-services ~/src/github.com/osism/ansible-collection-services
+```
+
 ## Cloud access
 
 :::note
