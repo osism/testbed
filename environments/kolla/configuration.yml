@@ -46,6 +46,7 @@ elasticsearch_curator_hard_retention_period_days: 1
 
 # keystone
 enable_keystone_federation: "yes"
+keystone_oidc_forward_header: "X-Forwarded-Proto"
 keystone_enable_federation_openid: "yes"
 keystone_federation_oidc_response_type: "code"
 keystone_identity_providers:
