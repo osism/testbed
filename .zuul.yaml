@@ -70,7 +70,7 @@
     # be explictly bumped in the tenant configuration
     timeout: 16200
     vars:
-      manager_version: 4.2.0
+      manager_version: 4.3.0
       manager_version_next: 5.1.0
     nodeset: testbed-orchestrator
 

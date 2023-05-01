@@ -12,7 +12,7 @@ fi
 
 MANAGER_VERSION=$(docker inspect --format '{{ index .Config.Labels "org.opencontainers.image.version"}}' osism-ansible)
 if [[ "$REFSTACK" == "false" ]]; then
-    if [[ $MANAGER_VERSION == "4.0.0" || $MANAGER_VERSION == "4.1.0" || $MANAGER_VERSION == "4.2.0" || $MANAGER_VERSION == "5.0.0a" ]]; then
+    if [[ $MANAGER_VERSION == "4.0.0" || $MANAGER_VERSION == "4.1.0" || $MANAGER_VERSION == "4.2.0" || $MANAGER_VERSION == "4.3.0" ]]; then
         osism apply ceph-base
         task_ids=$(osism apply --no-wait --format script ceph-mdss 2>&1)
         task_ids+=" "$(osism apply --no-wait --format script ceph-rgws 2>&1)
@@ -22,7 +22,7 @@ if [[ "$REFSTACK" == "false" ]]; then
         osism apply ceph -e enable_ceph_mds=true -e enable_ceph_rgw=true
     fi
 else
-    if [[ $MANAGER_VERSION == "4.0.0" || $MANAGER_VERSION == "4.1.0" || $MANAGER_VERSION == "4.2.0" || $MANAGER_VERSION == "5.0.0a" ]]; then
+    if [[ $MANAGER_VERSION == "4.0.0" || $MANAGER_VERSION == "4.1.0" || $MANAGER_VERSION == "4.2.0" || $MANAGER_VERSION == "4.3.0" ]]; then
         osism apply ceph-base
     else
         osism apply ceph
@@ -35,10 +35,10 @@ osism apply ceph-bootstrap-dashboard
 
 ceph config set mon auth_allow_insecure_global_id_reclaim false
 
-# osism validate is only available since 4.3.0. To enable the
-# testbed to be used with < 4.3.0, here is this check.
+# osism validate is only available since 5.0.0. To enable the
+# testbed to be used with < 5.0.0, here is this check.
 MANAGER_VERSION=$(docker inspect --format '{{ index .Config.Labels "org.opencontainers.image.version"}}' osism-ansible)
-if [[ $MANAGER_VERSION == "4.0.0" || $MANAGER_VERSION == "4.1.0" || $MANAGER_VERSION == "4.2.0" ]]; then
+if [[ $MANAGER_VERSION == "4.0.0" || $MANAGER_VERSION == "4.1.0" || $MANAGER_VERSION == "4.2.0" || $MANAGER_VERSION == "4.3.0" ]]; then
     echo "ceph validate not possible with OSISM < 4.3.0"
 else
     osism apply facts
