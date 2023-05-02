@@ -27,9 +27,9 @@ osism apply --environment openstack bootstrap-flavors
 osism apply --environment openstack bootstrap-basic -e openstack_version=$OPENSTACK_VERSION
 osism apply --environment openstack bootstrap-ceph-rgw
 
-# osism manage images is only available since 4.3.0. To enable the
-# testbed to be used with < 4.3.0, here is this check.
-if [[ $MANAGER_VERSION == "4.0.0" || $MANAGER_VERSION == "4.1.0" || $MANAGER_VERSION == "4.2.0" ]]; then
+# osism manage images is only available since 5.0.0. To enable the
+# testbed to be used with < 5.0.0, here is this check.
+if [[ $MANAGER_VERSION == "4.0.0" || $MANAGER_VERSION == "4.1.0" || $MANAGER_VERSION == "4.2.0" || $MANAGER_VERSION == "4.3.0" ]]; then
     osism apply --environment openstack bootstrap-images
 else
     osism manage images --cloud admin --filter Cirros

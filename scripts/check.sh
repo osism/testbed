@@ -13,9 +13,9 @@ echo
 # list containers & images
 
 for node in testbed-manager testbed-node-0 testbed-node-1 testbed-node-2; do
-    # osism container is only available since 4.3.0. To enable the
-    # testbed to be used with < 4.3.0, here is this check.
-    if [[ $MANAGER_VERSION == "4.0.0" || $MANAGER_VERSION == "4.1.0" || $MANAGER_VERSION == "4.2.0" ]]; then
+    # osism container is only available since 5.0.0. To enable the
+    # testbed to be used with < 5.0.0, here is this check.
+    if [[ $MANAGER_VERSION == "4.0.0" || $MANAGER_VERSION == "4.1.0" || $MANAGER_VERSION == "4.2.0" || $MANAGER_VERSION == "4.3.0" ]]; then
         echo
         echo "## Containers @ $node"
         echo
