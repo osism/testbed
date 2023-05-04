@@ -69,14 +69,22 @@ testbed$ cp contrib/ownca/testbed-ca-certificate.pem environments/openstack/test
 testbed$ cat contrib/ownca/testbed-{certificate.key,certificate.pem,ca-certificate.pem} > environments/kolla/certificates/haproxy.pem
 testbed$ ansible-vault encrypt --vault-pass-file environments/.vault_pass environments/kolla/certificates/haproxy.pem
 testbed$ cp environments/kolla/certificates/haproxy.pem environments/kolla/certificates/haproxy-internal.pem
+testbed$ cat > environments/infrastructure/secrets.yml <<%EOF
+---
+traefik_certificates:
+  default:
+    cert: |
+$(sed 's/^/      /' < contrib/ownca/testbed-certificate.pem)
+$(sed 's/^/      /' < contrib/ownca/testbed-ca-certificate.pem)
+    key: |
+$(sed 's/^/      /' < contrib/ownca/testbed-certificate.key)
+%EOF
+testbed$ ansible-vault encrypt --vault-pass-file environments/.vault_pass environments/infrastructure/secrets.yml
 testbed$ cat contrib/ownca/testbed-{certificate.pem,ca-certificate.pem} > environments/custom/files/keycloak/cert.crt
 testbed$ cp contrib/ownca/testbed-certificate.key environments/custom/files/keycloak/private_key.pem
 testbed$ ansible-vault encrypt --vault-pass-file environments/.vault_pass environments/custom/files/keycloak/private_key.pem
 ```
 
-Edit `environments/infrastructure/secrets.yml` to contain the new manager key and certificate.
-
 ## TODO
 
-* Document changing the certificate for traefik after it is moved into a file.
 * Write a playbook for the installation step.
