@@ -19,6 +19,8 @@
     version_manager: "{{ manager_version | default('latest') }}"
     version_openstack: "{{ openstack_version | default('zed') }}"
 
+    run_bootstrap: true
+    run_checks: true
     run_refstack: "{{ refstack | default(false) | bool }}"
 
   vars_files:
@@ -122,16 +124,26 @@
         cmd: "ssh -i {{ terraform_path }}/.id_rsa.{{ cloud_env }} dragon@{{ manager_host }} /opt/configuration/scripts/deploy-services.sh"
       when: not manual_deploy | bool
 
+    - name: Bootstrap services
+      ansible.builtin.shell:
+        chdir: "{{ terraform_path }}"
+        cmd: make ENVIRONMENT={{ cloud_env }} bootstrap
+      when:
+        - not manual_deploy | bool
+        - run_bootstrap | bool
+
     - name: Run checks
       ansible.builtin.shell:
         chdir: "{{ terraform_path }}"
-        cmd: make ENVIRONMENT={{ cloud_env }} TERRAFORM={{ terraform_binary }} check
-      when: not manual_deploy | bool
+        cmd: make ENVIRONMENT={{ cloud_env }} check
+      when:
+        - not manual_deploy | bool
+        - run_checks | bool
 
     - name: Run refstack
       ansible.builtin.shell:
         chdir: "{{ terraform_path }}"
-        cmd: make ENVIRONMENT={{ cloud_env }} TERRAFORM={{ terraform_binary }} refstack
+        cmd: make ENVIRONMENT={{ cloud_env }} refstack
       when:
         - not manual_deploy | bool
         - run_refstack | bool
