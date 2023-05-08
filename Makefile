@@ -68,6 +68,10 @@ deploy: bootstrap ## Deploy everything and then check it.
 	make -C terraform \
 	  ENVIRONMENT=$(ENVIRONMENT) \
 	  TERRAFORM=$(TERRAFORM) \
+	  bootstrap
+	make -C terraform \
+	  ENVIRONMENT=$(ENVIRONMENT) \
+	  TERRAFORM=$(TERRAFORM) \
 	  check
 
 prepare: ## Run local preparations.

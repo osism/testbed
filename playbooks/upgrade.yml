@@ -6,6 +6,8 @@
     version_manager: "{{ manager_version | default('latest') }}"
     version_openstack: "{{ openstack_version | default('yoga') }}"
 
+    run_bootstrap: false
+
 - name: Upgrade testbed
   hosts: all
 
@@ -18,6 +20,8 @@
     version_ceph_next: "{{ ceph_version_next | default('pacific') }}"
     version_manager_next: "{{ manager_version_next | default('latest') }}"
     version_openstack_next: "{{ openstack_version_next | default('zed') }}"
+
+    run_bootstrap: true
 
   vars_files:
     - vars/cloud_envs.yml
@@ -38,7 +42,13 @@
         chdir: "{{ terraform_path }}"
         cmd: make ENVIRONMENT={{ cloud_env }} TERRAFORM={{ terraform_binary }} VERSION_MANAGER={{ version_manager_next }} VERSION_CEPH={{ version_ceph_next }} VERSION_OPENSTACK={{ version_openstack_next }} upgrade
 
+    - name: Bootstrap services
+      ansible.builtin.shell:
+        chdir: "{{ terraform_path }}"
+        cmd: make ENVIRONMENT={{ cloud_env }} bootstrap
+      when: run_bootstrap | bool
+
     - name: Run checks after the upgrade
       ansible.builtin.command:
         chdir: "{{ terraform_path }}"
-        cmd: make ENVIRONMENT={{ cloud_env }} TERRAFORM={{ terraform_binary }} check
+        cmd: make ENVIRONMENT={{ cloud_env }} check

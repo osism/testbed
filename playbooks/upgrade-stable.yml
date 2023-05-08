@@ -4,6 +4,8 @@
   vars:
     version_manager: "{{ manager_version | default('latest') }}"
 
+    run_bootstrap: false
+
 - name: Upgrade testbed
   hosts: all
 
@@ -12,6 +14,9 @@
     terraform_path: "{{ basepath }}/terraform"
 
     version_manager_next: "{{ manager_version_next | default('latest') }}"
+
+    run_bootstrap: true
+    run_checks: true
 
   vars_files:
     - vars/cloud_envs.yml
@@ -32,7 +37,14 @@
         chdir: "{{ terraform_path }}"
         cmd: make ENVIRONMENT={{ cloud_env }} VERSION_MANAGER={{ version_manager_next }} upgrade
 
+    - name: Bootstrap services
+      ansible.builtin.shell:
+        chdir: "{{ terraform_path }}"
+        cmd: make ENVIRONMENT={{ cloud_env }} bootstrap
+      when: run_bootstrap | bool
+
     - name: Run checks after the upgrade
       ansible.builtin.command:
         chdir: "{{ terraform_path }}"
         cmd: make ENVIRONMENT={{ cloud_env }} check
+      when: run_checks | bool
