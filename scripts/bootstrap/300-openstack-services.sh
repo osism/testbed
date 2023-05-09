@@ -12,7 +12,7 @@ osism apply --environment openstack bootstrap-ceph-rgw
 
 # osism manage images is only available since 5.0.0. To enable the
 # testbed to be used with < 5.0.0, here is this check.
-if [[ $MANAGER_VERSION == "4.0.0" || $MANAGER_VERSION == "4.1.0" || $MANAGER_VERSION == "4.2.0" || $MANAGER_VERSION == "4.3.0" ]]; then
+if [[ $MANAGER_VERSION =~ ^4\.[0-9]\.[0-9]$ ]]; then
     osism apply --environment openstack bootstrap-images
 else
     osism manage images --cloud admin --filter Cirros
