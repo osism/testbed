@@ -50,6 +50,12 @@ cleanup_packages_extra:
 systohc: false
 
 ##########################
+# repository
+
+# NOTE: Make sure that a cache update is always performed.
+repository_cache_valid_time: 0
+
+##########################
 # serial
 
 osism_serial_default: 100%
