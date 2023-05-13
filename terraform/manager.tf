@@ -39,8 +39,11 @@ resource "openstack_compute_instance_v2" "manager_server" {
 #cloud-config
 network:
    config: disabled
-package_update: false
-package_upgrade: false
+ntp:
+  enabled: true
+  ntp_client: chrony
+package_update: true
+package_upgrade: true
 write_files:
   - content: ${openstack_compute_keypair_v2.key.public_key}
     path: /home/ubuntu/.ssh/id_rsa.pub
@@ -64,6 +67,9 @@ write_files:
     path: /opt/manager-vars.sh
     permissions: '0644'
 runcmd:
+  - "chronyc -a makestep"
+  - "apt-get update"
+  - "touch /var/lib/apt/periodic/update-success-stamp"
   - "echo 'network: {config: disabled}' > /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg"
   - "chown -R ubuntu:ubuntu /home/ubuntu"
 final_message: "The system is finally up, after $UPTIME seconds"

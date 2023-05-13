@@ -24,9 +24,15 @@ network:
    config: disabled
 mounts:
   - [ ephemeral0, null ]
+ntp:
+  enabled: true
+  ntp_client: chrony
 package_update: true
 package_upgrade: true
 runcmd:
+  - "chronyc -a makestep"
+  - "apt-get update"
+  - "touch /var/lib/apt/periodic/update-success-stamp"
   - "echo 'network: {config: disabled}' > /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg"
 final_message: "The system is finally up, after $UPTIME seconds"
 EOT
