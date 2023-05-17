@@ -43,7 +43,7 @@ ntp:
   enabled: true
   ntp_client: chrony
 package_update: true
-package_upgrade: true
+package_upgrade: false
 write_files:
   - content: ${openstack_compute_keypair_v2.key.public_key}
     path: /home/ubuntu/.ssh/id_rsa.pub
