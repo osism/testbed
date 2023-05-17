@@ -1,4 +1,13 @@
 ---
+- name: Wait for cloud-init to finish
+  hosts: testbed-manager.testbed.osism.xyz
+  gather_facts: false
+
+  tasks:
+    # NOTE: https://github.com/hashicorp/packer/issues/2639
+    - name: Check /var/lib/cloud/instance/boot-finished
+      ansible.builtin.raw: timeout 180 /bin/bash -c 'until stat /var/lib/cloud/instance/boot-finished 2>/dev/null; do echo Wait for cloud-init to finish; sleep 1; done'
+
 - name: Run manager part 0
   hosts: testbed-manager.testbed.osism.xyz
   gather_facts: false
