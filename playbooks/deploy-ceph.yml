@@ -121,3 +121,13 @@
       ansible.builtin.shell:
         cmd: "ssh -i {{ terraform_path }}/.id_rsa.{{ cloud_env }} dragon@{{ manager_host }} /opt/configuration/scripts/check-ceph-services.sh"
       when: not manual_deploy | bool
+
+    - name: Update services
+      ansible.builtin.shell:
+        cmd: "ssh -i {{ terraform_path }}/.id_rsa.{{ cloud_env }} dragon@{{ manager_host }} /opt/configuration/scripts/upgrade-ceph-services.sh"
+      when: not manual_deploy | bool
+
+    - name: Check services after update
+      ansible.builtin.shell:
+        cmd: "ssh -i {{ terraform_path }}/.id_rsa.{{ cloud_env }} dragon@{{ manager_host }} /opt/configuration/scripts/check-ceph-services.sh"
+      when: not manual_deploy | bool
