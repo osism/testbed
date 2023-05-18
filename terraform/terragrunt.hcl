@@ -1,6 +1,7 @@
 retryable_errors = [
-    "(?s).*operation timed out.*",
-    "(?s).*The backend server is unreachable.*",
-    "(?s).*Quota exceeded for resources.*",
     "(?s).*Error waiting for instance.*",
+    "(?s).*Gateway Timeout.*",
+    "(?s).*Quota exceeded for resources.*",
+    "(?s).*The backend server is unreachable.*",
+    "(?s).*operation timed out.*",
 ]
