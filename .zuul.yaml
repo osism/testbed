@@ -130,16 +130,7 @@
     merge-mode: squash-merge
     check:
       jobs:
-        - ansible-lint
-        - yamllint
-        - flake8
         - testbed-deploy
-        - testbed-deploy-ceph
-        - testbed-deploy-stable
-        - testbed-update-stable
-        - testbed-upgrade
-        - testbed-upgrade-ceph
-        - testbed-upgrade-stable
     gate:
       jobs:
         - ansible-lint
