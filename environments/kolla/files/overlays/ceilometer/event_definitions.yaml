@@ -102,15 +102,11 @@
       fields: payload.size
     type:
       fields: payload.volume_type
-    replication_status:
-      fields: payload.replication_status
 - event_type: ['snapshot.transfer.accept.end']
   traits:
     <<: *cinder_traits
     resource_id:
       fields: payload.snapshot_id
-    project_id:
-      fields: payload.tenant_id
 - event_type: ['share.create.*', 'share.delete.*', 'share.extend.*', 'share.shrink.*']
   traits: &share_traits
     share_id:
