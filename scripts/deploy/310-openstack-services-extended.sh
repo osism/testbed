@@ -3,20 +3,20 @@ set -e
 
 export INTERACTIVE=false
 
-task_ids=$(osism apply --no-wait --format script gnocchi 2>&1)
-task_ids+=" "$(osism apply --no-wait --format script prometheus 2>&1)
+osism apply gnocchi
+osism apply prometheus
+osism apply ceilometer
+osism apply heat
+osism apply senlin
 
-osism wait --output --format script --delay 2 "$task_ids"
-
-task_ids=$(osism apply --no-wait --format script ceilometer2>&1)
-task_ids+=" "$(osism apply --no-wait --format script heat 2>&1)
-task_ids+=" "$(osism apply --no-wait --format script senlin 2>&1)
-
-MANAGER_VERSION=$(docker inspect --format '{{ index .Config.Labels "org.opencontainers.image.version"}}' osism-ansible)
+MANAGER_VERSION=$(docker inspect --format '{{ index .Config.Labels "org.opencontainers.image.version" }}' osism-ansible)
+OPENSTACK_VERSION=$(docker inspect --format '{{ index .Config.Labels "de.osism.release.openstack" }}' kolla-ansible)
 if [[ $MANAGER_VERSION =~ ^4\.[0-9]\.[0-9]$ ]]; then
     echo "Skip Skyline deployment before OSISM < 5.0.0"
+# NOTE: Check on Yoga is sufficient here as this is the last
+#       OpenStack release we support before Zed.
+elif [[ $OPENSTACK_VERSION == "yoga" ]]; then
+    echo "Skip Skyline deployment before OpenStack Zed"
 else
-    task_ids+=" "$(osism apply --no-wait --format script skyline 2>&1)
+    osism apply skyline
 fi
-
-osism wait --output --format script --delay 2 "$task_ids"

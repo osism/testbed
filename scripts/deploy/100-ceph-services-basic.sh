@@ -14,10 +14,8 @@ MANAGER_VERSION=$(docker inspect --format '{{ index .Config.Labels "org.opencont
 if [[ "$REFSTACK" == "false" ]]; then
     if [[ $MANAGER_VERSION =~ ^4\.[0-9]\.[0-9]$ ]]; then
         osism apply ceph-base
-        task_ids=$(osism apply --no-wait --format script ceph-mdss 2>&1)
-        task_ids+=" "$(osism apply --no-wait --format script ceph-rgws 2>&1)
-
-        osism wait --output --format script --delay 2 "$task_ids"
+        osism apply ceph-mdss
+        osism apply ceph-rgws
     else
         osism apply ceph -e enable_ceph_mds=true -e enable_ceph_rgw=true
     fi
