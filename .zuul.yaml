@@ -97,6 +97,33 @@
     run: playbooks/deploy-ceph.yml
 
 - job:
+    name: testbed-deploy-ceph-quincy
+    parent: testbed-deploy
+    vars:
+      ceph_version: quincy
+      ceph_image_version: 17.2.4
+      cephclient_version: 17.2.4
+    run: playbooks/deploy-ceph.yml
+
+- job:
+    name: testbed-update-ceph-quincy
+    parent: testbed-deploy-ceph-quincy
+    vars:
+      ceph_version: quincy
+      ceph_image_version: 17.2.6
+      cephclient_version: 17.2.6
+    run: playbooks/upgrade-ceph.yml
+
+- job:
+    name: testbed-upgrade-ceph-quincy
+    parent: testbed-deploy-ceph
+    vars:
+      ceph_version: quincy
+      ceph_image_version: 17.2.6
+      cephclient_version: 17.2.6
+    run: playbooks/upgrade-ceph.yml
+
+- job:
     name: testbed-deploy-cleura
     parent: testbed-deploy
     nodeset: testbed-orchestrator-cleura
