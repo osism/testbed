@@ -9,12 +9,7 @@
 
 :::
 
-Open a login shell on the manager via SSH:
-
-```sh
-   make ssh ENVIRONMENT=regiocloud
-   make login ENVIRONMENT=regiocloud  # this is just an alias for "make ssh"
-```
+Open a login shell on the manager via SSH.
 
 Copy the SSL certificate to the keycloak container
 
@@ -26,7 +21,7 @@ Add the new certificate to the Keycloak internal truststore
 
 ```sh
    docker exec -ti -u root keycloak bash
-   keytool -cacerts -import -alias traefik -file /traefik.pem -storepass "changeit" -noprompt
+   keytool -cacerts -import -alias remoteCertificate -file /certificate.pem -storepass "changeit" -noprompt
 ```
 
 After that, Keycloak will be able to resolve the new SSL certificate without any problem.
