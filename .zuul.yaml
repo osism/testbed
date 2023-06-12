@@ -82,8 +82,17 @@
     # be explictly bumped in the tenant configuration
     timeout: 16200
     vars:
-      manager_version: 5.0.0
-      manager_version_next: 5.1.0
+      manager_version: 5.1.0
+      # NOTE: Update to the rolling tag to always ensure that an update to
+      #       the next release will be possible.
+      manager_version_next: latest
+      # NOTE: Make sure that the Ceph and OpenStack version does not change
+      #       when we go to the latest tag of the manager. This can happen
+      #       if we have already switched to the next OpenStack release by
+      #       default in latest, for example. As long as we are still working
+      #       with the major releases this has to stay here.
+      openstack_version: zed
+      ceph_version: pacific
     nodeset: testbed-orchestrator
 
 - job:
