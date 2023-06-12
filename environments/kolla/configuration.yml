@@ -38,12 +38,6 @@ enable_skyline: "yes"
 openstack_service_workers: 2
 openstack_logging_debug: "True"
 
-# elasticsearch
-es_heap_size: "1g"
-
-elasticsearch_curator_soft_retention_period_days: 1
-elasticsearch_curator_hard_retention_period_days: 1
-
 # keystone
 enable_keystone_federation: "yes"
 keystone_oidc_forward_header: "X-Forwarded-Proto"
