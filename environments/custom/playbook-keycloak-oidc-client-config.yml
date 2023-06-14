@@ -75,7 +75,7 @@
             --set directAccessGrantsEnabled=true
             --set publicClient=true
             --set secret="{{ keystone_container_federation_oidc_client_secret }}"
-            --set 'attributes."pkce.code.challenge.method"="plain"'
+            --set 'attributes."pkce.code.challenge.method"="S256"'
       when: keystone_client_id not in available_clients
       run_once: true
       no_log: true
