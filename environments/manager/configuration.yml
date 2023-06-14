@@ -7,7 +7,7 @@ docker_registry_ansible: harbor.services.osism.tech
 ##########################
 # versions
 
-ceph_version: pacific
+ceph_version: quincy
 manager_version: latest
 openstack_version: zed
 

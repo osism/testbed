@@ -182,7 +182,7 @@ These are used for make internal functions and not supposed to be used by a user
 
 * Go to **/opt/configuration** on the manager node
 * Run **./scripts/set-openstack-version.sh zed** to set the OpenStack version to **zed**
-* Run **./scripts/set-ceph-version.sh pacific** to set the Ceph version to **pacific**
+* Run **./scripts/set-ceph-version.sh quincy** to set the Ceph version to **quincy**
 * Go to **/home/dragon** on the manager node
 * Run **ansible-playbook manager-part-2.yml** to update the manager
 

@@ -7,7 +7,7 @@ echo "# UPGRADE"
 echo
 
 export MANAGER_VERSION=${1:-latest}
-CEPH_VERSION=${2:-pacific}
+CEPH_VERSION=${2:-quincy}
 OPENSTACK_VERSION=${3:-zed}
 
 /opt/configuration/scripts/set-manager-version.sh $MANAGER_VERSION
