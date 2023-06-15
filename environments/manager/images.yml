@@ -13,7 +13,7 @@ mariadb_image: "{{ docker_registry }}/library/mariadb:{{ mariadb_tag }}"
 netbox_tag: "v3.4.8"
 netbox_image: "{{ docker_registry_netbox|default('quay.io') }}/osism/netbox:{{ netbox_tag }}"
 
-nginx_tag: "1.25.0-alpine"
+nginx_tag: "1.25.1-alpine"
 nginx_image: "{{ docker_registry }}/library/nginx:{{ nginx_tag }}"
 
 phpmyadmin_tag: "5.2.1"
@@ -21,6 +21,10 @@ phpmyadmin_image: "{{ docker_registry }}/phpmyadmin/phpmyadmin:{{ phpmyadmin_tag
 
 postgres_tag: "15.3-alpine"
 postgres_image: "{{ docker_registry }}/library/postgres:{{ postgres_tag }}"
+
+postgres_upgrade_tag: "14-to-15"
+postgres_upgrade_image: "{{ docker_registry }}/tianon/postgres-upgrade:{{ postgres_upgrade_tag }}"
+
 
 redis_tag: "7.0.11-alpine"
 redis_image: "{{ docker_registry }}/library/redis:{{ redis_tag }}"
