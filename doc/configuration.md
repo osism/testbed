@@ -5,7 +5,7 @@ The defaults for the environment variables are intended for Regio.cloud.
 **Variable**              |**Default**
 --------------------------|-----------
 availability_zone         |nova
-ceph_version              |pacific
+ceph_version              |quincy
 cloud_provider            |regiocloud
 configuration_version     |main
 flavor_manager            |SCS-4V-8-50

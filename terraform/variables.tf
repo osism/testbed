@@ -74,7 +74,7 @@ variable "configuration_version" {
 
 variable "ceph_version" {
   type    = string
-  default = "pacific"
+  default = "quincy"
 }
 
 variable "manager_version" {

@@ -15,7 +15,7 @@
     terraform_binary: "{{ ansible_user_dir }}/terragrunt"
     terraform_path: "{{ basepath }}/terraform"
 
-    version_ceph: "{{ ceph_version | default('pacific') }}"
+    version_ceph: "{{ ceph_version | default('quincy') }}"
     version_manager: "{{ manager_version | default('latest') }}"
     version_openstack: "{{ openstack_version | default('zed') }}"
 

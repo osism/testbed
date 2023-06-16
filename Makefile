@@ -1,6 +1,6 @@
 ENVIRONMENT ?= regiocloud
 
-VERSION_CEPH ?= pacific
+VERSION_CEPH ?= quincy
 VERSION_MANAGER ?= latest
 VERSION_OPENSTACK ?= zed
 

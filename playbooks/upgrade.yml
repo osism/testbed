@@ -17,7 +17,7 @@
 
     terraform_binary: "{{ ansible_user_dir }}/terragrunt"
 
-    version_ceph_next: "{{ ceph_version_next | default('pacific') }}"
+    version_ceph_next: "{{ ceph_version_next | default('quincy') }}"
     version_manager_next: "{{ manager_version_next | default('latest') }}"
     version_openstack_next: "{{ openstack_version_next | default('zed') }}"
 
