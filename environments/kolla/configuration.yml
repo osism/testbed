@@ -2,7 +2,7 @@
 ##########################################################
 # docker registry
 
-docker_registry_kolla: harbor.services.osism.tech
+docker_registry_kolla: osism.harbor.regio.digital
 docker_namespace: kolla
 
 ##########################################################

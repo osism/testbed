@@ -2,7 +2,8 @@
 ##########################
 # docker registry
 
-docker_registry_ansible: harbor.services.osism.tech
+docker_registry_ansible: osism.harbor.regio.digital
+docker_registry_netbox: osism.harbor.regio.digital
 
 ##########################
 # versions
