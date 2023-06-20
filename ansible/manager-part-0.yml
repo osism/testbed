@@ -32,27 +32,25 @@
 
     - name: Install packages on manager
       become: true
-      ansible.builtin.shell: |
-        export DEBIAN_FRONTEND=noninteractive
-        apt-get update
-        apt-get install --yes \
-          git-lfs \
-          python3-argcomplete \
-          python3-cryptography \
-          python3-dnspython \
-          python3-jmespath \
-          python3-kerberos \
-          python3-libcloud \
-          python3-lockfile \
-          python3-netaddr \
-          python3-netifaces \
-          python3-ntlm-auth \
-          python3-pip \
-          python3-requests-kerberos \
-          python3-requests-ntlm \
-          python3-selinux \
-          python3-winrm \
-          python3-xmltodict
+      ansible.builtin.apt:
+        name:
+          - python3-argcomplete
+          - python3-cryptography
+          - python3-dnspython
+          - python3-jmespath
+          - python3-kerberos
+          - python3-libcloud
+          - python3-lockfile
+          - python3-netaddr
+          - python3-netifaces
+          - python3-ntlm-auth
+          - python3-pip
+          - python3-requests-kerberos
+          - python3-requests-ntlm
+          - python3-selinux
+          - python3-winrm
+          - python3-xmltodict
+        update_cache: true
 
     - name: Remove existing Ansible package if necessary
       become: true
@@ -60,13 +58,10 @@
         name: ansible
         state: absent
 
-    # ansible-core >= 2.14.0 requires Python >= 3.9. This is not yet available on Ubuntu 20.04.
-    # Therefore, we use ansible-core >= 2.13.0 here to be able to test on Ubuntu 20.04 as well.
-    # This can be changed when we no longer support Ubuntu 20.04.
     - name: Install ansible-core on manager
       become: true
       ansible.builtin.command: |
-          pip3 install --no-cache-dir 'ansible-core>=2.13.0,<2.15.0'
+          pip3 install --no-cache-dir 'ansible-core>=2.14.0,<2.15.0'
 
     - name: Create source directories
       become: true
