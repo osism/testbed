@@ -11,7 +11,7 @@
     docker_configure_storage_driver: true
     docker_storage_driver: overlay2
     docker_user: dragon
-    docker_version: "5:20.10.24"
+    docker_version: "5:24.0.7"
 
     docker_compose_install_type: package
 
