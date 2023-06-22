@@ -1,6 +1,6 @@
 {
     "openstack": {
-        "auth_url": "http://api.testbed.osism.xyz:5000/v3",
+        "auth_url": "https://api.testbed.osism.xyz:5000/v3",
         "region_name": "RegionOne",
         "endpoint_type": "public",
         "admin": {
