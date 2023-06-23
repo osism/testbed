@@ -61,7 +61,7 @@
     - name: Install ansible-core on manager
       become: true
       ansible.builtin.command: |
-          pip3 install --no-cache-dir 'ansible-core>=2.14.0,<2.15.0'
+          pip3 install --no-cache-dir 'ansible-core>=2.15.0,<2.16.0'
 
     - name: Create source directories
       become: true
