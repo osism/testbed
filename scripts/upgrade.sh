@@ -35,6 +35,7 @@ popd
 # upgrade manager
 osism-update-manager
 docker compose --project-directory /opt/manager ps
+docker compose --project-directory /opt/netbox ps
 
 osism reconciler sync
 osism apply facts
