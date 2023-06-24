@@ -42,6 +42,8 @@ keycloak_traefik: true
 ##########################
 # netbox
 
+docker_registry_netbox: localhost:5000
+
 netbox_host: netbox.testbed.osism.xyz
 netbox_traefik: true
 netbox_plugins_extra:

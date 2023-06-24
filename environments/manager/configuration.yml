@@ -2,8 +2,8 @@
 ##########################
 # docker registry
 
-docker_registry_ansible: osism.harbor.regio.digital
-docker_registry_netbox: osism.harbor.regio.digital
+docker_registry_ansible: localhost:5000
+docker_registry_netbox: localhost:5000
 
 ##########################
 # versions

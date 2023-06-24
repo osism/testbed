@@ -1,5 +1,5 @@
 ---
-- name: Copy custom facts
+- name: Prepare the deployment of the manager services
   hosts: testbed-manager.testbed.osism.xyz
   connection: local
   gather_facts: false
@@ -9,7 +9,7 @@
     apt_lock_timeout: 300
 
   tasks:
-    - name: Install required packages
+    - name: Install python3-netifaces package
       become: true
       ansible.builtin.apt:
         name: python3-netifaces
@@ -34,6 +34,27 @@
         group: root
         mode: 0755
 
+    - name: Start registry container
+      community.docker.docker_container:
+        name: registry
+        image: "registry:2"
+        state: started
+        restart_policy: always
+        ports:
+          - "5000:5000"
+
+    - name: Install skopeo package
+      become: true
+      ansible.builtin.apt:
+        name: skopeo
+        state: present
+        lock_timeout: "{{ apt_lock_timeout }}"
+
+    - name: Run skopeo
+      ansible.builtin.command: >-
+        skopeo sync --dest-tls-verify=false --src yaml --dest docker /opt/configuration/contrib/skopeo/images-manager.yml localhost:5000/osism
+      changed_when: false
+
 - name: Apply role traefik & netbox
   hosts: testbed-manager.testbed.osism.xyz
   connection: local
@@ -41,7 +62,7 @@
 
   vars:
     ansible_python_interpreter: /usr/bin/python3
-    docker_registry_ansible: quay.io
+    docker_registry_netbox: localhost:5000
 
   vars_files:
     - /opt/configuration/inventory/group_vars/testbed-managers.yml
@@ -66,7 +87,7 @@
 
   vars:
     ansible_python_interpreter: /usr/bin/python3
-    docker_registry_ansible: quay.io
+    docker_registry_ansible: localhost:5000
     manager_service_restart: false
 
   vars_files:

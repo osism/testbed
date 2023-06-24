@@ -1,0 +1,19 @@
+---
+harbor.services.osism.tech:
+  images:
+    osism/ceph-ansible:
+      - quincy
+    osism/inventory-reconciler:
+      - latest
+    osism/kolla-ansible:
+      - zed
+    osism/osism-ansible:
+      - latest
+    osism/osism-netbox:
+      - latest
+    osism/osism:
+      - latest
+    osism/ara-server:
+      - 1.6.1
+    osism/netbox:
+      - v3.4.8
