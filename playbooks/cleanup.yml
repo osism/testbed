@@ -20,3 +20,4 @@
       ansible.builtin.shell:
         chdir: "{{ ansible_user_dir }}/src/github.com/osism/testbed/terraform"
         cmd: make ENVIRONMENT={{ cloud_env }} clean 2>&1
+      changed_when: true

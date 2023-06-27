@@ -7,6 +7,7 @@
     # NOTE: https://github.com/hashicorp/packer/issues/2639
     - name: Check /var/lib/cloud/instance/boot-finished
       ansible.builtin.raw: timeout 180 /bin/bash -c 'until stat /var/lib/cloud/instance/boot-finished 2>/dev/null; do echo Wait for cloud-init to finish; sleep 1; done'
+      changed_when: false
 
 - name: Run manager part 0
   hosts: testbed-manager.testbed.osism.xyz
@@ -24,11 +25,15 @@
         update_cache: true
         lock_timeout: "{{ apt_lock_timeout }}"
 
-    - name: Set APT options on manager  # noqa risky-shell-pipe
+    - name: Set APT options on manager
       become: true
       ansible.builtin.shell: |
-        echo "APT::Acquire::Retries \"3\";" > /etc/apt/apt.conf.d/80-retries
+        set -o pipefail &&
+        echo 'APT::Acquire::Retries "3";' > /etc/apt/apt.conf.d/80-retries
         echo '* libraries/restart-without-asking boolean true' | debconf-set-selections
+      args:
+        executable: /bin/bash
+      changed_when: true
 
     - name: Install packages on manager
       become: true
@@ -51,6 +56,7 @@
           - python3-winrm
           - python3-xmltodict
         update_cache: true
+      changed_when: true
 
     - name: Remove existing Ansible package if necessary
       become: true
@@ -62,6 +68,7 @@
       become: true
       ansible.builtin.command: |
           pip3 install --no-cache-dir 'ansible-core>=2.15.0,<2.16.0'
+      changed_when: true
 
     - name: Create source directories
       become: true
@@ -100,6 +107,7 @@
           ansible-galaxy collection install --collections-path /usr/share/ansible/collections /opt/src/osism/ansible-collection-commons
           ansible-galaxy collection install --collections-path /usr/share/ansible/collections /opt/src/osism/ansible-collection-services
           chmod -R +r /usr/share/ansible
+      changed_when: true
 
 - name: Create operator user
   hosts: testbed-manager.testbed.osism.xyz

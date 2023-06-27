@@ -47,6 +47,7 @@
             --set enabled=true
       when: keycloak_realm not in available_realms
       run_once: true
+      changed_when: true
 
     - name: Get available clients in realm
       ansible.builtin.command: >-
@@ -79,6 +80,7 @@
       when: keystone_client_id not in available_clients
       run_once: true
       no_log: true
+      changed_when: true
 
     - name: "Get internal ID for client {{ keystone_client_id }}"
       ansible.builtin.command: >-
@@ -132,6 +134,7 @@
         - "openstack-user-domain"
         - "openstack-default-project"
       run_once: true
+      changed_when: true
 
     - name: Get available components in realm
       ansible.builtin.command: >-
@@ -165,6 +168,7 @@
       when: keycloak_key_provider_component_name not in available_components
       run_once: true
       no_log: true
+      changed_when: true
 
     - name: Get available users in realm
       ansible.builtin.command: >-
@@ -190,6 +194,7 @@
             --set enabled=true
             --set "attributes.openstack-default-project=test"
       when: "'alice' not in available_users"
+      changed_when: true
 
     - name: Set password of sample user
       ansible.builtin.command: >-
@@ -198,3 +203,4 @@
             --username=alice
             --new-password=password
       when: "'alice' not in available_users"
+      changed_when: true

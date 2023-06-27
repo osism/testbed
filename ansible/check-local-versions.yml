@@ -10,10 +10,12 @@
         msg: "Ansible core version is {{ ansible_version.full }}, see https://docs.scs.community/docs/testbed/doc/quickstart for required version."
       when: ansible_version.full < "2.13.0"
 
-    - name: Get terraform version  # noqa risky-shell-pipe
-      ansible.builtin.shell:
+    - name: Get terraform version
+      ansible.builtin.shell: >-
+        set -o pipefail &&
         terraform --version | head -n1  | awk '{print $2}' | awk -Fv '{print $2}'
       register: result
+      changed_when: false
 
     - name: Fail if terraform version is lower than 1.2.0
       ansible.builtin.fail:

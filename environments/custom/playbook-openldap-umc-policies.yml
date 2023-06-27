@@ -37,3 +37,4 @@
         executable: /usr/bin/bash
       when: umc_policies not in available_umc_policies
       run_once: true
+      changed_when: true

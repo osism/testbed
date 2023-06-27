@@ -42,6 +42,7 @@
         executable: /usr/bin/bash
       when: umc_ldap_binddn not in available_users
       run_once: true
+      changed_when: true
 
     - name: Add the UMC Admin to the Domain Admins group
       ansible.builtin.shell: >-
@@ -56,3 +57,4 @@
         executable: /usr/bin/bash
       when: umc_ldap_binddn not in available_users
       run_once: true
+      changed_when: true
