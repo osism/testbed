@@ -38,15 +38,18 @@
       ansible.builtin.command:
         chdir: "{{ terraform_path }}"
         cmd: make ENVIRONMENT={{ cloud_env }} VERSION_MANAGER={{ version_manager_next }} VERSION_CEPH={{ version_ceph_next }} VERSION_OPENSTACK={{ version_openstack_next }} upgrade
+      changed_when: true
 
     - name: Bootstrap services
-      ansible.builtin.shell:
+      ansible.builtin.command:
         chdir: "{{ terraform_path }}"
         cmd: make ENVIRONMENT={{ cloud_env }} bootstrap
       when: run_bootstrap | bool
+      changed_when: true
 
     - name: Run checks after the upgrade
       ansible.builtin.command:
         chdir: "{{ terraform_path }}"
         cmd: make ENVIRONMENT={{ cloud_env }} check
       when: run_checks | bool
+      changed_when: true

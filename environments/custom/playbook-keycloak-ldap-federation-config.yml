@@ -53,7 +53,7 @@
             --set enabled=true
       when: keycloak_realm not in available_realms
       run_once: true
-
+      changed_when: true
 
     - name: Get available components in realm
       ansible.builtin.command: >-
@@ -65,12 +65,10 @@
       changed_when: false
       run_once: true
 
-
     - name: Filter available components in realm
       ansible.builtin.set_fact:
         available_components: "{{ available_components_json.stdout | from_json | map(attribute='name') | list }}"
       run_once: true
-
 
     - name: Add LDAP user storage provider component to realm
       ansible.builtin.command: >-
@@ -113,7 +111,7 @@
       when: keycloak_ldap_storage_provider_component_name not in available_components
       run_once: true
       no_log: true
-
+      changed_when: true
 
     - name: Get LDAP provider id
       ansible.builtin.command: >-
@@ -125,12 +123,10 @@
       changed_when: false
       run_once: true
 
-
     - name: Filter LDAP provider id
       ansible.builtin.set_fact:
         ldap_provider_id: "{{ ldap_provider_id_json.stdout | from_json | map(attribute='id') }}"
       run_once: true
-
 
     - name: Get "first name" LDAP mapper id
       ansible.builtin.command: >-
@@ -146,12 +142,10 @@
       changed_when: false
       run_once: true
 
-
     - name: Filter "first name" LDAP mapper id
       ansible.builtin.set_fact:
         first_name_mapper_id: "{{ first_name_mapper_id_json.stdout }}"
       run_once: true
-
 
     # Map LDAP attribute givenName to user.model.attribute "firstName"
     - name: Add first name mapper to LDAP storage provider
@@ -164,7 +158,6 @@
             --set 'config."is.mandatory.in.ldap"=["false"]'
       changed_when: false
       run_once: true
-
 
     - name: Get e-mail LDAP mapper id
       ansible.builtin.command: >-
@@ -180,12 +173,10 @@
       changed_when: false
       run_once: true
 
-
     - name: Filter e-mail LDAP mapper id
       ansible.builtin.set_fact:
         email_mapper_id: "{{ email_mapper_id_json.stdout }}"
       run_once: true
-
 
     # Map LDAP attribute mailPrimaryAddress to user.model.attribute "email"
     - name: Add e-mail mapper to LDAP storage provider
@@ -197,7 +188,6 @@
             --set 'config."ldap.attribute"=["mailPrimaryAddress"]'
       changed_when: false
       run_once: true
-
 
     # Check if openstack-default-project mapper exists
     - name: Get the openstack-default-project mapper ID
@@ -213,7 +203,6 @@
       register: project_mapper_id_json
       changed_when: false
       run_once: true
-
 
     - name: Filter openstack-default-project mapper ID
       ansible.builtin.set_fact:
@@ -234,7 +223,7 @@
             --set 'config."attribute.value"=["admin"]'
       when: not project_mapper_id
       run_once: true
-
+      changed_when: true
 
     # Check if openstack-user-domain mapper exists
     - name: Get the openstack-user-domain mapper ID
@@ -250,7 +239,6 @@
       register: domain_mapper_id_json
       changed_when: false
       run_once: true
-
 
     - name: Filter openstack-user-domain mapper ID
       ansible.builtin.set_fact:
@@ -271,6 +259,7 @@
             --set 'config."attribute.value"=["default"]'
       when: not domain_mapper_id
       run_once: true
+      changed_when: true
 
     - name: Get Keycloak's LDAP user
       ansible.builtin.command: >-
@@ -291,7 +280,6 @@
               | list }}"
       run_once: true
 
-
     # Provision the LDAP user which will be used by Keycloak
     # If it doesn't exist yet
     - name: Add Keycloak's LDAP user
@@ -304,3 +292,4 @@
         executable: /usr/bin/bash
       when: ldap_binddn not in available_users
       run_once: true
+      changed_when: true

@@ -46,14 +46,16 @@
       ansible.builtin.shell: |
           pip3 install --no-cache-dir python-gilt
       when: version_manager != "latest"
+      changed_when: true
 
     # shell required because of: command module does not accept
     # setting environment variables inline.
-    - name: Sync testbed repo with generics  # noqa command-instead-of-shell
+    - name: Sync testbed repo with generics  # noqa: command-instead-of-shell
       ansible.builtin.shell:
         chdir: /opt/configuration
         cmd: MANAGER_VERSION={{ version_manager }} gilt overlay
       when: version_manager != "latest"
+      changed_when: true
 
     - name: Copy testbed crt
       become: true
@@ -66,6 +68,8 @@
     - name: Run update-ca-certificates
       become: true
       ansible.builtin.command: update-ca-certificates
+      changed_when: true
 
     - name: Run manager part 2
       ansible.builtin.command: ansible-playbook -i testbed-manager.testbed.osism.xyz, /opt/configuration/ansible/manager-part-2.yml
+      changed_when: true
