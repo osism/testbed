@@ -20,6 +20,7 @@ resource "openstack_blockstorage_volume_v3" "manager_base_volume" {
   name              = "${var.prefix}-volume-manager-base"
   size              = var.volume_size_base
   availability_zone = var.volume_availability_zone
+  volume_type       = var.volume_type
 }
 
 resource "openstack_compute_instance_v2" "manager_server" {

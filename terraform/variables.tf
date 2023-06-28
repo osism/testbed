@@ -27,6 +27,11 @@ variable "volume_size_storage" {
   default = 10
 }
 
+variable "volume_type" {
+  type    = string
+  default = "__DEFAULT__"
+}
+
 variable "flavor_node" {
   type    = string
   default = "SCS-8V:32:50"
@@ -35,11 +40,6 @@ variable "flavor_node" {
 variable "flavor_manager" {
   type    = string
   default = "SCS-4V:8:50"
-}
-
-variable "volume_type" {
-  type    = string
-  default = "__DEFAULT__"
 }
 
 variable "availability_zone" {
