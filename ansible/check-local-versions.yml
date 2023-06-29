@@ -16,6 +16,8 @@
         terraform --version | head -n1  | awk '{print $2}' | awk -Fv '{print $2}'
       register: result
       changed_when: false
+      args:
+        executable: /bin/bash
 
     - name: Fail if terraform version is lower than 1.2.0
       ansible.builtin.fail:
