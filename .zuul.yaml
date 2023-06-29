@@ -168,6 +168,7 @@
         - testbed-deploy-pco
         - testbed-deploy-stable
         - testbed-deploy-wavestack
+        - testbed-update-stable
         - testbed-upgrade
         - testbed-upgrade-cleura
         - testbed-upgrade-pco
