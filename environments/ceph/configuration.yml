@@ -2,7 +2,7 @@
 ##########################
 # docker registry
 
-ceph_docker_registry: harbor.services.osism.tech
+ceph_docker_registry: osism.harbor.regio.digital
 
 ##########################
 # generic
