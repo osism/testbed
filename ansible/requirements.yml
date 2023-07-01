@@ -1,0 +1,21 @@
+# Mirrored content on Pulp can be viewed and extended in the following
+# repository: https://github.com/osism/sbom/tree/main/mirrors/pulp
+#
+# The used account is only assigned viewer rights and we use this to
+# provide access not completely public.
+---
+roles: []
+
+collections:
+  - name: ansible.netcommon
+    source: http://osism.pulp.regio.digital:8080/pulp_ansible/galaxy/mirror/
+    username: mirror
+    password: Ahphee6a
+  - name: ansible.posix
+    source: http://osism.pulp.regio.digital:8080/pulp_ansible/galaxy/mirror/
+    username: mirror
+    password: Ahphee6a
+  - name: community.docker
+    source: http://osism.pulp.regio.digital:8080/pulp_ansible/galaxy/mirror/
+    username: mirror
+    password: Ahphee6a

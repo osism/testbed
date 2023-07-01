@@ -101,9 +101,7 @@
     - name: Install collections
       become: true
       ansible.builtin.shell: |
-          ansible-galaxy collection install --collections-path /usr/share/ansible/collections ansible.netcommon
-          ansible-galaxy collection install --collections-path /usr/share/ansible/collections ansible.posix
-          ansible-galaxy collection install --collections-path /usr/share/ansible/collections community.docker
+          ansible-galaxy collection install --collections-path /usr/share/ansible/collections -r {{ repo_path }}/osism/testbed/ansible/requirements.yml
           ansible-galaxy collection install --collections-path /usr/share/ansible/collections /opt/src/osism/ansible-collection-commons
           ansible-galaxy collection install --collections-path /usr/share/ansible/collections /opt/src/osism/ansible-collection-services
           chmod -R +r /usr/share/ansible
