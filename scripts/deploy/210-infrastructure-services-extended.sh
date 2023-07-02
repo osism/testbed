@@ -4,7 +4,6 @@ set -e
 export INTERACTIVE=false
 
 osism apply patchman
-osism apply nexus
 
 osism apply patchman-client -- -e patchman_client_update_force=true
 
