@@ -49,13 +49,6 @@ netbox_plugins_extra:
   - netbox_dns
 
 ##########################
-# nexus
-
-nexus_host: "{{ hostvars[inventory_hostname]['ansible_' + internal_interface]['ipv4']['address'] }}"
-nexus_traefik_host: nexus.testbed.osism.xyz
-nexus_traefik: true
-
-##########################
 # patchman
 
 patchman_host: patchman.testbed.osism.xyz
