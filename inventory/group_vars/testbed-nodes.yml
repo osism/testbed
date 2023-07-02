@@ -17,6 +17,17 @@ netbox_inventory_tags:
 
 docker_network_mtu: "{{ testbed_mtu_node }}"
 
+docker_configure_proxy: true
+docker_proxy_http: "http://{{ groups['manager'][0] }}:3128"
+docker_proxy_https: "{{ docker_proxy_http }}"
+
+##########################################################
+# proxy
+
+proxy_proxies:
+  http: "http://{{ groups['manager'][0] }}:3128"
+  https: "http://{{ groups['manager'][0] }}:3128"
+
 ##########################################################
 # generic
 

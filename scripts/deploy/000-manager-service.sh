@@ -62,3 +62,5 @@ osism netbox disable --no-wait testbed-switch-2
 
 osism apply sshconfig
 osism apply known-hosts
+
+osism apply squid
