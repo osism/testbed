@@ -19,12 +19,10 @@ The testbed requires the following virtual resources when using the default flav
 
 :::note
 
->**note:** If the cloud you are using does not offer a block storage service (Cinder), you can work with Ephemeral
->Volumes from the compute service (Nova).
+> If the cloud you are using does not offer a block storage service (Cinder), you can work with ephemeral
+> volumes from the compute service (Nova).
 
 :::
-
-### For an environment on physical hardware
 
 ### For an environment on a hypervisor
 
@@ -41,7 +39,7 @@ a fully internal network.
 * 3 virtual systems which are used as control, compute and, storage nodes (8 VCPUs, 32 GByte memory)
   * 3 additional volumes per virtual system with at least 10 GByte storage each
 
-Ubuntu 20.04 is to be used as the base image for the virtual systems.
+Ubuntu 22.04 is to be used as the base image for the virtual systems.
 
 ## Software
 
@@ -77,8 +75,8 @@ git clone https://github.com/osism/testbed ~/src/github.com/osism/testbed
 
 :::note
 
->**note:** The repository can also be cloned to any other location. The path to this repository is set via the
->parameter **basepath**.
+> The repository can also be cloned to any other location. The path to this repository is set via the
+> parameter **basepath**.
 
 :::
 
@@ -86,7 +84,7 @@ git clone https://github.com/osism/testbed ~/src/github.com/osism/testbed
 
 :::note
 
->**note:** The necessary files are located in the **terraform** directory.
+> The necessary files are located in the **terraform** directory.
 
 :::
 
@@ -103,8 +101,6 @@ export ENVIRONMENT=regiocloud
 
 :::note
 
->**note:**
->
 > * The credentials are stored in **clouds.yaml** and **secure.yaml** with the name **regiocloud**.
 
 :::
@@ -113,8 +109,6 @@ export ENVIRONMENT=regiocloud
 
 :::note
 
->**note:**
->
 > * The credentials are stored in **clouds.yaml** and **secure.yaml** with the name **cleura**.
 > * Registration is possible at the following URL: <https://cleura.cloud/login>
 
@@ -124,8 +118,6 @@ export ENVIRONMENT=regiocloud
 
 :::note
 
->**note:**
->
 > * The credentials are stored in **clouds.yaml** and **secure.yaml** with the name **ovh**.
 > * Registration is possible at the following URL: <https://www.ovhcloud.com/en/>
 > * The public L3 network services at OVH are currently still in beta. For more details, please visit
@@ -138,8 +130,6 @@ export ENVIRONMENT=regiocloud
 
 :::note
 
->**note:**
->
 > * The credentials are stored in **clouds.yaml** and **secure.yaml** with the name **pluscloudopen**.
 > * To use pluscloud open, you can call +49 2203 1045 3500, send an email to beratung@plusserver.com or arrange a call back
 > <https://www.plusserver.com/produkte/pluscloud-open>
@@ -150,8 +140,6 @@ export ENVIRONMENT=regiocloud
 
 :::note
 
->**note:**
->
 > * Registration is possible at the following URL: <https://www.websso.t-systems.com/eshop/agb/de/public/configcart/show>
 
 :::
@@ -160,8 +148,6 @@ export ENVIRONMENT=regiocloud
 
 :::note
 
->**note:**
->
 > * The credentials are stored in **clouds.yaml** and **secure.yaml** with the name **gx-scs**.
 
 :::
@@ -170,8 +156,6 @@ export ENVIRONMENT=regiocloud
 
 :::note
 
->**note:**
->
 > * The credentials are stored in **clouds.yaml** and **secure.yaml** with the name **wavestack**.
 
 :::
@@ -180,8 +164,6 @@ export ENVIRONMENT=regiocloud
 
 :::note
 
->**note:**
->
 > * The credentials are stored in **clouds.yaml** and **secure.yaml** with the name **fuga**.
 > * Per project, 50 GBytes of memory are available by default. Therefore, the flavor **t3.small** is used by default. If you have
 > increased the quota via support it is better to use the flavor **t3.medium** for the nodes.
@@ -205,8 +187,6 @@ export ENVIRONMENT=regiocloud
 
 :::note
 
->**note:**
->
 > * Registration is possible via https://www.huaweicloud.com/eu/
 > * The credentials are stored in **clouds.yaml** and **secure.yaml** with the name **huaweicloud**.
 > * Credential details can be taken from the "MyCredentials" option in the admin console: <https://console.eu.huaweicloud.com/iam>.
@@ -227,6 +207,30 @@ export ENVIRONMENT=regiocloud
 >       regions:
 >         - name: Dublin
 
-
-
 :::
+
+## Use of Application Credentials
+
+The use of application credentials is preferred. This way it is not necessary to store
+details like username or project name or sensitive information like the password in the
+**clouds.yaml** file.
+
+The application credentials can be found in Horizon under **Identity**.
+
+![Create Application Credential in Horizon](./images/horizon-create-application-credential.png)
+
+The **clouds.yaml** file of Fuga Cloud can be used as an example for the use of
+application credentials. The **auth_url** is adapted accordingly.
+
+> ```yaml
+> ---
+> clouds:
+>   fuga:
+>     auth:
+>       auth_url: https://core.fuga.cloud:5000/v3
+>       application_credential_id: "ID"
+>       application_credential_secret: "SECRET"
+>     interface: public
+>     identity_api_version: 3
+>     auth_type: "v3applicationcredential"
+> ```
