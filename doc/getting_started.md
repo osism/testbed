@@ -1,86 +1,96 @@
 # Getting Started
 
-Before you follow this guide, please be aware to do all steps from the [preparation guideline](./preparations.md).
+The **Getting Started** chapter describes step by step how to install the testbed.
 
-:::note
+The prerequisite is to have an account on one of the supported OpenStack cloud providers.
+Deploying on other OpenStack clouds should be possible, but you may need to adapt some
+settings, like flavor and image names.
 
-> With activated deployment of OpenStack only basic services (Compute, Storage, ..) are provided. Extended OpenStack
-> services (Telemetry, Loadbalancer, Kubernetes, ..) and additional OpenStack services (Rating, Container, ..) can be added
-> manually via scripts after deployment is complete.
+It is not part of this quick start to describe the registration with the individual cloud
+providers. Please contact the respective cloud provider for this.
 
-:::
+Product          | Provider      | Profile name
+-----------------|---------------|--------------
+REGIO.cloud      | OSISM         | **regiocloud**
+Cleura           | Cleura        | **cleura**
+Fuga Cloud       | FUGA          | **fuga**
+OVH              | OVH           | **ovh**
+OpenTelekomCloud | T-Systems     | **otc**
+Wavestack        | noris network | **wavestack**
+pluscloud open   | plusserver    | **pluscloudopen**
+HuaweiCloud      | HuaweiCloud   | **huaweicloud**
 
-Deployment is controlled via Ansible with the **deploy.yml** playbook.
+Terraform must be installed and usable. Information on installing Terraform can be found in the [Terraform documentation](https://learn.hashicorp.com/tutorials/terraform/install-cli)
+Currently Terraform **>= 1.2.0** is supported.
 
-The following command is executed from the **testbed** repository directory. It creates the necessary infrastructure using
-Terraform and then deploys all services using Ansible.
+Ansible must be installed and usable. Information on installing Ansible can be found in the [Ansible documentation](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html).
+Currently Ansible **>=6.0.0** is supported.
 
-```sh
-ansible-playbook playbooks/deploy.yml \
-   -i ansible/localhost_inventory.yaml \
-   -e cloud_env=$ENVIRONMENT \
-   -e ansible_galaxy=ansible-galaxy \
-   -e ansible_playbook=ansible-playbook
-```
+Furthermore, **make** and **git** must be usable. These are mostly already usable. If not, please install them with the package
+manager of the operating system you are using.
 
-The **Run part 3** task takes some time to complete, depending on the cloud. Run times of
-60-80 minutes are not unusual. Don't get impatient and have a coffee in the meantime.
-
-:::note
-
-> * Path to the **ansible-galaxy** binary or the **ansible-playbook** only needs to be adjusted if the binaries are not
->findable via **PATH**.
->
-> * Add **-e manual_deploy=true** if only the necessary infrastructure should be created. Other services such as OpenStack
-> or Ceph are then not deployed and can be added manually afterwards.
->
-> * If the testbed repository was not cloned to the default location (**~/src/github.com/osism/testbed**) the path must be set
-> accordingly via the **basepath** parameter.
->
-> * If the ansible collection repositories were not cloned to the default location (**~/src/github.com/osism**) the path must
-> be set accordingly via the **repo_path** parameter.
-
-:::
-
-## Customise versions
-
-By default, the latest manager service, Ceph Pacific and OpenStack Yoga are deployed. This can be customised via the parameters
-**version_ceph**, **version_manager**, and **version_openstack**.
-
-### Changing the Ceph or OpenStack release
-
-Deploy OpenStack in the **xena** version:
+The first step is to clone the **osism/testbed** repository.
 
 ```sh
--e version_openstack=xena
-```
-
-Deploy Ceph in the **quincy** version:
-
-```sh
--e version_ceph=quincy
-```
-
-### Deploying a stable OSISM release
-
-Deploy the stable release **4.0.0**:
-
-```sh
--e version_manager=4.0.0
+git clone https://github.com/osism/testbed.git
+cd testbed
 ```
 
 :::note
 
-> If a specific version of the manager and thus OSISM itself, a so-called stable release, is deployed, the explicit
-> specification of the Ceph version and the OpenStack version is not possible. The versions of Ceph and OpenStack are then
-> determined from the stable release of OSISM. For OSISM version 4.0.0, for example, this is Ceph Pacific and OpenStack Yoga.
+> In the following, OpenTelekomCloud is used as an example. The cloud name in **clouds.yaml** and the environment name
+> (value of **ENVIRONMENT**) are **otc** in this case. If another cloud is used, replace **otc** with the respective profile name
+> from the table above.
 
 :::
 
-Please notice:
+The access data for the cloud provider used is then stored in **terraform/clouds.yaml**.
+The **clouds.yaml** file is provided by the cloud provider used. Please check the documentation of the cloud provider you are
+using or their support for details.
 
-:::warning
+```yaml
+:caption: ``terraform/clouds.yaml`` sample for OpenTelekomCloud
 
-> Do not set **-e version_openstack** and **-e version_ceph** when deploying a stable release.
+clouds:
+  otc:
+    auth:
+      auth_url: https://iam.eu-de.otc.t-systems.com:443/v3
+      project_name: eu-de
+      user_domain_name: OTC-EU-DE-00000000000000000000
+      domain_name: OTC-EU-DE-00000000000000000000
+      username: USERNAME
+      password: PASSWORD
+    interface: public
+    identity_api_version: 3
+```
 
-:::
+Then everything necessary for the installation is prepared.
+
+```sh
+make prepare
+```
+
+Next, the necessary infrastructure is created with the help of Terraform.
+
+```sh
+make ENVIRONMENT=otc create
+```
+
+Finally, OSISM is installed on the previously created infrastructure. Depending on the cloud, the installation will take some
+time. Up to two hours is not unusual.
+
+```sh
+make ENVIRONMENT=otc deploy
+```
+
+After the installation, you can log in to the manager via SSH.
+
+```sh
+make ENVIRONMENT=otc login
+```
+
+When the testbed is no longer needed, it can be deleted.
+
+```sh
+make ENVIRONMENT=otc clean
+```
