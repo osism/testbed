@@ -9,16 +9,16 @@
 
 :::note
 
-> Note that terraform only supports public cloud profiles if a file named **clouds-public.yaml** exists in one of the standard
-> locations and contains the matching definition. The embedded well-known profiles that are available in the python openstack
-> client do not work.
+Note that terraform only supports public cloud profiles if a file named **clouds-public.yaml**
+exists in one of the standard locations and contains the matching definition. The embedded
+well-known profiles that are available in the python openstack client do not work.
 <!---TODO: Publish a clouds-public.yaml file for Betacloud (or all public clouds) and link it here.-->
 
 :::
 
 :::warning
 
-> The file extension **yaml** is important!
+The file extension **yaml** is important!
 
 :::
 

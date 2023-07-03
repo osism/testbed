@@ -4,7 +4,7 @@
 
 :::note
 
-> The following commands are executed from the **testbed/terraform** repository directory.
+The following commands are executed from the **testbed/terraform** repository directory.
 
 :::
 
@@ -29,8 +29,8 @@ make ssh ENVIRONMENT=regiocloud
 make login ENVIRONMENT=regiocloud  # this is just an alias for "make ssh"
 ```
 
-Create a tunnel for the internal networks (**192.168.16.0/20**,  **192.168.112.0/20**) via sshuttle
-<https://github.com/sshuttle/sshuttle>:
+Create a tunnel for the internal networks (**192.168.16.0/20**,  **192.168.112.0/20**) via
+sshuttle <https://github.com/sshuttle/sshuttle>:
 
 ```sh
 make sshuttle ENVIRONMENT=regiocloud
@@ -282,10 +282,11 @@ Simply re-run the scripts listed in [Udate services](#update-services).
 
 :::note
 
-> When upgrading from a rolling release (**latest**, **xena**, ..) to a stable release (**3.2.0**, **4.0.0**, ..), it is important
-> to remove the parameters **ceph_version** and **openstack_version** from  **environments/manager/configuration.yml**. For a
-> stable release, the versions of Ceph and OpenStack to use are set by the version of the stable release (set via the
-> **manager_version** parameter) and not by release names.
+When upgrading from a rolling release (**latest**, **xena**, ..) to a stable release
+(**3.2.0**, **4.0.0**, ..), it is important to remove the parameters **ceph_version**
+and **openstack_version** from  **environments/manager/configuration.yml**. For a stable
+release, the versions of Ceph and OpenStack to use are set by the version of the stable
+release (set via the **manager_version** parameter) and not by release names.
 
 :::
 
@@ -325,8 +326,8 @@ Some services like phpMyAdmin or OpenStackClient will still run afterwards.
 
 :::note
 
-> All SSL enabled services within the testbed use certs which are signed by the self-signed
-> [OSISM Testbed CA](https://raw.githubusercontent.com/osism/testbed/main/environments/kolla/certificates/ca/testbed.crt)
+All SSL enabled services within the testbed use certs which are signed by the self-signed
+[OSISM Testbed CA](https://raw.githubusercontent.com/osism/testbed/main/environments/kolla/certificates/ca/testbed.crt)
 
 :::
 
@@ -351,19 +352,22 @@ RabbitMQ               | <https://api-int.testbed.osism.xyz:15672/>        | ope
 
 :::note
 
-> To access the webinterfaces, make sure that you have a tunnel up and running for the internal networks.
->
-> ```sh
-> make sshuttle ENVIRONMENT=regiocloud
-> ```
+To access the webinterfaces, make sure that you have a tunnel up and running for the
+internal networks.
+
+```sh
+make sshuttle ENVIRONMENT=regiocloud
+```
 
 :::
 
 :::note
 
-> If only the identity services were deployed, an error message (**You are not authorized to access this page**)
-> appears after logging in to Horizon. This is not critical and results from the absence of the Nova service.
-> ![horizon-login-identity-testbed](./images/horizon-login-identity-testbed.png)
+If only the identity services were deployed, an error message (**You are not authorized to
+access this page**) appears after logging in to Horizon. This is not critical and results
+from the absence of the Nova service.
+
+![horizon-login-identity-testbed](./images/horizon-login-identity-testbed.png)
 
 :::
 
