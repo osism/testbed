@@ -1,5 +1,0 @@
-Sphinx
-sphinx-material
-sphinx_fontawesome
-sphinxcontrib-blockdiag
-sphinxcontrib-nwdiag
