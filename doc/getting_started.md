@@ -4,9 +4,9 @@ Before you follow this guide, please be aware to do all steps from the [preparat
 
 :::note
 
->**note:** With activated deployment of OpenStack only basic services (Compute, Storage, ..) are provided. Extended OpenStack
->services (Telemetry, Loadbalancer, Kubernetes, ..) and additional OpenStack services (Rating, Container, ..) can be added
->manually via scripts after deployment is complete.
+> With activated deployment of OpenStack only basic services (Compute, Storage, ..) are provided. Extended OpenStack
+> services (Telemetry, Loadbalancer, Kubernetes, ..) and additional OpenStack services (Rating, Container, ..) can be added
+> manually via scripts after deployment is complete.
 
 :::
 
@@ -28,19 +28,17 @@ The **Run part 3** task takes some time to complete, depending on the cloud. Run
 
 :::note
 
->**note:**
->
 > * Path to the **ansible-galaxy** binary or the **ansible-playbook** only needs to be adjusted if the binaries are not
 >findable via **PATH**.
 >
->* Add **-e manual_deploy=true** if only the necessary infrastructure should be created. Other services such as OpenStack
->or Ceph are then not deployed and can be added manually afterwards.
+> * Add **-e manual_deploy=true** if only the necessary infrastructure should be created. Other services such as OpenStack
+> or Ceph are then not deployed and can be added manually afterwards.
 >
->* If the testbed repository was not cloned to the default location (**~/src/github.com/osism/testbed**) the path must be set
->accordingly via the **basepath** parameter.
+> * If the testbed repository was not cloned to the default location (**~/src/github.com/osism/testbed**) the path must be set
+> accordingly via the **basepath** parameter.
 >
->* If the ansible collection repositories were not cloned to the default location (**~/src/github.com/osism**) the path must
->be set accordingly via the **repo_path** parameter.
+> * If the ansible collection repositories were not cloned to the default location (**~/src/github.com/osism**) the path must
+> be set accordingly via the **repo_path** parameter.
 
 :::
 
@@ -68,14 +66,14 @@ Deploy Ceph in the **quincy** version:
 Deploy the stable release **4.0.0**:
 
 ```sh
-   -e version_manager=4.0.0
+-e version_manager=4.0.0
 ```
 
 :::note
 
->**note:** If a specific version of the manager and thus OSISM itself, a so-called stable release, is deployed, the explicit
->specification of the Ceph version and the OpenStack version is not possible. The versions of Ceph and OpenStack are then
->determined from the stable release of OSISM. For OSISM version 4.0.0, for example, this is Ceph Pacific and OpenStack Yoga.
+> If a specific version of the manager and thus OSISM itself, a so-called stable release, is deployed, the explicit
+> specification of the Ceph version and the OpenStack version is not possible. The versions of Ceph and OpenStack are then
+> determined from the stable release of OSISM. For OSISM version 4.0.0, for example, this is Ceph Pacific and OpenStack Yoga.
 
 :::
 
@@ -83,7 +81,6 @@ Please notice:
 
 :::warning
 
->**warning:**
->Do not set **-e version_openstack** and **-e version_ceph** when deploying a stable release.
+> Do not set **-e version_openstack** and **-e version_ceph** when deploying a stable release.
 
 :::

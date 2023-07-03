@@ -4,63 +4,62 @@
 
 :::note
 
->**note:**
->The following commands are executed from the **testbed/terraform** repository directory.
+> The following commands are executed from the **testbed/terraform** repository directory.
 
 :::
 
 Get the URL for the VNC console from an instance (by default from the manager):
 
 ```sh
-   make console ENVIRONMENT=regiocloud
-   make console ENVIRONMENT=regiocloud CONSOLE=node-0
+make console ENVIRONMENT=regiocloud
+make console ENVIRONMENT=regiocloud CONSOLE=node-0
 ```
 
 Get the console log from an instance (by default from the manager):
 
 ```sh
-   make log ENVIRONMENT=regiocloud
-   make log ENVIRONMENT=regiocloud CONSOLE=node-0
+make log ENVIRONMENT=regiocloud
+make log ENVIRONMENT=regiocloud CONSOLE=node-0
 ```
 
 Open a login shell on the manager via SSH:
 
 ```sh
-   make ssh ENVIRONMENT=regiocloud
-   make login ENVIRONMENT=regiocloud  # this is just an alias for "make ssh"
+make ssh ENVIRONMENT=regiocloud
+make login ENVIRONMENT=regiocloud  # this is just an alias for "make ssh"
 ```
 
 Create a tunnel for the internal networks (**192.168.16.0/20**,  **192.168.112.0/20**) via sshuttle
 <https://github.com/sshuttle/sshuttle>:
 
 ```sh
-   make sshuttle ENVIRONMENT=regiocloud
-   make tunnel ENVIRONMENT=regiocloud   # this is just an alias for "make sshuttle"
+make sshuttle ENVIRONMENT=regiocloud
+make tunnel ENVIRONMENT=regiocloud   # this is just an alias for "make sshuttle"
 ```
 
 Show endpoint URLs (ara, phpmyadmin):
 
 ```sh
-   make endpoints ENVIRONMENT=regiocloud
+make endpoints ENVIRONMENT=regiocloud
 ```
 
 Show manager address:
 
 ```sh
-   make address ENVIRONMENT=regiocloud
+make address ENVIRONMENT=regiocloud
 ```
 
 Open an Openstack Client Console:
 
 ```sh
-   make openstack ENVIRONMENT=regiocloud
+make openstack ENVIRONMENT=regiocloud
 ```
 
 Copy a file to the manager:
 
 ```sh
-   make scp PARAMS=/file/to/be/copied SOURCE=/path/to/destination ENVIRONMENT=regiocloud
-   make copy PARAMS=/file/to/be/copied SOURCE=/path/to/destination ENVIRONMENT=regiocloud # this is just an alias for "make scp"
+make scp PARAMS=/file/to/be/copied SOURCE=/path/to/destination ENVIRONMENT=regiocloud
+make copy PARAMS=/file/to/be/copied SOURCE=/path/to/destination ENVIRONMENT=regiocloud # this is just an alias for "make scp"
 ```
 
 ### Terraform
@@ -68,62 +67,62 @@ Copy a file to the manager:
 Delete providers:
 
 ```sh
-   make reset ENVIRONMENT=regiocloud
+make reset ENVIRONMENT=regiocloud
 ```
 
 Init terraform, select workspace and copy override and custom files:
 
 ```sh
-   make init ENVIRONMENT=regiocloud
+make init ENVIRONMENT=regiocloud
 ```
 
 Init terraform and validate:
 
 ```sh
-   make validate ENVIRONMENT=regiocloud
+make validate ENVIRONMENT=regiocloud
 ```
 
 Init terraform and import a resource:
 
 ```sh
-   make attach ENVIRONMENT=regiocloud
+make attach ENVIRONMENT=regiocloud
 ```
 
 Init terraform and remove a resource:
 
 ```sh
-   make detach ENVIRONMENT=regiocloud
+make detach ENVIRONMENT=regiocloud
 ```
 
 Init terraform and push a state to a remote backend:
 
 ```sh
-   make state-push ENVIRONMENT=regiocloud
-   make push ENVIRONMENT=regiocloud       # this is just an alias for "make state-push"
+make state-push ENVIRONMENT=regiocloud
+make push ENVIRONMENT=regiocloud       # this is just an alias for "make state-push"
 ```
 
 Init terraform and generate a graph in DOT format:
 
 ```sh
-   make graph ENVIRONMENT=regiocloud
+make graph ENVIRONMENT=regiocloud
 ```
 
 Init terraform and show the current state:
 
 ```sh
-   make show ENVIRONMENT=regiocloud
+make show ENVIRONMENT=regiocloud
 ```
 
 Init terraform and show the configuration of a specific resource:
 
 ```sh
-   make list ENVIRONMENT=regiocloud
+make list ENVIRONMENT=regiocloud
 ```
 
 Decommissioning:
 
 ```sh
-   make clean ENVIRONMENT=regiocloud
+make clean ENVIRONMENT=regiocloud
 ```
 
 [![asciicast](https://asciinema.org/a/9YR0fAukUitMlryGKlexWz17k.svg)](https://asciinema.org/a/9YR0fAukUitMlryGKlexWz17k)
@@ -136,25 +135,25 @@ Only **ping** works without them.
 Check the installation via ping:
 
 ```sh
-   make ping ENVIRONMENT=regiocloud
+make ping ENVIRONMENT=regiocloud
 ```
 
 Run check script for openstack and infrastructure components:
 
 ```sh
-   make check ENVIRONMENT=regiocloud
+make check ENVIRONMENT=regiocloud
 ```
 
 Run rally script (benchmark openstack):
 
 ```sh
-   make rally ENVIRONMENT=regiocloud
+make rally ENVIRONMENT=regiocloud
 ```
 
 Run refstack script:
 
 ```sh
-   make refstack ENVIRONMENT=regiocloud
+make refstack ENVIRONMENT=regiocloud
 ```
 
 ### Internals
@@ -162,9 +161,9 @@ Run refstack script:
 These are used for make internal functions and not supposed to be used by a user:
 
 ```sh
-   make .deploy.$(ENVIRONMENT)          # check if a deployment is present
-   make .MANAGER_ADDRESS.$(ENVIRONMENT) # return manager address
-   make .id_rsa.$(ENVIRONMENT)          # write private key
+make .deploy.$(ENVIRONMENT)          # check if a deployment is present
+make .MANAGER_ADDRESS.$(ENVIRONMENT) # return manager address
+make .id_rsa.$(ENVIRONMENT)          # write private key
 ```
 
 ## Wireguard
@@ -172,7 +171,7 @@ These are used for make internal functions and not supposed to be used by a user
 * deployment
 
 ```sh
-     osism apply wireguard
+osism apply wireguard
 ```
 
 * client configuration can be found in **/home/dragon/wireguard-client.conf** on **testbed-manager**,
@@ -196,55 +195,55 @@ On the testbed, the services can currently be deployed manually. In the future, 
 * Basic Ceph services
 
 ```sh
-     /opt/configuration/scripts/deploy/100-ceph-services-basic.sh
+/opt/configuration/scripts/deploy/100-ceph-services-basic.sh
 ```
 
 * Extended Ceph services (RGW + MDS)
 
 ```sh
-     /opt/configuration/scripts/deploy/110-ceph-services-extended.sh
+/opt/configuration/scripts/deploy/110-ceph-services-extended.sh
 ```
 
 * Basic infrastructure services (MariaDB, RabbitMQ, Redis, ...)
 
 ```sh
-     /opt/configuration/scripts/deploy/200-infrastructure-services-basic.sh
+/opt/configuration/scripts/deploy/200-infrastructure-services-basic.sh
 ```
 
 * Extended infrastructure services (Patchman, phpMyAdmin, ...)
 
 ```sh
-     /opt/configuration/scripts/deploy/210-infrastructure-services-extended.sh
+/opt/configuration/scripts/deploy/210-infrastructure-services-extended.sh
 ```
 
 * Basic OpenStack services (Compute, Storage, ...)
 
 ```sh
-     /opt/configuration/scripts/deploy/300-openstack-services-basic.sh
+/opt/configuration/scripts/deploy/300-openstack-services-basic.sh
 ```
 
 * Extended OpenStack services (Telemetry, Kubernetes, ...)
 
 ```sh
-     /opt/configuration/scripts/deploy/310-openstack-services-extended.sh
+/opt/configuration/scripts/deploy/310-openstack-services-extended.sh
 ```
 
 * Baremetal OpenStack service
 
 ```sh
-     /opt/configuration/scripts/deploy/320-openstack-services-baremetal.sh
+/opt/configuration/scripts/deploy/320-openstack-services-baremetal.sh
 ```
 
 * Additional OpenStack services (Rating, Container, ...)
 
 ```sh
-     /opt/configuration/scripts/deploy/330-openstack-services-additional.sh
+/opt/configuration/scripts/deploy/330-openstack-services-additional.sh
 ```
 
 * Monitoring services (Netdata, Prometheus exporters, ...)
 
 ```sh
-     /opt/configuration/scripts/deploy/400-monitoring-services.sh
+/opt/configuration/scripts/deploy/400-monitoring-services.sh
 ```
 
 ## Update services
@@ -252,25 +251,25 @@ On the testbed, the services can currently be deployed manually. In the future, 
 * Ceph services
 
 ```sh
-     /opt/configuration/scripts/upgrade/100-ceph-services.sh
+/opt/configuration/scripts/upgrade/100-ceph-services.sh
 ```
 
 * Basic infrastructure services (MariaDB, RabbitMQ, Redis, ...)
 
 ```sh
-     /opt/configuration/scripts/upgrade/200-infrastructure-services-basic.sh
+/opt/configuration/scripts/upgrade/200-infrastructure-services-basic.sh
 ```
 
 * Basic OpenStack services (Compute, Storage, ...)
 
 ```sh
-     /opt/configuration/scripts/upgrade/300-openstack-services-basic.sh
+/opt/configuration/scripts/upgrade/300-openstack-services-basic.sh
 ```
 
 * Baremetal OpenStack service
 
 ```sh
-     /opt/configuration/scripts/upgrade/320-openstack-services-baremetal.sh
+/opt/configuration/scripts/upgrade/320-openstack-services-baremetal.sh
 ```
 
 ## Upgrade services
@@ -283,11 +282,10 @@ Simply re-run the scripts listed in [Udate services](#update-services).
 
 :::note
 
->**note:**
->When upgrading from a rolling release (**latest**, **xena**, ..) to a stable release (**3.2.0**, **4.0.0**, ..), it is important
->to remove the parameters **ceph_version** and **openstack_version** from  **environments/manager/configuration.yml**. For a
->stable release, the versions of Ceph and OpenStack to use are set by the version of the stable release (set via the
->**manager_version** parameter) and not by release names.
+> When upgrading from a rolling release (**latest**, **xena**, ..) to a stable release (**3.2.0**, **4.0.0**, ..), it is important
+> to remove the parameters **ceph_version** and **openstack_version** from  **environments/manager/configuration.yml**. For a
+> stable release, the versions of Ceph and OpenStack to use are set by the version of the stable release (set via the
+> **manager_version** parameter) and not by release names.
 
 :::
 
@@ -299,26 +297,26 @@ environment.
 ### OpenStack & infrastructure services
 
 ```sh
-   osism-kolla _ purge
-   Are you sure you want to purge the kolla environment? [no]: yes
-   Are you really sure you want to purge the kolla environment? [no]: ireallyreallymeanit
+osism-kolla _ purge
+Are you sure you want to purge the kolla environment? [no]: yes
+Are you really sure you want to purge the kolla environment? [no]: ireallyreallymeanit
 ```
 
 ### Ceph
 
 ```sh
-   find /opt/configuration -name 'ceph*keyring' -exec rm {} \;
-   osism-ceph purge-docker-cluster
-   Are you sure you want to purge the cluster? Note that if with_pkg is not set docker
-   packages and more will be uninstalled from non-atomic hosts. Do you want to continue?
-    [no]: yes
+find /opt/configuration -name 'ceph*keyring' -exec rm {} \;
+osism-ceph purge-docker-cluster
+Are you sure you want to purge the cluster? Note that if with_pkg is not set docker
+packages and more will be uninstalled from non-atomic hosts. Do you want to continue?
+ [no]: yes
 ```
 
 ### Manager services
 
 ```sh
-   cd /opt/manager
-   docker compose down -v
+cd /opt/manager
+docker compose down -v
 ```
 
 Some services like phpMyAdmin or OpenStackClient will still run afterwards.
@@ -327,9 +325,8 @@ Some services like phpMyAdmin or OpenStackClient will still run afterwards.
 
 :::note
 
->**note:**
->All SSL enabled services within the testbed use certs which are signed by the self-signed
->[OSISM Testbed CA](https://raw.githubusercontent.com/osism/testbed/main/environments/kolla/certificates/ca/testbed.crt)
+> All SSL enabled services within the testbed use certs which are signed by the self-signed
+> [OSISM Testbed CA](https://raw.githubusercontent.com/osism/testbed/main/environments/kolla/certificates/ca/testbed.crt)
 
 :::
 
@@ -354,21 +351,19 @@ RabbitMQ               | <https://api-int.testbed.osism.xyz:15672/>        | ope
 
 :::note
 
->**note:**
->To access the webinterfaces, make sure that you have a tunnel up and running for the internal networks.
+> To access the webinterfaces, make sure that you have a tunnel up and running for the internal networks.
 >
->```sh
->make sshuttle ENVIRONMENT=regiocloud
->```
+> ```sh
+> make sshuttle ENVIRONMENT=regiocloud
+> ```
 
 :::
 
 :::note
 
->**note:**
->If only the identity services were deployed, an error message (**You are not authorized to access this page**)
->appears after logging in to Horizon. This is not critical and results from the absence of the Nova service.
->![horizon-login-identity-testbed](./images/horizon-login-identity-testbed.png)
+> If only the identity services were deployed, an error message (**You are not authorized to access this page**)
+> appears after logging in to Horizon. This is not critical and results from the absence of the Nova service.
+> ![horizon-login-identity-testbed](./images/horizon-login-identity-testbed.png)
 
 :::
 
@@ -381,7 +376,7 @@ RabbitMQ               | <https://api-int.testbed.osism.xyz:15672/>        | ope
 Deploy *Ceph* first.
 
 ```sh
-   osism apply bootstraph-ceph-dashboard
+osism apply bootstraph-ceph-dashboard
 ```
 
 ![Ceph-dashboard](./images/ceph-dashboard.png)
@@ -393,7 +388,7 @@ Deploy *Ceph* first.
 ### Homer
 
 ```sh
-   osism apply homer
+osism apply homer
 ```
 
 ![Homer](./images/homer.png)
@@ -401,7 +396,7 @@ Deploy *Ceph* first.
 ### Keycloak
 
 ```sh
-   osism apply keycloak
+osism apply keycloak
 ```
 
 ![Keycloak](./images/keycloak.png)
@@ -415,7 +410,7 @@ Netbox is part of the manager and does not need to be deployed individually.
 ### Netdata
 
 ```sh
-   osism apply netdata
+osism apply netdata
 ```
 
 ![Netdata](./images/netdata.png)
@@ -423,14 +418,14 @@ Netbox is part of the manager and does not need to be deployed individually.
 ### Patchman
 
 ```sh
-   osism apply patchman-client
-   osism apply patchman
+osism apply patchman-client
+osism apply patchman
 ```
 
 Every night the package list of the clients is transmitted via cron. Initially we transfer these lists manually.
 
 ```sh
-   osism-ansible generic all -m command -a patchman-client
+osism-ansible generic all -m command -a patchman-client
 ```
 
 After the clients have transferred their package lists for the first time the database can be built by Patchman.
@@ -438,13 +433,13 @@ After the clients have transferred their package lists for the first time the da
 This takes some time on the first run. Later, this update will be done once a day during the night via cron.
 
 ```sh
-   patchman-update
+patchman-update
 ```
 
 The previous steps can also be done with a custom playbook.
 
 ```sh
-   osism apply bootstrap-patchman
+osism apply bootstrap-patchman
 ```
 
 ![Patchman](./images/patchman.png)
@@ -454,7 +449,7 @@ The previous steps can also be done with a custom playbook.
 Deploy *Clustered infrastructure services*, *Infrastructure services*, and *Basic OpenStack services* first.
 
 ```sh
-   osism apply prometheus
+osism apply prometheus
 ```
 
 ## Tools
@@ -462,38 +457,38 @@ Deploy *Clustered infrastructure services*, *Infrastructure services*, and *Basi
 ### Rally
 
 ```sh
-   /opt/configuration/contrib/rally/rally.sh
-   [...]
-   Full duration: 6.30863
+/opt/configuration/contrib/rally/rally.sh
+[...]
+Full duration: 6.30863
 
-   HINTS:
-   * To plot HTML graphics with this data, run:
-       rally task report 002a01cd-46e7-4976-940f-943586771629 --out output.html
+HINTS:
+* To plot HTML graphics with this data, run:
+    rally task report 002a01cd-46e7-4976-940f-943586771629 --out output.html
 
-   * To generate a JUnit report, run:
-       rally task export 002a01cd-46e7-4976-940f-943586771629 --type junit-xml --to output.xml
+* To generate a JUnit report, run:
+    rally task export 002a01cd-46e7-4976-940f-943586771629 --type junit-xml --to output.xml
 
-   * To get raw JSON output of task results, run:
-       rally task report 002a01cd-46e7-4976-940f-943586771629 --json --out output.json
+* To get raw JSON output of task results, run:
+    rally task report 002a01cd-46e7-4976-940f-943586771629 --json --out output.json
 
-   At least one workload did not pass SLA criteria.
+At least one workload did not pass SLA criteria.
 ```
 
 ### Refstack
 
 ```sh
-   /opt/configuration/contrib/refstack/run.sh
-   [...]
-   ======
-   Totals
-   ======
-   Ran: 286 tests in 1197.9323 sec.
-    - Passed: 284
-    - Skipped: 2
-    - Expected Fail: 0
-    - Unexpected Success: 0
-    - Failed: 0
-   Sum of execute time for each test: 932.9678 sec.
+/opt/configuration/contrib/refstack/run.sh
+[...]
+======
+Totals
+======
+Ran: 286 tests in 1197.9323 sec.
+ - Passed: 284
+ - Skipped: 2
+ - Expected Fail: 0
+ - Unexpected Success: 0
+ - Failed: 0
+Sum of execute time for each test: 932.9678 sec.
 ```
 
 ### Check infrastructure services
@@ -502,15 +497,15 @@ The contrib directory contains a script to check the clustered infrastructure se
 are already sufficient.
 
 ```sh
-   cd /opt/configuration/contrib
-   ./check_infrastructure_services.sh
-   Elasticsearch   OK - elasticsearch (kolla_logging) is running. status: green; timed_out: false; number_of_nodes: 2; ...
+cd /opt/configuration/contrib
+./check_infrastructure_services.sh
+Elasticsearch   OK - elasticsearch (kolla_logging) is running. status: green; timed_out: false; number_of_nodes: 2; ...
 
-   MariaDB         OK: number of NODES = 2 (wsrep_cluster_size)
+MariaDB         OK: number of NODES = 2 (wsrep_cluster_size)
 
-   RabbitMQ        RABBITMQ_CLUSTER OK - nb_running_node OK (2) nb_running_disc_node OK (2) nb_running_ram_node OK (0)
+RabbitMQ        RABBITMQ_CLUSTER OK - nb_running_node OK (2) nb_running_disc_node OK (2) nb_running_ram_node OK (0)
 
-   Redis           TCP OK - 0.002 second response time on 192.168.16.10 port 6379|time=0.001901s;;;0.000000;10.000000
+Redis           TCP OK - 0.002 second response time on 192.168.16.10 port 6379|time=0.001901s;;;0.000000;10.000000
 ```
 
 ### Random data
@@ -524,8 +519,8 @@ After deployment of MariaDB including HAProxy it is possible to create four test
 filled with randomly generated data. The script can be executed multiple times to generate more data.
 
 ```sh
-   cd /opt/configuration/contrib
-   ./mysql_random_data_load.sh 100000
+cd /opt/configuration/contrib
+./mysql_random_data_load.sh 100000
 ```
 
 #### Elasticsearch
@@ -536,8 +531,8 @@ generated data. The script can be executed multiple times to generate more data.
 14 indices are generated because the default retention time for the number of retained indices is set to 14.
 
 ```sh
-   cd /opt/configuration/contrib
-   ./elasticsearch_random_data_load.sh 100000
+cd /opt/configuration/contrib
+./elasticsearch_random_data_load.sh 100000
 ```
 
 ## Recipes
@@ -547,57 +542,57 @@ This section describes how individual parts of the testbed can be deployed.
 * Ceph
 
 ```sh
-     osism apply ceph-mons
-     osism apply ceph-mgrs
-     osism apply ceph-osds
-     osism apply ceph-mdss
-     osism apply ceph-crash
-     osism apply ceph-rgws
-     osism apply copy-ceph-keys
-     osism apply cephclient
+osism apply ceph-mons
+osism apply ceph-mgrs
+osism apply ceph-osds
+osism apply ceph-mdss
+osism apply ceph-crash
+osism apply ceph-rgws
+osism apply copy-ceph-keys
+osism apply cephclient
 ```
 
 * Clustered infrastructure services
 
 ```sh
-     osism apply common
-     osism apply loadbalancer
-     osism apply elasticsearch
-     osism apply rabbitmq
-     osism apply mariadb
+osism apply common
+osism apply loadbalancer
+osism apply elasticsearch
+osism apply rabbitmq
+osism apply mariadb
 ```
 
 * Infrastructure services (also deploy *Clustered infrastructure services*)
 
 ```sh
-     osism apply openvswitch
-     osism apply ovn
-     osism apply memcached
-     osism apply kibana
+osism apply openvswitch
+osism apply ovn
+osism apply memcached
+osism apply kibana
 ```
 
 * Basic OpenStack services (also deploy *Infrastructure services*, *Clustered infrastructure services*, and *Ceph*)
 
 ```sh
-     osism apply keystone
-     osism apply horizon
-     osism apply placement
-     osism apply glance
-     osism apply cinder
-     osism apply neutron
-     osism apply nova
-     osism apply openstackclient
-     osism apply bootstrap-basic
+osism apply keystone
+osism apply horizon
+osism apply placement
+osism apply glance
+osism apply cinder
+osism apply neutron
+osism apply nova
+osism apply openstackclient
+osism apply bootstrap-basic
 ```
 
 * Additional OpenStack services (also deploy *Basic OpenStack services* and all requirements)
 
 ```sh
-     osism apply heat
-     osism apply gnocchi
-     osism apply ceilometer
-     osism apply aodh
-     osism apply barbican
-     osism apply designate
-     osism apply octavia
+osism apply heat
+osism apply gnocchi
+osism apply ceilometer
+osism apply aodh
+osism apply barbican
+osism apply designate
+osism apply octavia
 ```

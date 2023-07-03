@@ -40,19 +40,19 @@ Using the OpenStack cli is also possible via OIDC, assuming you provisioned the 
 then you can perform a simple *project list* operation like this:
 
 ```sh
-   openstack \
-     --os-cacert /etc/ssl/certs/ca-certificates.crt \
-     --os-auth-url https://api.testbed.osism.xyz:5000/v3 \
-     --os-auth-type v3oidcpassword \
-     --os-client-id keystone \
-     --os-client-secret 0056b89c-030f-486b-a6ad-f0fa398fa4ad \
-     --os-username alice \
-     --os-password password \
-     --os-identity-provider keycloak \
-     --os-protocol openid \
-     --os-identity-api-version 3 \
-     --os-discovery-endpoint https://keycloak.testbed.osism.xyz/auth/realms/osism/.well-known/openid-configuration \
-   project list
+openstack \
+ --os-cacert /etc/ssl/certs/ca-certificates.crt \
+ --os-auth-url https://api.testbed.osism.xyz:5000/v3 \
+ --os-auth-type v3oidcpassword \
+ --os-client-id keystone \
+ --os-client-secret 0056b89c-030f-486b-a6ad-f0fa398fa4ad \
+ --os-username alice \
+ --os-password password \
+ --os-identity-provider keycloak \
+ --os-protocol openid \
+ --os-identity-api-version 3 \
+ --os-discovery-endpoint https://keycloak.testbed.osism.xyz/auth/realms/osism/.well-known/openid-configuration \
+project list
 ```
 
 ### OpenStack CLI token issue with OpenID Connect
@@ -61,31 +61,31 @@ It is also possible to exchange your username/password to a token, for further u
 The **token issue** subcommand returns an SQL table, in which the *id* column's *value* field contains the token:
 
 ```sh
-   openstack \
-     --os-cacert /etc/ssl/certs/ca-certificates.crt \
-     --os-auth-url https://api.testbed.osism.xyz:5000/v3 \
-     --os-auth-type v3oidcpassword \
-     --os-client-id keystone \
-     --os-client-secret 0056b89c-030f-486b-a6ad-f0fa398fa4ad \
-     --os-username alice \
-     --os-password password \
-     --os-identity-provider keycloak \
-     --os-protocol openid \
-     --os-identity-api-version 3 \
-     --os-discovery-endpoint https://keycloak.testbed.osism.xyz/auth/realms/osism/.well-known/openid-configuration \
-     --os-openid-scope "openid profile email" \
-   token issue \
-       -c id
-       -f value
+openstack \
+ --os-cacert /etc/ssl/certs/ca-certificates.crt \
+ --os-auth-url https://api.testbed.osism.xyz:5000/v3 \
+ --os-auth-type v3oidcpassword \
+ --os-client-id keystone \
+ --os-client-secret 0056b89c-030f-486b-a6ad-f0fa398fa4ad \
+ --os-username alice \
+ --os-password password \
+ --os-identity-provider keycloak \
+ --os-protocol openid \
+ --os-identity-api-version 3 \
+ --os-discovery-endpoint https://keycloak.testbed.osism.xyz/auth/realms/osism/.well-known/openid-configuration \
+ --os-openid-scope "openid profile email" \
+token issue \
+  -c id
+  -f value
 ```
 
 An example token is like:
 
 ```sh
-   gAAAAABhC98gL8nsQWknro3JWDXWLFCG3CDr3Mi9OIlvVAZMjy2mNgYtlXv_0yAIy-
-   nSlLAaLIGhht17-mwf8uclKgRuNVsYLSmgUpB163l89-ch2w2_OFe9zNSQNWf4qfd8
-   Cl7E7XvvUoFr1N8Gh09vaYLvRvYgCGV05xBUSs76qCHa0qElPUsk56s5ft4ALrSrzD
-   4cEQRVb5PXNjywdZk9_gtJziz31A7sD4LPIy82O5N9NryDoDw
+gAAAAABhC98gL8nsQWknro3JWDXWLFCG3CDr3Mi9OIlvVAZMjy2mNgYtlXv_0yAIy-
+nSlLAaLIGhht17-mwf8uclKgRuNVsYLSmgUpB163l89-ch2w2_OFe9zNSQNWf4qfd8
+Cl7E7XvvUoFr1N8Gh09vaYLvRvYgCGV05xBUSs76qCHa0qElPUsk56s5ft4ALrSrzD
+4cEQRVb5PXNjywdZk9_gtJziz31A7sD4LPIy82O5N9NryDoDw
 ```
 
 ### OpenStack CLI operations with token
