@@ -21,8 +21,8 @@ volume_size_storage       |10
 With the file **environments/CLOUDPROVIDER.tfvars** the parameters of the environment **CLOUDPROVIDER** can be adjusted.
 
 ```ini
-   image             = "OSISM base"
-   openstack_version = "zed"
+image             = "OSISM base"
+openstack_version = "zed"
 ```
 
 Beyond the terraform variables, you can enable special overrides by adding special comments into the .tfvars files. The syntax is
@@ -42,6 +42,6 @@ For local overrides **local.env** and **environments/local.tfvars** can be used.
 clouds.yaml.
 
 ```sh
-   cp environments/local.tfvars.sample environments/local.tfvars
-   echo ENVIRONMENT=local >> local.env
+cp environments/local.tfvars.sample environments/local.tfvars
+echo ENVIRONMENT=local >> local.env
 ```

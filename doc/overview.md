@@ -38,8 +38,8 @@ The following stable Ceph and OpenStack releases are supported. The development 
 The deployment of Ceph is based on [ceph-ansible](https://github.com/ceph/ceph-ansible).
 
 * Octopus
-* Pacific (**default**)
-* Quincy
+* Pacific
+* Quincy (**default**)
 
 ### OpenStack
 
@@ -56,8 +56,6 @@ The following services can currently be used with this testbed without further a
 ### Infrastructure
 
 * Ceph
-* Elasticsearch
-* Etcd
 * Fluentd
 * Gnocchi
 * Grafana
@@ -65,17 +63,16 @@ The following services can currently be used with this testbed without further a
 * Influxdb
 * Keepalived
 * Keycloak
-* Kibana
 * Mariadb
 * Memcached
 * Netbox
 * Netdata
+* Opensearch
 * Openvswitch
 * Patchman
 * Prometheus exporters
 * Rabbitmq
 * Redis
-* Skydive
 
 ### OpenStack
 
@@ -92,5 +89,4 @@ The following services can currently be used with this testbed without further a
 * Neutron
 * Nova (with KVM)
 * Octavia
-* Panko
 * Senlin

@@ -2,8 +2,8 @@
 
 :::warning
 
->**warning:** The secrets are unencrypted in the individual files.
->**Therefore do not use the testbed publicly.**
+> The secrets are unencrypted in the individual files.
+> Therefore do not use the testbed publicly.
 
 :::
 

@@ -11,7 +11,7 @@ management       | **192.168.16.0/20**  | SSH access via this network & all inte
 wireguard        | **192.168.48.0/20**  | Is used by Wireguard.
 provider         | **192.168.112.0/20** | Is used to emulate an provider network.
 
-Warning: The provider network is set up with VXLAN tunneling between the nodes and can currently only be used when OVN is being
+The provider network is set up with VXLAN tunneling between the nodes and can currently only be used when OVN is being
 used as Neutron backend (this is the default). Trying to switch to OVS will cause a conflict, since OVS will also try to use
 VXLAN as tunnel mechanism. See <https://github.com/osism/testbed/issues/1065> for details.
 
