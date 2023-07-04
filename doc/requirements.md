@@ -19,8 +19,8 @@ The testbed requires the following virtual resources when using the default flav
 
 :::note
 
-> If the cloud you are using does not offer a block storage service (Cinder), you can work with ephemeral
-> volumes from the compute service (Nova).
+If the cloud you are using does not offer a block storage service (Cinder), you can work with
+ephemeral volumes from the compute service (Nova).
 
 :::
 
@@ -75,8 +75,8 @@ git clone https://github.com/osism/testbed ~/src/github.com/osism/testbed
 
 :::note
 
-> The repository can also be cloned to any other location. The path to this repository is set via the
-> parameter **basepath**.
+The repository can also be cloned to any other location. The path to this repository is set via
+the parameter **basepath**.
 
 :::
 
@@ -84,7 +84,7 @@ git clone https://github.com/osism/testbed ~/src/github.com/osism/testbed
 
 :::note
 
-> The necessary files are located in the **terraform** directory.
+The necessary files are located in the **terraform** directory.
 
 :::
 
@@ -101,7 +101,7 @@ export ENVIRONMENT=regiocloud
 
 :::note
 
-> * The credentials are stored in **clouds.yaml** and **secure.yaml** with the name **regiocloud**.
+* The credentials are stored in **clouds.yaml** and **secure.yaml** with the name **regiocloud**.
 
 :::
 
@@ -109,8 +109,8 @@ export ENVIRONMENT=regiocloud
 
 :::note
 
-> * The credentials are stored in **clouds.yaml** and **secure.yaml** with the name **cleura**.
-> * Registration is possible at the following URL: <https://cleura.cloud/login>
+* The credentials are stored in **clouds.yaml** and **secure.yaml** with the name **cleura**.
+* Registration is possible at the following URL: <https://cleura.cloud/login>
 
 :::
 
@@ -118,11 +118,12 @@ export ENVIRONMENT=regiocloud
 
 :::note
 
-> * The credentials are stored in **clouds.yaml** and **secure.yaml** with the name **ovh**.
-> * Registration is possible at the following URL: <https://www.ovhcloud.com/en/>
-> * The public L3 network services at OVH are currently still in beta. For more details, please visit
-> <https://labs.ovh.com/public-cloud-l3-services>.
-> * The use of private networks must be explicitly activated at OVH. A so-called vRack is created for this purpose.
+* The credentials are stored in **clouds.yaml** and **secure.yaml** with the name **ovh**.
+* Registration is possible at the following URL: <https://www.ovhcloud.com/en/>
+* The public L3 network services at OVH are currently still in beta. For more details, please visit
+  <https://labs.ovh.com/public-cloud-l3-services>.
+* The use of private networks must be explicitly activated at OVH. A so-called vRack is created
+  for this purpose.
 
 :::
 
@@ -130,9 +131,9 @@ export ENVIRONMENT=regiocloud
 
 :::note
 
-> * The credentials are stored in **clouds.yaml** and **secure.yaml** with the name **pluscloudopen**.
-> * To use pluscloud open, you can call +49 2203 1045 3500, send an email to beratung@plusserver.com or arrange a call back
-> <https://www.plusserver.com/produkte/pluscloud-open>
+* The credentials are stored in **clouds.yaml** and **secure.yaml** with the name **pluscloudopen**.
+* To use pluscloud open, you can call +49 2203 1045 3500, send an email to beratung@plusserver.com
+  or arrange a call back <https://www.plusserver.com/produkte/pluscloud-open>
 
 :::
 
@@ -140,7 +141,7 @@ export ENVIRONMENT=regiocloud
 
 :::note
 
-> * Registration is possible at the following URL: <https://www.websso.t-systems.com/eshop/agb/de/public/configcart/show>
+* Registration is possible at the following URL: <https://www.websso.t-systems.com/eshop/agb/de/public/configcart/show>
 
 :::
 
@@ -148,7 +149,7 @@ export ENVIRONMENT=regiocloud
 
 :::note
 
-> * The credentials are stored in **clouds.yaml** and **secure.yaml** with the name **gx-scs**.
+* The credentials are stored in **clouds.yaml** and **secure.yaml** with the name **gx-scs**.
 
 :::
 
@@ -156,7 +157,7 @@ export ENVIRONMENT=regiocloud
 
 :::note
 
-> * The credentials are stored in **clouds.yaml** and **secure.yaml** with the name **wavestack**.
+* The credentials are stored in **clouds.yaml** and **secure.yaml** with the name **wavestack**.
 
 :::
 
@@ -164,48 +165,51 @@ export ENVIRONMENT=regiocloud
 
 :::note
 
-> * The credentials are stored in **clouds.yaml** and **secure.yaml** with the name **fuga**.
-> * Per project, 50 GBytes of memory are available by default. Therefore, the flavor **t3.small** is used by default. If you have
-> increased the quota via support it is better to use the flavor **t3.medium** for the nodes.
->
-> * You have to use application credentials: <https://my.fuga.cloud/account/application-credentials>
->
-> ```yaml
-> ---
-> clouds:
->   fuga:
->     auth:
->       auth_url: https://core.fuga.cloud:5000/v3
->       application_credential_id: "ID"
->       application_credential_secret: "SECRET"
->     interface: public
->     identity_api_version: 3
->     auth_type: "v3applicationcredential"
-> ```
+* The credentials are stored in **clouds.yaml** and **secure.yaml** with the name **fuga**.
+* Per project, 50 GBytes of memory are available by default. Therefore, the flavor **t3.small** is
+  used by default. If you have increased the quota via support it is better to use the flavor
+  **t3.medium** for the nodes.
+
+* You have to use application credentials: <https://my.fuga.cloud/account/application-credentials>
+
+```yaml
+---
+clouds:
+  fuga:
+    auth:
+      auth_url: https://core.fuga.cloud:5000/v3
+      application_credential_id: "ID"
+      application_credential_secret: "SECRET"
+    interface: public
+    identity_api_version: 3
+    auth_type: "v3applicationcredential"
+```
+
+:::
 
 * [HuaweiCloud](https://www.huaweicloud.com/eu/)
 
 :::note
 
-> * Registration is possible via https://www.huaweicloud.com/eu/
-> * The credentials are stored in **clouds.yaml** and **secure.yaml** with the name **huaweicloud**.
-> * Credential details can be taken from the "MyCredentials" option in the admin console: <https://console.eu.huaweicloud.com/iam>.
->
-> ```yaml
-> ---
-> clouds:
->   huaweicloud:
->     auth:
->       auth_url: https://iam.myhuaweicloud.eu/
->       password: xxxx
->       username: xxxx
->       project_name: 'PROJECT_NAME'
->       project_domain_name: 'PROJECT_DOMAIN_NAME'
->       user_domain_name: 'USER_DOMAIN_NAME'
->       identity_api_version: 3
->       block_storage_api_version: 3
->       regions:
->         - name: Dublin
+* Registration is possible via https://www.huaweicloud.com/eu/
+* The credentials are stored in **clouds.yaml** and **secure.yaml** with the name **huaweicloud**.
+* Credential details can be taken from the "MyCredentials" option in the admin console: <https://console.eu.huaweicloud.com/iam>.
+
+```yaml
+---
+clouds:
+  huaweicloud:
+    auth:
+      auth_url: https://iam.myhuaweicloud.eu/
+      password: xxxx
+      username: xxxx
+      project_name: 'PROJECT_NAME'
+      project_domain_name: 'PROJECT_DOMAIN_NAME'
+      user_domain_name: 'USER_DOMAIN_NAME'
+      identity_api_version: 3
+      block_storage_api_version: 3
+      regions:
+        - name: Dublin
 
 :::
 
@@ -222,15 +226,15 @@ The application credentials can be found in Horizon under **Identity**.
 The **clouds.yaml** file of Fuga Cloud can be used as an example for the use of
 application credentials. The **auth_url** is adapted accordingly.
 
-> ```yaml
-> ---
-> clouds:
->   fuga:
->     auth:
->       auth_url: https://core.fuga.cloud:5000/v3
->       application_credential_id: "ID"
->       application_credential_secret: "SECRET"
->     interface: public
->     identity_api_version: 3
->     auth_type: "v3applicationcredential"
-> ```
+```yaml
+---
+clouds:
+  fuga:
+    auth:
+      auth_url: https://core.fuga.cloud:5000/v3
+      application_credential_id: "ID"
+      application_credential_secret: "SECRET"
+    interface: public
+    identity_api_version: 3
+    auth_type: "v3applicationcredential"
+```

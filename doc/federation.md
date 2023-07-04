@@ -4,7 +4,7 @@
 
 :::note
 
-> The following commands are executed from the **manager** node in a working testbed.
+The following commands are executed from the **manager** node in a working testbed.
 
 :::
 
