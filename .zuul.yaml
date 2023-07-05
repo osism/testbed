@@ -42,6 +42,7 @@
     irrelevant-files:
       - ^LICENSE$
       - ^README.md$
+      - ^\.github/.*$
       - ^doc/.*$
     timeout: 10800
 

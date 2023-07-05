@@ -6,7 +6,8 @@
   "regexManagers":[
     {
       "fileMatch":[
-        "^\\.github\\/workflows\\/.*\\.yml"
+        "^\\.github\\/workflows\\/.*\\.yml",
+        "^playbooks\\/pre\\.yml"
       ],
       "matchStrings":[
         "terraform_version: (?<currentValue>.*?) # renovate: datasource=(?<datasource>.*?) depName=(?<depName>.*?)?\\s"
