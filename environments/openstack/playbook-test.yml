@@ -22,7 +22,7 @@
         default_project: test
       no_log: true
 
-    - name: Add member roles to user test
+    - name: Add member roles to user test  # noqa: ignore-errors
       openstack.cloud.role_assignment:
         cloud: admin
         state: present
@@ -39,6 +39,7 @@
         #      Forbidden: Order creation attempt not allowed - please review your
         #      user/project privileges
         - creator
+      ignore_errors: true  # NOTE: necessary when we have not deployed Barbican
 
     - name: Create test network
       openstack.cloud.network:
@@ -138,18 +139,3 @@
         state: present
         server: test
         volume: test
-
-    - name: Create encrypted test volume
-      openstack.cloud.volume:
-        cloud: test
-        state: present
-        name: lukstest
-        size: 1
-        volume_type: LUKS
-
-    - name: Attach encrypted test volume
-      openstack.cloud.server_volume:
-        cloud: test
-        state: present
-        server: test
-        volume: lukstest
