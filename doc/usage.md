@@ -324,12 +324,22 @@ Some services like phpMyAdmin or OpenStackClient will still run afterwards.
 
 ## Webinterfaces
 
-:::note
-
 All SSL enabled services within the testbed use certs which are signed by the self-signed
 [OSISM Testbed CA](https://raw.githubusercontent.com/osism/testbed/main/environments/kolla/certificates/ca/testbed.crt)
 
-:::
+To access the webinterfaces, make sure that you have a tunnel up and running for the
+internal networks.
+
+```sh
+make sshuttle ENVIRONMENT=regiocloud
+```
+
+The user test is only available if it has been created before. The following
+command can be called for this purpose.
+
+```sh
+osism apply --environment openstack test
+```
 
 Name                   | URL                                               | Username      | Password
 -----------------------|---------------------------------------------------|---------------|---------
@@ -350,16 +360,6 @@ Prometheus             | <https://api-int.testbed.osism.xyz:9091/>         |    
 phpMyAdmin             | <https://phpmyadmin.testbed.osism.xyz>            | root          | password
 RabbitMQ               | <https://api-int.testbed.osism.xyz:15672/>        | openstack     | BO6yGAAq9eqA7IKqeBdtAEO7aJuNu4zfbhtnRo8Y
 
-:::note
-
-To access the webinterfaces, make sure that you have a tunnel up and running for the
-internal networks.
-
-```sh
-make sshuttle ENVIRONMENT=regiocloud
-```
-
-:::
 
 :::note
 
