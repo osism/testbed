@@ -11,14 +11,14 @@ providers. Please contact the respective cloud provider for this.
 
 Product          | Provider      | Profile name
 -----------------|---------------|--------------
-REGIO.cloud      | OSISM         | **regiocloud**
 Cleura           | Cleura        | **cleura**
 Fuga Cloud       | FUGA          | **fuga**
+HuaweiCloud      | HuaweiCloud   | **huaweicloud**
 OVH              | OVH           | **ovh**
 OpenTelekomCloud | T-Systems     | **otc**
-Wavestack        | noris network | **wavestack**
 pluscloud open   | plusserver    | **pluscloudopen**
-HuaweiCloud      | HuaweiCloud   | **huaweicloud**
+REGIO.cloud      | OSISM         | **regiocloud**
+Wavestack        | noris network | **wavestack**
 
 Terraform must be installed and usable. Information on installing Terraform can be found in the
 [Terraform documentation](https://learn.hashicorp.com/tutorials/terraform/install-cli).
