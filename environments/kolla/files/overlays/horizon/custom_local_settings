@@ -1,3 +1,5 @@
+LOGOUT_URL = 'https://keycloak.testbed.osism.xyz/auth/realms/osism/protocol/openid-connect/logout/?client_id=keystone&post_logout_redirect_uri=https://api.testbed.osism.xyz/auth/logout/'
+
 WEBSSO_ENABLED = True
 
 WEBSSO_KEYSTONE_URL = "https://api.testbed.osism.xyz:5000/v3"
