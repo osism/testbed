@@ -43,10 +43,20 @@ ansible-playbook -i testbed-manager.testbed.osism.xyz, /opt/configuration/ansibl
 cp /home/dragon/.ssh/id_rsa.pub /opt/ansible/secrets/id_rsa.operator.pub
 
 # wait for ara-server service
-wait_for_container_healthy 60 manager-ara-server-1
+if ! wait_for_container_healthy 60 manager-ara-server-1; then
+    # recreate & wait again
+    docker compose --project-directory /opt/manager down -v
+    docker compose --project-directory /opt/manager up -d
+    wait_for_container_healthy 60 manager-ara-server-1
+fi
 
 # wait for netbox service
-wait_for_container_healthy 60 netbox-netbox-1
+if ! wait_for_container_healthy 60 netbox-netbox-1; then
+    # recreate & wait again
+    docker compose --project-directory /opt/netbox down -v
+    docker compose --project-directory /opt/netbox up -d
+    wait_for_container_healthy 60 netbox-netbox-1
+fi
 
 docker compose --project-directory /opt/manager ps
 docker compose --project-directory /opt/netbox ps

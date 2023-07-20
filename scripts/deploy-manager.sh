@@ -55,11 +55,16 @@ osism apply --environment custom workarounds
 osism apply reboot -l testbed-nodes -e ireallymeanit=yes
 osism apply wait-for-connection -l testbed-nodes -e ireallymeanit=yes
 
-# NOTE: Restart the manager services to update the /etc/hosts file
+# Restart the manager services to update the /etc/hosts file
 sudo systemctl restart docker-compose@manager
 
-# NOTE(berendt): wait for ara-server service
-wait_for_container_healthy 60 manager-ara-server-1
+# wait for ara-server service
+if ! wait_for_container_healthy 60 manager-ara-server-1; then
+    # recreate & wait again
+    docker compose --project-directory /opt/manager down -v
+    docker compose --project-directory /opt/manager up -d
+    wait_for_container_healthy 60 manager-ara-server-1
+fi
 
 # NOTE: It is not possible to use nested virtualization @ OTC
 if [[ -e /etc/OTC_region ]]; then
