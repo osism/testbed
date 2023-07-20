@@ -27,14 +27,16 @@
     - vars/cloud_envs.yml
 
   tasks:
-    - name: Set cloud_env fact (Zuul deployment)
+    - name: Set facts (Zuul deployment)
       ansible.builtin.set_fact:
         cloud_env: "{{ cloud_envs[hostvars[groups['all'][0]]['nodepool']['label']] }}"
+        terragrunt_tfpath: "{{ ansible_user_dir }}/terraform"
       when: "'nodepool' in hostvars[groups['all'][0]]"
 
-    - name: Set cloud_env fact (local deployment)
+    - name: Set facts (local deployment)
       ansible.builtin.set_fact:
         cloud_env: "{{ testbed_environment | default('ci') }}"
+        terragrunt_tfpath: terraform
       when: "'nodepool' not in hostvars[groups['all'][0]]"
 
     - name: Create infrastructure (latest)
@@ -45,6 +47,8 @@
         - not manual_create | bool
         - version_manager == "latest"
       changed_when: true
+      environment:
+        TERRAGRUNT_TFPATH: "{{ terragrunt_tfpath }}"
 
     - name: Create infrastructure (stable)
       ansible.builtin.command:
@@ -54,6 +58,8 @@
         - not manual_create | bool
         - version_manager != "latest"
       changed_when: true
+      environment:
+        TERRAGRUNT_TFPATH: "{{ terragrunt_tfpath }}"
 
     - name: Fetch manager_host address
       ansible.builtin.command: cat "{{ manager_address_file }}"
