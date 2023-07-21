@@ -17,6 +17,8 @@ VERSION_CEPH ?= quincy
 VERSION_MANAGER ?= latest
 VERSION_OPENSTACK ?= zed
 
+KOLLA_NAMESPACE ?= kolla
+
 RALLY ?= false
 REFSTACK ?= false
 
@@ -105,7 +107,7 @@ deploy-identity: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
 
 upgrade: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
 	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
-	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(ENVIRONMENT) $(USERNAME)@$$MANAGER_ADDRESS "/opt/configuration/scripts/upgrade.sh $(VERSION_MANAGER) $(VERSION_CEPH) $(VERSION_OPENSTACK)"
+	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(ENVIRONMENT) $(USERNAME)@$$MANAGER_ADDRESS "/opt/configuration/scripts/upgrade.sh $(VERSION_MANAGER) $(VERSION_CEPH) $(VERSION_OPENSTACK) $(KOLLA_NAMESPACE)"
 
 upgrade-ceph: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
 	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \

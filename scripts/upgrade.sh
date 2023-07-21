@@ -9,6 +9,7 @@ echo
 export MANAGER_VERSION=${1:-latest}
 CEPH_VERSION=${2:-quincy}
 OPENSTACK_VERSION=${3:-zed}
+KOLLA_NAMESPACE=${4:-kolla}
 
 /opt/configuration/scripts/set-manager-version.sh $MANAGER_VERSION
 
@@ -20,6 +21,8 @@ if [[ $MANAGER_VERSION == "latest" ]]; then
     /opt/configuration/scripts/set-ceph-version.sh $CEPH_VERSION
     /opt/configuration/scripts/set-openstack-version.sh $OPENSTACK_VERSION
 fi
+
+/opt/configuration/scripts/set-kolla-namespace.sh $KOLLA_NAMESPACE
 
 export INTERACTIVE=false
 

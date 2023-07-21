@@ -1,8 +1,7 @@
 ---
 ##########################################################
-# docker registry
+# docker
 
-docker_registry_kolla: osism.harbor.regio.digital
 docker_namespace: kolla
 
 ##########################################################

@@ -34,6 +34,55 @@
         group: root
         mode: 0755
 
+# With this play, we can decouple the pull of the required images from the
+# subsequent roles (traefik, manager, netbox). This makes problems resulting
+# from image pulls more visible in the CI.
+- name: Pull manager images
+  hosts: testbed-manager.testbed.osism.xyz
+  connection: local
+  gather_facts: true
+
+  vars:
+    images:
+      - "{{ ara_server_image }}"
+      - "{{ ara_server_mariadb_image }}"
+      - "{{ ceph_ansible_image }}"
+      - "{{ inventory_reconciler_image }}"
+      - "{{ kolla_ansible_image }}"
+      - "{{ manager_redis_image }}"
+      - "{{ netbox_image }}"
+      - "{{ osism_ansible_image }}"
+      - "{{ osism_image }}"
+      - "{{ osism_netbox_image }}"
+      - "{{ postgres_image }}"
+      - "{{ traefik_image }}"
+      - "{{ vault_image }}"
+
+  vars_files:
+    - /opt/configuration/environments/manager/configuration.yml
+    - /opt/configuration/environments/configuration.yml
+    - /opt/configuration/environments/manager/images.yml
+
+  tasks:
+    - name: Pull images
+      community.docker.docker_image:
+        name: "{{ item }}"
+        source: pull
+      async: 120
+      poll: 0
+      loop: "{{ images }}"
+      register: async_results
+
+    - name: Check pull status
+      ansible.builtin.async_status:
+        jid: "{{ async_result_item.ansible_job_id }}"
+      loop: "{{ async_results.results }}"
+      loop_control:
+        loop_var: "async_result_item"
+      register: async_poll_results
+      until: async_poll_results.finished
+      retries: 30
+
 - name: Apply role traefik & netbox
   hosts: testbed-manager.testbed.osism.xyz
   connection: local
@@ -41,7 +90,6 @@
 
   vars:
     ansible_python_interpreter: /usr/bin/python3
-    docker_registry_netbox: osism.harbor.regio.digital
 
   vars_files:
     - /opt/configuration/inventory/group_vars/testbed-managers.yml
@@ -55,9 +103,23 @@
     - /opt/configuration/environments/configuration.yml
     - /opt/configuration/environments/secrets.yml
 
-  roles:
-    - osism.services.traefik
-    - osism.services.netbox
+  tasks:
+    - name: Apply traefik role
+      ansible.builtin.include_role:
+        name: osism.services.traefik
+
+    - name: Try to apply the netbox role
+      block:  # noqa osism-fqcn
+        - name: Apply netbox role
+          ansible.builtin.include_role:
+            name: osism.services.netbox
+      rescue:
+        - name: Collect debug logs
+          ansible.builtin.shell: |
+            docker images
+            docker ps -a
+            docker logs netbox-netbox-1
+          changed_when: true
 
 - name: Apply role manager
   hosts: testbed-manager.testbed.osism.xyz
@@ -66,7 +128,6 @@
 
   vars:
     ansible_python_interpreter: /usr/bin/python3
-    docker_registry_ansible: osism.harbor.regio.digital
     manager_service_restart: false
 
   vars_files:
@@ -78,5 +139,15 @@
     - /opt/configuration/environments/configuration.yml
     - /opt/configuration/environments/secrets.yml
 
-  roles:
-    - osism.services.manager
+  tasks:
+    - name: Try to apply the manager role
+      block:  # noqa osism-fqcn
+        - name: Apply manager role
+          ansible.builtin.include_role:
+            name: osism.services.manager
+      rescue:
+        - name: Collect debug logs
+          ansible.builtin.shell: |
+            docker images
+            docker ps -a
+          changed_when: true

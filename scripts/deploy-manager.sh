@@ -12,20 +12,6 @@ echo
 source /opt/manager-vars.sh
 export INTERACTIVE=false
 
-wait_for_container_healthy() {
-    local max_attempts="$1"
-    local name="$2"
-    local attempt_num=1
-
-    until [[ "$(/usr/bin/docker inspect -f '{{.State.Health.Status}}' $name)" == "healthy" ]]; do
-        if (( attempt_num++ == max_attempts )); then
-            return 1
-        else
-            sleep 5
-        fi
-    done
-}
-
 # deploy manager service
 sh -c '/opt/configuration/scripts/deploy/000-manager-service.sh'
 
@@ -57,14 +43,6 @@ osism apply wait-for-connection -l testbed-nodes -e ireallymeanit=yes
 
 # Restart the manager services to update the /etc/hosts file
 sudo systemctl restart docker-compose@manager
-
-# wait for ara-server service
-if ! wait_for_container_healthy 60 manager-ara-server-1; then
-    # recreate & wait again
-    docker compose --project-directory /opt/manager down -v
-    docker compose --project-directory /opt/manager up -d
-    wait_for_container_healthy 60 manager-ara-server-1
-fi
 
 # NOTE: It is not possible to use nested virtualization @ OTC
 if [[ -e /etc/OTC_region ]]; then

@@ -15,6 +15,15 @@ docker_opts:
   max-concurrent-downloads: 20
 
 ##########################
+# container registries
+
+docker_registry: index.docker.io
+docker_registry_ansible: osism.harbor.regio.digital
+docker_registry_kolla: osism.harbor.regio.digital
+docker_registry_netbox: osism.harbor.regio.digital
+ceph_docker_registry: osism.harbor.regio.digital
+
+##########################
 # operator
 
 operator_user: dragon

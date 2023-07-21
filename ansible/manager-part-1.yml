@@ -5,6 +5,8 @@
 
   vars:
     ansible_ssh_user: dragon
+    docker_namespace_kolla: kolla
+    docker_registry_zuul: osism.harbor.regio.digital
     operator_user: dragon
     repo_path: /home/ubuntu/src/github.com
     version_manager: latest
@@ -43,7 +45,7 @@
 
     - name: Install python-gilt on manager
       become: true
-      ansible.builtin.shell: |
+      ansible.builtin.command: |
           pip3 install --no-cache-dir python-gilt
       when: version_manager != "latest"
       changed_when: true
@@ -55,6 +57,24 @@
         chdir: /opt/configuration
         cmd: MANAGER_VERSION={{ version_manager }} gilt overlay
       when: version_manager != "latest"
+      changed_when: true
+
+    - name: Set container registries
+      ansible.builtin.command:  # noqa: command-instead-of-module
+        chdir: /opt/configuration
+        cmd: "sed -i 's#{{ item }}: .*#{{ item }}: {{ docker_registry_zuul }}#g' /opt/configuration/environments/configuration.yml"
+      changed_when: true
+      # docker_registry is not changed because the images are not provided by us
+      with_items:
+        - ceph_docker_registry
+        - docker_registry_ansible
+        - docker_registry_kolla
+        - docker_registry_netbox
+
+    - name: Set kolla container namespace
+      ansible.builtin.command:  # noqa: command-instead-of-module
+        chdir: /opt/configuration
+        cmd: "sed -i 's#docker_namespace: .*#docker_namespace: {{ docker_namespace_kolla }}#g' /opt/configuration/environments/kolla/configuration.yml"
       changed_when: true
 
     - name: Copy testbed crt

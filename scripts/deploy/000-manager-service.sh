@@ -14,14 +14,6 @@ export INTERACTIVE=false
 if [[ $MANAGER_VERSION == "latest" ]]; then
     /opt/configuration/scripts/set-ceph-version.sh $CEPH_VERSION
     /opt/configuration/scripts/set-openstack-version.sh $OPENSTACK_VERSION
-else
-    # For stable releases, we use the images from quay.io and not
-    # from harbor.services.osism.tech.
-
-    sed -i "s/docker_registry_ansible: .*/docker_registry_ansible: quay.io/g" /opt/configuration/environments/manager/configuration.yml
-    sed -i "s/ceph_docker_registry: .*/ceph_docker_registry: quay.io/g" /opt/configuration/environments/ceph/configuration.yml
-    sed -i "s/docker_registry_kolla: .*/docker_registry_kolla: quay.io/g" /opt/configuration/environments/kolla/configuration.yml
-    sed -i "s/docker_namespace: .*/docker_namespace: osism/g" /opt/configuration/environments/kolla/configuration.yml
 fi
 
 wait_for_container_healthy() {
@@ -38,37 +30,33 @@ wait_for_container_healthy() {
     done
 }
 
-ansible-playbook -i testbed-manager.testbed.osism.xyz, /opt/configuration/ansible/manager-part-3.yml --vault-password-file /opt/configuration/environments/.vault_pass
+ansible-playbook \
+  -i testbed-manager.testbed.osism.xyz, \
+  --vault-password-file /opt/configuration/environments/.vault_pass \
+  /opt/configuration/ansible/manager-part-3.yml
 
 cp /home/dragon/.ssh/id_rsa.pub /opt/ansible/secrets/id_rsa.operator.pub
 
-# wait for ara-server service
-if ! wait_for_container_healthy 60 manager-ara-server-1; then
-    # recreate & wait again
-    docker compose --project-directory /opt/manager down -v
-    docker compose --project-directory /opt/manager up -d
-    wait_for_container_healthy 60 manager-ara-server-1
-fi
-
 # wait for netbox service
 if ! wait_for_container_healthy 60 netbox-netbox-1; then
-    # recreate & wait again
-    docker compose --project-directory /opt/netbox down -v
-    docker compose --project-directory /opt/netbox up -d
-    wait_for_container_healthy 60 netbox-netbox-1
+    # The Netbox integration is not mandatory for the use of the testbed.
+    # Therefore it is ok to skip if the deployment did not work. A separate
+    # job will be created later for the integration tests of the netbox which
+    # will then be built into osism/python-osism.
+    echo The deployment of the Netbox did not work. Skip the Netbox integration.
+else
+    osism netbox import
+    osism netbox init
+    osism netbox manage 1000
+    osism netbox connect 1000 --state a
+
+    osism netbox disable --no-wait testbed-switch-0
+    osism netbox disable --no-wait testbed-switch-1
+    osism netbox disable --no-wait testbed-switch-2
 fi
 
 docker compose --project-directory /opt/manager ps
 docker compose --project-directory /opt/netbox ps
-
-osism netbox import
-osism netbox init
-osism netbox manage 1000
-osism netbox connect 1000 --state a
-
-osism netbox disable --no-wait testbed-switch-0
-osism netbox disable --no-wait testbed-switch-1
-osism netbox disable --no-wait testbed-switch-2
 
 osism apply sshconfig
 osism apply known-hosts
