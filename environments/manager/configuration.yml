@@ -1,11 +1,5 @@
 ---
 ##########################
-# docker registry
-
-docker_registry_ansible: osism.harbor.regio.digital
-docker_registry_netbox: osism.harbor.regio.digital
-
-##########################
 # versions
 
 ceph_version: quincy

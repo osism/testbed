@@ -5,13 +5,15 @@
 
   tasks:
     - name: Wait until service is available
-      ansible.builtin.command: >-
-        docker exec {{ keycloak_service_container_name }} bash -c
-          'until echo > "/dev/tcp/127.0.0.1/8080"
-          do
-            echo "Waiting until Keycloak service is available" && sleep 5;
-          done'
-      changed_when: false
+      ansible.builtin.uri:
+        url: https://keycloak.testbed.osism.xyz/
+        validate_certs: false
+        status_code:
+          - 200
+      register: result
+      until: result.status == 200
+      retries: 30
+      delay: 5
       run_once: true
 
     - name: Log in to Keycloak

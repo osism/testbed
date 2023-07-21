@@ -59,6 +59,7 @@
     name: testbed-deploy-stable
     parent: testbed-deploy
     vars:
+      docker_namespace_kolla: "kolla/release"
       manager_version: "5.2.0"
       refstack: true
     nodeset: testbed-orchestrator
@@ -71,6 +72,8 @@
     # be explictly bumped in the tenant configuration
     timeout: 16200
     vars:
+      docker_namespace_kolla: "kolla/release"
+      docker_namespace_kolla_next: "kolla/release"
       manager_version: 4.3.0
       manager_version_next: 5.2.0
     nodeset: testbed-orchestrator
@@ -83,6 +86,8 @@
     # be explictly bumped in the tenant configuration
     timeout: 16200
     vars:
+      docker_namespace_kolla: "kolla/release"
+      docker_namespace_kolla_next: "kolla"
       manager_version: 5.2.0
       # NOTE: Update to the rolling tag to always ensure that an update to
       #       the next release will be possible.

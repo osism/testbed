@@ -1,10 +1,5 @@
 ---
 ##########################
-# docker registry
-
-ceph_docker_registry: osism.harbor.regio.digital
-
-##########################
 # generic
 
 fsid: 11111111-1111-1111-1111-111111111111
