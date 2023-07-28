@@ -49,7 +49,6 @@ ceph_conf_overrides:
     "rgw keystone admin tenant": "service"
     "rgw keystone admin user": "swift"
     "rgw keystone api version": "3"
-    "rgw keystone revocation interval": "900"
     "rgw keystone url": "https://api-int.testbed.osism.xyz:5000"
     "rgw keystone verify ssl": "false"
     "rgw keystone implicit tenants": "true"
