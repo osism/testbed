@@ -1,0 +1,22 @@
+---
+- name: Pre play for terraform-validate
+  hosts: all
+
+  vars:
+    terraform_version: 1.5.4 # renovate: datasource=github-tags depName=hashicorp/terraform
+    terraform_download_url: "https://releases.hashicorp.com/terraform/{{ terraform_version }}/terraform_{{ terraform_version }}_linux_amd64.zip"
+
+  tasks:
+    - name: Install unzip package
+      become: true
+      ansible.builtin.apt:
+        name: unzip
+        state: present
+        update_cache: true
+
+    - name: Download terraform
+      ansible.builtin.unarchive:
+        src: "{{ terraform_download_url }}"
+        dest: "{{ ansible_user_dir }}"
+        remote_src: true
+        mode: "0755"

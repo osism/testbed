@@ -1,0 +1,21 @@
+---
+- name: Validate terraform files
+  hosts: all
+
+  vars:
+    basepath: "{{ ansible_user_dir }}/src/github.com/osism/testbed"
+    terraform_path: "{{ basepath }}/terraform"
+    terraform_binary: "{{ ansible_user_dir }}/terraform"
+
+  tasks:
+    - name: Validate terraform files
+      ansible.builtin.command:
+        chdir: "{{ terraform_path }}"
+        cmd: "make ENVIRONMENT=default TERRAFORM={{ terraform_binary }} validate"
+      changed_when: true
+
+    - name: Check syntax of terraform files
+      ansible.builtin.command:
+        chdir: "{{ terraform_path }}"
+        cmd: "{{ terraform_binary }} fmt -check"
+      changed_when: true

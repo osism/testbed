@@ -141,25 +141,32 @@
     parent: testbed-upgrade
     nodeset: testbed-orchestrator-wavestack
 
+- job:
+    name: testbed-terraform-validate
+    pre-run: playbooks/pre-terraform-validate.yml
+    run: playbooks/terraform-validate.yml
+
 - project:
     merge-mode: squash-merge
     check:
       jobs:
         - ansible-lint
-        - yamllint
         - flake8
-        - testbed-deploy
-        - testbed-deploy-ceph
-        - testbed-deploy-stable
-        - testbed-update-stable
-        - testbed-upgrade
-        - testbed-upgrade-ceph
-        - testbed-upgrade-stable
+        - testbed-terraform-validate
+        - yamllint
+        #- testbed-deploy
+        #- testbed-deploy-ceph
+        #- testbed-deploy-stable
+        #- testbed-update-stable
+        #- testbed-upgrade
+        #- testbed-upgrade-ceph
+        #- testbed-upgrade-stable
     gate:
       jobs:
         - ansible-lint
         - yamllint
         - flake8
+        - testbed-terraform-validate
         - testbed-deploy:
             branches: main
         - testbed-deploy-stable:
@@ -183,3 +190,4 @@
         - ansible-lint
         - yamllint
         - flake8
+        - testbed-terraform-validate
