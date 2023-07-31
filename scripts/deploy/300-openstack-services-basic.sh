@@ -17,6 +17,10 @@ osism apply cinder
 osism apply designate
 osism apply octavia
 
+if [[ $MANAGER_VERSION == "latest" ]]; then
+    osism apply magnum
+fi
+
 if [[ "$REFSTACK" == "false" ]]; then
     osism apply barbican
 fi
