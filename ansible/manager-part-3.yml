@@ -43,20 +43,22 @@
   gather_facts: true
 
   vars:
-    images:
+    images_manager:
       - "{{ ara_server_image }}"
       - "{{ ara_server_mariadb_image }}"
       - "{{ ceph_ansible_image }}"
       - "{{ inventory_reconciler_image }}"
       - "{{ kolla_ansible_image }}"
       - "{{ manager_redis_image }}"
-      - "{{ netbox_image }}"
       - "{{ osism_ansible_image }}"
       - "{{ osism_image }}"
       - "{{ osism_netbox_image }}"
+      - "{{ vault_image }}"
+
+    images_traefik_netbox:
+      - "{{ netbox_image }}"
       - "{{ postgres_image }}"
       - "{{ traefik_image }}"
-      - "{{ vault_image }}"
 
   vars_files:
     - /opt/configuration/environments/manager/configuration.yml
@@ -64,16 +66,24 @@
     - /opt/configuration/environments/manager/images.yml
 
   tasks:
-    - name: Pull images
+    - name: Pull traefik & netbox images
       community.docker.docker_image:
         name: "{{ item }}"
         source: pull
-      async: 120
+      async: 600
       poll: 0
-      loop: "{{ images }}"
+      loop: "{{ images_traefik_netbox }}"
       register: async_results
 
-    - name: Check pull status
+    - name: Pull manager images
+      community.docker.docker_image:
+        name: "{{ item }}"
+        source: pull
+      async: 600
+      poll: 0
+      loop: "{{ images_manager }}"
+
+    - name: Check pull status of traefik & netbox images
       ansible.builtin.async_status:
         jid: "{{ async_result_item.ansible_job_id }}"
       loop: "{{ async_results.results }}"
