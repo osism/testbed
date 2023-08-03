@@ -5,7 +5,7 @@
   vars:
     basepath: "{{ ansible_user_dir }}/src/github.com/osism/testbed"
     terraform_path: "{{ basepath }}/terraform"
-    terragrunt_version: v0.48.5 # renovate: datasource=github-releases depName=gruntwork-io/terragrunt
+    terragrunt_version: v0.48.6 # renovate: datasource=github-releases depName=gruntwork-io/terragrunt
     terragrunt_download_url: "https://github.com/gruntwork-io/terragrunt/releases/download/{{ terragrunt_version }}/terragrunt_linux_amd64"
     terraform_version: 1.5.4 # renovate: datasource=github-tags depName=hashicorp/terraform
     terraform_download_url: "https://releases.hashicorp.com/terraform/{{ terraform_version }}/terraform_{{ terraform_version }}_linux_amd64.zip"
