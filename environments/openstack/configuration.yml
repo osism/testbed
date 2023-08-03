@@ -4,3 +4,5 @@
 refstack_flavors:
   - SCS-1V-4-10
   - SCS-2V-4-10
+
+refstack_guideline: "2022.11"
