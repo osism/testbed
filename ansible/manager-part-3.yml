@@ -75,14 +75,6 @@
       loop: "{{ images_traefik_netbox }}"
       register: async_results
 
-    - name: Pull manager images
-      community.docker.docker_image:
-        name: "{{ item }}"
-        source: pull
-      async: 600
-      poll: 0
-      loop: "{{ images_manager }}"
-
     - name: Check pull status of traefik & netbox images
       ansible.builtin.async_status:
         jid: "{{ async_result_item.ansible_job_id }}"
@@ -92,6 +84,14 @@
       register: async_poll_results
       until: async_poll_results.finished
       retries: 30
+
+    - name: Pull manager images
+      community.docker.docker_image:
+        name: "{{ item }}"
+        source: pull
+      async: 600
+      poll: 0
+      loop: "{{ images_manager }}"
 
 - name: Apply role traefik & netbox
   hosts: testbed-manager.testbed.osism.xyz
