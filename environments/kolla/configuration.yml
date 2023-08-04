@@ -93,6 +93,9 @@ ironic_cleaning_network: "public"
 # ceilometer
 enable_ceilometer_prometheus_pushgateway: "yes"
 ceilometer_prometheus_pushgateway_host: "testbed-manager.testbed.osism.xyz"
+enable_metering: "yes"
+ceilometer_metering_pushgateway_host: localhost
+ceilometer_metering_pushgateway_port: 8088
 
 ##########################################################
 # external ceph
