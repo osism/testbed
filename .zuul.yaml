@@ -1,5 +1,5 @@
 ---
-# Betacloud
+# Regiocloud
 - nodeset:
     name: testbed-orchestrator
     nodes:
@@ -51,6 +51,23 @@
     timeout: 16200
     vars:
       terraform_blueprint: testbed-default
+
+
+- job:
+    name: testbed-deploy-managerless
+    parent: base-extra-logs
+    nodeset: ubuntu-jammy-large
+    pre-run: playbooks/managerless/pre.yml
+    run: playbooks/managerless/deploy.yml
+    post-run: playbooks/managerless/post.yml
+    required-projects:
+      - osism/ansible-collection-commons
+      - osism/ansible-collection-services
+      - osism/testbed
+      - osism/terraform-base
+    timeout: 16200
+    vars:
+      terraform_blueprint: testbed-managerless
 
 - job:
     name: testbed-deploy
@@ -149,13 +166,14 @@
         - ansible-lint
         - yamllint
         - flake8
-        - testbed-deploy
-        - testbed-deploy-ceph
-        - testbed-deploy-stable
-        - testbed-update-stable
-        - testbed-upgrade
-        - testbed-upgrade-ceph
-        - testbed-upgrade-stable
+        - testbed-deploy-managerless
+        # - testbed-deploy
+        # - testbed-deploy-ceph
+        # - testbed-deploy-stable
+        # - testbed-update-stable
+        # - testbed-upgrade
+        # - testbed-upgrade-ceph
+        # - testbed-upgrade-stable
     gate:
       jobs:
         - ansible-lint

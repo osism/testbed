@@ -1,0 +1,4 @@
+---
+version_ceph: quincy
+version_manager: latest
+version_openstack: "2023.1"

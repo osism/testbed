@@ -1,0 +1,66 @@
+---
+- name: Run local preparations
+  hosts: localhost
+  connection: local
+
+  tasks:
+    # shell required because of: command module does not accept
+    # setting environment variables inline.
+    - name: Sync configuration with generics  # noqa: command-instead-of-shell
+      ansible.builtin.shell:
+        chdir: /opt/configuration
+        cmd: MANAGER_VERSION={{ version_manager }} gilt overlay
+      changed_when: true
+
+    - name: Disable netbox integration
+      ansible.builtin.command:
+        cmd: /opt/configuration/scripts/disable-netbox.sh
+      changed_when: true
+
+- name: Deploy required services
+  hosts: localhost
+  connection: local
+
+  vars:
+    docker_compose_install_type: package
+    docker_facts: false
+
+  roles:
+    - role: osism.commons.timezone
+    - role: osism.services.docker
+    - role: osism.commons.docker_compose
+
+- name: Copy custom facts
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+    apt_lock_timeout: 300
+
+  tasks:
+    - name: Install required packages
+      become: true
+      ansible.builtin.apt:
+        name: python3-netifaces
+        state: present
+        lock_timeout: "{{ apt_lock_timeout }}"
+
+    - name: Create custom facts directory
+      become: true
+      ansible.builtin.file:
+        path: /etc/ansible/facts.d
+        state: directory
+        owner: root
+        group: root
+        mode: 0755
+
+    - name: Copy fact files
+      become: true
+      ansible.builtin.copy:
+        src: /opt/configuration/environments/custom/files/testbed_network_devices.fact
+        dest: /etc/ansible/facts.d/testbed_network_devices.fact
+        owner: root
+        group: root
+        mode: 0755

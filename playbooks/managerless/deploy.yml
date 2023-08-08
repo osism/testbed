@@ -1,0 +1,162 @@
+---
+- name: Create infrastructure
+  hosts: all
+
+  vars:
+    cloud_env: managerless
+
+    ansible_path: "{{ zuul.project.src_dir }}/ansible"
+    terraform_path: "{{ zuul.project.src_dir }}/terraform"
+
+    node_0_address_file: "{{ terraform_path }}/.NODE_0_ADDRESS.{{ cloud_env }}"
+    node_1_address_file: "{{ terraform_path }}/.NODE_1_ADDRESS.{{ cloud_env }}"
+    node_2_address_file: "{{ terraform_path }}/.NODE_2_ADDRESS.{{ cloud_env }}"
+
+  tasks:
+    - name: Create infrastructure
+      ansible.builtin.command:
+        chdir: "{{ terraform_path }}"
+        cmd: make ENVIRONMENT={{ cloud_env }} create
+      changed_when: true
+
+    - name: Get ssh keypair from terraform environment
+      ansible.builtin.command:
+        chdir: "{{ terraform_path }}"
+        cmd: "make ENVIRONMENT={{ cloud_env }} .id_rsa.{{ cloud_env }}"
+      changed_when: true
+
+    - name: Fetch node_0_host address
+      ansible.builtin.command: cat "{{ node_0_address_file }}"
+      register: node_0_address
+      changed_when: true
+
+    - name: Fetch node_1_host address
+      ansible.builtin.command: cat "{{ node_1_address_file }}"
+      register: node_1_address
+      changed_when: true
+
+    - name: Fetch node_2_host address
+      ansible.builtin.command: cat "{{ node_2_address_file }}"
+      register: node_2_address
+      changed_when: true
+
+    - name: Set node_0_host address
+      ansible.builtin.set_fact:
+        node_0_host: "{{ node_0_address.stdout | split('=') | last }}"
+
+    - name: Set node_1_host address
+      ansible.builtin.set_fact:
+        node_1_host: "{{ node_1_address.stdout | split('=') | last }}"
+
+    - name: Set node_2_host address
+      ansible.builtin.set_fact:
+        node_2_host: "{{ node_2_address.stdout | split('=') | last }}"
+
+    - name: Wait for hosts
+      ansible.builtin.wait_for:
+        port: 22
+        host: "{{ item }}"
+        search_regex: OpenSSH
+        delay: 10
+      loop:
+        - "{{ node_0_host }}"
+        - "{{ node_1_host }}"
+        - "{{ node_2_host }}"
+
+    - name: Fetch ssh hostkeys
+      ansible.builtin.shell: "ssh-keyscan {{ item }} >> {{ ansible_user_dir }}/.ssh/known_hosts"
+      changed_when: true
+      loop:
+        - "{{ node_0_host }}"
+        - "{{ node_1_host }}"
+        - "{{ node_2_host }}"
+
+    - name: Get ssh keypair from terraform environment
+      ansible.builtin.shell:
+        cmd: cp {{ terraform_path }}/.id* {{ ansible_path }}
+      changed_when: true
+
+- name: Create configuration repository
+  hosts: all
+
+  vars:
+    operator_group: dragon
+    operator_user: dragon
+
+  tasks:
+    - name: Run managerless part 1
+      ansible.builtin.command: |
+        ansible-playbook -i localhost, /tmp/managerless-part-1.yml
+      changed_when: true
+
+    - name: Install ansible collections
+      become: true
+      become_user: "{{ operator_user }}"
+      ansible.builtin.command: |
+        ansible-galaxy collection install {{ item }}
+      loop:
+        - osism.commons
+        - osism.services
+      changed_when: true
+
+    - name: Create configuration directory
+      become: true
+      ansible.builtin.file:
+        state: directory
+        path: /opt/configuration
+        mode: '0755'
+        owner: "{{ operator_user }}"
+
+    # we run local synchronisation here
+    - name: Sync configuration repository  # noqa: command-instead-of-module
+      become: true
+      ansible.builtin.command: "rsync -avz {{ zuul.project.src_dir }}/ /opt/configuration"
+      changed_when: true
+
+    - name: Change ownership of /opt/configuration
+      become: true
+      ansible.builtin.file:
+        path: /opt/configuration
+        owner: "{{ operator_user }}"
+        group: "{{ operator_group }}"
+        recurse: true
+
+- name: Deploy manager
+  hosts: all
+
+  vars:
+    operator_user: dragon
+
+  tasks:
+    - name: Run managerless part 2
+      become: true
+      become_user: "{{ operator_user }}"
+      ansible.builtin.command: |
+        ansible-playbook \
+          -e @/opt/configuration/playbooks/managerless/vars/versions.yml \
+          -e @/opt/configuration/environments/manager/images.yml \
+          -e @/opt/configuration/environments/manager/configuration.yml \
+          -e @/opt/configuration/environments/images.yml \
+          -e @/opt/configuration/environments/configuration.yml \
+          -i localhost, \
+          /tmp/managerless-part-2.yml
+      changed_when: true
+
+    - name: Run managerless part 3
+      become: true
+      become_user: "{{ operator_user }}"
+      ansible.builtin.command: |
+        ansible-playbook \
+          -e @/opt/configuration/playbooks/managerless/vars/versions.yml \
+          -e @/opt/configuration/inventory/group_vars/testbed-managers.yml \
+          -e @/opt/configuration/inventory/host_vars/testbed-manager.testbed.osism.xyz.yml \
+          -e @/opt/configuration/environments/manager/images.yml \
+          -e @/opt/configuration/environments/manager/configuration.yml \
+          -e @/opt/configuration/environments/manager/secrets.yml \
+          -e @/opt/configuration/environments/images.yml \
+          -e @/opt/configuration/environments/configuration.yml \
+          -e @/opt/configuration/environments/secrets.yml \
+          -i testbed-manager.testbed.osism.xyz, \
+          --vault-password-file /opt/configuration/environments/.vault_pass \
+          /tmp/managerless-part-3.yml
+      changed_when: true
