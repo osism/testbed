@@ -1,0 +1,16 @@
+---
+- name: Cleanup play
+  hosts: all
+
+  vars:
+    basepath: "{{ ansible_user_dir }}/src/github.com/osism/testbed"
+    cloud_env: managerless
+
+  tasks:
+    - name: Clean the cloud environment
+      ansible.builtin.shell:
+        cmd: |
+          OS_CLOUD={{ cloud_env }} ~/venv/bin/python3 cleanup.py
+        chdir: "{{ basepath }}/terraform/scripts"
+      failed_when: false
+      changed_when: true

@@ -1,0 +1,121 @@
+---
+- name: Prepare deployment
+  hosts: all
+
+  vars:
+    basepath: "{{ ansible_user_dir }}/src/github.com/osism/testbed"
+    terraform_path: "{{ basepath }}/terraform"
+    terraformbase_path: "{{ ansible_user_dir }}/src/github.com/osism/terraform-base"
+    terraform_path: "{{ zuul.project.src_dir }}/terraform"
+    terraform_version: 1.5.7  # renovate: datasource=github-tags depName=hashicorp/terraform
+
+    cloud_env: managerless
+    cleanup: false
+
+  tasks:
+    - name: Install python
+      ansible.builtin.include_role:
+        name: "{{ item }}"
+      loop:
+        - ensure-python
+        - ensure-pip
+
+    - name: Install required packages
+      become: true
+      ansible.builtin.package:
+        name: "{{ item }}"
+      loop:
+        - unzip
+
+    - name: Install terraform
+      ansible.builtin.include_role:
+        name: ensure-terraform
+
+    - name: Copy terraform binary
+      become: true
+      ansible.builtin.copy:
+        src: "{{ ansible_user_dir }}/.local/bin/terraform"
+        dest: "/usr/bin/terraform"
+        mode: 0755
+        remote_src: true
+
+    # we run local synchronisation here
+    - name: Sync terraform blueprint  # noqa: command-instead-of-module
+      ansible.builtin.command: "rsync -avz {{ terraformbase_path }}/{{ terraform_blueprint }}/ {{ terraform_path }}"
+      changed_when: true
+
+    - name: Copy backend.tf file
+      ansible.builtin.template:
+        src: backend.tf.j2
+        dest: "{{ terraform_path }}/backend.tf"
+        mode: 0644
+
+    # - name: Copy backend.env file
+    #   ansible.builtin.template:
+    #     src: backend.env.j2
+    #     dest: "{{ terraform_path }}/backend.env"
+
+    - name: Install python requirements
+      become: true
+      ansible.builtin.pip:
+        name: "{{ item }}"
+      loop:
+        - ansible
+        - openstacksdk
+        - python-gilt
+
+    - name: Install ansible collections
+      ansible.builtin.command: |
+        ansible-galaxy collection install {{ item }}
+      loop:
+        - osism.commons
+        - osism.services
+      changed_when: true
+
+    # NOTE: In future, an app credential valid for only a few minutes will
+    #       be generated in advance and made available on a share. The URL
+    #       to the share itself is also generated in advance, but is valid
+    #       indefinitely. The URL itself comes from a central vault service.
+    #       share.regio.digital will also be replaced by the Vault service.
+    - name: Get clouds.yaml file  # noqa command-instead-of-module
+      ansible.builtin.shell: |
+        curl -L https://share.regio.digital/f/65630834ebe6494e8ade/?dl=1 > {{ terraform_path }}/clouds.yaml
+      no_log: true
+      changed_when: true
+
+    - name: Get backend.env file  # noqa command-instead-of-module
+      ansible.builtin.shell: |
+        curl -L https://share.regio.digital/f/f6d07910300d454495b0/?dl=1 > {{ terraform_path }}/backend.env
+      no_log: true
+      changed_when: true
+
+    - name: Clean the cloud environment
+      ansible.builtin.shell:
+        cmd: |
+          OS_CLOUD={{ cloud_env }} python3 scripts/cleanup.py
+        chdir: "{{ terraform_path }}"
+      failed_when: false
+      changed_when: true
+      when: cleanup|bool
+
+    - name: Remove manager.tf file
+      ansible.builtin.file:
+        path: "{{ terraform_path }}/manager.tf"
+        state: absent
+
+    - name: Copy local deploy playbooks
+      ansible.builtin.copy:
+        src: "{{ zuul.project.src_dir }}/playbooks/managerless/files/{{ item }}"
+        remote_src: true
+        dest: "/tmp/{{ item }}"
+        mode: 0644
+      loop:
+        - managerless-part-1.yml
+        - managerless-part-2.yml
+        - managerless-part-3.yml
+
+    # Because of remote_src it is not possible to use ansible.builtin.template for this task
+    - name: Set cloud_env in managerless-part-3.yml
+      ansible.builtin.command:  # noqa: command-instead-of-module
+        cmd: "sed -i 's/cloud_env: .*/cloud_env: {{ cloud_env }}/g' /tmp/managerless-part-3.yml"
+      changed_when: true
