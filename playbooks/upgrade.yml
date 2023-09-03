@@ -4,7 +4,7 @@
   vars:
     version_ceph: "{{ ceph_version | default('pacific') }}"
     version_manager: "{{ manager_version | default('latest') }}"
-    version_openstack: "{{ openstack_version | default('yoga') }}"
+    version_openstack: "{{ openstack_version | default('zed') }}"
     namespace_kolla: "{{ docker_namespace_kolla | default('kolla') }}"
 
     run_bootstrap: false
@@ -20,7 +20,7 @@
 
     version_ceph_next: "{{ ceph_version_next | default('quincy') }}"
     version_manager_next: "{{ manager_version_next | default('latest') }}"
-    version_openstack_next: "{{ openstack_version_next | default('zed') }}"
+    version_openstack_next: "{{ openstack_version_next | default('2023.1') }}"
     namespace_kolla_next: "{{ docker_namespace_kolla_next | default('kolla') }}"
 
     run_bootstrap: true
