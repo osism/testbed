@@ -1,12 +1,12 @@
 ---
 sources:
-    - name: event_source # 'source name'
+    - name: event_source # 'Names the list of events we want to use.'
       events:
           - "*" # 'event filter'
       sinks:
-          - event_sink # 'sink name'
+          - event_sink # 'The sink on which the metrics should be pushed to.'
 sinks:
-    - name: event_sink # 'sink name'
-      publishers: # 'list of publishers'
+    - name: event_sink # 'The name of the sink we want to refere to.'
+      publishers: # 'The list of targets we want to push to.'
           - notifier://
           - http://localhost:8088/post_json
