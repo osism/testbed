@@ -9,4 +9,7 @@ sinks:
     - name: event_sink # 'The name of the sink we want to refere to.'
       publishers: # 'The list of targets we want to push to.'
           - notifier://
-          - http://localhost:8088/post_json
+{% if enable_metering | bool %}
+          - http://{{ ceilometer_metering_pushgateway_host }}:{{ ceilometer_metering_pushgateway_port }}/post_json
+{% endif %}
+
