@@ -38,7 +38,7 @@ sed -i -e "s/CHANGEME - dragon private key/GEQ5eWshKW+4ZhXMcWkAAbqzj7QA9G64oBFB3
 osism apply --environment custom workarounds
 
 # reboot nodes
-osism apply reboot -l testbed-nodes -e ireallymeanit=yes
+osism apply reboot -l testbed-primary-nodes,testbed-nodes -e ireallymeanit=yes
 osism apply wait-for-connection -l testbed-nodes -e ireallymeanit=yes
 
 # Restart the manager services to update the /etc/hosts file

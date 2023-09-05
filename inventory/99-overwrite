@@ -5,7 +5,7 @@
 #       without.
 
 [ceph-mds:children]
-ceph-resource
+ceph-control
 
 [ceph-rgw:children]
-ceph-resource
+ceph-control

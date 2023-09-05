@@ -13,7 +13,10 @@ fi
 MANAGER_VERSION=$(docker inspect --format '{{ index .Config.Labels "org.opencontainers.image.version"}}' osism-ansible)
 if [[ "$REFSTACK" == "false" ]]; then
     if [[ $MANAGER_VERSION =~ ^4\.[0-9]\.[0-9]$ ]]; then
-        osism apply ceph-base
+        osism apply ceph-mons
+        osism apply ceph-mgrs
+        osism apply ceph-osds
+        osism apply ceph-crash
         osism apply ceph-mdss
         osism apply ceph-rgws
     else
@@ -21,7 +24,10 @@ if [[ "$REFSTACK" == "false" ]]; then
     fi
 else
     if [[ $MANAGER_VERSION =~ ^4\.[0-9]\.[0-9]$ ]]; then
-        osism apply ceph-base
+        osism apply ceph-mons
+        osism apply ceph-mgrs
+        osism apply ceph-osds
+        osism apply ceph-crash
     else
         osism apply ceph
     fi
