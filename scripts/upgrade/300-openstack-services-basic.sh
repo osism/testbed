@@ -17,3 +17,9 @@ task_ids+=" "$(osism apply --no-wait --format script designate -e kolla_action=u
 task_ids+=" "$(osism apply --no-wait --format script octavia -e kolla_action=upgrade 2>&1)
 
 osism wait --output --format script --delay 2 $task_ids
+
+# We have only been testing Magnum since the OSISM 6.0.0 release. Accordingly, an upgrade
+# test only makes sense when upgrading to latest. Can be adjusted with OSISM 7.
+if [[ $MANAGER_VERSION == "latest" ]]; then
+    osism apply magnum -e kolla_action=upgrade
+fi
