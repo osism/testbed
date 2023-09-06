@@ -210,3 +210,19 @@
             --new-password=password
       when: "'alice' not in available_users"
       changed_when: true
+
+
+    - name: Copy testbed cert to Keycloak container
+      ansible.builtin.command: >-
+        docker cp /opt/traefik/certificates/default.cert {{ keycloak_service_container_name }}:/traefik.cert
+      when: "'alice' not in available_users"
+      changed_when: true
+
+
+    - name: Keytool import traefik cert
+      ansible.builtin.command: >-
+        docker exec -u root {{ keycloak_service_container_name }} keytool 
+          -cacerts -importcert -alias traefik -file /traefik.cert
+          -storepass "changeit" -noprompt
+      when: "'alice' not in available_users"
+      changed_when: true
