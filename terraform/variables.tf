@@ -37,6 +37,11 @@ variable "flavor_manager" {
   default = "SCS-4V:8:50"
 }
 
+variable "volume_type" {
+  type    = string
+  default = "__DEFAULT__"
+}
+
 variable "availability_zone" {
   type    = string
   default = "south-2"
