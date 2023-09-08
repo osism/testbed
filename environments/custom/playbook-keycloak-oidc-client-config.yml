@@ -79,10 +79,10 @@
             --set publicClient=true
             --set secret="{{ keystone_container_federation_oidc_client_secret }}"
             --set 'attributes."pkce.code.challenge.method"="S256"'
-            --set 'attributes."post.logout.redirect.uris"="https://api.testbed.osism.xyz/auth/logout/"'
+            --set 'attributes."post.logout.redirect.uris"="https://api.testbed.osism.xyz:5000/redirect_uri?logout=https://api.testbed.osism.xyz:5000/logout"'
             --set 'attributes."backchannel.logout.revoke.offline.tokens"="true"'
             --set 'attributes."backchannel.logout.session.required"="true"'
-            --set 'attributes."backchannel.logout.url"="https://api.testbed.osism.xyz:5000/redirect_uri/?logout=backchannel"'
+            --set 'attributes."backchannel.logout.url"="https://api.testbed.osism.xyz:5000/redirect_uri?logout=backchannel"'
       when: keystone_client_id not in available_clients
       run_once: true
       no_log: true
@@ -208,5 +208,21 @@
           set-password --target-realm "{{ keycloak_realm }}"
             --username=alice
             --new-password=password
+      when: "'alice' not in available_users"
+      changed_when: true
+
+
+    - name: Copy testbed cert to Keycloak container
+      ansible.builtin.command: >-
+        docker cp /opt/traefik/certificates/default.cert {{ keycloak_service_container_name }}:/traefik.cert
+      when: "'alice' not in available_users"
+      changed_when: true
+
+
+    - name: Keytool import traefik cert
+      ansible.builtin.command: >-
+        docker exec -u root {{ keycloak_service_container_name }} keytool 
+          -cacerts -importcert -alias traefik -file /traefik.cert
+          -storepass "changeit" -noprompt
       when: "'alice' not in available_users"
       changed_when: true
