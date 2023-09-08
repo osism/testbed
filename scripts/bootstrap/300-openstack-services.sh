@@ -16,7 +16,6 @@ if [[ $MANAGER_VERSION =~ ^4\.[0-9]\.[0-9]$ ]]; then
     osism apply --environment openstack bootstrap-images
 else
     osism manage images --cloud admin --filter Cirros
-    osism manage images --cloud admin --filter "Ubuntu 22.04 Minimal"
 fi
 
 if [[ "$REFSTACK" == "false" ]]; then
