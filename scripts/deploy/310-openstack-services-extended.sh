@@ -7,7 +7,6 @@ osism apply gnocchi
 osism apply prometheus
 osism apply ceilometer
 osism apply heat
-osism apply senlin
 
 MANAGER_VERSION=$(docker inspect --format '{{ index .Config.Labels "org.opencontainers.image.version" }}' osism-ansible)
 OPENSTACK_VERSION=$(docker inspect --format '{{ index .Config.Labels "de.osism.release.openstack" }}' kolla-ansible)
@@ -19,4 +18,8 @@ elif [[ $OPENSTACK_VERSION == "yoga" ]]; then
     echo "Skip Skyline deployment before OpenStack Zed"
 else
     osism apply skyline
+fi
+
+if [[ $MANAGER_VERSION =~ ^6\.[0-9]\.[0-9][b-z]?$ || $MANAGER_VERSION == "latest" ]]; then
+    osism apply senlin
 fi
