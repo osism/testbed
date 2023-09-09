@@ -6,8 +6,9 @@ netbox_inventory_status: Active
 netbox_inventory_device_role: generic-node
 netbox_inventory_tags:
   - generic
-  - compute
-  - ceph-resource
+  - control
+  - network
+  - ceph-control
 
 ##########################################################
 # docker
@@ -57,13 +58,11 @@ network_dispatcher_scripts:
 # kolla
 
 network_interface: "{{ ansible_local.testbed_network_devices.management }}"
+neutron_external_interface: vxlan0
+octavia_network_interface: ohm0
 
 ##########################################################
 # ceph
 
 monitor_address: "192.168.16.{{ node_id }}"
-
-devices: "{{ ansible_local.testbed_ceph_devices }}"
-
-# NOTE: to use the third block device for Ceph change this parameter as follows
-# devices: "{{ ansible_local.testbed_ceph_devices_all }}"
+radosgw_address: "192.168.16.{{ node_id }}"

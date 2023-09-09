@@ -9,10 +9,6 @@ fsid: 11111111-1111-1111-1111-111111111111
 
 dmcrypt: true
 
-# NOTE: It is common to place more than 1 OSD on flash devices. To simulate
-#       upgrades etc. with this approach this is also used here.
-osds_per_device: 2
-
 ##########################
 # network
 

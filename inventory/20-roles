@@ -7,6 +7,7 @@
 [generic:children]
 testbed-managers
 testbed-nodes
+testbed-primary-nodes
 
 [manager:children]
 testbed-managers
@@ -27,7 +28,7 @@ testbed-primary-nodes
 testbed-primary-nodes
 
 [ceph-resource:children]
-testbed-primary-nodes
+testbed-nodes
 
 # NOTE: After the initial import of the inventory in the netbox,
 #       the groups in this file can be emptied. The systems are

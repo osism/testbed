@@ -9,15 +9,11 @@ testbed-node-0.testbed.osism.xyz
 testbed-node-1.testbed.osism.xyz
 testbed-node-2.testbed.osism.xyz
 
-[testbed-secondary-nodes]
-#testbed-node-3.testbed.osism.xyz
-#testbed-node-4.testbed.osism.xyz
-#testbed-node-5.testbed.osism.xyz
-#testbed-node-6.testbed.osism.xyz
-#testbed-node-7.testbed.osism.xyz
-#testbed-node-8.testbed.osism.xyz
-#testbed-node-9.testbed.osism.xyz
-
-[testbed-nodes:children]
-testbed-primary-nodes
-testbed-secondary-nodes
+[testbed-nodes]
+testbed-node-3.testbed.osism.xyz
+testbed-node-4.testbed.osism.xyz
+testbed-node-5.testbed.osism.xyz
+# testbed-node-6.testbed.osism.xyz
+# testbed-node-7.testbed.osism.xyz
+# testbed-node-8.testbed.osism.xyz
+# testbed-node-9.testbed.osism.xyz

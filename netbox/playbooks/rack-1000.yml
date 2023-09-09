@@ -130,10 +130,8 @@
             - managed-by-bifrost
             - generic
             - control
-            - compute
             - network
             - ceph-control
-            - ceph-resource
         state: present
 
     - name: Manage testbed-node-1
@@ -158,10 +156,8 @@
             - managed-by-bifrost
             - generic
             - control
-            - compute
             - network
             - ceph-control
-            - ceph-resource
         state: present
 
     - name: Manage testbed-node-2
@@ -186,10 +182,8 @@
             - managed-by-bifrost
             - generic
             - control
-            - compute
             - network
             - ceph-control
-            - ceph-resource
         state: present
 
     - name: Manage testbed-node-3
@@ -214,6 +208,7 @@
             - managed-by-ironic
             - generic
             - compute
+            - ceph-resource
         state: present
 
     - name: Manage testbed-node-4
@@ -238,6 +233,7 @@
             - managed-by-ironic
             - generic
             - compute
+            - ceph-resource
         state: present
 
     - name: Manage testbed-node-5
@@ -262,6 +258,7 @@
             - managed-by-ironic
             - generic
             - compute
+            - ceph-resource
         state: present
 
     - name: Manage testbed-node-6
@@ -285,7 +282,7 @@
             - managed-by-osism
             - managed-by-ironic
             - generic
-            - ceph-storage
+            - ceph-resource
         state: present
 
     - name: Manage testbed-node-7
@@ -309,7 +306,7 @@
             - managed-by-osism
             - managed-by-ironic
             - generic
-            - ceph-storage
+            - ceph-resource
         state: present
 
     - name: Manage testbed-node-8
@@ -333,5 +330,5 @@
             - managed-by-osism
             - managed-by-ironic
             - generic
-            - ceph-storage
+            - ceph-resource
         state: present
