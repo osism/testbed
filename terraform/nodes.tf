@@ -27,4 +27,5 @@ resource "openstack_blockstorage_volume_v3" "node_base_volume" {
   name              = "${var.prefix}-volume-${count.index}-node-base"
   size              = var.volume_size_base
   availability_zone = var.volume_availability_zone
+  volume_type       = var.volume_type
 }
