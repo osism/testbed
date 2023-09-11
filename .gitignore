@@ -31,7 +31,8 @@ secure.yaml
 secure.yml
 terraform.tfstate*
 terraform.tfstate.d
-terraform/*_custom.tf
-terraform/*_override.tf
+terraform/*.tf
 terraform/inventory.*
 terraformrc
+terraform/customisations/
+terraform/overrides/

@@ -30,7 +30,7 @@
     - name: Set facts (Zuul deployment)
       ansible.builtin.set_fact:
         cloud_env: "{{ cloud_envs[hostvars[groups['all'][0]]['nodepool']['label']] }}"
-        terragrunt_tfpath: "{{ ansible_user_dir }}/terraform"
+        terragrunt_tfpath: "{{ ansible_user_dir }}/.local/bin/terraform"
       when: "'nodepool' in hostvars[groups['all'][0]]"
 
     - name: Set facts (local deployment)
