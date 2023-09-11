@@ -9,12 +9,12 @@ variable "prefix" {
 
 variable "image" {
   type    = string
-  default = "Ubuntu 20.04"
+  default = "Ubuntu 22.04"
 }
 
 variable "image_node" {
   type    = string
-  default = "Ubuntu 20.04"
+  default = "Ubuntu 22.04"
 }
 
 variable "volume_size_base" {
@@ -34,27 +34,27 @@ variable "volume_type" {
 
 variable "flavor_node" {
   type    = string
-  default = "SCS-8V:32:50"
+  default = "SCS-8V-32-50"
 }
 
 variable "flavor_manager" {
   type    = string
-  default = "SCS-4V:8:50"
+  default = "SCS-4V-8-50"
 }
 
 variable "availability_zone" {
   type    = string
-  default = "south-2"
+  default = "nova"
 }
 
 variable "volume_availability_zone" {
   type    = string
-  default = "south-2"
+  default = "nova"
 }
 
 variable "network_availability_zone" {
   type    = string
-  default = "south-2"
+  default = "nova"
 }
 
 variable "public" {
@@ -89,7 +89,7 @@ variable "manager_version" {
 
 variable "openstack_version" {
   type    = string
-  default = "zed"
+  default = "2023.1"
 }
 
 variable "number_of_nodes" {
