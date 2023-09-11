@@ -22,11 +22,11 @@ Wavestack        | noris network | **wavestack**
 
 Terraform must be installed and usable. Information on installing Terraform can be found in the
 [Terraform documentation](https://learn.hashicorp.com/tutorials/terraform/install-cli).
-Currently Terraform **>= 1.2.0** is supported.
+Currently Terraform **>= 1.5.x** is supported.
 
 Ansible must be installed and usable. Information on installing Ansible can be found in
 the [Ansible documentation](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html).
-Currently Ansible **>=6.0.0** is supported.
+Currently Ansible **>=8.x.y** is supported.
 
 Furthermore, **make** and **git** must be usable. These are mostly already usable. If not,
 please install them with the package manager of the operating system you are using.

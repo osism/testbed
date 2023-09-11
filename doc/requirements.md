@@ -49,7 +49,7 @@ Ubuntu 22.04 is to be used as the base image for the virtual systems.
 
 Ansible in a current version must be installed and usable on the local workstation.
 
-Currently Ansible 6.x is supported.
+Currently Ansible 8.x is supported.
 
 Information on installing Ansible can be found in the Ansible
 documentation: <https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html>
@@ -58,7 +58,7 @@ documentation: <https://docs.ansible.com/ansible/latest/installation_guide/intro
 
 Terraform in a current version must be installed and usable on the local workstation.
 
-Currently Terraform 1.2.x is supported.
+Currently Terraform 1.5.x is supported.
 
 Information on installing Terraform can be found in the Terraform
 documentation: <https://learn.hashicorp.com/tutorials/terraform/install-cli>
