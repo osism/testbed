@@ -4,11 +4,11 @@
 
   vars:
     basepath: "{{ ansible_user_dir }}/src/github.com/osism/testbed"
+    terraformbase_path: "{{ ansible_user_dir }}/src/github.com/osism/terraform-base"
     terraform_path: "{{ basepath }}/terraform"
     terragrunt_version: v0.50.14 # renovate: datasource=github-releases depName=gruntwork-io/terragrunt
     terragrunt_download_url: "https://github.com/gruntwork-io/terragrunt/releases/download/{{ terragrunt_version }}/terragrunt_linux_amd64"
     terraform_version: 1.5.7 # renovate: datasource=github-tags depName=hashicorp/terraform
-    terraform_download_url: "https://releases.hashicorp.com/terraform/{{ terraform_version }}/terraform_{{ terraform_version }}_linux_amd64.zip"
 
   vars_files:
     - vars/cloud_envs.yml
@@ -32,18 +32,20 @@
       failed_when: false
       changed_when: true
 
-    - name: Download terraform
-      ansible.builtin.unarchive:
-        src: "{{ terraform_download_url }}"
-        dest: "{{ ansible_user_dir }}"
-        remote_src: true
-        mode: "0755"
+    - name: Install terraform
+      ansible.builtin.include_role:
+        name: ensure-terraform
 
     - name: Download terragrunt
       ansible.builtin.get_url:
         url: "{{ terragrunt_download_url }}"
         dest: "{{ ansible_user_dir }}/terragrunt"
         mode: "0755"
+
+    # we run local synchronisation here
+    - name: Sync terraform blueprint  # noqa: command-instead-of-module
+      ansible.builtin.command: "rsync -avz {{ terraformbase_path }}/{{ terraform_blueprint }}/ {{ basepath }}/terraform"
+      changed_when: true
 
     - name: Create local.env file
       ansible.builtin.template:

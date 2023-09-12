@@ -145,8 +145,9 @@ clean: init
 		$(TERRAFORM) workspace delete $(ENVIRONMENT); \
 	fi
 	@rm -f *.auto.tfvars
-	@rm -f *_custom.tf
-	@rm -f *_override.tf
+	@rm -f *.tf
+	@rm -rf customisations
+	@rm -rf overrides
 
 list: init
 	@$(TERRAFORM) state list

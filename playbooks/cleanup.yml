@@ -2,6 +2,9 @@
 - name: Cleanup play
   hosts: all
 
+  vars:
+    basepath: "{{ ansible_user_dir }}/src/github.com/osism/testbed"
+
   vars_files:
     - vars/cloud_envs.yml
 
@@ -16,8 +19,10 @@
         cloud_env: "{{ testbed_environment | default('ci') }}"
       when: "'nodepool' not in hostvars[groups['all'][0]]"
 
-    - name: Make clean
+    - name: Clean the cloud environment
       ansible.builtin.shell:
-        chdir: "{{ ansible_user_dir }}/src/github.com/osism/testbed/terraform"
-        cmd: make ENVIRONMENT={{ cloud_env }} clean 2>&1
+        cmd: |
+          OS_CLOUD={{ cloud_env }} ~/venv/bin/python3 cleanup.py
+        chdir: "{{ basepath }}/terraform/scripts"
+      failed_when: false
       changed_when: true
