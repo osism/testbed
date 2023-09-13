@@ -4,7 +4,7 @@
   vars:
     version_ceph: "{{ ceph_version | default('pacific') }}"
     version_manager: "{{ manager_version | default('latest') }}"
-    version_openstack: "{{ openstack_version | default('zed') }}"
+    version_openstack: "{{ openstack_version | default('2023.1') }}"
     namespace_kolla: "{{ docker_namespace_kolla | default('kolla') }}"
 
     run_bootstrap: false

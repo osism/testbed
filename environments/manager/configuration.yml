@@ -4,7 +4,7 @@
 
 ceph_version: quincy
 manager_version: latest
-openstack_version: zed
+openstack_version: 2023.1
 
 ##########################
 # listener

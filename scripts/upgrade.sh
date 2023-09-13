@@ -8,7 +8,7 @@ echo
 
 export MANAGER_VERSION=${1:-latest}
 CEPH_VERSION=${2:-quincy}
-OPENSTACK_VERSION=${3:-zed}
+OPENSTACK_VERSION=${3:-2023.1}
 KOLLA_NAMESPACE=${4:-kolla}
 
 /opt/configuration/scripts/set-manager-version.sh $MANAGER_VERSION
