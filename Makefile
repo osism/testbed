@@ -4,7 +4,7 @@ ENVIRONMENT ?= regiocloud
 
 VERSION_CEPH ?= quincy
 VERSION_MANAGER ?= latest
-VERSION_OPENSTACK ?= zed
+VERSION_OPENSTACK ?= 2023.1
 
 TERRAFORM ?= terraform
 TERRAFORM_BLUEPRINT ?= testbed-default
