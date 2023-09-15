@@ -19,7 +19,6 @@ use_default_rules: true
 rulesdir:
   - ./.ansible-lint-rules/
 skip_list:
-  - schema[playbook]
   - run-once[task]
   - yaml
 warn_list:
