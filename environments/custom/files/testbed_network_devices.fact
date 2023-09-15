@@ -2,6 +2,7 @@
 
 import json
 import netifaces
+import subprocess
 
 NETWORKS = {
     "external": "192.168.96",
@@ -38,5 +39,20 @@ for interface in netifaces.interfaces():
 
 # NOTE: vxlan is always used as provider network.
 result["provider"] = "vxlan0"
+
+
+# If result is empty, we are probably on the managerless deployment path
+# and use the IP address of the 1st interface accordingly.
+if "management" not in result:
+    r = subprocess.check_output(
+        "hostname --all-ip-addresses | awk '{print $1}'", shell=True
+    )
+    firstip_address = r.decode().strip()
+
+    r = subprocess.check_output(
+        "ip -br -4 a sh | grep %s | awk '{print $1}'" % firstip_address, shell=True
+    )
+    first_network_interface = r.decode().strip()
+    result["management"] = first_network_interface
 
 print(json.dumps(result))
