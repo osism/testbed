@@ -4,39 +4,39 @@ import json
 import netifaces
 
 NETWORKS = {
-    'external': '192.168.96',
-    'management': '192.168.16',
-    'provider': '192.168.112'
+    "external": "192.168.96",
+    "management": "192.168.16",
+    "provider": "192.168.112",
 }
 
 result = {}
 
 for interface in netifaces.interfaces():
-    if interface in ['lo', 'docker0', 'ohm0', 'o-hm0']:
+    if interface in ["lo", "docker0", "ohm0", "o-hm0"]:
         continue
-    elif interface.startswith('br'):
+    elif interface.startswith("br"):
         continue
-    elif interface.startswith('ovs'):
+    elif interface.startswith("ovs"):
         continue
-    elif interface.startswith('vxlan'):
+    elif interface.startswith("vxlan"):
         continue
-    elif interface.startswith('veth'):
+    elif interface.startswith("veth"):
         continue
-    elif interface.startswith('tap'):
+    elif interface.startswith("tap"):
         continue
-    elif interface.startswith('qg'):
+    elif interface.startswith("qg"):
         continue
-    elif interface.startswith('genev'):
+    elif interface.startswith("genev"):
         continue
 
     addrs = netifaces.ifaddresses(interface)
     if netifaces.AF_INET in addrs:
         for addr in addrs[netifaces.AF_INET]:
             for network in NETWORKS:
-                if addr['addr'].startswith(NETWORKS[network]):
+                if addr["addr"].startswith(NETWORKS[network]):
                     result[network] = interface
 
 # NOTE: vxlan is always used as provider network.
-result['provider'] = 'vxlan0'
+result["provider"] = "vxlan0"
 
 print(json.dumps(result))
