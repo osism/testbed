@@ -44,7 +44,7 @@ osism_image: "{{ docker_registry_ansible }}/osism/osism:{{ osism_tag }}"
 osism_netbox_tag: "{{ osism_version|default('latest') }}"
 osism_netbox_image: "{{ docker_registry_ansible }}/osism/osism-netbox:{{ osism_netbox_tag }}"
 
-vault_tag: "1.14.2"
+vault_tag: "1.14.3"
 vault_image: "{{ docker_registry }}/hashicorp/vault:{{ vault_tag }}"
 
 traefik_tag: "v2.10.4"
@@ -55,5 +55,5 @@ traefik_image: "{{ docker_registry }}/library/traefik:{{ traefik_tag }}"
 ceph_ansible_tag: "{{ ceph_version|default('quincy') }}"
 ceph_ansible_image: "{{ docker_registry_ansible|default('quay.io') }}/osism/ceph-ansible:{{ ceph_ansible_tag }}"
 
-kolla_ansible_tag: "{{ openstack_version|default('2023.1') }}"
+kolla_ansible_tag: "{{ openstack_version|default('zed') }}"
 kolla_ansible_image: "{{ docker_registry_ansible|default('quay.io') }}/osism/kolla-ansible:{{ kolla_ansible_tag }}"
