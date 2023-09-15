@@ -149,6 +149,8 @@
         - ansible-lint
         - yamllint
         - flake8
+    label:
+      jobs:
         - testbed-deploy
         - testbed-deploy-ceph
         - testbed-deploy-stable
