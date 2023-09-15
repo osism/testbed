@@ -172,13 +172,10 @@
         - testbed-deploy-stable
     periodic-daily:
       jobs:
-        - testbed-deploy
         - testbed-deploy-cleura
         - testbed-deploy-pco
         - testbed-deploy-stable
         - testbed-deploy-wavestack
-        - testbed-update-stable
-        - testbed-upgrade
         - testbed-upgrade-cleura
         - testbed-upgrade-pco
         - testbed-upgrade-stable
