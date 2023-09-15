@@ -11,7 +11,8 @@
   hosts: all
 
   vars:
-    basepath: "{{ ansible_user_dir }}/src/github.com/osism/testbed"
+    repo_base: "github.com/osism"
+    basepath: "{{ ansible_user_dir }}/src/{{ repo_base }}/testbed"
     terraform_path: "{{ basepath }}/terraform"
 
     version_manager_next: "{{ manager_version_next | default('latest') }}"

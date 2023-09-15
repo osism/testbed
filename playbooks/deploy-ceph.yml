@@ -3,10 +3,11 @@
   hosts: all
 
   vars:
+    repo_base: "github.com/osism"
     ansible_galaxy: ~/venv/bin/ansible-galaxy
     ansible_path: "{{ basepath }}/ansible"
     ansible_playbook: ~/venv/bin/ansible-playbook
-    basepath: "{{ ansible_user_dir }}/src/github.com/osism/testbed"
+    basepath: "{{ ansible_user_dir }}/src/{{ repo_base }}/testbed"
     manager_address_file: "{{ terraform_path }}/.MANAGER_ADDRESS.{{ cloud_env }}"
     manual_create: false
     manual_deploy: false

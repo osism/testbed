@@ -3,7 +3,8 @@
   hosts: all
 
   vars:
-    basepath: "{{ ansible_user_dir }}/src/github.com/osism/testbed"
+    repo_base: "github.com/osism"
+    basepath: "{{ ansible_user_dir }}/src/{{ repo_base }}/testbed"
     cloud_env: managerless
 
   tasks:
