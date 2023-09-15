@@ -8,14 +8,26 @@ import sys
 
 # NOTE: Get the partition on which the / fileysystem is located.
 #       inspired by https://bootlin.com/blog/find-root-device/
-result = run("stat / | grep Device | awk '{print $2}' | awk -F/ '{print $1}'", stdout=PIPE, stderr=PIPE, universal_newlines=True, shell=True)
+result = run(
+    "stat / | grep Device | awk '{print $2}' | awk -F/ '{print $1}'",
+    stdout=PIPE,
+    stderr=PIPE,
+    universal_newlines=True,
+    shell=True,
+)
 major, minor = divmod(int(result.stdout.strip()[:-1], base=16), 0x100)
 load_dotenv(f"/sys/dev/block/{major}:{minor}/uevent")
 partition = os.environ.get("DEVNAME")
 
 # NOTE: Get the block device on which the partition of the / fileysystem
 #       is located.
-result = run(f"basename $(readlink -f '/sys/class/block/{partition}/..')", stdout=PIPE, stderr=PIPE, universal_newlines=True, shell=True)
+result = run(
+    f"basename $(readlink -f '/sys/class/block/{partition}/..')",
+    stdout=PIPE,
+    stderr=PIPE,
+    universal_newlines=True,
+    shell=True,
+)
 root = result.stdout.strip()
 
 # NOTE: Get all block devices that are present except the block device
@@ -24,9 +36,21 @@ root = result.stdout.strip()
 # NOTE: OTC is treated specifically as there are systems that include both
 #       virtual and physical devices.
 if os.path.isfile("/etc/OTC_region"):
-    result = run(f"hwinfo --disk --short | tail -n +2 | awk '{{print $1}}' | xargs -n1 basename | sort | grep -v {root}", stdout=PIPE, stderr=PIPE, universal_newlines=True, shell=True)
+    result = run(
+        f"hwinfo --disk --short | tail -n +2 | awk '{{print $1}}' | xargs -n1 basename | sort | grep -v {root}",
+        stdout=PIPE,
+        stderr=PIPE,
+        universal_newlines=True,
+        shell=True,
+    )
 else:
-    result = run(f"hwinfo --disk --short | tail -n +2 | grep -i disk | awk '{{print $1}}' | xargs -n1 basename | sort | grep -v {root}", stdout=PIPE, stderr=PIPE, universal_newlines=True, shell=True)
+    result = run(
+        f"hwinfo --disk --short | tail -n +2 | grep -i disk | awk '{{print $1}}' | xargs -n1 basename | sort | grep -v {root}",
+        stdout=PIPE,
+        stderr=PIPE,
+        universal_newlines=True,
+        shell=True,
+    )
 
 devices = result.stdout.strip().split("\n")
 
