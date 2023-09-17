@@ -1,5 +1,5 @@
 ---
-# Betacloud
+# Regiocloud
 - nodeset:
     name: testbed-orchestrator
     nodes:
@@ -27,12 +27,20 @@
       - name: orchestrator
         label: testbed-orchestrator-wavecon
 
+- nodeset:
+    name: testbed-orchestrator-all
+    alternatives:
+      - testbed-orchestrator-pco
+      - testbed-orchestrator-wavestack
+      - testbed-orchestrator-cleura
+      - testbed-orchestrator
+
 - job:
     name: testbed-abstract-deploy
     abstract: true
     parent: base-extra-logs
     pre-run: playbooks/pre.yml
-    nodeset: testbed-orchestrator
+    nodeset: testbed-orchestrator-all
     run: playbooks/deploy.yml
     post-run: playbooks/post.yml
     cleanup-run: playbooks/cleanup.yml
@@ -80,7 +88,7 @@
       docker_namespace_kolla_next: "kolla/release"
       manager_version: 5.3.0
       manager_version_next: 6.0.0b
-    nodeset: testbed-orchestrator
+    nodeset: testbed-orchestrator-all
 
 - job:
     name: testbed-update-stable
@@ -100,7 +108,7 @@
       #       with the major releases this has to stay here.
       ceph_version_next: quincy
       openstack_version_next: 2023.1
-    nodeset: testbed-orchestrator
+    nodeset: testbed-orchestrator-all
 
 - job:
     name: testbed-upgrade-ceph
