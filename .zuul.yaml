@@ -116,31 +116,49 @@
     name: testbed-deploy-cleura
     parent: testbed-abstract-deploy
     nodeset: testbed-orchestrator-cleura
+    vars:
+      docker_registry: quay.io
+      docker_namespace_kolla: osism
 
 - job:
     name: testbed-deploy-pco
     parent: testbed-abstract-deploy
     nodeset: testbed-orchestrator-pco
+    vars:
+      docker_registry: quay.io
+      docker_namespace_kolla: osism
 
 - job:
     name: testbed-deploy-wavestack
     parent: testbed-abstract-deploy
     nodeset: testbed-orchestrator-wavestack
+    vars:
+      docker_registry: quay.io
+      docker_namespace_kolla: osism
 
 - job:
     name: testbed-upgrade-cleura
     parent: testbed-upgrade
     nodeset: testbed-orchestrator-cleura
+    vars:
+      docker_registry: quay.io
+      docker_namespace_kolla: osism
 
 - job:
     name: testbed-upgrade-pco
     parent: testbed-upgrade
     nodeset: testbed-orchestrator-pco
+    vars:
+      docker_registry: quay.io
+      docker_namespace_kolla: osism
 
 - job:
     name: testbed-upgrade-wavestack
     parent: testbed-upgrade
     nodeset: testbed-orchestrator-wavestack
+    vars:
+      docker_registry: quay.io
+      docker_namespace_kolla: osism
 
 - project:
     merge-mode: squash-merge
