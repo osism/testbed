@@ -5,6 +5,7 @@
 # override:neutron_availability_zone_hints_network
 # override:neutron_availability_zone_hints_router
 # override:nodes_boot_from_image
+# override:nodes_use_ephemeral_storage
 flavor_manager            = "SCS-4V-8-50s"
 flavor_node               = "SCS-8V-32-100s"
 volume_type               = "ssd"
@@ -14,3 +15,4 @@ availability_zone         = "nova"
 network_availability_zone = "nova"
 volume_availability_zone  = "nova"
 public                    = "public"
+number_of_volumes         = 0
