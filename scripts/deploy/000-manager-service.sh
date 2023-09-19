@@ -77,8 +77,8 @@ if [[ $MANAGER_VERSION == "latest" ]]; then
     export EXP_CLUSTER_RESOURCE_SET=true
     export CLUSTER_TOPOLOGY=true
     clusterctl init \
-      --core cluster-api:v1.4.4 \
-      --bootstrap kubeadm:v1.4.4 \
-      --control-plane kubeadm:v1.4.4 \
-      --infrastructure openstack:v0.7.1
+      --core cluster-api:v1.5.1 \
+      --bootstrap kubeadm:v1.5.1 \
+      --control-plane kubeadm:v1.5.1 \
+      --infrastructure openstack:v0.8.0
 fi
