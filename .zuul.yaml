@@ -68,7 +68,7 @@
     parent: testbed-abstract-deploy
     vars:
       docker_namespace_kolla: "kolla/release"
-      manager_version: "6.0.0b"
+      manager_version: "6.0.0"
       refstack: true
 
 - job:
@@ -79,7 +79,7 @@
       docker_namespace_kolla: "kolla/release"
       docker_namespace_kolla_next: "kolla/release"
       manager_version: 5.3.0
-      manager_version_next: 6.0.0b
+      manager_version_next: 6.0.0
     nodeset: testbed-orchestrator
 
 - job:
@@ -89,7 +89,7 @@
     vars:
       docker_namespace_kolla: "kolla/release"
       docker_namespace_kolla_next: "kolla"
-      manager_version: 6.0.0b
+      manager_version: 6.0.0
       # NOTE: Update to the rolling tag to always ensure that an update to
       #       the next release will be possible.
       manager_version_next: latest
