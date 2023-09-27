@@ -226,3 +226,11 @@
           -storepass "changeit" -noprompt
       when: "'alice' not in available_users"
       changed_when: true
+
+
+    - name: Install IdP discovery pluging
+      ansible.builtin.command: >-
+        docker exec keycloak curl https://github.com/sventorben/keycloak-home-idp-discovery/releases/download/v19.1.0/keycloak-home-idp-discovery.jar 
+          --output /opt/jboss/keycloak/standalone/deployments/keycloak-home-idp-discovery.jar
+      when: "'alice' not in available_users"
+      changed_when: true
