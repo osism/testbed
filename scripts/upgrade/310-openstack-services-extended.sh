@@ -8,7 +8,7 @@ task_ids+=" "$(osism apply --no-wait --format script prometheus -e kolla_action=
 
 osism wait --output --format script --delay 2 "$task_ids"
 
-task_ids=$(osism apply --no-wait --format script ceilometer-e kolla_action=upgrade 2>&1)
+task_ids=$(osism apply --no-wait --format script ceilometer -e kolla_action=upgrade 2>&1)
 task_ids+=" "$(osism apply --no-wait --format script heat -e kolla_action=upgrade 2>&1)
 
 MANAGER_VERSION=$(docker inspect --format '{{ index .Config.Labels "org.opencontainers.image.version"}}' osism-ansible)
