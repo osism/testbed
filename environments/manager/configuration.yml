@@ -13,6 +13,7 @@ openstack_version: 2023.1
 #       the manager's inventory is independent from the rest of the
 #       inventory.
 
+enable_listener: true
 manager_listener_broker_hosts:
   - 192.168.16.10
   - 192.168.16.11
