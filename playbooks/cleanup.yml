@@ -2,11 +2,12 @@
 - name: Cleanup play
   hosts: all
 
-  vars:
-    basepath: "{{ ansible_user_dir }}/src/github.com/osism/testbed"
-
   vars_files:
     - vars/cloud_envs.yml
+    - vars/repositories.yml
+
+  vars:
+    basepath: "{{ ansible_user_dir }}/src/{{ repositories['testbed']['path'] }}"
 
   tasks:
     - name: Set cloud_env fact (Zuul deployment)

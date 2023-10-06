@@ -2,16 +2,17 @@
 - name: Pre play
   hosts: all
 
+  vars_files:
+    - vars/cloud_envs.yml
+    - vars/repositories.yml
+
   vars:
-    basepath: "{{ ansible_user_dir }}/src/github.com/osism/testbed"
-    terraformbase_path: "{{ ansible_user_dir }}/src/github.com/osism/terraform-base"
+    basepath: "{{ ansible_user_dir }}/src/{{ repositories['testbed']['path'] }}"
+    terraformbase_path: "{{ ansible_user_dir }}/src/{{ repositories['terraform-base']['path'] }}"
     terraform_path: "{{ basepath }}/terraform"
     terragrunt_version: v0.52.1 # renovate: datasource=github-releases depName=gruntwork-io/terragrunt
     terragrunt_download_url: "https://github.com/gruntwork-io/terragrunt/releases/download/{{ terragrunt_version }}/terragrunt_linux_amd64"
     terraform_version: 1.6.0  # renovate: datasource=github-tags depName=hashicorp/terraform
-
-  vars_files:
-    - vars/cloud_envs.yml
 
   tasks:
     - name: Set cloud_env fact (Zuul deployment)

@@ -33,13 +33,14 @@ login: ## Log in on the manager.
 	  login
 
 bootstrap: create ## Bootstrap everything.
+	REPOSITORY_SERVER=$$(yq '.repository_server' playbooks/vars/repositories.yml)
 	ansible-playbook playbooks/deploy.yml \
 	  -i ansible/localhost_inventory.yaml \
 	  -e ansible_galaxy=ansible-galaxy \
 	  -e ansible_playbook=ansible-playbook \
 	  -e basepath="$(PWD)" \
 	  -e cloud_env=$(ENVIRONMENT) \
-	  -e repo_path="$(PWD)/.src/github.com" \
+	  -e repo_path="$(PWD)/.src/$(REPOSITORY_SERVER)" \
 	  -e manual_create=true \
 	  -e manual_deploy=true \
 	  -e version_ceph=$(VERSION_CEPH) \
@@ -79,11 +80,29 @@ deploy: bootstrap ## Deploy everything and then check it.
 
 prepare: ## Run local preparations.
 	ansible-playbook -i localhost, ansible/check-local-versions.yml
-	mkdir -p .src/github.com/osism
-	if [ ! -e .src/github.com/osism/testbed ]; then git clone https://github.com/osism/testbed .src/github.com/osism/testbed; else git -C .src/github.com/osism/testbed pull; fi
-	if [ ! -e .src/github.com/osism/terraform-base ]; then git clone https://github.com/osism/terraform-base .src/github.com/osism/terraform-base; else git -C .src/github.com/osism/terraform-base pull; fi
-	if [ ! -e .src/github.com/osism/ansible-collection-commons ]; then git clone https://github.com/osism/ansible-collection-commons .src/github.com/osism/ansible-collection-commons; else git -C .src/github.com/osism/ansible-collection-commons pull; fi
-	if [ ! -e .src/github.com/osism/ansible-collection-services ]; then git clone https://github.com/osism/ansible-collection-services .src/github.com/osism/ansible-collection-services; else git -C .src/github.com/osism/ansible-collection-services pull; fi
-	rsync -avz .src/github.com/osism/terraform-base/$(TERRAFORM_BLUEPRINT)/ terraform
+
+	REPOSITORY_SERVER=$$(yq '.repository_server' playbooks/vars/repositories.yml)
+
+	TESTBED_PATH=$$(yq '.repositories.testbed.path' playbooks/vars/repositories.yml)
+	TESTBED_REPO=$$(yq '.repositories.testbed.repo' playbooks/vars/repositories.yml)
+	mkdir -p $$(dirname $(TESTBED_PATH))
+	if [ ! -e .src/$(TESTBED_PATH) ]; then git clone $(TESTBED_REPO) .src/$(TESTBED_PATH); else git -C .src/$(TESTBED_PATH) pull; fi
+
+	TERRAFORM_BASE_PATH=$$(yq '.repositories.terraform-base.path' playbooks/vars/repositories.yml)
+	TERRAFORM_BASE_REPO=$$(yq '.repositories.terraform-base.repo' playbooks/vars/repositories.yml)
+	mkdir -p $$(dirname $(TERRAFORM_BASE_PATH))
+	if [ ! -e .src/$(TERRAFORM_BASE_PATH) ]; then git clone $(TERRAFORM_BASE_REPO) .src/$(TERRAFORM_BASE_PATH); else git -C .src/$(TERRAFORM_BASE_PATH) pull; fi
+
+	ANSIBLE_COLLECTION_COMMONS_PATH=$$(yq '.repositories.ansible-collection-commons.path' playbooks/vars/repositories.yml)
+	ANSIBLE_COLLECTION_COMMONS_REPO=$$(yq '.repositories.ansible-collection-commons.repo' playbooks/vars/repositories.yml)
+	mkdir -p $$(dirname $(ANSIBLE_COLLECTION_COMMONS_PATH))
+	if [ ! -e .src/$(ANSIBLE_COLLECTION_COMMONS_PATH) ]; then git clone $(ANSIBLE_COLLECTION_COMMONS_REPO) .src/$(ANSIBLE_COLLECTION_COMMONS_PATH); else git -C .src/$(ANSIBLE_COLLECTION_COMMONS_PATH)  pull; fi
+
+	ANSIBLE_COLLECTION_SERVICES_PATH=$$(yq '.repositories.ansible-collection-services.path' playbooks/vars/repositories.yml)
+	ANSIBLE_COLLECTION_SERVICES_REPO=$$(yq '.repositories.ansible-collection-services.repo' playbooks/vars/repositories.yml)
+	mkdir -p $$(dirname $(ANSIBLE_COLLECTION_SERVICES_PATH))
+	if [ ! -e .src/$(ANSIBLE_COLLECTION_SERVICES_PATH) ]; then git clone $(ANSIBLE_COLLECTION_SERVICES_REPO) .src/$(ANSIBLE_COLLECTION_SERVICES_PATH); else git -C .src/$(ANSIBLE_COLLECTION_SERVICES_PATH) pull; fi
+
+	rsync -avz .src/$(TERRAFORM_BASE_PATH)/$(TERRAFORM_BLUEPRINT)/ terraform
 
 phony: bootstrap clean create deploy identity login manager prepare ceph

@@ -1,0 +1,15 @@
+---
+repository_server: github.com
+repositories:
+  ansible-collection-commons:
+    path: github.com/osism/ansible-collection-commons
+    repo: https://github.com/osism/ansible-collection-commons
+  ansible-collection-services:
+    path: github.com/osism/ansible-collection-services
+    repo: https://github.com/osism/ansible-collection-services
+  terraform-base:
+    path: github.com/osism/terraform-base
+    repo: https://github.com/osism/terraform-base
+  testbed:
+    path: github.com/osism/testbed
+    repo: https://github.com/osism/testbed
