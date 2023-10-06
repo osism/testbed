@@ -221,7 +221,7 @@
 
     - name: Keytool import traefik cert
       ansible.builtin.command: >-
-        docker exec -u root {{ keycloak_service_container_name }} keytool 
+        docker exec -u root {{ keycloak_service_container_name }} keytool
           -cacerts -importcert -alias traefik -file /traefik.cert
           -storepass "changeit" -noprompt
       when: "'alice' not in available_users"

@@ -6,7 +6,10 @@ rules:
   line-length: disable
 
 ignore: |
-  contrib/rally/tests/
   .git
-  environments/infrastructure/secrets.yml
   .tox
+  contrib/rally/tests/
+  environments/infrastructure/secrets.yml
+  environments/kolla/files/overlays/ceilometer/event_definitions.yaml
+  environments/kolla/files/overlays/ceilometer/event_pipeline.yaml
+  environments/kolla/files/overlays/ceilometer/pipeline.yaml

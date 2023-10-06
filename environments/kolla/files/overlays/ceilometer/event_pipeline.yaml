@@ -1,15 +1,15 @@
 ---
 sources:
-    - name: event_source # 'Names the list of events we want to use.'
-      events:
-          - "*" # 'event filter'
-      sinks:
-          - event_sink # 'The sink on which the metrics should be pushed to.'
+  - name: event_source  # 'Names the list of events we want to use.'
+    events:
+      - "*"  # 'event filter'
+    sinks:
+      - event_sink  # 'The sink on which the metrics should be pushed to.'
 sinks:
-    - name: event_sink # 'The name of the sink we want to refere to.'
-      publishers: # 'The list of targets we want to push to.'
-          - notifier://
+  - name: event_sink  # 'The name of the sink we want to refere to.'
+    publishers:  # 'The list of targets we want to push to.'
+      - notifier://
 {% if enable_metering | bool %}
-          - http://{{ ceilometer_metering_pushgateway_host }}:{{ ceilometer_metering_pushgateway_port }}/post_json
+      - http://{{ ceilometer_metering_pushgateway_host }}:{{ ceilometer_metering_pushgateway_port }}/post_json
 {% endif %}
 
