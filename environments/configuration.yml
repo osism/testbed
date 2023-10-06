@@ -61,10 +61,11 @@ systohc: false
 ##########################
 # serial
 
+# The recommended default for a production is 30% (is set by default).
+# It is here 100% to speed up the Testbed. The parameter does not affect
+# the behavior of the docker and network play. These are rolled out
+# with serial = 1.
 osism_serial_default: 100%
-osism_serial:
-  docker: 100%
-  network: 100%
 
 ##########################
 # ceph
