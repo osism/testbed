@@ -13,6 +13,5 @@ image                     = "Standard_Ubuntu_22.04_latest"
 image_node                = "Standard_Ubuntu_22.04_latest"
 volume_size_storage       = "10"
 public                    = "admin_external_net"
-enable_dhcp               = "true"
 dns_nameservers           = ["9.9.9.9"]
 number_of_volumes         = "0"
