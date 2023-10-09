@@ -10,8 +10,12 @@
 - name: Upgrade testbed
   hosts: all
 
+  vars_files:
+    - vars/cloud_envs.yml
+    - vars/repositories.yml
+
   vars:
-    basepath: "{{ ansible_user_dir }}/src/github.com/osism/testbed"
+    basepath: "{{ ansible_user_dir }}/src/{{ repositories['testbed']['path'] }}"
     terraform_path: "{{ basepath }}/terraform"
 
     version_manager_next: "{{ manager_version_next | default('latest') }}"
@@ -21,9 +25,6 @@
 
     run_bootstrap: true
     run_checks: true
-
-  vars_files:
-    - vars/cloud_envs.yml
 
   tasks:
     - name: Set cloud_env fact (Zuul deployment)

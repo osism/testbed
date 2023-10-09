@@ -12,8 +12,12 @@
 - name: Upgrade testbed
   hosts: all
 
+  vars_files:
+    - vars/cloud_envs.yml
+    - vars/repositories.yml
+
   vars:
-    basepath: "{{ ansible_user_dir }}/src/github.com/osism/testbed"
+    basepath: "{{ ansible_user_dir }}/src/{{ repositories['testbed']['path'] }}"
     terraform_path: "{{ basepath }}/terraform"
 
     terraform_binary: "{{ ansible_user_dir }}/terragrunt"
@@ -24,9 +28,6 @@
     namespace_kolla_next: "{{ docker_namespace_kolla_next | default('kolla') }}"
 
     run_bootstrap: true
-
-  vars_files:
-    - vars/cloud_envs.yml
 
   tasks:
     - name: Set facts (Zuul deployment)

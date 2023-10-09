@@ -2,15 +2,19 @@
 - name: Deploy testbed
   hosts: all
 
+  vars_files:
+    - vars/cloud_envs.yml
+    - vars/repositories.yml
+
   vars:
     ansible_galaxy: ~/venv/bin/ansible-galaxy
     ansible_path: "{{ basepath }}/ansible"
     ansible_playbook: ~/venv/bin/ansible-playbook
-    basepath: "{{ ansible_user_dir }}/src/github.com/osism/testbed"
+    basepath: "{{ ansible_user_dir }}/src/{{ repositories['testbed']['path'] }}"
     manager_address_file: "{{ terraform_path }}/.MANAGER_ADDRESS.{{ cloud_env }}"
     manual_create: false
     manual_deploy: false
-    repo_path: "{{ ansible_user_dir }}/src/github.com"
+    repo_path: "{{ ansible_user_dir }}/src/{{ repository_server }}"
 
     terraform_binary: "{{ ansible_user_dir }}/terragrunt"
     terraform_path: "{{ basepath }}/terraform"
@@ -25,9 +29,6 @@
     run_bootstrap: true
     run_checks: true
     run_refstack: "{{ refstack | default(false) | bool }}"
-
-  vars_files:
-    - vars/cloud_envs.yml
 
   tasks:
     - name: Set facts (Zuul deployment)
