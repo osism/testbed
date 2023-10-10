@@ -1,13 +1,13 @@
 ---
 collections:
-  - name: https://github.com/ansible-collections/ansible.posix.git
+  - name: https://github.com/ansible-collections/ansible.posix
     type: git
     version: main
 
-  - name: https://github.com/osism/ansible-collection-commons.git
+  - name: https://github.com/osism/ansible-collection-commons
     type: git
     version: main
 
-  - name: https://github.com/osism/ansible-collection-services.git
+  - name: https://github.com/osism/ansible-collection-services
     type: git
     version: main
