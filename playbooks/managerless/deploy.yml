@@ -69,12 +69,87 @@
         cmd: cp terraform/.id* .
       changed_when: true
 
-- name: Prepare deployment
+- name: Create configuration repository
   hosts: all
 
+  vars:
+    operator_group: dragon
+    operator_user: dragon
+
   tasks:
-    - name: Copy local-deploy play
-      ansible.builtin.copy:
-        src: local-deploy.yml
-        dest: /home/zuul/local-deploy.yml
-        mode: 0644
+    - name: Run managerless part 1
+      ansible.builtin.command: |
+        ansible-playbook -i localhost, /tmp/managerless-part-1.yml
+      changed_when: true
+
+    - name: Install ansible collections
+      become: true
+      become_user: "{{ operator_user }}"
+      ansible.builtin.command: |
+        ansible-galaxy collection install {{ item }}
+      loop:
+        - osism.commons
+        - osism.services
+      changed_when: true
+
+    - name: Create configuration directory
+      become: true
+      ansible.builtin.file:
+        state: directory
+        path: /opt/configuration
+        mode: '0755'
+        owner: "{{ operator_user }}"
+
+    # we run local synchronisation here
+    - name: Sync configuration repository  # noqa: command-instead-of-module
+      become: true
+      ansible.builtin.command: "rsync -avz {{ zuul.project.src_dir }}/ /opt/configuration"
+      changed_when: true
+
+    - name: Change ownership of /opt/configuration
+      become: true
+      ansible.builtin.file:
+        path: /opt/configuration
+        owner: "{{ operator_user }}"
+        group: "{{ operator_group }}"
+        recurse: true
+
+- name: Deploy manager
+  hosts: all
+
+  vars:
+    operator_user: dragon
+
+  tasks:
+    - name: Run managerless part 2
+      become: true
+      become_user: "{{ operator_user }}"
+      ansible.builtin.command: |
+        ansible-playbook \
+          -e @/opt/configuration/playbooks/managerless/vars/versions.yml \
+          -e @/opt/configuration/environments/manager/images.yml \
+          -e @/opt/configuration/environments/manager/configuration.yml \
+          -e @/opt/configuration/environments/images.yml \
+          -e @/opt/configuration/environments/configuration.yml \
+          -i localhost, \
+          /tmp/managerless-part-2.yml
+      changed_when: true
+
+    - name: Run managerless part 3
+      become: true
+      become_user: "{{ operator_user }}"
+      ansible.builtin.command: |
+        ansible-playbook \
+          -e @/opt/configuration/playbooks/managerless/vars/versions.yml \
+          -e @/opt/configuration/inventory/group_vars/testbed-managers.yml \
+          -e @/opt/configuration/inventory/host_vars/testbed-manager.testbed.osism.xyz.yml \
+          -e @/opt/configuration/environments/manager/images.yml \
+          -e @/opt/configuration/environments/manager/configuration.yml \
+          -e @/opt/configuration/environments/manager/secrets.yml \
+          -e @/opt/configuration/environments/images.yml \
+          -e @/opt/configuration/environments/configuration.yml \
+          -e @/opt/configuration/environments/secrets.yml \
+          -i testbed-manager.testbed.osism.xyz, \
+          --vault-password-file /opt/configuration/environments/.vault_pass \
+          /tmp/managerless-part-3.yml
+      changed_when: true
