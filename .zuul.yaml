@@ -3,73 +3,20 @@
     name: SECRET_TESTBED
     data:
       MANAGERLESS_CREDENTIALS: !encrypted/pkcs1-oaep
-        - Ft2GWr5BtY9XZ8Kr66GsyB1/PvBiT3COz9NnLFqg0Rp/zRInou7FXx4qNaK48p88EyZQ8
-          c3QV49MNgzNYy11ZK2NjWkSQd6kWZ3x2Bvhu/vYfYjRCLWH34LL+36lDbITcpYt7tiQFH
-          IaaBfXc/lwBBEZMlpAhEDfcDXLRoSSdtcyP8SX8BtSCH4tlh/KYVkqJ/a2nNMtJF7l2Wj
-          PF7qe17WI6NsYCb6QD33bfEX+qe9JOmkwAKxHFd6ucTZJe1D6JiYvXAlJR+FhGDOOurKX
-          DRX6H48WB2L0qp/UQgY9mwR2eWqbfdAJg1AGJ3M+Y0j/Xi0do07h7cX2RCG6MC0HHRSIG
-          wXSvIYN8m50AT0c3ofnMQ1Vtf7V60cctV4em5sLxyWacz/lHzHPzstjmnFB5BVOh5vbh6
-          ygRlLMTUQTQzUlAJHhDlYc+ea2njSbq79RzQSto1buN0lNRQNp3VGTnbZyhp/B671NlVZ
-          cC5o6qs8j7LyLKOo9lNnYi8CQw2KjRzv2rBMuUaRqIaGXu4U/R8sswy3j6YhA7BT4vUxv
-          zUyw/6Ql1IhZo3X0jEE3WtfeUQvsWB0AXDX+xf2WoEVL5dObYP8X5RVsJj5qQ7Y8BK2qa
-          HflOaQYaKWZSf+5kfBUByzQghil4tH4QQQUHszDs0Qtzop7yTp0AB1cqefAyY8=
-
-# Regiocloud
-- nodeset:
-    name: testbed-orchestrator
-    nodes:
-      - name: orchestrator
-        label: testbed-orchestrator
-
-# Cleura
-- nodeset:
-    name: testbed-orchestrator-cleura
-    nodes:
-      - name: orchestrator
-        label: testbed-orchestrator-cleura
-
-# PCO
-- nodeset:
-    name: testbed-orchestrator-pco
-    nodes:
-      - name: orchestrator
-        label: testbed-orchestrator-pco
-
-# Wavestack
-- nodeset:
-    name: testbed-orchestrator-wavestack
-    nodes:
-      - name: orchestrator
-        label: testbed-orchestrator-wavecon
-
-- job:
-    name: testbed-abstract-deploy
-    abstract: true
-    parent: base-extra-logs
-    pre-run: playbooks/pre.yml
-    nodeset: testbed-orchestrator
-    run: playbooks/deploy.yml
-    post-run: playbooks/post.yml
-    cleanup-run: playbooks/cleanup.yml
-    required-projects:
-      - osism/ansible-collection-commons
-      - osism/ansible-collection-services
-      - osism/testbed
-      - osism/terraform-base
-    irrelevant-files:
-      - ^LICENSE$
-      - ^README.md$
-      - ^\.github/.*$
-    # NOTE(frickler): Default zuul maximum timeout is 3h, this needs to
-    # be explictly bumped in the tenant configuration
-    timeout: 16200
-    vars:
-      terraform_blueprint: testbed-default
+        - aU9JGhB1/WFHsi1htqkl+jDYztrJh5SHnu6BtGn9+8wxDtXdMwGrM9R/IdmAmXUMAcrGS
+          uGFA+C4B9Ywkxsbm3U8uzhD9CExB8fucKsJJPWHjf9MYtyKB4hEfgF/xtB1d7QyC3/3L4
+          mb0S0MnbZcGFIeY+iSbPfNoBedfPUzml6u1lSKkaS9Lp1JNSuhtuxnM6ssHHaMTsRKwl9
+          2jLfG6efPrrMs7WxHhc8zFSPBQgeP/DshkU8aM8sUeJuNxQ+slJUh+5eQiRanDlWAdTrP
+          utH5eNiDRehC8+LGwf7jVw+tupapAuDKNRhSkHcIW9kGMNi/TSzW1zYrbdNCPUCoC3xKZ
+          ruHsiqCWCuDa2DqeFlIRI9i3Viltp8UFs7Ntz9awmChwCAv/tjSAdbx5iprJSQ48Rs4pZ
+          w0Yvn9KZiNMaWnYscCUlLE5gPmdLqL5UbxeA0R1SYIZPX0OvuR/odsRw/29kDnb1TSxdP
+          FvmWsDQssuBZuwfksxPygOb/hzmA3VGyaD8NSKj0wE92cunsNbUxUvyTBs7yM+cneKv3X
+          zTTYbdityzieUxK4AIVGooe3yYsIKAnvDoLrGiMwYCbW2zVd5RhWxvbVYQWWy/UvbE7My
+          YhrCNtnWiGbapxcmOJlipWiN1eqfi2WgK69QkDsQgleNKq31uOiRqrpdib033o=
 
 - job:
     name: testbed-deploy-managerless
-    parent: base-extra-logs
-    nodeset: ubuntu-jammy-large
+    nodeset: ubuntu-jammy
     pre-run: playbooks/managerless/pre.yml
     run: playbooks/managerless/deploy.yml
     post-run: playbooks/managerless/post.yml
@@ -79,117 +26,10 @@
     vars:
       cloud_env: managerless
       terraform_blueprint: testbed-managerless
+      cloud_env: managerless-otc
     secrets:
       - name: secret
         secret: SECRET_TESTBED
-
-- job:
-    name: testbed-deploy
-    parent: testbed-abstract-deploy
-    vars:
-      refstack: true
-
-- job:
-    name: testbed-upgrade
-    parent: testbed-abstract-deploy
-    run: playbooks/upgrade.yml
-
-- job:
-    name: testbed-deploy-stable
-    parent: testbed-abstract-deploy
-    vars:
-      docker_namespace_kolla: "kolla/release"
-      manager_version: "6.0.0"
-      refstack: true
-
-- job:
-    name: testbed-upgrade-stable
-    parent: testbed-abstract-deploy
-    run: playbooks/upgrade-stable.yml
-    vars:
-      docker_namespace_kolla: "kolla/release"
-      docker_namespace_kolla_next: "kolla/release"
-      manager_version: 5.3.0
-      manager_version_next: 6.0.0
-    nodeset: testbed-orchestrator
-
-- job:
-    name: testbed-update-stable
-    parent: testbed-abstract-deploy
-    run: playbooks/upgrade-stable.yml
-    vars:
-      docker_namespace_kolla: "kolla/release"
-      docker_namespace_kolla_next: "kolla"
-      manager_version: 6.0.0
-      # NOTE: Update to the rolling tag to always ensure that an update to
-      #       the next release will be possible.
-      manager_version_next: latest
-      # NOTE: Make sure that the Ceph and OpenStack version does not change
-      #       when we go to the latest tag of the manager. This can happen
-      #       if we have already switched to the next OpenStack release by
-      #       default in latest, for example. As long as we are still working
-      #       with the major releases this has to stay here.
-      ceph_version_next: quincy
-      openstack_version_next: 2023.1
-    nodeset: testbed-orchestrator
-
-- job:
-    name: testbed-upgrade-ceph
-    parent: testbed-upgrade
-    run: playbooks/upgrade-ceph.yml
-
-- job:
-    name: testbed-deploy-ceph
-    parent: testbed-abstract-deploy
-    run: playbooks/deploy-ceph.yml
-
-- job:
-    name: testbed-deploy-cleura
-    parent: testbed-abstract-deploy
-    nodeset: testbed-orchestrator-cleura
-    vars:
-      docker_registry: quay.io
-      docker_namespace_kolla: osism
-
-- job:
-    name: testbed-deploy-pco
-    parent: testbed-abstract-deploy
-    nodeset: testbed-orchestrator-pco
-    vars:
-      docker_registry: quay.io
-      docker_namespace_kolla: osism
-
-- job:
-    name: testbed-deploy-wavestack
-    parent: testbed-abstract-deploy
-    nodeset: testbed-orchestrator-wavestack
-    vars:
-      docker_registry: quay.io
-      docker_namespace_kolla: osism
-
-- job:
-    name: testbed-upgrade-cleura
-    parent: testbed-upgrade
-    nodeset: testbed-orchestrator-cleura
-    vars:
-      docker_registry: quay.io
-      docker_namespace_kolla: osism
-
-- job:
-    name: testbed-upgrade-pco
-    parent: testbed-upgrade
-    nodeset: testbed-orchestrator-pco
-    vars:
-      docker_registry: quay.io
-      docker_namespace_kolla: osism
-
-- job:
-    name: testbed-upgrade-wavestack
-    parent: testbed-upgrade
-    nodeset: testbed-orchestrator-wavestack
-    vars:
-      docker_registry: quay.io
-      docker_namespace_kolla: osism
 
 - project:
     merge-mode: squash-merge
@@ -198,38 +38,12 @@
         - ansible-lint
         - yamllint
         - flake8
-    label:
-      jobs:
-        - testbed-deploy
-        - testbed-deploy-ceph
-        - testbed-deploy-stable
-        - testbed-update-stable
-        - testbed-upgrade
-        - testbed-upgrade-ceph
-        - testbed-upgrade-stable
-    gate:
-      jobs:
-        - ansible-lint
-        - yamllint
-        - flake8
-        - testbed-deploy:
-            branches: main
-        - testbed-deploy-stable:
-            branches: main
     post:
       jobs:
         - testbed-deploy-managerless
-        - testbed-deploy-stable
     periodic-daily:
       jobs:
-        - testbed-deploy-cleura
-        - testbed-deploy-pco
-        - testbed-deploy-stable
-        - testbed-deploy-wavestack
-        - testbed-upgrade-cleura
-        - testbed-upgrade-pco
-        - testbed-upgrade-stable
-        - testbed-upgrade-wavestack
+        - testbed-deploy-managerless
         - ansible-lint
         - yamllint
         - flake8
