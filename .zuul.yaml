@@ -2,17 +2,17 @@
 - secret:
     name: SECRET_TESTBED
     data:
-      MANAGERLESS_SHARE_1: !encrypted/pkcs1-oaep
-        - RezQnH4z0JVVUKlvPSWPyo6+Mdc3A87Y/HjybyUdD+fJQMAmFFRBvm1ksQey1qqh5UY6w
-          w3y6k/uYQx1iTzL67p+P2YHX0Ni81ki98VH++nco8CCewtkIil6cEZ1H09pIXpjxlBnby
-          7ZNxvJTi5pl3KUxstERG8GT+bmafzDsrvAmjLXizM4wKhMN2wKJbU0bq/kgShdC4SPKjw
-          tNOiiG8oBmq7ujT6jyccAld0mch78pswpEJVXy+LC+UjHG4qRWW0QWEdmDiBAJFjvQ8dQ
-          YRmQSpMqsDJrYs/h4T5G88HtGBoGIVuNIZv6v7TofKxB3mdJq2ag6oUhA2wtxvqjt4xD9
-          ikPNgvlV4H9mEhp0j9+Wq4PMKXjJDwQ8vtmPB/Q5tW5okSVyLnHSPDDUur08K9JpFf4Bb
-          rK4NBnAlSo7NgVgti40VMhM//A90jOHo7Ut651CL5MQGsfxlhxQItH+JqJTtFfsZygcni
-          FXbVRnAEhy8dpSPFc3pn4jmZgo++i5Vqr7BYMqWgBlUD1QL5u17sEag/ubwMQ8tf3BevI
-          U8nFoYTlJHIArWxsgQoCWOBKKPMlv5eqlGUGxFGZbT88ko8CwXmlayR1F/TubG4ks8aSj
-          cKUb7vg8XonnbXN43K/3/VEndrhani5wMm9cLjYmSWeHT9fb+SXem1TqDYQEQk=
+      MANAGERLESS_CREDENTIALS: !encrypted/pkcs1-oaep
+        - Ft2GWr5BtY9XZ8Kr66GsyB1/PvBiT3COz9NnLFqg0Rp/zRInou7FXx4qNaK48p88EyZQ8
+          c3QV49MNgzNYy11ZK2NjWkSQd6kWZ3x2Bvhu/vYfYjRCLWH34LL+36lDbITcpYt7tiQFH
+          IaaBfXc/lwBBEZMlpAhEDfcDXLRoSSdtcyP8SX8BtSCH4tlh/KYVkqJ/a2nNMtJF7l2Wj
+          PF7qe17WI6NsYCb6QD33bfEX+qe9JOmkwAKxHFd6ucTZJe1D6JiYvXAlJR+FhGDOOurKX
+          DRX6H48WB2L0qp/UQgY9mwR2eWqbfdAJg1AGJ3M+Y0j/Xi0do07h7cX2RCG6MC0HHRSIG
+          wXSvIYN8m50AT0c3ofnMQ1Vtf7V60cctV4em5sLxyWacz/lHzHPzstjmnFB5BVOh5vbh6
+          ygRlLMTUQTQzUlAJHhDlYc+ea2njSbq79RzQSto1buN0lNRQNp3VGTnbZyhp/B671NlVZ
+          cC5o6qs8j7LyLKOo9lNnYi8CQw2KjRzv2rBMuUaRqIaGXu4U/R8sswy3j6YhA7BT4vUxv
+          zUyw/6Ql1IhZo3X0jEE3WtfeUQvsWB0AXDX+xf2WoEVL5dObYP8X5RVsJj5qQ7Y8BK2qa
+          HflOaQYaKWZSf+5kfBUByzQghil4tH4QQQUHszDs0Qtzop7yTp0AB1cqefAyY8=
 
 # Regiocloud
 - nodeset:
