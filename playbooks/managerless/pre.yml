@@ -65,16 +65,12 @@
       ansible.builtin.command: "rsync -avz {{ terraformbase_path }}/{{ terraform_blueprint }}/ {{ basepath }}/terraform"
       changed_when: true
 
-    # NOTE: In future, an app credential valid for only a few minutes will
-    #       be generated in advance and made available on a share. The URL
-    #       to the share itself is also generated in advance, but is valid
-    #       indefinitely. The URL itself comes from a central vault service.
-    #       share.regio.digital will also be replaced by the Vault service.
-    - name: Get clouds.yaml file  # noqa command-instead-of-module
-      ansible.builtin.shell: |
-        curl -L https://share.regio.digital/f/{{ secret.MANAGERLESS_SHARE_1 }}/?dl=1 > {{ terraform_path }}/clouds.yaml
+    - name: Write clouds.yaml file
+      ansible.builtin.copy:
+        content: "{{ secret.MANAGERLESS_CREDENTIALS }}"
+        dest: "{{ terraform_path }}/clouds.yaml"
+        mode: 0600
       no_log: true
-      changed_when: true
 
     - name: Clean the cloud environment
       ansible.builtin.shell:
