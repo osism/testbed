@@ -45,6 +45,18 @@
       ansible.builtin.set_fact:
         node_2_host: "{{ node_2_address.stdout | split('=') | last }}"
 
+    - name: Wait up to 300 seconds for port 22 to become open and contain "OpenSSH"
+      ansible.builtin.wait_for:
+        port: 22
+        host: "{{ item }}"
+        search_regex: OpenSSH
+        delay: 10
+        timeout: 300
+      loop:
+        - "{{ node_0_host }}"
+        - "{{ node_1_host }}"
+        - "{{ node_2_host }}"
+
     - name: Fetch ssh hostkeys
       ansible.builtin.shell: "ssh-keyscan {{ item }} >> {{ ansible_user_dir }}/.ssh/known_hosts"
       changed_when: true
