@@ -3,8 +3,6 @@
   hosts: all
 
   vars:
-    cloud_env: managerless
-
     terraform_path: "{{ zuul.project.src_dir }}/terraform"
 
     node_0_address_file: "{{ terraform_path }}/.NODE_0_ADDRESS.{{ cloud_env }}"

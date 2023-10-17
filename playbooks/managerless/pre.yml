@@ -7,7 +7,6 @@
 
   vars:
     basepath: "{{ ansible_user_dir }}/src/{{ repositories['testbed']['path'] }}"
-    cloud_env: managerless
     terraform_path: "{{ zuul.project.src_dir }}/terraform"
     terraform_version: "1.6.0"
     terraformbase_path: "{{ ansible_user_dir }}/src/{{ repositories['terraform-base']['path'] }}"
