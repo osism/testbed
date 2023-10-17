@@ -87,7 +87,7 @@
     - name: Wait up to 300 seconds for port 22 to become open and contain "OpenSSH"
       ansible.builtin.wait_for:
         port: 22
-        host: '{{ manager_host }}'
+        host: "{{ manager_host }}"
         search_regex: OpenSSH
         delay: 10
         timeout: 300
