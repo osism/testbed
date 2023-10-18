@@ -24,7 +24,6 @@
       - osism/terraform-base
     timeout: 10800
     vars:
-      cloud_env: managerless
       terraform_blueprint: testbed-managerless
       cloud_env: managerless-otc
     secrets:
