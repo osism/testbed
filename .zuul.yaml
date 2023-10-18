@@ -42,7 +42,7 @@
     post:
       jobs:
         - testbed-deploy-managerless
-    periodic-daily:
+    periodic-half-hourly-otc:
       jobs:
         - testbed-deploy-managerless
         - ansible-lint
