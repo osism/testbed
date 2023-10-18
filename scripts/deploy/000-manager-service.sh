@@ -71,10 +71,11 @@ if [[ $MANAGER_VERSION == "latest" ]]; then
 
     # NOTE: The following lines will be moved to an osism.services.clusterapi role
     export KUBECONFIG=$HOME/.kube/config
-    kubectl label node testbed-manager openstack-control-plane=enabled
-    # kubectl label node testbed-node-0 openstack-control-plane=enabled
-    # kubectl label node testbed-node-1 openstack-control-plane=enabled
-    # kubectl label node testbed-node-2 openstack-control-plane=enabled
+    # add openstack-control-plane label to all hosts labeled control-plane
+    OS_CONTROL_PLANE_NODES=$(kubectl get nodes | grep control-plane | awk '{print $1}')
+    for NODE in $OS_CONTROL_PLANE_NODES; do
+        kubectl label node "${NODE}" openstack-control-plane=enabled
+    done
     sudo curl -Lo /usr/local/bin/clusterctl https://github.com/kubernetes-sigs/cluster-api/releases/download/${CAPI_VERSION}/clusterctl-linux-amd64
     sudo chmod +x /usr/local/bin/clusterctl
     export EXP_CLUSTER_RESOURCE_SET=true
