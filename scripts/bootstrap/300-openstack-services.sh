@@ -8,7 +8,6 @@ OPENSTACK_VERSION=$(docker inspect --format '{{ index .Config.Labels "de.osism.r
 
 osism apply --environment openstack bootstrap-flavors
 osism apply --environment openstack bootstrap-basic -e openstack_version=$OPENSTACK_VERSION
-osism apply --environment openstack bootstrap-ceph-rgw
 
 # osism manage images is only available since 5.0.0. To enable the
 # testbed to be used with < 5.0.0, here is this check.
