@@ -4,17 +4,17 @@ set -e
 
 export INTERACTIVE=false
 
-osism apply common -e kolla_action=upgrade
-osism apply loadbalancer -e kolla_action=upgrade
+osism apply -a upgrade common
+osism apply -a upgrade loadbalancer
 
 task_ids=$(osism apply --no-wait --format script openstackclient 2>&1)
-task_ids+=" "$(osism apply --no-wait --format script opensearch -e kolla_action=upgrade 2>&1)
-task_ids+=" "$(osism apply --no-wait --format script memcached -e kolla_action=upgrade 2>&1)
-task_ids+=" "$(osism apply --no-wait --format script redis -e kolla_action=upgrade 2>&1)
-task_ids+=" "$(osism apply --no-wait --format script mariadb -e kolla_action=upgrade 2>&1)
-task_ids+=" "$(osism apply --no-wait --format script rabbitmq -e kolla_action=upgrade 2>&1)
+task_ids+=" "$(osism apply --no-wait --format script -a upgrade opensearch 2>&1)
+task_ids+=" "$(osism apply --no-wait --format script -a upgrade memcached 2>&1)
+task_ids+=" "$(osism apply --no-wait --format script -a upgrade redis 2>&1)
+task_ids+=" "$(osism apply --no-wait --format script -a upgrade mariadb 2>&1)
+task_ids+=" "$(osism apply --no-wait --format script -a upgrade rabbitmq 2>&1)
 
 osism wait --output --format script --delay 2 $task_ids
 
-osism apply openvswitch -e kolla_action=upgrade
-osism apply ovn -e kolla_action=upgrade
+osism apply -a upgrade openvswitch
+osism apply -a upgrade ovn
