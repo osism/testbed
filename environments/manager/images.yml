@@ -13,7 +13,7 @@ ara_server_mariadb_image: "{{ docker_registry }}/library/mariadb:{{ ara_server_m
 netbox_tag: "latest"
 netbox_image: "{{ docker_registry_netbox|default('quay.io') }}/osism/netbox:{{ netbox_tag }}"
 
-nginx_tag: "1.25.2-alpine"
+nginx_tag: "1.25.3-alpine"
 nginx_image: "{{ docker_registry }}/library/nginx:{{ nginx_tag }}"
 
 phpmyadmin_tag: "5.2.1"
@@ -44,7 +44,7 @@ osism_image: "{{ docker_registry_ansible }}/osism/osism:{{ osism_tag }}"
 osism_netbox_tag: "{{ osism_version|default('latest') }}"
 osism_netbox_image: "{{ docker_registry_ansible }}/osism/osism-netbox:{{ osism_netbox_tag }}"
 
-vault_tag: "1.15.0"
+vault_tag: "1.15.1"
 vault_image: "{{ docker_registry }}/hashicorp/vault:{{ vault_tag }}"
 
 traefik_tag: "2.10.5"
