@@ -22,8 +22,6 @@ doc/build
 environment-local.tfvars
 environments/**/ceph.client.*.keyring
 errored.tfstate
-ironic-agent.initramfs
-ironic-agent.kernel
 local.env
 roles
 secrets
