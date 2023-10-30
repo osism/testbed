@@ -12,7 +12,4 @@ if [[ $VERSION != "latest" ]]; then
     # manager_version parameter) and not by release names.
     sed -i "/ceph_version:/d" /opt/configuration/environments/manager/configuration.yml
     sed -i "/openstack_version:/d" /opt/configuration/environments/manager/configuration.yml
-
-    # In a stable release the images are located in a different namespace
-    sed -i "s#docker_namespace: .*#docker_namespace: kolla/release#g" /opt/configuration/environments/kolla/configuration.yml
 fi

@@ -5,8 +5,7 @@
 
   vars:
     ansible_ssh_user: dragon
-    docker_namespace_kolla: kolla
-    docker_registry: osism.harbor.regio.digital
+    docker_registry: quay.io
     operator_user: dragon
     repo_path: /home/ubuntu/src/github.com
     version_manager: latest
@@ -70,12 +69,6 @@
         - docker_registry_ansible
         - docker_registry_kolla
         - docker_registry_netbox
-
-    - name: Set kolla container namespace
-      ansible.builtin.command:  # noqa: command-instead-of-module
-        chdir: /opt/configuration
-        cmd: "sed -i 's#docker_namespace: .*#docker_namespace: {{ docker_namespace_kolla }}#g' /opt/configuration/environments/kolla/configuration.yml"
-      changed_when: true
 
     - name: Copy testbed crt
       become: true

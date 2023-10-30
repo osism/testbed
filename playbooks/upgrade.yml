@@ -5,7 +5,6 @@
     version_ceph: "{{ ceph_version | default('pacific') }}"
     version_manager: "{{ manager_version | default('latest') }}"
     version_openstack: "{{ openstack_version | default('2023.1') }}"
-    namespace_kolla: "{{ docker_namespace_kolla | default('kolla') }}"
 
     run_bootstrap: false
 
@@ -25,7 +24,6 @@
     version_ceph_next: "{{ ceph_version_next | default('quincy') }}"
     version_manager_next: "{{ manager_version_next | default('latest') }}"
     version_openstack_next: "{{ openstack_version_next | default('2023.1') }}"
-    namespace_kolla_next: "{{ docker_namespace_kolla_next | default('kolla') }}"
 
     run_bootstrap: true
 
@@ -45,7 +43,7 @@
     - name: Run upgrade
       ansible.builtin.command:
         chdir: "{{ terraform_path }}"
-        cmd: make ENVIRONMENT={{ cloud_env }} TERRAFORM={{ terraform_binary }} VERSION_MANAGER={{ version_manager_next }} VERSION_CEPH={{ version_ceph_next }} VERSION_OPENSTACK={{ version_openstack_next }} KOLLA_NAMESPACE={{ namespace_kolla_next }} upgrade
+        cmd: make ENVIRONMENT={{ cloud_env }} TERRAFORM={{ terraform_binary }} VERSION_MANAGER={{ version_manager_next }} VERSION_CEPH={{ version_ceph_next }} VERSION_OPENSTACK={{ version_openstack_next }} upgrade
       changed_when: true
       environment:
         TERRAGRUNT_TFPATH: "{{ terragrunt_tfpath }}"

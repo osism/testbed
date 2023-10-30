@@ -18,10 +18,10 @@ docker_opts:
 # container registries
 
 docker_registry: index.docker.io
-docker_registry_ansible: osism.harbor.regio.digital
-docker_registry_kolla: osism.harbor.regio.digital
-docker_registry_netbox: osism.harbor.regio.digital
-ceph_docker_registry: osism.harbor.regio.digital
+docker_registry_ansible: quay.io
+docker_registry_kolla: quay.io
+docker_registry_netbox: quay.io
+ceph_docker_registry: quay.io
 
 ##########################
 # operator
