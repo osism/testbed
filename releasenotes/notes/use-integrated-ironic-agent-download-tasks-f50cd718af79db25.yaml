@@ -1,5 +1,0 @@
----
-features:
-  - |
-    The Ironic Playbook includes the possibility to download the necessary machine images.
-    This will be used from now on.
