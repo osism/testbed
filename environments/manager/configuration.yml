@@ -48,6 +48,11 @@ netbox_host: "netbox.testbed.osism.xyz"
 netbox_api_url: "https://{{ netbox_host }}"
 
 ##########################
+# opensearch
+
+manager_opensearch_address: api-int.testbed.osism.xyz
+
+##########################
 # configuration
 
 configuration_directory: /opt/configuration
