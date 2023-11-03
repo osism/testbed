@@ -17,7 +17,7 @@ VERSION_CEPH ?= quincy
 VERSION_MANAGER ?= latest
 VERSION_OPENSTACK ?= 2023.1
 
-KOLLA_NAMESPACE ?= kolla
+KOLLA_NAMESPACE ?= osism
 
 RALLY ?= false
 REFSTACK ?= false

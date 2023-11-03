@@ -23,9 +23,6 @@
     version_manager: "{{ manager_version | default('latest') }}"
     version_openstack: "{{ openstack_version | default('2023.1') }}"
 
-    zuul_docker_namespace_kolla: "{{ docker_namespace_kolla | default('kolla') }}"
-    zuul_docker_registry: "{{ docker_registry | default('osism.harbor.regio.digital') }}"
-
     run_bootstrap: true
     run_checks: true
     run_refstack: "{{ refstack | default(false) | bool }}"
@@ -129,7 +126,7 @@
       ansible.builtin.shell:
         chdir: "{{ ansible_path }}"
         cmd: |
-          {{ ansible_playbook }} -i {{ terraform_path }}/inventory.{{ cloud_env }} --key-file {{ terraform_path }}/.id_rsa.{{ cloud_env }} manager-part-1.yml -e cloud_env={{ cloud_env }} -e repo_path={{ repo_path }} -e version_manager={{ version_manager }} -e docker_registry={{ zuul_docker_registry }} -e docker_namespace_kolla={{ zuul_docker_namespace_kolla }}
+          {{ ansible_playbook }} -i {{ terraform_path }}/inventory.{{ cloud_env }} --key-file {{ terraform_path }}/.id_rsa.{{ cloud_env }} manager-part-1.yml -e cloud_env={{ cloud_env }} -e repo_path={{ repo_path }} -e version_manager={{ version_manager }}
       changed_when: true
 
     - name: Deploy manager + bootstrap nodes

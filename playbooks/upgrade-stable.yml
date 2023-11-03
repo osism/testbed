@@ -3,7 +3,6 @@
   ansible.builtin.import_playbook: deploy.yml
   vars:
     version_manager: "{{ manager_version | default('latest') }}"
-    namespace_kolla: "{{ docker_namespace_kolla | default('kolla') }}"
 
     run_bootstrap: false
 
@@ -21,7 +20,6 @@
     version_manager_next: "{{ manager_version_next | default('latest') }}"
     version_ceph_next: "{{ ceph_version_next | default('quincy') }}"
     version_openstack_next: "{{ openstack_version_next | default('2023.1') }}"
-    namespace_kolla_next: "{{ docker_namespace_kolla_next | default('kolla') }}"
 
     run_bootstrap: true
     run_checks: true
@@ -40,7 +38,7 @@
     - name: Run upgrade
       ansible.builtin.command:
         chdir: "{{ terraform_path }}"
-        cmd: make ENVIRONMENT={{ cloud_env }} VERSION_MANAGER={{ version_manager_next }} VERSION_CEPH={{ version_ceph_next }} VERSION_OPENSTACK={{ version_openstack_next }} KOLLA_NAMESPACE={{ namespace_kolla_next }} upgrade
+        cmd: make ENVIRONMENT={{ cloud_env }} VERSION_MANAGER={{ version_manager_next }} VERSION_CEPH={{ version_ceph_next }} VERSION_OPENSTACK={{ version_openstack_next }} upgrade
       changed_when: true
 
     - name: Bootstrap services
