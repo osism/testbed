@@ -81,7 +81,7 @@ octavia_network_type: tenant
 designate_ns_record: openstack.testbed.osism.xyz
 
 # manila
-enable_manila_backend_generic: "yes"
+enable_manila_backend_cephfs_native: "yes"
 
 # ironic
 ironic_dnsmasq_interface: "vxlan0"
