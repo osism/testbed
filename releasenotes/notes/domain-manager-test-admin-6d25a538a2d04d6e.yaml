@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Test project and test user are now created in a test domain.  Both the test project and
+    the test user are created by a new user test-admin, who is assigned the new
+    domain-manager role.

@@ -9,6 +9,9 @@ clouds:
   test:
     auth:
       password: test
+  test-admin:
+    auth:
+      password: test
   octavia:
     auth:
       password: FhXdWbXyVk63hLdeGhJ6oq48tj4FAE6v71w6VLF9

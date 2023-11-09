@@ -25,8 +25,9 @@
         out_interface: "{{ ansible_local.testbed_network_devices.management }}"
         jump: MASQUERADE
 
-- name: Create Encrypted Volume Type
+- name: Bootstrap basic OpenStack services
   hosts: localhost
+  connection: local
 
   tasks:
     # NOTE: volume type not available in the openstack.cloud collection
@@ -41,11 +42,6 @@
       when: volume_type_result.rc == 1
       changed_when: true
 
-- name: Bootstrap basic OpenStack services
-  hosts: localhost
-  connection: local
-
-  tasks:
     - name: Create public network
       openstack.cloud.network:
         cloud: admin
@@ -67,3 +63,9 @@
         allocation_pool_start: 192.168.112.100
         allocation_pool_end: 192.168.112.200
         gateway_ip: 192.168.112.5
+
+    - name: Create domain-manager role
+      openstack.cloud.identity_role:
+        cloud: admin
+        state: present
+        name: domain-manager
