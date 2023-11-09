@@ -181,8 +181,8 @@ def main():
     cleanup_subnets(conn, PREFIX)
     cleanup_networks(conn, PREFIX)
     cleanup_security_groups(conn, PREFIX)
-    cleanup_routers(conn, PREFIX)
     cleanup_floating_ips(conn, PREFIX)
+    cleanup_routers(conn, PREFIX)
 
 
 if __name__ == '__main__':
