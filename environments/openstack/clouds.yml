@@ -17,13 +17,21 @@ clouds:
       user_domain_name: default
     cacert: /etc/ssl/certs/ca-certificates.crt
     identity_api_version: 3
+  test-admin:
+    auth:
+      username: test-admin
+      auth_url: https://api.testbed.osism.xyz:5000/v3
+      user_domain_name: default
+      domain_name: test
+    cacert: /etc/ssl/certs/ca-certificates.crt
+    identity_api_version: 3
   test:
     auth:
       username: test
       project_name: test
       auth_url: https://api.testbed.osism.xyz:5000/v3
-      project_domain_name: default
-      user_domain_name: default
+      project_domain_name: test
+      user_domain_name: test
     cacert: /etc/ssl/certs/ca-certificates.crt
     identity_api_version: 3
   octavia:

@@ -4,27 +4,49 @@
   connection: local
 
   tasks:
-    - name: Create test project
+    - name: Create test domain
       openstack.cloud.project:
         cloud: admin
         state: present
         name: test
-        domain_id: default
+
+    - name: Create test-admin user
+      openstack.cloud.identity_user:
+        cloud: admin
+        state: present
+        name: test-admin
+        password: test
+        email: test-admin@testbed.osism.xyz
+        domain: default
+      no_log: true
+
+    # NOTE: The CLI is used here because the corresponding Ansible module does
+    #       not find the test-admin user in the default domain.
+    - name: Add domain-manager role to user test-admin
+      ansible.builtin.command: openstack --os-cloud admin role add --domain test --user test-admin domain-manager
+      changed_when: true
+
+    - name: Create test project
+      openstack.cloud.project:
+        cloud: test-admin
+        state: present
+        name: test
+        domain: test
 
     - name: Create test user
       openstack.cloud.identity_user:
-        cloud: admin
+        cloud: test-admin
         state: present
         name: test
         password: test
         email: test@testbed.osism.xyz
-        domain: default
+        domain: test
         default_project: test
       no_log: true
 
     - name: Add member roles to user test  # noqa: ignore-errors
       openstack.cloud.role_assignment:
-        cloud: admin
+        cloud: test-admin
         state: present
         user: test
         role: "{{ item }}"
