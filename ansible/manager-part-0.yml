@@ -82,15 +82,6 @@
         - osism/ansible-collection-commons
         - osism/ansible-collection-services
 
-    - name: Copy sources
-      ansible.posix.synchronize:
-        src: "{{ repo_path }}/{{ item }}"
-        delete: true
-        dest: "/opt/src/{{ item }}"
-      with_items:
-        - osism/ansible-collection-commons
-        - osism/ansible-collection-services
-
     - name: Create /usr/share/ansible directory
       become: true
       ansible.builtin.file:
@@ -108,6 +99,15 @@
           ansible-galaxy collection install --collections-path /usr/share/ansible/collections /opt/src/osism/ansible-collection-services
           chmod -R +r /usr/share/ansible
       changed_when: true
+
+    - name: Copy sources
+      ansible.posix.synchronize:
+        src: "{{ repo_path }}/{{ item }}"
+        delete: true
+        dest: "/opt/src/{{ item }}"
+      with_items:
+        - osism/ansible-collection-commons
+        - osism/ansible-collection-services
 
 - name: Create operator user
   hosts: testbed-manager.testbed.osism.xyz
