@@ -18,6 +18,11 @@
     apt_lock_timeout: 300
 
   tasks:
+    - name: Fail if Ubuntu version is lower than 22.04
+      ansible.builtin.fail:
+        msg: "Ubuntu version is {{ ansible_distribution_version }}, see https://osism.github.io/docs/advanced-guides/testbed#software for required version."
+      when: ansible_distribution == "Ubuntu" and ansible_distribution_version < "22.04"
+
     - name: Update APT cache and run dist-upgrade
       become: true
       ansible.builtin.apt:
