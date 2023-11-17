@@ -6,7 +6,7 @@ ENVIRONMENT ?= regiocloud
 USERNAME = dragon
 
 OPENSTACK = openstack
-TERRAFORM ?= terraform
+TERRAFORM ?= tofu
 export TF_CLI_ARGS ?= -no-color
 
 PARALLELISM = 10

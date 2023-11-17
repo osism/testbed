@@ -9,15 +9,18 @@ VERSION_OPENSTACK ?= 2023.1
 TERRAFORM ?= terraform
 TERRAFORM_BLUEPRINT ?= testbed-default
 
-ANSIBLE_COLLECTION_COMMONS_PATH := $(shell yq '.repositories.ansible-collection-commons.path' playbooks/vars/repositories.yml)
-ANSIBLE_COLLECTION_COMMONS_REPO := $(shell yq '.repositories.ansible-collection-commons.repo' playbooks/vars/repositories.yml)
-ANSIBLE_COLLECTION_SERVICES_PATH := $(shell yq '.repositories.ansible-collection-services.path' playbooks/vars/repositories.yml)
-ANSIBLE_COLLECTION_SERVICES_REPO := $(shell yq '.repositories.ansible-collection-services.repo' playbooks/vars/repositories.yml)
-REPOSITORY_SERVER := $(shell yq '.repository_server' playbooks/vars/repositories.yml)
-TERRAFORM_BASE_PATH := $(shell yq '.repositories.terraform-base.path' playbooks/vars/repositories.yml)
-TERRAFORM_BASE_REPO := $(shell yq '.repositories.terraform-base.repo' playbooks/vars/repositories.yml)
-TESTBED_PATH := $(shell yq '.repositories.testbed.path' playbooks/vars/repositories.yml)
-TESTBED_REPO := $(shell yq '.repositories.testbed.repo' playbooks/vars/repositories.yml)
+variables:
+	$(eval ANSIBLE_COLLECTION_COMMONS_PATH := $(shell yq '.repositories."ansible-collection-commons".path' playbooks/vars/repositories.yml))
+	$(eval ANSIBLE_COLLECTION_COMMONS_REPO := $(shell yq '.repositories."ansible-collection-commons".repo' playbooks/vars/repositories.yml))
+	$(eval ANSIBLE_COLLECTION_SERVICES_PATH := $(shell yq '.repositories."ansible-collection-service".path' playbooks/vars/repositories.yml))
+	$(eval ANSIBLE_COLLECTION_SERVICES_REPO := $(shell yq '.repositories."ansible-collection-service".repo' playbooks/vars/repositories.yml))
+	$(eval REPOSITORY_SERVER := $(shell yq '."repository_server"' playbooks/vars/repositories.yml))
+	$(eval TERRAFORM_BASE_PATH := $(shell yq '.repositories."terraform-base".path' playbooks/vars/repositories.yml))
+	$(eval TERRAFORM_BASE_REPO := $(shell yq '.repositories."terraform-base".repo' playbooks/vars/repositories.yml))
+	$(eval TESTBED_PATH := $(shell yq '.repositories.testbed.path' playbooks/vars/repositories.yml))
+	$(eval TESTBED_REPO := $(shell yq '.repositories.testbed.repo' playbooks/vars/repositories.yml))
+
+venv = . venv/bin/activate
 
 help:  ## Display this help.
 	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target>\033[0m\n"} /^[a-zA-Z_0-9-]+:.*?##/ { printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
@@ -42,8 +45,8 @@ login: ## Log in on the manager.
 	  ENVIRONMENT=$(ENVIRONMENT) \
 	  login
 
-bootstrap: create ## Bootstrap everything.
-	ansible-playbook playbooks/deploy.yml \
+bootstrap: create deps variables ## Bootstrap everything.
+	${venv} ; ansible-playbook playbooks/deploy.yml \
 	  -i ansible/localhost_inventory.yaml \
 	  -e ansible_galaxy=ansible-galaxy \
 	  -e ansible_playbook=ansible-playbook \
@@ -87,8 +90,8 @@ deploy: bootstrap ## Deploy everything and then check it.
 	  TERRAFORM=$(TERRAFORM) \
 	  check
 
-prepare: ## Run local preparations.
-	ansible-playbook -i localhost, ansible/check-local-versions.yml
+prepare: variables
+	${venv} ; ansible-playbook -i localhost, ansible/check-local-versions.yml
 
 	mkdir -p $$(dirname $(ANSIBLE_COLLECTION_COMMONS_PATH))
 	mkdir -p $$(dirname $(ANSIBLE_COLLECTION_SERVICES_PATH))
@@ -102,4 +105,25 @@ prepare: ## Run local preparations.
 
 	rsync -avz .src/$(TERRAFORM_BASE_PATH)/$(TERRAFORM_BLUEPRINT)/ terraform
 
-phony: bootstrap clean create deploy identity login manager prepare ceph
+venv/bin/activate: Makefile
+	@which python3 > /dev/null || { echo "Missing requirement: python3" >&2; exit 1; }
+	@which jq > /dev/null || { echo "Missing requirement: jq" >&2; exit 1; }
+	virtualenv --version > /dev/null || { echo "Missing requirement: virtualenv -- aborting" >&2; exit 1; }
+	[ -e venv/bin/python ] || virtualenv -p $$(which python3) venv > /dev/null
+	${venv} && pip3 install -r requirements.txt
+	touch venv/bin/activate
+
+venv/bin/tofu: venv/bin/activate
+	$(eval TOFU_VERSION := 1.6.0-alpha2)
+	$(eval OS := $(shell uname | tr '[:upper:]' '[:lower:]'))
+	$(eval ARCH := $(shell uname -m | sed -e 's/aarch64/arm64/' -e 's/x86_64/amd64/'))
+	curl -L --output venv/bin/tofu.zip \
+		"https://github.com/opentofu/opentofu/releases/download/v${TOFU_VERSION}/tofu_${TOFU_VERSION}_${OS}_${ARCH}.zip"
+	unzip -d venv/bin/ venv/bin/tofu.zip tofu:w
+	chmod +x venv/bin/tofu
+	rm -f venv/bin/tofu.zip
+	${venv} && tofu version
+
+deps: venv/bin/tofu venv/bin/activate variables
+
+phony: bootstrap clean create deploy identity login manager prepare ceph deps variables
