@@ -119,7 +119,8 @@ venv/bin/tofu: venv/bin/activate
 	$(eval ARCH := $(shell uname -m | sed -e 's/aarch64/arm64/' -e 's/x86_64/amd64/'))
 	curl -L --output venv/bin/tofu.zip \
 		"https://github.com/opentofu/opentofu/releases/download/v${TOFU_VERSION}/tofu_${TOFU_VERSION}_${OS}_${ARCH}.zip"
-	unzip -d venv/bin/ venv/bin/tofu.zip tofu:w
+	rm -f venv/bin/tofu
+	unzip -d venv/bin/ venv/bin/tofu.zip tofu
 	chmod +x venv/bin/tofu
 	rm -f venv/bin/tofu.zip
 	${venv} && tofu version
