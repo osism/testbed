@@ -49,6 +49,7 @@ init:
 		$(TERRAFORM) workspace select -or-create ${ENVIRONMENT}; \
 	fi
 
+
 	@rm -f *.auto.tfvars
 	@cp environments/$(ENVIRONMENT).tfvars $(ENVIRONMENT).auto.tfvars
 	@echo "cloud_provider = \"$(OS_CLOUD)\"" >> $(ENVIRONMENT).auto.tfvars
@@ -67,7 +68,7 @@ init:
 		cp -p overrides/$${over}_override.tf .; \
 	done
 
-	@terraform fmt
+	@$(TERRAFORM) fmt
 
 validate: init
 	@$(TERRAFORM) validate $(PARAMS)
