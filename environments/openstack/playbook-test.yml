@@ -5,7 +5,7 @@
 
   tasks:
     - name: Create test domain
-      openstack.cloud.project:
+      openstack.cloud.identity_domain:
         cloud: admin
         state: present
         name: test
