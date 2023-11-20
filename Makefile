@@ -123,6 +123,7 @@ venv/bin/tofu: venv/bin/activate
 	unzip -d venv/bin/ venv/bin/tofu.zip tofu
 	chmod +x venv/bin/tofu
 	rm -f venv/bin/tofu.zip
+	touch venv/bin/tofu
 	${venv} && tofu version
 
 deps: venv/bin/tofu venv/bin/activate variables
