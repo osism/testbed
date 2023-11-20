@@ -80,6 +80,9 @@ octavia_network_type: tenant
 # designate
 designate_ns_record: openstack.testbed.osism.xyz
 
+# horizon
+horizon_keystone_multidomain: true
+
 # manila
 enable_manila_backend_cephfs_native: "yes"
 
