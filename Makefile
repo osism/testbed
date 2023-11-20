@@ -12,8 +12,8 @@ TERRAFORM_BLUEPRINT ?= testbed-default
 variables:
 	$(eval ANSIBLE_COLLECTION_COMMONS_PATH := $(shell yq '.repositories."ansible-collection-commons".path' playbooks/vars/repositories.yml))
 	$(eval ANSIBLE_COLLECTION_COMMONS_REPO := $(shell yq '.repositories."ansible-collection-commons".repo' playbooks/vars/repositories.yml))
-	$(eval ANSIBLE_COLLECTION_SERVICES_PATH := $(shell yq '.repositories."ansible-collection-service".path' playbooks/vars/repositories.yml))
-	$(eval ANSIBLE_COLLECTION_SERVICES_REPO := $(shell yq '.repositories."ansible-collection-service".repo' playbooks/vars/repositories.yml))
+	$(eval ANSIBLE_COLLECTION_SERVICES_PATH := $(shell yq '.repositories."ansible-collection-services".path' playbooks/vars/repositories.yml))
+	$(eval ANSIBLE_COLLECTION_SERVICES_REPO := $(shell yq '.repositories."ansible-collection-services".repo' playbooks/vars/repositories.yml))
 	$(eval REPOSITORY_SERVER := $(shell yq '."repository_server"' playbooks/vars/repositories.yml))
 	$(eval TERRAFORM_BASE_PATH := $(shell yq '.repositories."terraform-base".path' playbooks/vars/repositories.yml))
 	$(eval TERRAFORM_BASE_REPO := $(shell yq '.repositories."terraform-base".repo' playbooks/vars/repositories.yml))
@@ -92,6 +92,7 @@ deploy: bootstrap ## Deploy everything and then check it.
 
 prepare: variables
 	${venv} ; ansible-playbook -i localhost, ansible/check-local-versions.yml
+
 
 	mkdir -p $$(dirname $(ANSIBLE_COLLECTION_COMMONS_PATH))
 	mkdir -p $$(dirname $(ANSIBLE_COLLECTION_SERVICES_PATH))
