@@ -10,6 +10,7 @@ TERRAFORM ?= tofu
 TERRAFORM_BLUEPRINT ?= testbed-default
 
 venv = . venv/bin/activate
+export PATH := ${PATH}:${PWD}/venv/bin
 
 help:  ## Display this help.
 	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target>\033[0m\n"} /^[a-zA-Z_0-9-]+:.*?##/ { printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
@@ -23,7 +24,7 @@ clean: ## Destroy infrastructure with Terraform.
 
 create: prepare ## Create required infrastructure with Terraform.
 	contrib/setup_testbed.py --environment_check $(ENVIRONMENT)
-	${venv} ; make -C terraform \
+	make -C terraform \
 	  ENVIRONMENT=$(ENVIRONMENT) \
 	  TERRAFORM=$(TERRAFORM) \
 	  VERSION_CEPH=$(VERSION_CEPH) \
@@ -45,7 +46,7 @@ bootstrap: create ## Bootstrap everything.
 	  -e ansible_playbook=ansible-playbook \
 	  -e basepath="$(PWD)" \
 	  -e cloud_env=$(ENVIRONMENT) \
-	  -e repo_path="$(PWD)/.src/$(shell contrib/contrib/setup_testbed.py --query "repository_server"')" \
+	  -e repo_path="$(PWD)/.src/$(shell contrib/setup_testbed.py --query "repository_server")" \
 	  -e manual_create=true \
 	  -e manual_deploy=true \
 	  -e version_ceph=$(VERSION_CEPH) \
@@ -111,7 +112,7 @@ venv/bin/tofu: venv/bin/activate
 	unzip -d venv/bin/ venv/bin/tofu.zip tofu
 	chmod +x venv/bin/tofu
 	rm -f venv/bin/tofu.zip
-	${venv} ; tofu version
+	tofu version
 	touch venv/bin/tofu
 
 deps: venv/bin/tofu venv/bin/activate
