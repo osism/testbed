@@ -9,13 +9,13 @@ VERSION_OPENSTACK ?= 2023.1
 TERRAFORM ?= terraform
 TERRAFORM_BLUEPRINT ?= testbed-default
 
-ANSIBLE_COLLECTION_COMMONS_PATH := $(shell yq '.repositories.ansible-collection-commons.path' playbooks/vars/repositories.yml)
-ANSIBLE_COLLECTION_COMMONS_REPO := $(shell yq '.repositories.ansible-collection-commons.repo' playbooks/vars/repositories.yml)
-ANSIBLE_COLLECTION_SERVICES_PATH := $(shell yq '.repositories.ansible-collection-services.path' playbooks/vars/repositories.yml)
-ANSIBLE_COLLECTION_SERVICES_REPO := $(shell yq '.repositories.ansible-collection-services.repo' playbooks/vars/repositories.yml)
-REPOSITORY_SERVER := $(shell yq '.repository_server' playbooks/vars/repositories.yml)
-TERRAFORM_BASE_PATH := $(shell yq '.repositories.terraform-base.path' playbooks/vars/repositories.yml)
-TERRAFORM_BASE_REPO := $(shell yq '.repositories.terraform-base.repo' playbooks/vars/repositories.yml)
+ANSIBLE_COLLECTION_COMMONS_PATH := $(shell yq '.repositories."ansible-collection-commons".path' playbooks/vars/repositories.yml)
+ANSIBLE_COLLECTION_COMMONS_REPO := $(shell yq '.repositories."ansible-collection-commons".repo' playbooks/vars/repositories.yml)
+ANSIBLE_COLLECTION_SERVICES_PATH := $(shell yq '.repositories."ansible-collection-services".path' playbooks/vars/repositories.yml)
+ANSIBLE_COLLECTION_SERVICES_REPO := $(shell yq '.repositories."ansible-collection-services".repo' playbooks/vars/repositories.yml)
+REPOSITORY_SERVER := $(shell yq '."repository_server"' playbooks/vars/repositories.yml)
+TERRAFORM_BASE_PATH := $(shell yq '.repositories."terraform-base".path' playbooks/vars/repositories.yml)
+TERRAFORM_BASE_REPO := $(shell yq '.repositories."terraform-base".repo' playbooks/vars/repositories.yml)
 TESTBED_PATH := $(shell yq '.repositories.testbed.path' playbooks/vars/repositories.yml)
 TESTBED_REPO := $(shell yq '.repositories.testbed.repo' playbooks/vars/repositories.yml)
 
