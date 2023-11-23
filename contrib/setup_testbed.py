@@ -27,7 +27,7 @@ def check_environment(name: str) -> None:
             data_local = yaml.safe_load(file)
             if lookup(cloud_path, data_local) is None:
                 envs = ", ".join(data_local["clouds"].keys())
-                raise RuntimeError(f"no such key '{cloud_path}' in {filename}, configured environments are: {envs}")
+                raise RuntimeError(f"no such key '{cloud_path}' in {filename}, configured environments are: {envs} (set it with ENVIRONMENT=...)")
     try:
         _check_file("terraform/clouds.yaml", name)
         _check_file("terraform/secure.yaml", name)
