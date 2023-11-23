@@ -39,6 +39,7 @@
       become: true
       ansible.builtin.apt:
         name:
+          - linux-generic-hwe-22.04
           - python3-argcomplete
           - python3-cryptography
           - python3-dnspython
