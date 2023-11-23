@@ -129,6 +129,25 @@
           {{ ansible_playbook }} -i {{ terraform_path }}/inventory.{{ cloud_env }} --key-file {{ terraform_path }}/.id_rsa.{{ cloud_env }} manager-part-1.yml -e cloud_env={{ cloud_env }} -e repo_path={{ repo_path }} -e version_manager={{ version_manager }}
       changed_when: true
 
+    # NOTE: Errors are ignored as the connection is lost immediately
+    - name: Reboot manager  # noqa ignore-errors
+      ansible.builtin.command:
+        cmd: "ssh -i {{ terraform_path }}/.id_rsa.{{ cloud_env }} dragon@{{ manager_host }} sudo shutdown -r now"
+      changed_when: true
+      ignore_errors: true
+
+    - name: Wait up to 300 seconds for port 22 to become open and contain "OpenSSH"
+      ansible.builtin.wait_for:
+        port: 22
+        host: "{{ manager_host }}"
+        search_regex: OpenSSH
+        delay: 10
+        timeout: 300
+
+    - name: Wait a little longer for the manager so that everything is ready
+      ansible.builtin.pause:
+        seconds: 60
+
     - name: Deploy manager + bootstrap nodes
       ansible.builtin.command:
         cmd: "ssh -i {{ terraform_path }}/.id_rsa.{{ cloud_env }} dragon@{{ manager_host }} /opt/configuration/scripts/deploy-manager.sh"

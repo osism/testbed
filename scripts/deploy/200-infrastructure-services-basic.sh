@@ -6,8 +6,7 @@ export INTERACTIVE=false
 osism apply common
 osism apply loadbalancer
 
-task_ids=$(osism apply --no-wait --format script keycloak 2>&1)
-task_ids+=" "$(osism apply --no-wait --format script openstackclient 2>&1)
+task_ids=$(osism apply --no-wait --format script openstackclient 2>&1)
 task_ids+=" "$(osism apply --no-wait --format script memcached 2>&1)
 task_ids+=" "$(osism apply --no-wait --format script redis 2>&1)
 task_ids+=" "$(osism apply --no-wait --format script mariadb 2>&1)
@@ -34,9 +33,11 @@ fi
 osism wait --output --format script --delay 2 $task_ids
 
 osism apply ovn
-osism apply --environment custom keycloak-oidc-client-config
 
 if [[ "$REFSTACK" == "false" ]]; then
     # NOTE: Run a backup of the database to test the backup function
     osism apply mariadb_backup
 fi
+
+osism apply keycloak
+osism apply --environment custom keycloak-oidc-client-config
