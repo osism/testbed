@@ -36,3 +36,4 @@ terraform/customisations/
 terraform/overrides/
 terraform/terragrunt.hcl
 venv
+.idea

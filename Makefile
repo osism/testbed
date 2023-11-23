@@ -1,6 +1,6 @@
 export LC_ALL = C.UTF-8
 
-ENVIRONMENT ?= regiocloud
+ENVIRONMENT ?= the_environment
 
 VERSION_CEPH ?= quincy
 VERSION_MANAGER ?= latest
@@ -21,6 +21,9 @@ clean: ## Destroy infrastructure with Terraform.
 	  ENVIRONMENT=$(ENVIRONMENT) \
 	  TERRAFORM=$(TERRAFORM) \
 	  clean
+
+clean_local:
+	rm -rf venv .src
 
 create: prepare ## Create required infrastructure with Terraform.
 	contrib/setup_testbed.py --environment_check $(ENVIRONMENT)
@@ -88,8 +91,7 @@ deploy: bootstrap ## Deploy everything and then check it.
 	  TERRAFORM=$(TERRAFORM) \
 	  check
 
-prepare:
-	contrib/setup_testbed.py --environment_check $(ENVIRONMENT)
+prepare: deps
 	${venv}; ansible-playbook -i localhost, ansible/check-local-versions.yml
 	contrib/setup_testbed.py --prepare
 
@@ -117,4 +119,4 @@ venv/bin/tofu: venv/bin/activate
 
 deps: venv/bin/tofu venv/bin/activate
 
-phony: bootstrap clean create deploy identity login manager prepare ceph deps
+phony: bootstrap clean clean_local create deploy identity login manager prepare ceph deps

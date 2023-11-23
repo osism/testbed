@@ -21,13 +21,16 @@ def check_environment(name: str) -> None:
     def _check_file(filename: str, name: str):
         if not os.path.exists(filename):
             raise RuntimeError(f"There is no file {filename}, create one by using {filename}.sample")
+
         with open(filename, 'r') as file:
+            cloud_path = f"clouds.{name}"
             data_local = yaml.safe_load(file)
-            if lookup(name, data_local) is None:
-                raise RuntimeError(f"no such key '{name}' in {filename}")
+            if lookup(cloud_path, data_local) is None:
+                envs = ", ".join(data_local["clouds"].keys())
+                raise RuntimeError(f"no such key '{cloud_path}' in {filename}, configured environments are: {envs}")
     try:
-        _check_file("terraform/clouds.yaml", f"clouds.{name}")
-        _check_file("terraform/secure.yaml", f"clouds.{name}")
+        _check_file("terraform/clouds.yaml", name)
+        _check_file("terraform/secure.yaml", name)
     except Exception as e:
         print(e)
         sys.exit(1)
