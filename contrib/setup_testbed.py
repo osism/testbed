@@ -34,18 +34,27 @@ def check_environment(name: str) -> None:
     sys.exit(0)
 
 
-def create_directory(directory_path: str) -> None:
+def create_directories(directory_path: str) -> None:
     if not os.path.exists(directory_path):
         os.makedirs(directory_path)
         print(f"Directory '{directory_path}' created.")
 
 
-def clone_repo(path: str, url: str) -> None:
-    create_directory(path)
-    checkout_path = f".src/{path}/"
+def clone_repo(path: str, repo_address: str, branch: str) -> None:
+    checkout_path = f".src/{path.strip('/')}"
+    print(checkout_path)
+    print(os.path.dirname(checkout_path))
+    create_directories(os.path.dirname(checkout_path))
+    if not os.path.exists(checkout_path):
+        repo_command = f"git clone {repo_address} {checkout_path}"
+        print(f"+ {repo_command}")
+        subprocess.check_output(repo_command, shell=True)
+
+    repo_command = f"git -C {checkout_path} checkout {branch or 'main'}"
+    print(f"+ {repo_command}")
+    subprocess.check_output(repo_command, shell=True)
+
     repo_command = f"git -C {checkout_path} pull"
-    if not os.path.exists(path):
-        repo_command = f"git clone {url} {checkout_path}"
     print(f"+ {repo_command}")
     subprocess.check_output(repo_command, shell=True)
 
@@ -85,13 +94,12 @@ if args.environment_check:
 elif args.query:
     sys.stdout.write(lookup(args.query, data))
 elif args.prepare:
-    print("** Create directories")
+    print("** Create repository directories")
     for key, item_data in data["repositories"].items():
         print(f"-> {key}")
-        clone_repo(item_data["path"], item_data["repo"])
+        clone_repo(path=item_data["path"], repo_address=item_data["repo"], branch=item_data.get("branch"))
 
     print("** Replicate to terraform folder")
     command = f"rsync -avz .src/{lookup('repositories.terraform-base.path', data)}/testbed-default/ terraform"
-
     print(f"+ {command}")
     subprocess.check_output(command, shell=True)
