@@ -144,6 +144,13 @@ ceph_nova_user: nova
 ceph_public_network: 192.168.16.0/20
 
 ##########################################################
+# prometheus
+
+# NOTE: external label is required by the thanos_sidecar
+prometheus_external_labels:
+  infrastructure: testbed
+
+##########################################################
 # other
 
 # This is a workaround for the missings in the defaults of the 4.2.0 release.
