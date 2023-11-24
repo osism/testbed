@@ -67,8 +67,6 @@ neutron_plugin_agent: ovn
 neutron_ovn_availability_zones:
   - nova
 
-enable_neutron_agent_ha: "yes"
-
 # nova
 # NOTE: Disable the debugging logs for Libvirt as Libvirt writes a lot of logs
 #       that are not of interest.
