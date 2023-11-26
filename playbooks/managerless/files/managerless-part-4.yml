@@ -66,7 +66,14 @@
   gather_facts: true
 
   vars:
+    cloud_env: default
     create_infrastructure: true
+
+    terraform_path: /opt/configuration/terraform
+
+    node_0_address_file: "{{ terraform_path }}/.NODE_0_ADDRESS.{{ cloud_env }}"
+    node_1_address_file: "{{ terraform_path }}/.NODE_1_ADDRESS.{{ cloud_env }}"
+    node_2_address_file: "{{ terraform_path }}/.NODE_2_ADDRESS.{{ cloud_env }}"
 
   tasks:
     - name: Run operator
