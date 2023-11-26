@@ -78,3 +78,20 @@
         chdir: "{{ terraform_path }}"
       failed_when: false
       changed_when: true
+
+    - name: Copy local deploy playbooks
+      ansible.builtin.copy:
+        src: "{{ zuul.project.src_dir }}/playbooks/managerless/files/{{ item }}"
+        remote_src: true
+        dest: "/tmp/{{ item }}"
+        mode: 0644
+      loop:
+        - managerless-part-1.yml
+        - managerless-part-2.yml
+        - managerless-part-3.yml
+
+    # Because of remote_src it is not possible to use ansible.builtin.template for this task
+    - name: Set cloud_env in managerless-part-3.yml
+      ansible.builtin.command:  # noqa: command-instead-of-module
+        cmd: "sed -i 's/cloud_env: .*/cloud_env: {{ cloud_env }}/g' /tmp/managerless-part-3.yml"
+      changed_when: true
