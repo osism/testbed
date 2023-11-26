@@ -5,7 +5,9 @@
   gather_facts: true
 
   vars:
+    create_infrastructure: true
     cloud_env: default
+
     terraform_path: /opt/configuration/terraform
 
     node_0_address_file: "{{ terraform_path }}/.NODE_0_ADDRESS.{{ cloud_env }}"
@@ -31,244 +33,87 @@
         cmd: cat "{{ node_0_address_file }}"
       register: node_0_address
       changed_when: true
+      when:
+        - create_infrastructure | bool
 
     - name: Fetch node_1_host address
       ansible.builtin.command:
         cmd: cat "{{ node_1_address_file }}"
       register: node_1_address
       changed_when: true
+      when:
+        - create_infrastructure | bool
 
     - name: Fetch node_2_host address
       ansible.builtin.command:
         cmd: cat "{{ node_2_address_file }}"
       register: node_2_address
       changed_when: true
+      when:
+        - create_infrastructure | bool
 
     - name: Set node_0_host address
       ansible.builtin.set_fact:
         node_0_host: "{{ node_0_address.stdout | split('=') | last }}"
+      when:
+        - create_infrastructure | bool
 
     - name: Set node_1_host address
       ansible.builtin.set_fact:
         node_1_host: "{{ node_1_address.stdout | split('=') | last }}"
+      when:
+        - create_infrastructure | bool
 
     - name: Set node_2_host address
       ansible.builtin.set_fact:
         node_2_host: "{{ node_2_address.stdout | split('=') | last }}"
+      when:
+        - create_infrastructure | bool
 
     - name: Set ansible_host for testbed-node-0
       ansible.builtin.command:  # noqa: command-instead-of-module
         cmd: "sed -i 's/ansible_host: .*/ansible_host: {{ node_0_host }}/g' /opt/configuration/inventory/host_vars/testbed-node-0.testbed.osism.xyz.yml"
       changed_when: true
+      when:
+        - create_infrastructure | bool
 
     - name: Set ansible_host for testbed-node-1
       ansible.builtin.command:  # noqa: command-instead-of-module
         cmd: "sed -i 's/ansible_host: .*/ansible_host: {{ node_1_host }}/g' /opt/configuration/inventory/host_vars/testbed-node-1.testbed.osism.xyz.yml"
       changed_when: true
+      when:
+        - create_infrastructure | bool
 
     - name: Set ansible_host for testbed-node-2
       ansible.builtin.command:  # noqa: command-instead-of-module
         cmd: "sed -i 's/ansible_host: .*/ansible_host: {{ node_2_host }}/g' /opt/configuration/inventory/host_vars/testbed-node-2.testbed.osism.xyz.yml"
       changed_when: true
+      when:
+        - create_infrastructure | bool
 
-- name: Deploy manager service
-  hosts: all
-  connection: local
-  gather_facts: true
-
-  vars:
-    manager_service_restart: false
-
-  roles:
-    - role: osism.services.manager
-
-- name: Prepare use of the manager
-  hosts: all
-  connection: local
-  gather_facts: true
-
-  vars:
-    cloud_env: default
-
-  tasks:
-    - name: Disable ara integration
-      ansible.builtin.command:
-        cmd: /opt/configuration/scripts/disable-ara.sh
-      changed_when: true
-
-    - name: Copy id_rsa key
-      ansible.builtin.copy:
-        src: "/opt/configuration/terraform/.id_rsa.{{ cloud_env }}"
-        dest: "{{ item }}"
-        mode: 0600
-        remote_src: true
+    - name: Do not use traefik for flower
+      ansible.builtin.lineinfile:
+        path: /opt/configuration/environments/manager/configuration.yml
+        state: absent
+        regexp: "{{ item }}"
       loop:
-        - /home/dragon/.ssh/id_rsa
-        - /opt/ansible/secrets/id_rsa.operator
+        - "^flower_traefik"
+        - "^flower_host"
 
-    - name: Copy id_rsa.pub key
-      ansible.builtin.copy:
-        src: "/opt/configuration/terraform/.id_rsa.{{ cloud_env }}.pub"
-        dest: "{{ item }}"
-        mode: 0644
-        remote_src: true
-      loop:
-        - /home/dragon/.ssh/id_rsa.pub
-        - /opt/ansible/secrets/id_rsa.operator.pub
+    - name: Do not deploy listener service
+      ansible.builtin.lineinfile:
+        path: /opt/configuration/environments/manager/configuration.yml
+        state: absent
+        regexp: "^enable_listener"
 
-    - name: Run sshconfig
-      ansible.builtin.command:
-        cmd: osism apply sshconfig
-      environment:
-        INTERACTIVE: "false"
-      changed_when: true
+    - name: Do not deploy ara service
+      ansible.builtin.replace:
+        path: /opt/configuration/environments/manager/configuration.yml
+        regexp: "^ara_enable.*$"
+        replace: "ara_enable: false"
 
-    - name: Run known-hosts
-      ansible.builtin.command:
-        cmd: osism apply known-hosts
-      environment:
-        INTERACTIVE: "false"
-      changed_when: true
-
-- name: Bootstrap nodes
-  hosts: all
-  connection: local
-  gather_facts: true
-
-  tasks:
-    - name: Run operator
-      ansible.builtin.command:
-        cmd: osism apply operator -u ubuntu
-      environment:
-        INTERACTIVE: "false"
-      changed_when: true
-
-    - name: Run custom facts
-      ansible.builtin.command:
-        cmd: osism apply --environment custom facts
-      environment:
-        INTERACTIVE: "false"
-      changed_when: true
-
-    - name: Run bootstrap
-      ansible.builtin.command:
-        cmd: osism apply bootstrap
-      environment:
-        INTERACTIVE: "false"
-      changed_when: true
-
-    - name: Run hosts
-      ansible.builtin.command:
-        cmd: osism apply hosts
-      environment:
-        INTERACTIVE: "false"
-      changed_when: true
-
-    - name: Run network
-      ansible.builtin.command:
-        cmd: osism apply network
-      environment:
-        INTERACTIVE: "false"
-      changed_when: true
-
-    - name: Reboot nodes
-      ansible.builtin.command:
-        cmd: osism apply reboot -l testbed-nodes -e ireallymeanit=yes
-      environment:
-        INTERACTIVE: "false"
-      changed_when: true
-
-    - name: Wait for hosts
-      ansible.builtin.wait_for:
-        port: 22
-        host: "{{ item }}"
-        search_regex: OpenSSH
-        delay: 10
-      loop:
-        - "{{ node_0_host }}"
-        - "{{ node_1_host }}"
-        - "{{ node_2_host }}"
-
-    - name: Get ssh key
-      ansible.builtin.slurp:
-        src: /home/dragon/.ssh/id_rsa
-      register: sshkey
-
-    - name: Print ssh key
-      ansible.builtin.debug:
-        msg: "{{ sshkey['content'] | b64decode }}"
-
-    - name: Deploy infrastructure services (sync)
-      ansible.builtin.command:
-        cmd: "osism apply {{ item }}"
-      environment:
-        INTERACTIVE: "false"
-      changed_when: true
-      loop:
-        - common
-        - loadbalancer
-        - openvswitch
-
-    - name: Deploy infrastructure services (async)
-      ansible.builtin.command:
-        cmd: "osism apply {{ item }}"
-      environment:
-        INTERACTIVE: "false"
-      changed_when: true
-      loop:
-        - memcached
-        - redis
-        - mariadb
-        - rabbitmq
-        - opensearch
-        - ovn
-      async: 600
-      poll: 0
-      register: async_results
-
-    - name: Check deployment of infrastructure services
-      ansible.builtin.async_status:
-        jid: "{{ async_result_item.ansible_job_id }}"
-      loop: "{{ async_results.results }}"
-      loop_control:
-        loop_var: "async_result_item"
-      register: async_poll_results
-      until: async_poll_results.finished
-      retries: 30
-      delay: 20
-
-    - name: Deploy ceph services
-      ansible.builtin.command:
-        cmd: "osism apply {{ item }}"
-      environment:
-        INTERACTIVE: "false"
-      changed_when: true
-      loop:
-        - ceph-base
-
-    - name: Get ceph keys
-      ansible.builtin.command:
-        cmd: "osism apply {{ item }}"
-      environment:
-        INTERACTIVE: "false"
-      changed_when: true
-      loop:
-        - ceph-fetch-keys
-        - copy-ceph-keys
-
-    - name: Deploy openstack services (sync)
-      ansible.builtin.command:
-        cmd: "osism apply {{ item }}"
-      environment:
-        INTERACTIVE: "false"
-      changed_when: true
-      loop:
-        - keystone
-        - placement
-        - nova
-        - neutron
-        - horizon
-        - glance
-        - cinder
-        - designate
-        - octavia
+    - name: Do not deploy netbox service
+      ansible.builtin.lineinfile:
+        path: /opt/configuration/environments/manager/configuration.yml
+        state: absent
+        regexp: "^netbox_enable"

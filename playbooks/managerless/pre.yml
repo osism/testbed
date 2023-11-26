@@ -7,17 +7,15 @@
 
   vars:
     basepath: "{{ ansible_user_dir }}/src/{{ repositories['testbed']['path'] }}"
+    create_infrastructure: true
     terraform_path: "{{ zuul.project.src_dir }}/terraform"
-    terraform_version: 1.6.1  # renovate: datasource=github-tags depName=hashicorp/terraform
+    terraform_version: 1.6.4  # renovate: datasource=github-tags depName=hashicorp/terraform
     terraformbase_path: "{{ ansible_user_dir }}/src/{{ repositories['terraform-base']['path'] }}"
 
   tasks:
     - name: Install python
       ansible.builtin.include_role:
-        name: "{{ item }}"
-      loop:
-        - ensure-python
-        - ensure-pip
+        name: ensure-pip
 
     - name: Install docker
       ansible.builtin.include_role:
@@ -28,7 +26,6 @@
       ansible.builtin.package:
         name: "{{ item }}"
       loop:
-        - docker-compose-plugin
         - python3-netifaces
         - unzip
 
@@ -73,6 +70,8 @@
         dest: "{{ terraform_path }}/clouds.yaml"
         mode: 0600
       no_log: true
+      when:
+        - create_infrastructure | bool
 
     - name: Clean the cloud environment
       ansible.builtin.shell:
@@ -81,6 +80,8 @@
         chdir: "{{ terraform_path }}"
       failed_when: false
       changed_when: true
+      when:
+        - create_infrastructure | bool
 
     - name: Copy local deploy playbooks
       ansible.builtin.copy:
@@ -92,9 +93,15 @@
         - managerless-part-1.yml
         - managerless-part-2.yml
         - managerless-part-3.yml
+        - managerless-part-4.yml
 
     # Because of remote_src it is not possible to use ansible.builtin.template for this task
     - name: Set cloud_env in managerless-part-3.yml
       ansible.builtin.command:  # noqa: command-instead-of-module
         cmd: "sed -i 's/cloud_env: .*/cloud_env: {{ cloud_env }}/g' /tmp/managerless-part-3.yml"
+      changed_when: true
+
+    - name: Set cloud_env in managerless-part-4.yml
+      ansible.builtin.command:  # noqa: command-instead-of-module
+        cmd: "sed -i 's/cloud_env: .*/cloud_env: {{ cloud_env }}/g' /tmp/managerless-part-4.yml"
       changed_when: true

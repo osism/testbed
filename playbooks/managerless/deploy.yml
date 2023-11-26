@@ -3,6 +3,8 @@
   hosts: all
 
   vars:
+    create_infrastructure: true
+
     terraform_path: "{{ zuul.project.src_dir }}/terraform"
 
     node_0_address_file: "{{ terraform_path }}/.NODE_0_ADDRESS.{{ cloud_env }}"
@@ -15,33 +17,47 @@
         chdir: "{{ terraform_path }}"
         cmd: make ENVIRONMENT={{ cloud_env }} create
       changed_when: true
+      when:
+        - create_infrastructure | bool
 
     - name: Fetch node_0_host address
       ansible.builtin.command: cat "{{ node_0_address_file }}"
       register: node_0_address
       changed_when: true
+      when:
+        - create_infrastructure | bool
 
     - name: Fetch node_1_host address
       ansible.builtin.command: cat "{{ node_1_address_file }}"
       register: node_1_address
       changed_when: true
+      when:
+        - create_infrastructure | bool
 
     - name: Fetch node_2_host address
       ansible.builtin.command: cat "{{ node_2_address_file }}"
       register: node_2_address
       changed_when: true
+      when:
+        - create_infrastructure | bool
 
     - name: Set node_0_host address
       ansible.builtin.set_fact:
         node_0_host: "{{ node_0_address.stdout | split('=') | last }}"
+      when:
+        - create_infrastructure | bool
 
     - name: Set node_1_host address
       ansible.builtin.set_fact:
         node_1_host: "{{ node_1_address.stdout | split('=') | last }}"
+      when:
+        - create_infrastructure | bool
 
     - name: Set node_2_host address
       ansible.builtin.set_fact:
         node_2_host: "{{ node_2_address.stdout | split('=') | last }}"
+      when:
+        - create_infrastructure | bool
 
     - name: Wait up to 300 seconds for port 22 to become open and contain "OpenSSH"
       ansible.builtin.wait_for:
@@ -54,6 +70,8 @@
         - "{{ node_0_host }}"
         - "{{ node_1_host }}"
         - "{{ node_2_host }}"
+      when:
+        - create_infrastructure | bool
 
     - name: Fetch ssh hostkeys
       ansible.builtin.shell: "ssh-keyscan {{ item }} >> {{ ansible_user_dir }}/.ssh/known_hosts"
@@ -62,12 +80,16 @@
         - "{{ node_0_host }}"
         - "{{ node_1_host }}"
         - "{{ node_2_host }}"
+      when:
+        - create_infrastructure | bool
 
     - name: Get ssh keypair from terraform environment
       ansible.builtin.shell:
         chdir: "{{ zuul.project.src_dir }}"
         cmd: cp terraform/.id* .
       changed_when: true
+      when:
+        - create_infrastructure | bool
 
 - name: Create configuration repository
   hosts: all
@@ -150,4 +172,22 @@
           -i testbed-manager.testbed.osism.xyz, \
           --vault-password-file /opt/configuration/environments/.vault_pass \
           /tmp/managerless-part-3.yml
+      changed_when: true
+
+    - name: Run managerless part 4
+      become: true
+      become_user: "{{ operator_user }}"
+      ansible.builtin.command: |
+        ansible-playbook \
+          -e @/opt/configuration/inventory/group_vars/testbed-managers.yml \
+          -e @/opt/configuration/inventory/host_vars/testbed-manager.testbed.osism.xyz.yml \
+          -e @/opt/configuration/environments/manager/images.yml \
+          -e @/opt/configuration/environments/manager/configuration.yml \
+          -e @/opt/configuration/environments/manager/secrets.yml \
+          -e @/opt/configuration/environments/images.yml \
+          -e @/opt/configuration/environments/configuration.yml \
+          -e @/opt/configuration/environments/secrets.yml \
+          -i testbed-manager.testbed.osism.xyz, \
+          --vault-password-file /opt/configuration/environments/.vault_pass \
+          /tmp/managerless-part-4.yml
       changed_when: true

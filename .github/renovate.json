@@ -7,6 +7,7 @@
     {
       "fileMatch":[
         "^\\.github\\/workflows\\/.*\\.yml",
+        "^playbooks\\/managerless\\/pre\\.yml",
         "^playbooks\\/pre\\.yml"
       ],
       "matchStrings":[
