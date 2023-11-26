@@ -4,10 +4,8 @@
   connection: local
 
   tasks:
-    # shell required because of: command module does not accept
-    # setting environment variables inline.
-    - name: Sync configuration with generics  # noqa: command-instead-of-shell
-      ansible.builtin.shell:
+    - name: Sync configuration with generics
+      ansible.builtin.command:
         chdir: /opt/configuration
         cmd: gilt overlay
       changed_when: true
@@ -37,16 +35,8 @@
 
   vars:
     ansible_python_interpreter: /usr/bin/python3
-    apt_lock_timeout: 300
 
   tasks:
-    - name: Install required packages
-      become: true
-      ansible.builtin.apt:
-        name: python3-netifaces
-        state: present
-        lock_timeout: "{{ apt_lock_timeout }}"
-
     - name: Create custom facts directory
       become: true
       ansible.builtin.file:
