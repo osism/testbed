@@ -126,7 +126,6 @@
       become_user: "{{ operator_user }}"
       ansible.builtin.command: |
         ansible-playbook \
-          -e @/opt/configuration/playbooks/managerless/vars/versions.yml \
           -e @/opt/configuration/environments/manager/images.yml \
           -e @/opt/configuration/environments/manager/configuration.yml \
           -e @/opt/configuration/environments/images.yml \
@@ -140,7 +139,6 @@
       become_user: "{{ operator_user }}"
       ansible.builtin.command: |
         ansible-playbook \
-          -e @/opt/configuration/playbooks/managerless/vars/versions.yml \
           -e @/opt/configuration/inventory/group_vars/testbed-managers.yml \
           -e @/opt/configuration/inventory/host_vars/testbed-manager.testbed.osism.xyz.yml \
           -e @/opt/configuration/environments/manager/images.yml \

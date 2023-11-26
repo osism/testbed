@@ -9,7 +9,7 @@
     - name: Sync configuration with generics  # noqa: command-instead-of-shell
       ansible.builtin.shell:
         chdir: /opt/configuration
-        cmd: MANAGER_VERSION={{ version_manager }} gilt overlay
+        cmd: gilt overlay
       changed_when: true
 
     - name: Disable netbox integration
