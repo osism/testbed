@@ -10,11 +10,6 @@
         cmd: gilt overlay
       changed_when: true
 
-    - name: Disable netbox integration
-      ansible.builtin.command:
-        cmd: /opt/configuration/scripts/disable-netbox.sh
-      changed_when: true
-
 - name: Deploy required services
   hosts: localhost
   connection: local
