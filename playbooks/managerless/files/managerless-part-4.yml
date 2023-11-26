@@ -65,6 +65,9 @@
   connection: local
   gather_facts: true
 
+  vars:
+    create_infrastructure: true
+
   tasks:
     - name: Run operator
       ansible.builtin.command:
