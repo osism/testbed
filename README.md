@@ -1,39 +1,16 @@
 # OSISM testbed
 
-[![Documentation](https://img.shields.io/static/v1?label=&message=documentation&color=blue)](https://docs.scs.community/docs/category/osism-testbed)
+[![Documentation](https://img.shields.io/static/v1?label=&message=documentation&color=blue)](https://osism.github.io/docs/guides/deploy-guide/examples/testbed)
 
-With this testbed, it is possible to run a full OSISM installation, the baseline
-of the Sovereign Cloud Stack, on an existing OpenStack environment such as Cleura
-or Open Telekom Cloud.
+With the OSISM Testbed, it is possible to run a full [Sovereign Cloud Stack](https://scs.community)
+deployment on an existing OpenStack environment such as Cleura or REGIO.cloud.
 
-The testbed is intended as a playground. Further services and integration will be
-added over time. More and more best practices and experiences from the productive
-installations will be included here in the future. It will become more production-like
-over time. However, at no point does it claim to represent a production setup exactly.
+OSISM is the reference implementation for the infrastructure as a service layer
+in the Sovereign Cloud Stack (SCS) project. The OSISM Testbed is therefore used
+in the SCS project to test and work on the Instrastructure as a Service layer.
 
-Open Source Software lives from participation. We welcome any issues, change requests
-or general feedback. Do not hesitate to open an issue.
-
-## Point of entry
-
-The [Homer: Operations Dashboard](https://homer.testbed.osism.xyz) is best for
-getting started with the testbed after full deployment.
-
-| :exclamation: The testbed uses certs signed by the self-signed [OSISM Testbed CA](https://raw.githubusercontent.com/osism/testbed/main/environments/kolla/certificates/ca/testbed.crt) |
-|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-
-![Operations Dashboard](https://raw.githubusercontent.com/osism/testbed/main/contrib/assets/operations-dashboard.png)
-
-## GitHub Actions
-
-### Syntax checks
-
-[![Check terraform syntax](https://github.com/osism/testbed/actions/workflows/check-terraform-syntax.yml/badge.svg)](https://github.com/osism/testbed/actions/workflows/check-terraform-syntax.yml)
-
-### Regular tasks
-
-[![Update manager images](https://github.com/osism/testbed/actions/workflows/update-manager-images.yml/badge.svg)](https://github.com/osism/testbed/actions/workflows/update-manager-images.yml)
-
-## Zuul job results
-
-https://zuul.services.betacloud.xyz/t/osism/builds?project=osism%2Ftestbed&skip=0
+The OSISM Testbed is intended as a playground. Further services and integration
+will be added over time. More and more best practices and experiences from the
+productive deployments will be included here in the future. It will become more
+production-like over time. However, at no point does it claim to represent a
+production setup exactly.

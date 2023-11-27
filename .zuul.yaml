@@ -14,6 +14,10 @@
           zUyw/6Ql1IhZo3X0jEE3WtfeUQvsWB0AXDX+xf2WoEVL5dObYP8X5RVsJj5qQ7Y8BK2qa
           HflOaQYaKWZSf+5kfBUByzQghil4tH4QQQUHszDs0Qtzop7yTp0AB1cqefAyY8=
 
+- semaphore:
+    name: semaphore-testbed-managerless
+    max: 1
+
 # Regiocloud
 - nodeset:
     name: testbed-orchestrator
@@ -82,6 +86,8 @@
     secrets:
       - name: secret
         secret: SECRET_TESTBED
+    semaphores:
+      - name: semaphore-testbed-managerless
 
 - job:
     name: testbed-deploy
