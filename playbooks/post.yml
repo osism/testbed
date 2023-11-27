@@ -29,10 +29,10 @@
         cloud_env: "{{ testbed_environment | default('ci') }}"
       when: "'nodepool' not in hostvars[groups['all'][0]]"
 
-    - name: Clean the cloud environment
-      ansible.builtin.shell:
-        cmd: |
-          OS_CLOUD={{ cloud_env }} ~/venv/bin/python3 cleanup.py
-        chdir: "{{ basepath }}/terraform/scripts"
-      failed_when: false
-      changed_when: true
+    # - name: Clean the cloud environment
+    #   ansible.builtin.shell:
+    #     cmd: |
+    #       OS_CLOUD={{ cloud_env }} ~/venv/bin/python3 cleanup.py
+    #     chdir: "{{ basepath }}/terraform/scripts"
+    #   failed_when: false
+    #   changed_when: true
