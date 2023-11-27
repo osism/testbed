@@ -5,6 +5,13 @@
   gather_facts: true
 
   tasks:
+    - name: Run known-hosts
+      ansible.builtin.command:
+        cmd: osism apply known-hosts
+      environment:
+        INTERACTIVE: "false"
+      changed_when: true
+
     - name: Deploy infrastructure services (sync)
       ansible.builtin.command:
         cmd: "osism apply {{ item }}"

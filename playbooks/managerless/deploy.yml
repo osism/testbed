@@ -1,143 +1,4 @@
 ---
-- name: Create infrastructure
-  hosts: all
-
-  vars:
-    create_infrastructure: true
-
-    terraform_path: "{{ zuul.project.src_dir }}/terraform"
-
-    node_0_address_file: "{{ terraform_path }}/.NODE_0_ADDRESS.{{ cloud_env }}"
-    node_1_address_file: "{{ terraform_path }}/.NODE_1_ADDRESS.{{ cloud_env }}"
-    node_2_address_file: "{{ terraform_path }}/.NODE_2_ADDRESS.{{ cloud_env }}"
-
-  tasks:
-    - name: Create infrastructure
-      ansible.builtin.command:
-        chdir: "{{ terraform_path }}"
-        cmd: make ENVIRONMENT={{ cloud_env }} create
-      changed_when: true
-      when:
-        - create_infrastructure | bool
-
-    - name: Fetch node_0_host address
-      ansible.builtin.command: cat "{{ node_0_address_file }}"
-      register: node_0_address
-      changed_when: true
-      when:
-        - create_infrastructure | bool
-
-    - name: Fetch node_1_host address
-      ansible.builtin.command: cat "{{ node_1_address_file }}"
-      register: node_1_address
-      changed_when: true
-      when:
-        - create_infrastructure | bool
-
-    - name: Fetch node_2_host address
-      ansible.builtin.command: cat "{{ node_2_address_file }}"
-      register: node_2_address
-      changed_when: true
-      when:
-        - create_infrastructure | bool
-
-    - name: Set node_0_host fact
-      ansible.builtin.set_fact:
-        node_0_host: "{{ node_0_address.stdout | split('=') | last }}"
-      when:
-        - create_infrastructure | bool
-
-    - name: Set node_1_host fact
-      ansible.builtin.set_fact:
-        node_1_host: "{{ node_1_address.stdout | split('=') | last }}"
-      when:
-        - create_infrastructure | bool
-
-    - name: Set node_2_host fact
-      ansible.builtin.set_fact:
-        node_2_host: "{{ node_2_address.stdout | split('=') | last }}"
-      when:
-        - create_infrastructure | bool
-
-    - name: Wait up to 300 seconds for port 22 to become open and contain "OpenSSH"
-      ansible.builtin.wait_for:
-        port: 22
-        host: "{{ item }}"
-        search_regex: OpenSSH
-        delay: 10
-        timeout: 300
-      loop:
-        - "{{ node_0_host }}"
-        - "{{ node_1_host }}"
-        - "{{ node_2_host }}"
-      when:
-        - create_infrastructure | bool
-
-    - name: Fetch ssh hostkeys
-      ansible.builtin.shell: "ssh-keyscan {{ item }} >> {{ ansible_user_dir }}/.ssh/known_hosts"
-      changed_when: true
-      loop:
-        - "{{ node_0_host }}"
-        - "{{ node_1_host }}"
-        - "{{ node_2_host }}"
-      when:
-        - create_infrastructure | bool
-
-    - name: Get ssh keypair from terraform environment
-      ansible.builtin.shell:
-        chdir: "{{ zuul.project.src_dir }}"
-        cmd: cp terraform/.id* .
-      changed_when: true
-      when:
-        - create_infrastructure | bool
-
-- name: Create configuration repository
-  hosts: all
-
-  vars:
-    operator_group: dragon
-    operator_user: dragon
-
-  tasks:
-    - name: Run managerless part 1
-      ansible.builtin.command: |
-        ansible-playbook -i localhost, /tmp/managerless-part-1.yml
-      changed_when: true
-
-    - name: Install ansible collections
-      become: true
-      become_user: "{{ operator_user }}"
-      ansible.builtin.command: |
-        ansible-galaxy collection install {{ item }}
-      loop:
-        - osism.commons
-        - osism.services
-      changed_when: true
-
-    - name: Create configuration directory
-      become: true
-      ansible.builtin.file:
-        state: directory
-        path: /opt/configuration
-        mode: '0755'
-        owner: "{{ operator_user }}"
-
-    # we run local synchronisation here
-    - name: Sync configuration repository  # noqa: command-instead-of-module
-      become: true
-      ansible.builtin.command: "rsync -avz {{ zuul.project.src_dir }}/ /opt/configuration"
-      changed_when: true
-
-    - name: Change ownership of /opt/configuration
-      become: true
-      ansible.builtin.file:
-        path: /opt/configuration
-        owner: "{{ operator_user }}"
-        group: "{{ operator_group }}"
-        recurse: true
-
-# Move everything before this line into the pre.yaml playbook
-
 - name: Deploy manager
   hosts: all
 
@@ -207,6 +68,15 @@
       ansible.builtin.set_fact:
         node_0_host: "{{ node_0_address.stdout | split('=') | last }}"
 
+    - name: Copy sshuttle script file
+      become: true
+      ansible.builtin.template:
+        src: sshuttle.sh.j2
+        dest: /usr/local/bin/sshuttle.sh
+        mode: 0755
+        owner: root
+        group: root
+
     - name: Copy sshuttle systemd unit file
       become: true
       ansible.builtin.template:
@@ -227,6 +97,17 @@
         name: sshuttle
         enabled: true
         state: started
+
+    - name: Wait for hosts
+      ansible.builtin.wait_for:
+        port: 22
+        host: "{{ item }}"
+        search_regex: OpenSSH
+        delay: 10
+      loop:
+        - 192.168.16.10
+        - 192.168.16.11
+        - 192.168.16.12
 
     - name: Run managerless part 5
       become: true

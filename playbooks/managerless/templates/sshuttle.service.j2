@@ -5,7 +5,7 @@ After=network.target
 [Service]
 Type=simple
 RemainAfterExit=true
-ExecStart=/usr/bin/sshuttle --ssh-cmd "ssh -o StrictHostKeyChecking=no -i /opt/configuration/terraform/.id_rsa.{{ cloud_env }}" -r dragon@{{ node_0_host }} 192.168.16.0/20 192.168.112.0/20
+ExecStart=/usr/local/bin/sshuttle.sh
 
 [Install]
 WantedBy=multi-user.target
