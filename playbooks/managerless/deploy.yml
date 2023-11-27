@@ -136,6 +136,8 @@
         group: "{{ operator_group }}"
         recurse: true
 
+# Move everything before this line into the pre.yaml playbook
+
 - name: Deploy manager
   hosts: all
 
