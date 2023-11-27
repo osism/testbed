@@ -207,7 +207,7 @@
     post:
       jobs:
         - testbed-deploy-managerless
-        - testbed-deploy-stable
+        # - testbed-deploy-stable
     periodic-daily:
       jobs:
         - testbed-deploy-cleura
