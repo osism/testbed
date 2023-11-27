@@ -112,7 +112,7 @@
     - name: Restart manager service
       become: true
       ansible.builtin.service:
-        name: "{{ manager_service_name }}"
+        name: "docker-compose@manager"
         state: restarted
 
     # NOTE: The command returns a list of IDs of containers from the service
