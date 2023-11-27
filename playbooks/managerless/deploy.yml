@@ -144,6 +144,9 @@
   vars:
     operator_user: dragon
 
+    terraform_path: /opt/configuration/terraform
+    node_0_address_file: "{{ terraform_path }}/.NODE_0_ADDRESS.{{ cloud_env }}"
+
   tasks:
     - name: Run managerless part 2
       become: true
@@ -193,6 +196,37 @@
           --vault-password-file /opt/configuration/environments/.vault_pass \
           /tmp/managerless-part-4.yml
       changed_when: true
+
+    - name: Fetch node_0_host address
+      ansible.builtin.command:
+        cmd: cat "{{ node_0_address_file }}"
+      register: node_0_address
+      changed_when: true
+
+    - name: Set node_0_host fact
+      ansible.builtin.set_fact:
+        node_0_host: "{{ node_0_address.stdout | split('=') | last }}"
+
+    - name: Copy sshuttle systemd unit file
+      become: true
+      ansible.builtin.template:
+        src: sshuttle.service.j2
+        dest: /etc/systemd/system/sshuttle.service
+        mode: 0644
+        owner: root
+        group: root
+
+    - name: Reload systemd daemon
+      become: true
+      ansible.builtin.systemd:
+        daemon_reload: true
+
+    - name: Start/Enable sshuttle service
+      become: true
+      ansible.builtin.service:
+        name: sshuttle
+        enabled: true
+        state: started
 
     - name: Run managerless part 5
       become: true

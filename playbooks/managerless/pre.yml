@@ -27,7 +27,6 @@
         name: "{{ item }}"
       loop:
         - python3-netifaces
-        - sshoot
         - sshuttle
         - unzip
 
