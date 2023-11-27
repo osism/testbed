@@ -14,6 +14,10 @@
           zTTYbdityzieUxK4AIVGooe3yYsIKAnvDoLrGiMwYCbW2zVd5RhWxvbVYQWWy/UvbE7My
           YhrCNtnWiGbapxcmOJlipWiN1eqfi2WgK69QkDsQgleNKq31uOiRqrpdib033o=
 
+- semaphore:
+    name: semaphore-testbed-managerless
+    max: 1
+
 - job:
     name: testbed-deploy-managerless
     nodeset: ubuntu-jammy
