@@ -41,19 +41,19 @@
       when:
         - create_infrastructure | bool
 
-    - name: Set node_0_host address
+    - name: Set node_0_host fact
       ansible.builtin.set_fact:
         node_0_host: "{{ node_0_address.stdout | split('=') | last }}"
       when:
         - create_infrastructure | bool
 
-    - name: Set node_1_host address
+    - name: Set node_1_host fact
       ansible.builtin.set_fact:
         node_1_host: "{{ node_1_address.stdout | split('=') | last }}"
       when:
         - create_infrastructure | bool
 
-    - name: Set node_2_host address
+    - name: Set node_2_host fact
       ansible.builtin.set_fact:
         node_2_host: "{{ node_2_address.stdout | split('=') | last }}"
       when:
@@ -192,4 +192,22 @@
           -i testbed-manager.testbed.osism.xyz, \
           --vault-password-file /opt/configuration/environments/.vault_pass \
           /tmp/managerless-part-4.yml
+      changed_when: true
+
+    - name: Run managerless part 5
+      become: true
+      become_user: "{{ operator_user }}"
+      ansible.builtin.command: |
+        ansible-playbook \
+          -e @/opt/configuration/inventory/group_vars/testbed-managers.yml \
+          -e @/opt/configuration/inventory/host_vars/testbed-manager.testbed.osism.xyz.yml \
+          -e @/opt/configuration/environments/manager/images.yml \
+          -e @/opt/configuration/environments/manager/configuration.yml \
+          -e @/opt/configuration/environments/manager/secrets.yml \
+          -e @/opt/configuration/environments/images.yml \
+          -e @/opt/configuration/environments/configuration.yml \
+          -e @/opt/configuration/environments/secrets.yml \
+          -i testbed-manager.testbed.osism.xyz, \
+          --vault-password-file /opt/configuration/environments/.vault_pass \
+          /tmp/managerless-part-5.yml
       changed_when: true

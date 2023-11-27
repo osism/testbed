@@ -27,6 +27,7 @@
         name: "{{ item }}"
       loop:
         - python3-netifaces
+        - sshoot
         - unzip
 
     - name: Install terraform
@@ -94,6 +95,7 @@
         - managerless-part-2.yml
         - managerless-part-3.yml
         - managerless-part-4.yml
+        - managerless-part-5.yml
 
     # Because of remote_src it is not possible to use ansible.builtin.template for this task
     - name: Set cloud_env in managerless-part-3.yml
