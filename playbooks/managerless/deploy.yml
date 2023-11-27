@@ -119,6 +119,8 @@
     #       that are currently starting or unhealthy. As long as the list is not empty
     #       the service is not in a good state.
     - name: Wait for an healthy manager service
+      become: true
+      become_user: "{{ operator_user }}"
       ansible.builtin.shell: |
         set -o pipefail
         docker compose --project-directory /opt/manager \
