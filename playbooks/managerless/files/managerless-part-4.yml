@@ -187,77 +187,33 @@
       ansible.builtin.debug:
         msg: "{{ sshkey['content'] | b64decode }}"
 
-    # - name: Deploy infrastructure services (sync)
-    #   ansible.builtin.command:
-    #     cmd: "osism apply {{ item }}"
-    #   environment:
-    #     INTERACTIVE: "false"
-    #   changed_when: true
-    #   loop:
-    #     - common
-    #     - loadbalancer
-    #     - openvswitch
+    - name: Reset ansible_host for testbed-node-0
+      ansible.builtin.command:  # noqa: command-instead-of-module
+        cmd: "sed -i 's/ansible_host: .*/ansible_host: 192.168.16.10/g' /opt/configuration/inventory/host_vars/testbed-node-0.testbed.osism.xyz.yml"
+      changed_when: true
+      when:
+        - create_infrastructure | bool
 
-    # - name: Deploy infrastructure services (async)
-    #   ansible.builtin.command:
-    #     cmd: "osism apply {{ item }}"
-    #   environment:
-    #     INTERACTIVE: "false"
-    #   changed_when: true
-    #   loop:
-    #     - memcached
-    #     - redis
-    #     - mariadb
-    #     - rabbitmq
-    #     - opensearch
-    #     - ovn
-    #   async: 600
-    #   poll: 0
-    #   register: async_results
+    - name: Reset ansible_host for testbed-node-1
+      ansible.builtin.command:  # noqa: command-instead-of-module
+        cmd: "sed -i 's/ansible_host: .*/ansible_host: 192.168.16.11/g' /opt/configuration/inventory/host_vars/testbed-node-1.testbed.osism.xyz.yml"
+      changed_when: true
+      when:
+        - create_infrastructure | bool
 
-    # - name: Check deployment of infrastructure services
-    #   ansible.builtin.async_status:
-    #     jid: "{{ async_result_item.ansible_job_id }}"
-    #   loop: "{{ async_results.results }}"
-    #   loop_control:
-    #     loop_var: "async_result_item"
-    #   register: async_poll_results
-    #   until: async_poll_results.finished
-    #   retries: 30
-    #   delay: 20
+    - name: Reset ansible_host for testbed-node-2
+      ansible.builtin.command:  # noqa: command-instead-of-module
+        cmd: "sed -i 's/ansible_host: .*/ansible_host: 192.168.16.12/g' /opt/configuration/inventory/host_vars/testbed-node-2.testbed.osism.xyz.yml"
+      changed_when: true
+      when:
+        - create_infrastructure | bool
 
-    # - name: Deploy ceph services
-    #   ansible.builtin.command:
-    #     cmd: "osism apply {{ item }}"
-    #   environment:
-    #     INTERACTIVE: "false"
-    #   changed_when: true
-    #   loop:
-    #     - ceph-base
+    - name: Create sshoot profile
+      ansible.builtin.command:
+        cmd: "sshoot create -r {{ node_0_host }} -HNd vpn1 192.168.16.0/20"
+      changed_when: true
 
-    # - name: Get ceph keys
-    #   ansible.builtin.command:
-    #     cmd: "osism apply {{ item }}"
-    #   environment:
-    #     INTERACTIVE: "false"
-    #   changed_when: true
-    #   loop:
-    #     - ceph-fetch-keys
-    #     - copy-ceph-keys
-
-    # - name: Deploy openstack services (sync)
-    #   ansible.builtin.command:
-    #     cmd: "osism apply {{ item }}"
-    #   environment:
-    #     INTERACTIVE: "false"
-    #   changed_when: true
-    #   loop:
-    #     - keystone
-    #     - placement
-    #     - nova
-    #     - neutron
-    #     - horizon
-    #     - glance
-    #     - cinder
-    #     - designate
-    #     - octavia
+    - name: Start sshoot profile
+      ansible.builtin.command:
+        cmd: sshoot start vpn1
+      changed_when: true

@@ -52,19 +52,19 @@
       when:
         - create_infrastructure | bool
 
-    - name: Set node_0_host address
+    - name: Set node_0_host fact
       ansible.builtin.set_fact:
         node_0_host: "{{ node_0_address.stdout | split('=') | last }}"
       when:
         - create_infrastructure | bool
 
-    - name: Set node_1_host address
+    - name: Set node_1_host fact
       ansible.builtin.set_fact:
         node_1_host: "{{ node_1_address.stdout | split('=') | last }}"
       when:
         - create_infrastructure | bool
 
-    - name: Set node_2_host address
+    - name: Set node_2_host fact
       ansible.builtin.set_fact:
         node_2_host: "{{ node_2_address.stdout | split('=') | last }}"
       when:
