@@ -78,10 +78,10 @@
       loop:
         - keystone
         - horizon
-    #     - placement
+        - placement
+        - neutron
+        - designate
     #     - nova
-    #     - neutron
     #     - glance
     #     - cinder
-    #     - designate
     #     - octavia
