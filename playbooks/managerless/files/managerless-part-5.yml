@@ -23,19 +23,18 @@
         - loadbalancer
         - openvswitch
 
-    # - name: Deploy infrastructure services (async)
-    #   ansible.builtin.command:
-    #     cmd: "osism apply {{ item }}"
-    #   environment:
-    #     INTERACTIVE: "false"
-    #   changed_when: true
-    #   loop:
-    #     - memcached
-    #     - redis
-    #     - mariadb
-    #     - rabbitmq
-    #     - opensearch
-    #     - ovn
+    - name: Deploy infrastructure services (sync)
+      ansible.builtin.command:
+        cmd: "osism apply {{ item }}"
+      environment:
+        INTERACTIVE: "false"
+      changed_when: true
+      loop:
+        - memcached
+        - redis
+        - mariadb
+        - rabbitmq
+        - ovn
     #   async: 600
     #   poll: 0
     #   register: async_results
