@@ -186,24 +186,3 @@
     - name: Print ssh key
       ansible.builtin.debug:
         msg: "{{ sshkey['content'] | b64decode }}"
-
-    - name: Reset ansible_host for testbed-node-0
-      ansible.builtin.command:  # noqa: command-instead-of-module
-        cmd: "sed -i 's/ansible_host: .*/ansible_host: 192.168.16.10/g' /opt/configuration/inventory/host_vars/testbed-node-0.testbed.osism.xyz.yml"
-      changed_when: true
-      when:
-        - create_infrastructure | bool
-
-    - name: Reset ansible_host for testbed-node-1
-      ansible.builtin.command:  # noqa: command-instead-of-module
-        cmd: "sed -i 's/ansible_host: .*/ansible_host: 192.168.16.11/g' /opt/configuration/inventory/host_vars/testbed-node-1.testbed.osism.xyz.yml"
-      changed_when: true
-      when:
-        - create_infrastructure | bool
-
-    - name: Reset ansible_host for testbed-node-2
-      ansible.builtin.command:  # noqa: command-instead-of-module
-        cmd: "sed -i 's/ansible_host: .*/ansible_host: 192.168.16.12/g' /opt/configuration/inventory/host_vars/testbed-node-2.testbed.osism.xyz.yml"
-      changed_when: true
-      when:
-        - create_infrastructure | bool
