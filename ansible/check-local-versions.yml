@@ -13,7 +13,7 @@
     - name: Get terraform version
       ansible.builtin.shell: >-
         set -o pipefail &&
-        terraform --version | head -n1  | awk '{print $2}' | awk -Fv '{print $2}'
+        tofu --version | head -n1  | awk '{print $2}' | awk -Fv '{print $2}'
       register: result
       changed_when: false
       args:

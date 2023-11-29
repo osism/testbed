@@ -6,7 +6,7 @@ VERSION_CEPH ?= quincy
 VERSION_MANAGER ?= latest
 VERSION_OPENSTACK ?= 2023.1
 
-TERRAFORM ?= terraform
+TERRAFORM ?= tofu
 TERRAFORM_BLUEPRINT ?= testbed-default
 
 venv = . venv/bin/activate
@@ -103,7 +103,20 @@ venv/bin/activate: Makefile
 	@${venv} && pip3 install -r requirements.txt
 	touch venv/bin/activate
 
+venv/bin/tofu: venv/bin/activate
+	$(eval TOFU_VERSION := 1.6.0-alpha2)
+	$(eval OS := $(shell uname | tr '[:upper:]' '[:lower:]'))
+	$(eval ARCH := $(shell uname -m | sed -e 's/aarch64/arm64/' -e 's/x86_64/amd64/'))
+	@echo Downloading opentofu version ${TOFU_VERSION}
+	curl -s -L --output venv/bin/tofu.zip \
+		"https://github.com/opentofu/opentofu/releases/download/v${TOFU_VERSION}/tofu_${TOFU_VERSION}_${OS}_${ARCH}.zip"
+	rm -f venv/bin/tofu
+	unzip -d venv/bin/ venv/bin/tofu.zip tofu
+	chmod +x venv/bin/tofu
+	rm -f venv/bin/tofu.zip
+	tofu version
+	touch venv/bin/tofu
 
-deps: venv/bin/activate
+deps: venv/bin/tofu venv/bin/activate
 
-phony: bootstrap clean clean_local create deploy identity login manager prepare ceph deps venv/bin/activate
+phony: bootstrap clean clean_local create deploy identity login manager prepare ceph deps

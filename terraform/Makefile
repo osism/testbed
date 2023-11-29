@@ -6,7 +6,7 @@ ENVIRONMENT ?= regiocloud
 USERNAME = dragon
 
 OPENSTACK = openstack
-TERRAFORM ?= terraform
+TERRAFORM ?= tofu
 export TF_CLI_ARGS ?= -no-color
 
 PARALLELISM = 10
@@ -48,6 +48,7 @@ init:
 	@if [ ! -f backend.tf ]; then \
 		$(TERRAFORM) workspace select -or-create ${ENVIRONMENT}; \
 	fi
+
 
 	@rm -f *.auto.tfvars
 	@cp environments/$(ENVIRONMENT).tfvars $(ENVIRONMENT).auto.tfvars
