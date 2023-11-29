@@ -184,8 +184,9 @@
     check:
       jobs:
         - ansible-lint
-        - yamllint
         - flake8
+        - python-black
+        - yamllint
     label:
       jobs:
         - testbed-deploy
@@ -200,6 +201,7 @@
         - ansible-lint
         - yamllint
         - flake8
+        - python-black
         - testbed-deploy:
             branches: main
         - testbed-deploy-stable:
@@ -219,5 +221,6 @@
         - testbed-upgrade-stable
         - testbed-upgrade-wavestack
         - ansible-lint
-        - yamllint
         - flake8
+        - python-black
+        - yamllint
