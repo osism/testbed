@@ -17,11 +17,6 @@
     create_infrastructure: true
 
   tasks:
-    - name: Disable ara integration
-      ansible.builtin.command:
-        cmd: /opt/configuration/scripts/disable-ara.sh
-      changed_when: true
-
     - name: Copy id_rsa key
       ansible.builtin.copy:
         src: "/opt/configuration/terraform/.id_rsa.{{ cloud_env }}"
