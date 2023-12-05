@@ -104,7 +104,7 @@ venv/bin/activate: Makefile
 	touch venv/bin/activate
 
 venv/bin/tofu: venv/bin/activate
-	$(eval TOFU_VERSION := 1.6.0-alpha2)
+	$(eval TOFU_VERSION := 1.6.0-beta2)
 	$(eval OS := $(shell uname | tr '[:upper:]' '[:lower:]'))
 	$(eval ARCH := $(shell uname -m | sed -e 's/aarch64/arm64/' -e 's/x86_64/amd64/'))
 	@echo Downloading opentofu version ${TOFU_VERSION}
