@@ -20,20 +20,24 @@ def lookup(yaml_path: str, local_data: dict) -> None | str | dict:
 def check_environment(name: str) -> None:
     def _check_file(filename: str, name: str):
         if not os.path.exists(filename):
-            raise RuntimeError(f"There is no file {filename}, create one by using {filename}.sample")
+            raise RuntimeError(
+                f"There is no file {filename}, create one by using {filename}.sample"
+            )
 
-        with open(filename, 'r') as file:
+        with open(filename, "r") as file:
             cloud_path = f"clouds.{name}"
             data_local = yaml.safe_load(file)
             envs = ", ".join(data_local["clouds"].keys())
 
             if name == "the_environment":
                 raise RuntimeError(
-                    f"you have to specify a name below the 'clouds' element in '{filename}', configured environments are: {envs} (set it with ENVIRONMENT=...)")
+                    f"you have to specify a name below the 'clouds' element in '{filename}', configured environments are: {envs} (set it with ENVIRONMENT=...)"
+                )
 
             if lookup(cloud_path, data_local) is None:
                 raise RuntimeError(
-                    f"no such key '{cloud_path}' in '{filename}', configured environments are: {envs} (set it with ENVIRONMENT=...)")
+                    f"no such key '{cloud_path}' in '{filename}', configured environments are: {envs} (set it with ENVIRONMENT=...)"
+                )
 
     try:
         _check_file("terraform/clouds.yaml", name)
@@ -75,28 +79,35 @@ file_path = f"{basedir}/playbooks/vars/repositories.yml"
 os.chdir(basedir)
 
 parser = argparse.ArgumentParser(
-    prog='Setup the testbed',
-    description='This make the implementation and execution of setup task less painful')
+    prog="Setup the testbed",
+    description="This make the implementation and execution of setup task less painful",
+)
 
-parser.add_argument('-c', '--config',
-                    help='the cloud.yaml config file',
-                    required=False,
-                    default=file_path)
-parser.add_argument('-q', '--query',
-                    help='specify a path to the config item seperated by dots',
-                    required=False,
-                    )
-parser.add_argument('--prepare',
-                    action='store_true')
+parser.add_argument(
+    "-c",
+    "--config",
+    help="the cloud.yaml config file",
+    required=False,
+    default=file_path,
+)
+parser.add_argument(
+    "-q",
+    "--query",
+    help="specify a path to the config item seperated by dots",
+    required=False,
+)
+parser.add_argument("--prepare", action="store_true")
 
-parser.add_argument('-e', '--environment_check',
-                    help='check if specified environment is okay',
-                    required=False,
-                    )
+parser.add_argument(
+    "-e",
+    "--environment_check",
+    help="check if specified environment is okay",
+    required=False,
+)
 
 args = parser.parse_args()
 
-with open(args.config, 'r') as file:
+with open(args.config, "r") as file:
     data = yaml.safe_load(file)
 
 if args.environment_check:
@@ -107,7 +118,11 @@ elif args.prepare:
     print("** Create repository directories")
     for key, item_data in data["repositories"].items():
         print(f"-> {key}")
-        clone_repo(path=item_data["path"], repo_address=item_data["repo"], branch=item_data.get("branch"))
+        clone_repo(
+            path=item_data["path"],
+            repo_address=item_data["repo"],
+            branch=item_data.get("branch"),
+        )
 
     print("** Replicate to terraform folder")
     command = f"rsync -avz .src/{lookup('repositories.terraform-base.path', data)}/testbed-default/ terraform"
