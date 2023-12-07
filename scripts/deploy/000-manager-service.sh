@@ -37,6 +37,11 @@ ansible-playbook \
 
 cp /home/dragon/.ssh/id_rsa.pub /opt/ansible/secrets/id_rsa.operator.pub
 
+# wait for manager service
+wait_for_container_healthy 60 ceph-ansible
+wait_for_container_healthy 60 kolla-ansible
+wait_for_container_healthy 60 osism-ansible
+
 # wait for netbox service
 if ! wait_for_container_healthy 60 netbox-netbox-1; then
     # The Netbox integration is not mandatory for the use of the testbed.
