@@ -1,0 +1,13 @@
+---
+features:
+  - |
+    - Introduce a mechanism to install and update the dependencies of the
+      testbed in a python virtualenv (starting with ansible, closes #1834)
+    - Introduce an automated check for a valid environment specification
+      and configuration
+    - Install and maintain the downloaded and installed repositories using
+      new python logic which also supports the specificafation of forke
+      repositories and branches
+issues:
+  - |
+    - Eliminate the usage of yq (and indirectly jq)
