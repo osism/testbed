@@ -68,7 +68,7 @@
       community.docker.docker_image:
         name: "{{ item }}"
         source: pull
-      async: 600
+      async: 1200
       poll: 0
       loop: "{{ images }}"
       register: async_results
@@ -81,7 +81,8 @@
         loop_var: "async_result_item"
       register: async_poll_results
       until: async_poll_results.finished
-      retries: 30
+      retries: 120
+      delay: 10
 
 - name: Apply role traefik & netbox
   hosts: testbed-manager.testbed.osism.xyz
