@@ -53,6 +53,9 @@ hosts_additional_entries:
 cleanup_packages_extra:
   - snapd
 
+required_packages_extra:
+  - linux-generic-hwe-22.04
+
 ##########################
 # systohc
 
