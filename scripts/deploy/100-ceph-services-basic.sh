@@ -31,8 +31,6 @@ osism apply copy-ceph-keys
 osism apply cephclient
 osism apply ceph-bootstrap-dashboard
 
-ceph config set mon auth_allow_insecure_global_id_reclaim false
-
 # osism validate is only available since 5.0.0. To enable the
 # testbed to be used with < 5.0.0, here is this check.
 MANAGER_VERSION=$(docker inspect --format '{{ index .Config.Labels "org.opencontainers.image.version"}}' osism-ansible)
