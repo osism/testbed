@@ -1,6 +1,6 @@
 export LC_ALL = C.UTF-8
 
-ENVIRONMENT ?= regiocloud
+ENVIRONMENT ?= the_environment
 
 VERSION_CEPH ?= quincy
 VERSION_MANAGER ?= latest
@@ -9,26 +9,24 @@ VERSION_OPENSTACK ?= 2023.1
 TERRAFORM ?= terraform
 TERRAFORM_BLUEPRINT ?= testbed-default
 
-ANSIBLE_COLLECTION_COMMONS_PATH := $(shell yq '.repositories."ansible-collection-commons".path' playbooks/vars/repositories.yml)
-ANSIBLE_COLLECTION_COMMONS_REPO := $(shell yq '.repositories."ansible-collection-commons".repo' playbooks/vars/repositories.yml)
-ANSIBLE_COLLECTION_SERVICES_PATH := $(shell yq '.repositories."ansible-collection-services".path' playbooks/vars/repositories.yml)
-ANSIBLE_COLLECTION_SERVICES_REPO := $(shell yq '.repositories."ansible-collection-services".repo' playbooks/vars/repositories.yml)
-REPOSITORY_SERVER := $(shell yq '."repository_server"' playbooks/vars/repositories.yml)
-TERRAFORM_BASE_PATH := $(shell yq '.repositories."terraform-base".path' playbooks/vars/repositories.yml)
-TERRAFORM_BASE_REPO := $(shell yq '.repositories."terraform-base".repo' playbooks/vars/repositories.yml)
-TESTBED_PATH := $(shell yq '.repositories.testbed.path' playbooks/vars/repositories.yml)
-TESTBED_REPO := $(shell yq '.repositories.testbed.repo' playbooks/vars/repositories.yml)
+venv = . venv/bin/activate
+export PATH := ${PATH}:${PWD}/venv/bin
 
 help:  ## Display this help.
 	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target>\033[0m\n"} /^[a-zA-Z_0-9-]+:.*?##/ { printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
 
 clean: ## Destroy infrastructure with Terraform.
+	@contrib/setup-testbed.py --environment_check $(ENVIRONMENT)
 	make -C terraform \
 	  ENVIRONMENT=$(ENVIRONMENT) \
 	  TERRAFORM=$(TERRAFORM) \
 	  clean
 
+clean_local:
+	rm -rf venv .src
+
 create: prepare ## Create required infrastructure with Terraform.
+	@contrib/setup-testbed.py --environment_check $(ENVIRONMENT)
 	make -C terraform \
 	  ENVIRONMENT=$(ENVIRONMENT) \
 	  TERRAFORM=$(TERRAFORM) \
@@ -38,18 +36,20 @@ create: prepare ## Create required infrastructure with Terraform.
 	  create
 
 login: ## Log in on the manager.
+	@contrib/setup-testbed.py --environment_check $(ENVIRONMENT)
 	@make -C terraform \
 	  ENVIRONMENT=$(ENVIRONMENT) \
 	  login
 
 bootstrap: create ## Bootstrap everything.
-	ansible-playbook playbooks/deploy.yml \
+	@contrib/setup-testbed.py --environment_check $(ENVIRONMENT)
+	${venv} ; ansible-playbook playbooks/deploy.yml \
 	  -i ansible/localhost_inventory.yaml \
 	  -e ansible_galaxy=ansible-galaxy \
 	  -e ansible_playbook=ansible-playbook \
 	  -e basepath="$(PWD)" \
 	  -e cloud_env=$(ENVIRONMENT) \
-	  -e repo_path="$(PWD)/.src/$(REPOSITORY_SERVER)" \
+	  -e repo_path="$(PWD)/.src/$(shell contrib/setup-testbed.py --query "repository_server")" \
 	  -e manual_create=true \
 	  -e manual_deploy=true \
 	  -e version_ceph=$(VERSION_CEPH) \
@@ -57,23 +57,27 @@ bootstrap: create ## Bootstrap everything.
 	  -e version_openstack=$(VERSION_OPENSTACK)
 
 manager: bootstrap ## Deploy only the manager service.
+	@contrib/setup-testbed.py --environment_check $(ENVIRONMENT)
 	make -C terraform \
 	  ENVIRONMENT=$(ENVIRONMENT) \
 	  TERRAFORM=$(TERRAFORM) \
 	  deploy-manager
 
 identity: manager ## Deploy only identity services.
+	@contrib/setup-testbed.py --environment_check $(ENVIRONMENT)
 	make -C terraform \
 	  ENVIRONMENT=$(ENVIRONMENT) \
 	  TERRAFORM=$(TERRAFORM) \
 	  deploy-identity
 
 ceph: manager ## Deploy only ceph services.
+	@contrib/setup-testbed.py --environment_check $(ENVIRONMENT)
 	make -C terraform \
 	  ENVIRONMENT=$(ENVIRONMENT) \
 	  deploy-ceph
 
 deploy: bootstrap ## Deploy everything and then check it.
+	@contrib/setup-testbed.py --environment_check $(ENVIRONMENT)
 	make -C terraform \
 	  ENVIRONMENT=$(ENVIRONMENT) \
 	  TERRAFORM=$(TERRAFORM) \
@@ -87,19 +91,19 @@ deploy: bootstrap ## Deploy everything and then check it.
 	  TERRAFORM=$(TERRAFORM) \
 	  check
 
-prepare: ## Run local preparations.
-	ansible-playbook -i localhost, ansible/check-local-versions.yml
+prepare: deps
+	${venv}; ansible-playbook -i localhost, ansible/check-local-versions.yml
+	@contrib/setup-testbed.py --prepare
 
-	mkdir -p $$(dirname $(ANSIBLE_COLLECTION_COMMONS_PATH))
-	mkdir -p $$(dirname $(ANSIBLE_COLLECTION_SERVICES_PATH))
-	mkdir -p $$(dirname $(TERRAFORM_BASE_PATH))
-	mkdir -p $$(dirname $(TESTBED_PATH))
+venv/bin/activate: Makefile
+	@which python3 > /dev/null || { echo "Missing requirement: python3" >&2; exit 1; }
+	@which jq > /dev/null || { echo "Missing requirement: jq" >&2; exit 1; }
+	virtualenv --version > /dev/null || { echo "Missing requirement: virtualenv -- aborting" >&2; exit 1; }
+	[ -e venv/bin/python ] || virtualenv -p $$(which python3) venv > /dev/null
+	@${venv} && pip3 install -r requirements.txt
+	touch venv/bin/activate
 
-	if [ ! -e .src/$(TESTBED_PATH) ]; then git clone $(TESTBED_REPO) .src/$(TESTBED_PATH); else git -C .src/$(TESTBED_PATH) pull; fi
-	if [ ! -e .src/$(TERRAFORM_BASE_PATH) ]; then git clone $(TERRAFORM_BASE_REPO) .src/$(TERRAFORM_BASE_PATH); else git -C .src/$(TERRAFORM_BASE_PATH) pull; fi
-	if [ ! -e .src/$(ANSIBLE_COLLECTION_COMMONS_PATH) ]; then git clone $(ANSIBLE_COLLECTION_COMMONS_REPO) .src/$(ANSIBLE_COLLECTION_COMMONS_PATH); else git -C .src/$(ANSIBLE_COLLECTION_COMMONS_PATH)  pull; fi
-	if [ ! -e .src/$(ANSIBLE_COLLECTION_SERVICES_PATH) ]; then git clone $(ANSIBLE_COLLECTION_SERVICES_REPO) .src/$(ANSIBLE_COLLECTION_SERVICES_PATH); else git -C .src/$(ANSIBLE_COLLECTION_SERVICES_PATH) pull; fi
 
-	rsync -avz .src/$(TERRAFORM_BASE_PATH)/$(TERRAFORM_BLUEPRINT)/ terraform
+deps: venv/bin/activate
 
-phony: bootstrap clean create deploy identity login manager prepare ceph
+phony: bootstrap clean clean_local create deploy identity login manager prepare ceph deps venv/bin/activate

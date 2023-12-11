@@ -67,7 +67,7 @@ init:
 		cp -p overrides/$${over}_override.tf .; \
 	done
 
-	@terraform fmt
+	@$(TERRAFORM) fmt
 
 validate: init
 	@$(TERRAFORM) validate $(PARAMS)
