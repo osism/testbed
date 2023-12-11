@@ -31,6 +31,7 @@ openstack_config: true
 
 ceph_conf_overrides:
   global:
+    auth allow insecure global id reclaim: false
     # NOTE: default size of 2 because by default there are only 2 nodes
     osd pool default size: 2
     osd pool default min size: 0

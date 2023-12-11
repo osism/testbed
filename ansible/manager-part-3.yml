@@ -43,22 +43,20 @@
   gather_facts: true
 
   vars:
-    images_manager:
+    images:
       - "{{ ara_server_image }}"
       - "{{ ara_server_mariadb_image }}"
       - "{{ ceph_ansible_image }}"
       - "{{ inventory_reconciler_image }}"
       - "{{ kolla_ansible_image }}"
       - "{{ manager_redis_image }}"
+      - "{{ netbox_image }}"
       - "{{ osism_ansible_image }}"
       - "{{ osism_image }}"
       - "{{ osism_netbox_image }}"
-      - "{{ vault_image }}"
-
-    images_traefik_netbox:
-      - "{{ netbox_image }}"
       - "{{ postgres_image }}"
       - "{{ traefik_image }}"
+      - "{{ vault_image }}"
 
   vars_files:
     - /opt/configuration/environments/manager/configuration.yml
@@ -66,16 +64,16 @@
     - /opt/configuration/environments/manager/images.yml
 
   tasks:
-    - name: Pull traefik & netbox images
+    - name: Pull images
       community.docker.docker_image:
         name: "{{ item }}"
         source: pull
-      async: 600
+      async: 1200
       poll: 0
-      loop: "{{ images_traefik_netbox }}"
+      loop: "{{ images }}"
       register: async_results
 
-    - name: Check pull status of traefik & netbox images
+    - name: Check status
       ansible.builtin.async_status:
         jid: "{{ async_result_item.ansible_job_id }}"
       loop: "{{ async_results.results }}"
@@ -83,15 +81,8 @@
         loop_var: "async_result_item"
       register: async_poll_results
       until: async_poll_results.finished
-      retries: 30
-
-    - name: Pull manager images
-      community.docker.docker_image:
-        name: "{{ item }}"
-        source: pull
-      async: 600
-      poll: 0
-      loop: "{{ images_manager }}"
+      retries: 120
+      delay: 10
 
 - name: Apply role traefik & netbox
   hosts: testbed-manager.testbed.osism.xyz

@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
+
 import argparse
 import subprocess
 import sys
-
 import yaml
 import os
+import time
 
 
 def lookup(yaml_path: str, local_data: dict) -> None | str | dict:
@@ -21,7 +22,7 @@ def check_environment(name: str) -> None:
     def _check_file(filename: str, name: str):
         if not os.path.exists(filename):
             raise RuntimeError(
-                f"There is no file {filename}, create one by using {filename}.sample"
+                f"There is no file {filename}, create one by using {filename}.sample as template"
             )
 
         with open(filename, "r") as file:
@@ -41,10 +42,18 @@ def check_environment(name: str) -> None:
 
     try:
         _check_file("terraform/clouds.yaml", name)
-        _check_file("terraform/secure.yaml", name)
     except Exception as e:
         print(e)
         sys.exit(1)
+
+    # TODO: as discussed in https://github.com/osism/testbed/pull/1879 we add a app credential check later
+    # to make a smart distinction if that check is needed or not.
+    try:
+        _check_file("terraform/secure.yaml", name)
+    except Exception as e:
+        print(e)
+        time.sleep(2)
+
     sys.exit(0)
 
 

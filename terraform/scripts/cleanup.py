@@ -6,8 +6,9 @@ import time
 
 import openstack
 
-logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.INFO,
-                    datefmt='%Y-%m-%d %H:%M:%S')
+logging.basicConfig(
+    format="%(asctime)s - %(message)s", level=logging.INFO, datefmt="%Y-%m-%d %H:%M:%S"
+)
 
 
 def disconnect_routers(conn, prefix):
@@ -23,8 +24,7 @@ def disconnect_routers(conn, prefix):
         logging.info(router_name)
         ports = list(conn.network.ports(device_id=router_id))
         for port in ports:
-            conn.network.remove_interface_from_router(router_id,
-                                                      port_id=port["id"])
+            conn.network.remove_interface_from_router(router_id, port_id=port["id"])
 
 
 def cleanup_routers(conn, prefix):
@@ -70,7 +70,7 @@ def cleanup_ports(conn, prefix):
     ports = list(conn.network.ports(status="DOWN"))
     for port in ports:
         port_dict = port.to_dict()
-        if (port_dict["device_owner"] != ""):
+        if port_dict["device_owner"] != "":
             continue
 
         logging.info(port_dict["id"])
@@ -164,10 +164,10 @@ def cleanup_floating_ips(conn, prefix):
 def main():
     PREFIX = os.environ.get("PREFIX", "testbed")
     try:
-        OSENV = os.environ['OS_CLOUD']
+        OSENV = os.environ["OS_CLOUD"]
     except KeyError:
         try:
-            OSENV = os.environ['ENVIRONMENT']
+            OSENV = os.environ["ENVIRONMENT"]
         except KeyError as e:
             logging.error("Need to have OS_CLOUD or ENVIRONMENT set!")
             raise e
@@ -185,5 +185,5 @@ def main():
     cleanup_routers(conn, PREFIX)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
