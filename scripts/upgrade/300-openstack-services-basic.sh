@@ -7,16 +7,13 @@ export INTERACTIVE=false
 osism apply -a upgrade keystone
 osism apply -a upgrade placement
 osism apply -a upgrade nova
-
-task_ids=$(osism apply --no-wait --format script -a upgrade horizon 2>&1)
-task_ids+=" "$(osism apply --no-wait --format script -a upgrade glance 2>&1)
-task_ids+=" "$(osism apply --no-wait --format script -a upgrade neutron 2>&1)
-task_ids+=" "$(osism apply --no-wait --format script -a upgrade cinder 2>&1)
-task_ids+=" "$(osism apply --no-wait --format script -a upgrade barbican 2>&1)
-task_ids+=" "$(osism apply --no-wait --format script -a upgrade designate 2>&1)
-task_ids+=" "$(osism apply --no-wait --format script -a upgrade octavia 2>&1)
-
-osism wait --output --format script --delay 2 $task_ids
+osism apply -a upgrade horizon
+osism apply -a upgrade glance
+osism apply -a upgrade neutron
+osism apply -a upgrade cinder
+osism apply -a upgrade barbican
+osism apply -a upgrade designate
+osism apply -a upgrade octavia
 
 # We have only been testing Magnum since the OSISM 6.0.0 release. Accordingly, an upgrade
 # test only makes sense when upgrading to latest. Can be adjusted with OSISM 7.
