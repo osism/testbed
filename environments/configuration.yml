@@ -57,11 +57,6 @@ required_packages_extra:
   - linux-generic-hwe-22.04
 
 ##########################
-# systohc
-
-systohc: false
-
-##########################
 # serial
 
 # The recommended default for a production is 30% (is set by default).
