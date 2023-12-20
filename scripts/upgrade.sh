@@ -36,7 +36,7 @@ ${GILT} overlay
 popd
 
 # upgrade manager
-osism-update-manager
+osism update manager
 
 # wait for manager service
 wait_for_container_healthy 60 ceph-ansible
