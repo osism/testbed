@@ -48,7 +48,7 @@ hosts_additional_entries:
   api.testbed.osism.xyz: 192.168.16.254
 
 ##########################
-# common
+# cleanup
 
 cleanup_packages_extra:
   - snapd
@@ -57,6 +57,12 @@ cleanup_packages_extra:
 # systohc
 
 systohc: false
+
+##########################
+# packages
+
+required_packages_extra:
+  - linux-generic-hwe-22.04
 
 ##########################
 # serial
