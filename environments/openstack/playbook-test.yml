@@ -161,3 +161,16 @@
         state: present
         server: test
         volume: test
+
+    - name: Create floating ip address
+      openstack.cloud.floating_ip:
+        cloud: test
+        state: present
+        server: test
+        network: public
+        wait: true
+      register: result
+
+    - name: Print floating ip address
+      ansible.builtin.debug:
+        msg: "{{ result.floating_ip.floating_ip_address }}"
