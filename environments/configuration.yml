@@ -54,11 +54,6 @@ cleanup_packages_extra:
   - snapd
 
 ##########################
-# systohc
-
-systohc: false
-
-##########################
 # serial
 
 # The recommended default for a production is 30% (is set by default).
