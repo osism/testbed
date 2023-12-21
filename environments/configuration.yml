@@ -19,7 +19,7 @@ docker_opts:
 
 ceph_docker_registry: quay.io
 docker_registry: index.docker.io
-docker_registry_ansible: osism.harbor.regio.digital
+docker_registry_ansible: quay.io
 docker_registry_kolla: quay.io
 docker_registry_netbox: quay.io
 
