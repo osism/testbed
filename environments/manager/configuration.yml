@@ -39,6 +39,8 @@ ara_enable: true
 ara_server_host: ara.testbed.osism.xyz
 ara_server_traefik: true
 
+ara_server_mariadb_volume_type: tmpfs
+
 ##########################
 # netbox
 
