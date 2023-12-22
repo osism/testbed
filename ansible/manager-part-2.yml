@@ -18,3 +18,4 @@
   roles:
     - role: osism.services.docker
     - role: osism.commons.docker_compose
+    - role: osism.services.rng

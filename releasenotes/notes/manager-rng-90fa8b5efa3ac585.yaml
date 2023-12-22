@@ -1,0 +1,4 @@
+---
+features:
+  - |
+    Make sure that rngd is available on the manager from the start.
