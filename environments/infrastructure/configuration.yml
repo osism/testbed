@@ -32,7 +32,6 @@ homer_url_phpmyadmin: "https://phpmyadmin.testbed.osism.xyz/"
 homer_url_prometheus: "https://api-int.testbed.osism.xyz:9091/"
 homer_url_rabbitmq: "https://api-int.testbed.osism.xyz:15672/"
 
-
 ##########################
 # keycloak
 
@@ -47,6 +46,8 @@ netbox_traefik: true
 netbox_plugins_extra:
   - netbox_bgp
   - netbox_dns
+
+netbox_postgres_volume_type: tmpfs
 
 ##########################
 # patchman
