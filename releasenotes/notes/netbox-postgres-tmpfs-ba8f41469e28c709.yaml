@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Move the Postgres service of the Netbox service on the manager to a tmpfs
+    to speed up the processes.
