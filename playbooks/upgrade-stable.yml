@@ -3,7 +3,6 @@
   ansible.builtin.import_playbook: deploy.yml
   vars:
     version_manager: "{{ manager_version | default('latest') }}"
-
     run_bootstrap: false
 
 - name: Upgrade testbed
@@ -28,6 +27,7 @@
     - name: Set cloud_env fact (Zuul deployment)
       ansible.builtin.set_fact:
         cloud_env: "{{ cloud_envs[hostvars[groups['all'][0]]['nodepool']['label']] }}"
+        kolla_namespace: "kolla/release"
       when: "'nodepool' in hostvars[groups['all'][0]]"
 
     - name: Set cloud_env fact (local deployment)
@@ -38,7 +38,7 @@
     - name: Run upgrade
       ansible.builtin.command:
         chdir: "{{ terraform_path }}"
-        cmd: make ENVIRONMENT={{ cloud_env }} VERSION_MANAGER={{ version_manager_next }} VERSION_CEPH={{ version_ceph_next }} VERSION_OPENSTACK={{ version_openstack_next }} upgrade
+        cmd: make ENVIRONMENT={{ cloud_env }} VERSION_MANAGER={{ version_manager_next }} VERSION_CEPH={{ version_ceph_next }} VERSION_OPENSTACK={{ version_openstack_next }} KOLLA_NAMESPACE={{ kolla_namespace | default("osism") }} upgrade
       changed_when: true
 
     - name: Bootstrap services

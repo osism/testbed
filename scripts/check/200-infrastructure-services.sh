@@ -23,14 +23,12 @@ echo
 
 bash nagios-plugins/check_galera_cluster -u root -p password -H api-int.testbed.osism.xyz -c 1
 
-if [[ "$DEPLOY_MONITORING" == "true" ]]; then
-    echo
-    echo "# Status of Prometheus"
-    echo
+echo
+echo "# Status of Prometheus"
+echo
 
-    curl -s https://api-int.testbed.osism.xyz:9091/-/healthy
-    curl -s https://api-int.testbed.osism.xyz:9091/-/ready
-fi
+curl -s https://api-int.testbed.osism.xyz:9091/-/healthy
+curl -s https://api-int.testbed.osism.xyz:9091/-/ready
 
 echo
 echo "# Status of RabbitMQ"
