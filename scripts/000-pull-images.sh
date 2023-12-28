@@ -1,6 +1,17 @@
 #!/usr/bin/env bash
+set -x
+set -e
 
 export INTERACTIVE=false
+source /opt/manager-vars.sh
+
+echo
+echo "# PULL IMAGES"
+echo
+
+if [[ $IS_ZUUL == "true" ]]; then
+    osism apply -e custom import-images
+fi
 
 kolla_services=(
 barbican
