@@ -1,0 +1,75 @@
+---
+- name: Add a zuul specific workaround service to non-manager nodes
+  hosts: all:!manager
+  gather_facts: false
+
+  tasks:
+    - name: Create /opt/data directory
+      become: true
+      ansible.builtin.file:
+        path: /opt/data
+        owner: root
+        group: root
+        state: directory
+        mode: 0755
+
+    - name: Create /opt/data/mariadb directory
+      become: true
+      ansible.builtin.file:
+        path: /opt/data/mariadb
+        owner: root
+        group: root
+        state: directory
+        mode: 0755
+
+    - name: Create /opt/data/rabbitmq directory
+      become: true
+      ansible.builtin.file:
+        path: /opt/data/rabbitmq
+        owner: root
+        group: root
+        state: directory
+        mode: 0755
+
+    - name: Copy workarounds-zuul.sh scripts
+      become: true
+      ansible.builtin.template:
+        src: workarounds-zuul.sh.j2
+        dest: /usr/local/bin/workarounds-zuul.sh
+        mode: 0755
+        owner: root
+        group: root
+
+    - name: Copy workarounds-zuul systemd unit file
+      become: true
+      ansible.builtin.template:
+        src: workarounds-zuul.service.j2
+        dest: /etc/systemd/system/workarounds-zuul.service
+        mode: 0644
+        owner: root
+        group: root
+
+    - name: Reload systemd daemon
+      become: true
+      ansible.builtin.systemd:
+        daemon_reload: true
+
+    - name: Enable workarounds-zuul.service
+      become: true
+      ansible.builtin.service:
+        name: workarounds-zuul
+        enabled: true
+
+    - name: Add mariadb_datadir_volume parameter
+      ansible.builtin.lineinfile:
+        path: /opt/configuration/environments/kolla/configuration.yml
+        line: "mariadb_datadir_volume: /opt/data/mariadb"
+      delegate_to: "{{ groups['manager'][0] }}"
+      run_once: true
+
+    - name: Add rabbitmq_datadir_volume parameter
+      ansible.builtin.lineinfile:
+        path: /opt/configuration/environments/kolla/configuration.yml
+        line: "rabbitmq_datadir_volume: /opt/data/rabbitmq"
+      delegate_to: "{{ groups['manager'][0] }}"
+      run_once: true

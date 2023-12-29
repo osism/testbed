@@ -106,7 +106,6 @@ ceilometer_metering_pushgateway_host: "testbed-manager.testbed.osism.xyz"
 ceilometer_metering_pushgateway_port: 8088
 
 # rgw integration
-
 enable_ceph_rgw: true
 enable_ceph_rgw_keystone: true
 
