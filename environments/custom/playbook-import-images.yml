@@ -16,8 +16,10 @@
       ansible.builtin.command:
         cmd: "skopeo copy dir:/home/dragon/images/{{ item }} docker-daemon:osism.harbor.regio.digital/osism/{{ item }}"
       loop: "{{ images_ceph }}"
+      changed_when: true
 
     - name: Import stable openstack images
       ansible.builtin.command:
         cmd: "skopeo copy dir:/home/dragon/images/{{ item }} docker-daemon:osism.harbor.regio.digital/kolla/release/{{ item }}"
       loop: "{{ images_openstack }}"
+      changed_when: true
