@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Do not pull images when starting or restarting a docker-compose service.
+    This prevents long running times when testing.
