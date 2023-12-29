@@ -83,6 +83,7 @@
             skopeo copy dir:/home/dragon/images/{{ item }} docker-daemon:osism.harbor.regio.digital/osism/{{ item }}
         fi
       loop: "{{ images_stable }}"
+      changed_when: true
       args:
         executable: /bin/bash
 
