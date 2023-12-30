@@ -43,19 +43,6 @@
   gather_facts: true
 
   vars:
-    images_stable:
-      - ceph-ansible:5.3.0
-      - ceph-ansible:6.0.2
-      - "inventory-reconciler:5.3.0"
-      - "inventory-reconciler:6.0.2"
-      - kolla-ansible:5.3.0
-      - kolla-ansible:6.0.2
-      - netbox:v3.4.8
-      - osism-ansible:5.3.0
-      - osism-ansible:6.0.2
-      - osism:0.20230902.0  # 6.0.2
-      - osism:0.20231129.2  # 5.3.0
-
     images:
       - "{{ ara_server_image }}"
       - "{{ ara_server_mariadb_image }}"
@@ -77,16 +64,6 @@
     - /opt/configuration/environments/manager/images.yml
 
   tasks:
-    - name: Try to import stable manager images
-      ansible.builtin.shell: |
-        if [[ -e /home/dragon/images/{{ item }} ]]; then
-            skopeo copy dir:/home/dragon/images/{{ item }} docker-daemon:osism.harbor.regio.digital/osism/{{ item }}
-        fi
-      loop: "{{ images_stable }}"
-      changed_when: true
-      args:
-        executable: /bin/bash
-
     - name: Pull images
       community.docker.docker_image:
         name: "{{ item }}"

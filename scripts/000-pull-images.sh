@@ -9,13 +9,6 @@ echo
 echo "# PULL IMAGES"
 echo
 
-if [[ $IS_ZUUL == "true" ]]; then
-    # Wait for task in the background to avoid bug/feature with 60 seconds
-    # timeout for custom plays.
-    task_id=$(osism apply --no-wait --format script -e custom import-images | tail -n 1 | tr -d '\n\r')
-    osism wait --output --format script --delay 2 $task_id
-fi
-
 kolla_services=(
 barbican
 cinder
