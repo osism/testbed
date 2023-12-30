@@ -4,9 +4,9 @@
   gather_facts: false
 
   tasks:
-    # NOTE: https://github.com/hashicorp/packer/issues/2639
+    # source: https://github.com/hashicorp/packer/issues/2639
     - name: Check /var/lib/cloud/instance/boot-finished
-      ansible.builtin.raw: timeout 180 /bin/bash -c 'until stat /var/lib/cloud/instance/boot-finished 2>/dev/null; do echo Wait for cloud-init to finish; sleep 1; done'
+      ansible.builtin.raw: timeout 600 /bin/bash -c 'until stat /var/lib/cloud/instance/boot-finished 2>/dev/null; do echo Wait for cloud-init to finish; sleep 1; done'
       changed_when: false
 
 - name: Run manager part 0
