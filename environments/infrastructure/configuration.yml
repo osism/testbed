@@ -47,8 +47,6 @@ netbox_plugins_extra:
   - netbox_bgp
   - netbox_dns
 
-netbox_postgres_volume_type: tmpfs
-
 ##########################
 # patchman
 

@@ -70,7 +70,7 @@
         regexp: "^docker_namespace"
         line: "docker_namespace: kolla/release"
       when:
-        - is_zuul|bool
+        - is_zuul | bool
         - version_manager != "latest"
       changed_when: true
 
@@ -80,7 +80,7 @@
         regexp: "^docker_namespace"
         line: "docker_namespace: kolla"
       when:
-        - is_zuul|bool
+        - is_zuul | bool
         - version_manager == "latest"
       changed_when: true
 
