@@ -84,6 +84,27 @@
       retries: 120
       delay: 10
 
+    - name: Check if /etc/osism-ci-image exist
+      ansible.builtin.stat:
+        path: /etc/osism-ci-image
+      register: result
+
+    - name: Add ara_server_mariadb_volume_type parameter
+      ansible.builtin.lineinfile:
+        path: /opt/configuration/environments/manager/configuration.yml
+        line: "ara_server_mariadb_volume_type: tmpfs"
+      when:
+        - result.stat.exists is defined
+        - result.stat.exists | bool
+
+    - name: Add netbox_postgres_volume_type parameter
+      ansible.builtin.lineinfile:
+        path: /opt/configuration/environments/infrastructure/configuration.yml
+        line: "netbox_postgres_volume_type: tmpfs"
+      when:
+        - result.stat.exists is defined
+        - result.stat.exists | bool
+
 - name: Apply role traefik & netbox
   hosts: testbed-manager.testbed.osism.xyz
   connection: local
