@@ -65,6 +65,11 @@ required_packages_extra:
 # with serial = 1.
 osism_serial_default: 100%
 
+osism_serial:
+  # The recommended default for a production is 1 (is set by default).
+  # It is here 100% to speed up the Testbed.
+  network: 100%
+
 ##########################
 # ceph
 

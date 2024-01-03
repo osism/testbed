@@ -1,0 +1,4 @@
+---
+features:
+  - |
+    Change the default of serial for the network play to configure all nodes in parallel.
