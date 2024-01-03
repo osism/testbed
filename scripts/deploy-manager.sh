@@ -48,8 +48,3 @@ osism apply wait-for-connection -l testbed-nodes -e ireallymeanit=yes
 
 # Restart the manager services to update the /etc/hosts file
 sudo systemctl restart docker-compose@manager
-
-# NOTE: It is not possible to use nested virtualization @ OTC
-if [[ -e /etc/OTC_region ]]; then
-    echo "nova_compute_virt_type: qemu" >> /opt/configuration/environments/kolla/configuration.yml
-fi

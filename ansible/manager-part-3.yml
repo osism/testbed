@@ -105,6 +105,20 @@
         - result.stat.exists is defined
         - result.stat.exists | bool
 
+    - name: Check if /etc/OTC_region exist
+      ansible.builtin.stat:
+        path: /etc/OTC_region
+      register: result
+
+    # It is not possible to use nested virtualization @ OTC
+    - name: Add nova_compute_virt_type parameter
+      ansible.builtin.lineinfile:
+        path: /opt/configuration/environments/kolla/configuration.yml
+        line: "nova_compute_virt_type: qemu"
+      when:
+        - result.stat.exists is defined
+        - result.stat.exists | bool
+
 - name: Apply role traefik & netbox
   hosts: testbed-manager.testbed.osism.xyz
   connection: local
