@@ -157,11 +157,20 @@ ssh: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
 	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
 	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(ENVIRONMENT) $(USERNAME)@$$MANAGER_ADDRESS
 
+vpn-wireguard: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
+	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
+	scp -o StrictHostKeyChecking=no -i .id_rsa.$(ENVIRONMENT) $(PARAMS) $(USERNAME)@$$MANAGER_ADDRESS:/home/dragon/wireguard-client.conf $(PWD)/wg-$(ENVIRONMENT).conf
+	sudo wg-quick down $(PWD)/wg-$(ENVIRONMENT).conf || true
+	sudo wg-quick up $(PWD)/wg-$(ENVIRONMENT).conf
+	@open "https://osism.github.io/docs/guides/deploy-guide/examples/testbed#webinterfaces"
+	@read -p "STOP?" CONT
+	sudo wg-quick down $(PWD)/wg-$(ENVIRONMENT).conf
+
 scp: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
 	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
 	scp -o StrictHostKeyChecking=no -i .id_rsa.$(ENVIRONMENT) $(PARAMS) $(USERNAME)@$$MANAGER_ADDRESS:$(SOURCE) .
 
-sshuttle: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
+vpn-sshuttle: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
 	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
 	sshuttle --ssh-cmd "ssh -o StrictHostKeyChecking=no -i .id_rsa.$(ENVIRONMENT) " -r $(USERNAME)@$$MANAGER_ADDRESS 192.168.16.0/20 192.168.112.0/20
 
@@ -225,4 +234,4 @@ plan: dry-run
 push: state-push
 tunnel: sshuttle
 
-PHONY: clean console attach detach sshuttle ssh dry-run list deploy deploy-identity deploy-manager upgrade watch openstack create log login scp copy address check rally refstack deploy-ceph upgrade-ceph bootstrap
+PHONY: clean console attach detach ssh dry-run list deploy deploy-identity deploy-manager upgrade watch openstack create log login scp copy address check rally refstack deploy-ceph upgrade-ceph bootstrap vpn-sshuttle vpn-wireguard

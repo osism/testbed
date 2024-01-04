@@ -14,7 +14,7 @@ venv = . venv/bin/activate
 export PATH := ${PATH}:${PWD}/venv/bin
 
 help:  ## Display this help.
-	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target>\033[0m\n"} /^[a-zA-Z_0-9-]+:.*?##/ { printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
+	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target>\033[0m\n"} /^[a-zA-Z_0-9-]+:.*?##/ { printf "  \033[36m%-20s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
 
 clean: ## Destroy infrastructure with Terraform.
 	@contrib/setup-testbed.py --environment_check $(ENVIRONMENT)
@@ -23,7 +23,7 @@ clean: ## Destroy infrastructure with Terraform.
 	  TERRAFORM=$(TERRAFORM) \
 	  clean
 
-clean_local:
+wipe-local-install: ## Wipe the software dependencies in `venv`.
 	rm -rf venv .src
 
 create: prepare ## Create required infrastructure with Terraform.
@@ -41,6 +41,20 @@ login: ## Log in on the manager.
 	@make -C terraform \
 	  ENVIRONMENT=$(ENVIRONMENT) \
 	  login
+
+vpn-wireguard: ## Establish a wireguard vpn tunnel.
+	@contrib/setup-testbed.py --environment_check $(ENVIRONMENT)
+	@make -C terraform \
+	  ENVIRONMENT=$(ENVIRONMENT) \
+	  vpn-wireguard
+
+vpn-sshuttle: ## Establish a sshuttle vpn tunnel.
+	@contrib/setup-testbed.py --environment_check $(ENVIRONMENT)
+	@make -C terraform \
+	  ENVIRONMENT=$(ENVIRONMENT) \
+	  vpn-sshuttle
+
+
 
 bootstrap: create ## Bootstrap everything.
 	@contrib/setup-testbed.py --environment_check $(ENVIRONMENT)
@@ -92,7 +106,7 @@ deploy: bootstrap ## Deploy everything and then check it.
 	  TERRAFORM=$(TERRAFORM) \
 	  check
 
-prepare: deps
+prepare: deps ## Run local preperations.
 	${venv}; ansible-playbook -i localhost, ansible/check-local-versions.yml
 	@contrib/setup-testbed.py --prepare
 
@@ -117,6 +131,6 @@ venv/bin/tofu: venv/bin/activate
 	tofu version
 	touch venv/bin/tofu
 
-deps: venv/bin/tofu venv/bin/activate
+deps: venv/bin/tofu venv/bin/activate ## Install software preconditions to `venv`.
 
-phony: bootstrap clean clean_local create deploy identity login manager prepare ceph deps venv/bin/activate venv/bin/tofu
+phony: bootstrap clean clean-local create deploy identity login manager prepare ceph deps venv/bin/activate venv/bin/tofu vpn-sshuttle vpn-wireguard wipe-local-install

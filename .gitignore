@@ -37,3 +37,4 @@ terraform/overrides/
 terraform/terragrunt.hcl
 venv
 .idea
+wg-*.conf
