@@ -7,8 +7,3 @@ dotfiles_repo_version: main
 dotfiles_repo_local_destination: "~/dotfiles"
 dotfiles_files:
   - .tmux.conf
-
-##########################
-# patchman-client
-
-patchman_client_server_url: https://patchman.testbed.osism.xyz
