@@ -21,7 +21,10 @@ docker_configure_proxy: true
 docker_proxy_http: "http://{{ groups['manager'][0] }}:3128"
 docker_proxy_https: "{{ docker_proxy_http }}"
 docker_proxy_no_proxy_extra:
+  - 192.168.16.254
   - 192.168.16.5
+  - 192.168.16.8
+  - 192.168.16.9
   - api
   - api-int
   - api-int.testbed.osism.xyz
@@ -37,7 +40,10 @@ proxy_proxies:
   http: "http://{{ groups['manager'][0] }}:3128"
   https: "http://{{ groups['manager'][0] }}:3128"
 proxy_no_proxy_extra:
+  - 192.168.16.254
   - 192.168.16.5
+  - 192.168.16.8
+  - 192.168.16.9
   - api
   - api-int
   - api-int.testbed.osism.xyz
