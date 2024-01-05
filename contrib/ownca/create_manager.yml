@@ -25,7 +25,6 @@
           - "DNS:netbox.testbed.osism.xyz"
           - "DNS:netdata.testbed.osism.xyz"
           - "DNS:nexus.testbed.osism.xyz"
-          - "DNS:patchman.testbed.osism.xyz"
           - "DNS:phpmyadmin.testbed.osism.xyz"
           - "IP:192.168.16.5"
         subject_alt_name_critical: true
