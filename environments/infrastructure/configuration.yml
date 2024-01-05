@@ -18,6 +18,7 @@ cgit_traefik: true
 
 homer_host: homer.testbed.osism.xyz
 homer_traefik: true
+
 homer_url_ara: "https://ara.testbed.osism.xyz/"
 homer_url_ceph: "https://api-int.testbed.osism.xyz:8140"
 homer_url_flower: "https://flower.testbed.osism.xyz/"
@@ -27,6 +28,7 @@ homer_url_keycloak: "https://keycloak.testbed.osism.xyz/"
 homer_url_kibana: "https://api-int.testbed.osism.xyz:5601"
 homer_url_netbox: "https://netbox.testbed.osism.xyz/"
 homer_url_netdata: "https://netdata.testbed.osism.xyz/"
+homer_url_opensearch_dashboards: "https://api-int.testbed.osism.xyz:5601"
 homer_url_phpmyadmin: "https://phpmyadmin.testbed.osism.xyz/"
 homer_url_prometheus: "https://api-int.testbed.osism.xyz:9091/"
 homer_url_rabbitmq: "https://api-int.testbed.osism.xyz:15672/"
