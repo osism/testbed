@@ -26,6 +26,7 @@ manager_listener_broker_uri: "{% for host in manager_listener_broker_hosts %}amq
 
 celery_enable: true
 
+flower_enable: true
 flower_traefik: true
 flower_host: flower.testbed.osism.xyz
 
