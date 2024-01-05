@@ -14,6 +14,11 @@ sh -c '/opt/configuration/scripts/000-pull-images.sh'
 # deploy helper services
 sh -c '/opt/configuration/scripts/deploy/001-helper-services.sh'
 
+# deploy kubernetes
+if [[ $MANAGER_VERSION == "latest" ]]; then
+  sh -c '/opt/configuration/scripts/deploy/005-kubernetes.sh'
+fi
+
 # deploy infrastructure services
 sh -c '/opt/configuration/scripts/deploy/200-infrastructure-services-basic.sh'
 

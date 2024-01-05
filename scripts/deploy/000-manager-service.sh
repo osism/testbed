@@ -71,7 +71,3 @@ osism apply squid
 # Ensure that the squid service is up and running.
 # This is also added to the osism.services.squid role.
 docker compose --project-directory /opt/squid up -d
-
-if [[ $MANAGER_VERSION == "latest" ]]; then
-    /opt/configuration/scripts/deploy/005-kubernetes.sh
-fi
