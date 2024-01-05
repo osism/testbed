@@ -34,7 +34,7 @@ echo
 echo "# Status of RabbitMQ"
 echo
 
-perl nagios-plugins/check_rabbitmq_cluster --ssl 1 -H api-int.testbed.osism.xyz -u openstack -p BO6yGAAq9eqA7IKqeBdtAEO7aJuNu4zfbhtnRo8Y
+perl nagios-plugins/check_rabbitmq_cluster --ssl 1 -H api-int.testbed.osism.xyz -u openstack -p password
 
 echo
 echo "# Status of Redis"
