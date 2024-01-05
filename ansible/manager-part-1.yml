@@ -8,6 +8,7 @@
     operator_user: dragon
     repo_path: /home/ubuntu/src/github.com
     version_manager: latest
+    is_zuul: false
 
   tasks:
     - name: Copy SSH public key
@@ -50,11 +51,37 @@
 
     # shell required because of: command module does not accept
     # setting environment variables inline.
-    - name: Sync testbed repo with generics  # noqa: command-instead-of-shell
+    - name: Sync configuration with generics  # noqa: command-instead-of-shell
       ansible.builtin.shell:
         chdir: /opt/configuration
         cmd: MANAGER_VERSION={{ version_manager }} gilt overlay
       when: version_manager != "latest"
+      changed_when: true
+
+    - name: Set docker registries
+      ansible.builtin.command:
+        cmd: /opt/configuration/scripts/set-docker-registry.sh
+      when: is_zuul | bool
+      changed_when: true
+
+    - name: Set docker namespace for kolla (when working with stable tags)
+      ansible.builtin.lineinfile:
+        path: /opt/configuration/environments/kolla/configuration.yml
+        regexp: "^docker_namespace"
+        line: "docker_namespace: kolla/release"
+      when:
+        - is_zuul | bool
+        - version_manager != "latest"
+      changed_when: true
+
+    - name: Set docker namespace for kolla (when working with latest tags)
+      ansible.builtin.lineinfile:
+        path: /opt/configuration/environments/kolla/configuration.yml
+        regexp: "^docker_namespace"
+        line: "docker_namespace: kolla"
+      when:
+        - is_zuul | bool
+        - version_manager == "latest"
       changed_when: true
 
     - name: Copy testbed crt

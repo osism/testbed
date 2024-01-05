@@ -4,9 +4,9 @@
   gather_facts: false
 
   tasks:
-    # NOTE: https://github.com/hashicorp/packer/issues/2639
+    # source: https://github.com/hashicorp/packer/issues/2639
     - name: Check /var/lib/cloud/instance/boot-finished
-      ansible.builtin.raw: timeout 180 /bin/bash -c 'until stat /var/lib/cloud/instance/boot-finished 2>/dev/null; do echo Wait for cloud-init to finish; sleep 1; done'
+      ansible.builtin.raw: timeout 600 /bin/bash -c 'until stat /var/lib/cloud/instance/boot-finished 2>/dev/null; do echo Wait for cloud-init to finish; sleep 1; done'
       changed_when: false
 
 - name: Run manager part 0
@@ -40,22 +40,8 @@
       ansible.builtin.apt:
         name:
           - linux-generic-hwe-22.04
-          - python3-argcomplete
-          - python3-cryptography
-          - python3-dnspython
-          - python3-jmespath
-          - python3-kerberos
-          - python3-libcloud
-          - python3-lockfile
           - python3-netaddr
-          - python3-netifaces
-          - python3-ntlm-auth
           - python3-pip
-          - python3-requests-kerberos
-          - python3-requests-ntlm
-          - python3-selinux
-          - python3-winrm
-          - python3-xmltodict
         update_cache: true
       changed_when: true
 

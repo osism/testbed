@@ -21,6 +21,7 @@ KOLLA_NAMESPACE ?= osism
 
 RALLY ?= false
 REFSTACK ?= false
+IS_ZUUL ?= false
 
 APPLY_PARAMS = -auto-approve -parallelism=$(PARALLELISM)
 
@@ -56,7 +57,8 @@ init:
 	@echo "ceph_version = \"$(VERSION_CEPH)\"" >> $(ENVIRONMENT).auto.tfvars
 	@echo "manager_version = \"$(VERSION_MANAGER)\"" >> $(ENVIRONMENT).auto.tfvars
 	@echo "openstack_version = \"$(VERSION_OPENSTACK)\"" >> $(ENVIRONMENT).auto.tfvars
-	@echo "refstack= \"$(REFSTACK)\"" >> $(ENVIRONMENT).auto.tfvars
+	@echo "refstack = \"$(REFSTACK)\"" >> $(ENVIRONMENT).auto.tfvars
+	@echo "is_zuul = \"$(IS_ZUUL)\"" >> $(ENVIRONMENT).auto.tfvars
 
 	@rm -f *_custom.tf
 	@for custom in `grep '^# *customisation:' "environments/${ENVIRONMENT}.tfvars" | sed 's/^# *customisation://'`; do \

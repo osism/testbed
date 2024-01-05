@@ -84,6 +84,41 @@
       retries: 120
       delay: 10
 
+    - name: Check if /etc/osism-ci-image exist
+      ansible.builtin.stat:
+        path: /etc/osism-ci-image
+      register: result
+
+    - name: Add ara_server_mariadb_volume_type parameter
+      ansible.builtin.lineinfile:
+        path: /opt/configuration/environments/manager/configuration.yml
+        line: "ara_server_mariadb_volume_type: tmpfs"
+      when:
+        - result.stat.exists is defined
+        - result.stat.exists | bool
+
+    - name: Add netbox_postgres_volume_type parameter
+      ansible.builtin.lineinfile:
+        path: /opt/configuration/environments/infrastructure/configuration.yml
+        line: "netbox_postgres_volume_type: tmpfs"
+      when:
+        - result.stat.exists is defined
+        - result.stat.exists | bool
+
+    - name: Check if /etc/OTC_region exist
+      ansible.builtin.stat:
+        path: /etc/OTC_region
+      register: result
+
+    # It is not possible to use nested virtualization @ OTC
+    - name: Add nova_compute_virt_type parameter
+      ansible.builtin.lineinfile:
+        path: /opt/configuration/environments/kolla/configuration.yml
+        line: "nova_compute_virt_type: qemu"
+      when:
+        - result.stat.exists is defined
+        - result.stat.exists | bool
+
 - name: Apply role traefik & netbox
   hosts: testbed-manager.testbed.osism.xyz
   connection: local
@@ -122,7 +157,7 @@
             docker logs netbox-netbox-1
           changed_when: true
 
-- name: Apply role manager
+- name: Deploy manager service
   hosts: testbed-manager.testbed.osism.xyz
   connection: local
   gather_facts: true

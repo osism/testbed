@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Do not use the proxy running on the manager to access services
+    running on the manager and on the control plane.

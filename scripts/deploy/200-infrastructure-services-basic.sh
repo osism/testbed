@@ -3,6 +3,9 @@ set -e
 
 export INTERACTIVE=false
 
+MANAGER_VERSION=$(docker inspect --format '{{ index .Config.Labels "org.opencontainers.image.version"}}' osism-ansible)
+OPENSTACK_VERSION=$(docker inspect --format '{{ index .Config.Labels "de.osism.release.openstack" }}' kolla-ansible)
+
 osism apply common
 osism apply loadbalancer
 
@@ -12,9 +15,6 @@ osism apply redis
 osism apply mariadb
 osism apply rabbitmq
 osism apply openvswitch
-
-MANAGER_VERSION=$(docker inspect --format '{{ index .Config.Labels "org.opencontainers.image.version"}}' osism-ansible)
-OPENSTACK_VERSION=$(docker inspect --format '{{ index .Config.Labels "de.osism.release.openstack" }}' kolla-ansible)
 
 if [[ $MANAGER_VERSION =~ ^4\.[0-9]\.[0-9]$ || $OPENSTACK_VERSION == "yoga" ]]; then
     osism apply elasticsearch

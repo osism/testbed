@@ -27,11 +27,9 @@ homer_url_keycloak: "https://keycloak.testbed.osism.xyz/"
 homer_url_kibana: "https://api-int.testbed.osism.xyz:5601"
 homer_url_netbox: "https://netbox.testbed.osism.xyz/"
 homer_url_netdata: "https://netdata.testbed.osism.xyz/"
-homer_url_patchman: "https://patchman.testbed.osism.xyz/"
 homer_url_phpmyadmin: "https://phpmyadmin.testbed.osism.xyz/"
 homer_url_prometheus: "https://api-int.testbed.osism.xyz:9091/"
 homer_url_rabbitmq: "https://api-int.testbed.osism.xyz:15672/"
-
 
 ##########################
 # keycloak
@@ -49,17 +47,11 @@ netbox_plugins_extra:
   - netbox_dns
 
 ##########################
-# patchman
-
-patchman_host: patchman.testbed.osism.xyz
-patchman_server_url: https://patchman.testbed.osism.xyz
-patchman_traefik: true
-
-##########################
 # phpmyadmin
 
 phpmyadmin_host: phpmyadmin.testbed.osism.xyz
 phpmyadmin_traefik: true
+phpmyadmin_database_host: 192.168.16.9
 
 ##########################
 # squid
