@@ -63,6 +63,10 @@ fi
 docker compose --project-directory /opt/manager ps
 docker compose --project-directory /opt/netbox ps
 
+if [[ -e /etc/osism-ci-image  ]]; then
+    sh -c '/opt/configuration/scripts/disable-ara.sh'
+fi
+
 osism apply sshconfig
 osism apply known-hosts
 
