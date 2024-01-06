@@ -37,7 +37,7 @@
 # With this play, we can decouple the pull of the required images from the
 # subsequent roles (traefik, manager, netbox). This makes problems resulting
 # from image pulls more visible in the CI.
-- name: Pull manager images
+- name: Before the deployment of the manager
   hosts: testbed-manager.testbed.osism.xyz
   connection: local
   gather_facts: true
