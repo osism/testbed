@@ -12,6 +12,15 @@
     docker_storage_driver: overlay2
     docker_user: dragon
     docker_version: "5:24.0.7"
+    docker_opts:
+      max-concurrent-downloads: 20
+    docker_insecure_registries:
+      # Pass through cache for Docker Hub
+      - nexus.testbed.osism.xyz:8191
+      # Pass through cache for Quay
+      - nexus.testbed.osism.xyz:8192
+      # Pass through cache for OSISM Harbor
+      - nexus.testbed.osism.xyz:8193
 
     docker_compose_install_type: package
 
