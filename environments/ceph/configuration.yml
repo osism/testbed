@@ -5,6 +5,13 @@
 fsid: 11111111-1111-1111-1111-111111111111
 
 ##########################
+# services
+
+enable_ceph_crash: true
+enable_ceph_mds: true
+enable_ceph_rgw: true
+
+##########################
 # osd
 
 dmcrypt: true
