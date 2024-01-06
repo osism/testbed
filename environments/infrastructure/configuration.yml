@@ -10,14 +10,14 @@ cephclient_mons:
 ##########################
 # cgit
 
-cgit_host: cgit.testbed.osism.xyz
 cgit_traefik: true
+cgit_host: cgit.testbed.osism.xyz
 
 ##########################
 # homer
 
-homer_host: homer.testbed.osism.xyz
 homer_traefik: true
+homer_host: homer.testbed.osism.xyz
 
 homer_url_ara: "https://ara.testbed.osism.xyz/"
 homer_url_ceph: "https://api-int.testbed.osism.xyz:8140"
@@ -36,14 +36,14 @@ homer_url_rabbitmq: "https://api-int.testbed.osism.xyz:15672/"
 ##########################
 # keycloak
 
-keycloak_host: keycloak.testbed.osism.xyz
 keycloak_traefik: true
+keycloak_host: keycloak.testbed.osism.xyz
 
 ##########################
 # netbox
 
-netbox_host: netbox.testbed.osism.xyz
 netbox_traefik: true
+netbox_host: netbox.testbed.osism.xyz
 netbox_plugins_extra:
   - netbox_bgp
   - netbox_dns
@@ -51,8 +51,8 @@ netbox_plugins_extra:
 ##########################
 # phpmyadmin
 
-phpmyadmin_host: phpmyadmin.testbed.osism.xyz
 phpmyadmin_traefik: true
+phpmyadmin_host: phpmyadmin.testbed.osism.xyz
 phpmyadmin_database_host: 192.168.16.9
 
 ##########################
@@ -86,7 +86,6 @@ squid_allowed_addresses:
 # traefik
 
 traefik_enable: true
-
 traefik_host: "{{ hostvars[inventory_hostname]['ansible_' + internal_interface]['ipv4']['address'] }}"
 
 ##########################
@@ -97,3 +96,9 @@ wireguard_users:
     key: LDweUZxqy/0AieSVw3baZmbRMPBqhfDUcuLAwSYyQkE=
     ip: 192.168.48.4
 wireguard_create_client_config: true
+
+##########################
+# nexus
+
+nexus_traefik: true
+nexus_host: nexus.testbed.osism.xyz

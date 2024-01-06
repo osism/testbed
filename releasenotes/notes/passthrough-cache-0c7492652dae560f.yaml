@@ -1,0 +1,4 @@
+---
+features:
+  - |
+    Deploy Nexus and integrate it as a passthrough cache for container images.
