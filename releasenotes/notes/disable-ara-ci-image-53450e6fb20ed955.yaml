@@ -1,0 +1,4 @@
+---
+features:
+  - |
+    Disable the ARA service when using the OSISM CI image.

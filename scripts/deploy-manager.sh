@@ -15,10 +15,6 @@ export INTERACTIVE=false
 # deploy manager service
 sh -c '/opt/configuration/scripts/deploy/000-manager-service.sh'
 
-if [[ $IS_ZUUL == "true" ]]; then
-    sh -c '/opt/configuration/scripts/disable-ara.sh'
-fi
-
 # bootstrap nodes
 osism apply operator -u ubuntu
 osism apply --environment custom facts
