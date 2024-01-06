@@ -58,14 +58,6 @@
       when: version_manager != "latest"
       changed_when: true
 
-    - name: Use passthrough cache
-      ansible.builtin.command:
-        cmd: "/opt/configuration/scripts/set-docker-registry.sh nexus.testbed.osism.xyz:8193"
-      when:
-        - is_zuul | bool
-        - version_manager == "latest"
-      changed_when: true
-
     - name: Set docker registries
       ansible.builtin.command:
         cmd: /opt/configuration/scripts/set-docker-registry.sh

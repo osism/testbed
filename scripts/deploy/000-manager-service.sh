@@ -83,10 +83,10 @@ if [[ "$MANAGER_VERSION" == "latest" ]]; then
     osism apply nexus
 
     if [[ -e /etc/osism-ci-image ]]; then
-        sh -c '/opt/configuration/scripts/set-docker-registry nexus.testbed.osism.xyz:8193'
+        sh -c '/opt/configuration/scripts/set-docker-registry.sh nexus.testbed.osism.xyz:8193'
 	sed -i "s/docker_namespace: osism/docker_namespace: kolla/" /opt/configuration/environments/kolla/configuration.yml
     else
-        sh -c '/opt/configuration/scripts/set-docker-registry nexus.testbed.osism.xyz:8192'
+        sh -c '/opt/configuration/scripts/set-docker-registry.sh nexus.testbed.osism.xyz:8192'
     fi
 fi
 
