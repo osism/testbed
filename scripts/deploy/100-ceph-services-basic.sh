@@ -17,7 +17,7 @@ if [[ "$REFSTACK" == "false" ]]; then
         osism apply ceph-mdss
         osism apply ceph-rgws
     else
-        osism apply ceph -e enable_ceph_mds=true -e enable_ceph_rgw=true
+        osism apply ceph
     fi
 else
     if [[ $MANAGER_VERSION =~ ^4\.[0-9]\.[0-9]$ ]]; then
