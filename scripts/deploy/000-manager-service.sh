@@ -63,8 +63,16 @@ fi
 docker compose --project-directory /opt/manager ps
 docker compose --project-directory /opt/netbox ps
 
+# disable ara service
 if [[ -e /etc/osism-ci-image  ]]; then
     sh -c '/opt/configuration/scripts/disable-ara.sh'
+fi
+
+# use osism.commons.still_alive stdout callback
+if [[ "$MANAGER_VERSION" == "latest" ]];then
+    # The plugin is available in OSISM 6.1.0 and higher. In future, the callback
+    # plugin will be used by default.
+    sed -i "s/community.general.yaml/osism.commons.still_alive/" /opt/configuration/environments/ansible.cfg
 fi
 
 osism apply sshconfig
