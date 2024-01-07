@@ -10,6 +10,7 @@ cat /opt/manager-vars.sh
 echo
 
 source /opt/manager-vars.sh
+source /opt/configuration/scripts/include.sh
 export INTERACTIVE=false
 
 # deploy manager service
@@ -27,8 +28,9 @@ osism apply network
 # deploy wireguard
 osism apply wireguard
 
-# On OSISM < 5.0.0 this file is not yet present.
+# prepare wireguard configuration
 if [[ -e /home/dragon/wg0-dragon.conf ]]; then
+    # on OSISM < 5.0.0 this file is not yet present.
     mv /home/dragon/wg0-dragon.conf /home/dragon/wireguard-client.conf
 fi
 
@@ -42,5 +44,10 @@ osism apply --environment custom workarounds
 osism apply reboot -l testbed-nodes -e ireallymeanit=yes
 osism apply wait-for-connection -l testbed-nodes -e ireallymeanit=yes
 
-# Restart the manager services to update the /etc/hosts file
+# restart the manager services to update the /etc/hosts file
 sudo systemctl restart docker-compose@manager
+
+# wait for manager service
+wait_for_container_healthy 60 ceph-ansible
+wait_for_container_healthy 60 kolla-ansible
+wait_for_container_healthy 60 osism-ansible
