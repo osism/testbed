@@ -132,6 +132,9 @@
         state: present
         fixed_ips:
           - ip_address: 192.168.200.10
+        security_groups:
+          - icmp
+          - ssh
 
     - name: Create test instance
       openstack.cloud.server:
@@ -142,9 +145,6 @@
         flavor: "SCS-1L-1-5"
         delete_fip: true
         key_name: test
-        security_groups:
-          - icmp
-          - ssh
         nics:
           - port-name: test-port
 
