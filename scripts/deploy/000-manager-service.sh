@@ -3,6 +3,7 @@ set -x
 set -e
 
 source /opt/manager-vars.sh
+source /opt/configuration/scripts/include.sh
 export INTERACTIVE=false
 
 /opt/configuration/scripts/set-manager-version.sh $MANAGER_VERSION
@@ -15,20 +16,6 @@ if [[ $MANAGER_VERSION == "latest" ]]; then
     /opt/configuration/scripts/set-ceph-version.sh $CEPH_VERSION
     /opt/configuration/scripts/set-openstack-version.sh $OPENSTACK_VERSION
 fi
-
-wait_for_container_healthy() {
-    local max_attempts="$1"
-    local name="$2"
-    local attempt_num=1
-
-    until [[ "$(/usr/bin/docker inspect -f '{{.State.Health.Status}}' $name)" == "healthy" ]]; do
-        if (( attempt_num++ == max_attempts )); then
-            return 1
-        else
-            sleep 5
-        fi
-    done
-}
 
 ansible-playbook \
   -i testbed-manager.testbed.osism.xyz, \
