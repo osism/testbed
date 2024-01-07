@@ -12,7 +12,7 @@ echo
 if [[ "$MANAGER_VERSION" == "latest" ]]; then
     # Only works as with OSISM >= 6.1.0 as the osism.common.still_alive
     # callback plugin can then be used.
-    osism apply -e custom pull-images
+    osism apply -r 2 -e custom pull-images
 else
     kolla_services=(
     barbican
