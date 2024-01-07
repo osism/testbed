@@ -30,14 +30,14 @@ else
     osism apply ceph
 fi
 
+osism apply copy-ceph-keys
+osism apply cephclient
+osism apply ceph-bootstrap-dashboard
+
 # Once Ceph has been deployed, the callback plugin can be used again.
 if [[ $MANAGER_VERSION == "latest" && $CEPH_VERSION == "pacific" ]]; then
     sed -i "s/community.general.yaml/osism.commons.still_alive/" /opt/configuration/environments/ansible.cfg
 fi
-
-osism apply copy-ceph-keys
-osism apply cephclient
-osism apply ceph-bootstrap-dashboard
 
 # osism validate is only available since 5.0.0. To enable the
 # testbed to be used with < 5.0.0, here is this check.
