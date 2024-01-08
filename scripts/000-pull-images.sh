@@ -9,31 +9,37 @@ echo
 echo "# PULL IMAGES"
 echo
 
-kolla_services=(
-barbican
-cinder
-common
-designate
-glance
-grafana
-heat
-horizon
-keystone
-loadbalancer
-mariadb
-memcached
-neutron
-nova
-octavia
-opensearch
-openvswitch
-ovn
-placement
-rabbitmq
-redis
-)
+if [[ "$MANAGER_VERSION" == "latest" ]]; then
+    # Only works as with OSISM >= 6.1.0 as the osism.common.still_alive
+    # callback plugin can then be used.
+    osism apply -r 2 -e custom pull-images
+else
+    kolla_services=(
+    barbican
+    cinder
+    common
+    designate
+    glance
+    grafana
+    heat
+    horizon
+    keystone
+    loadbalancer
+    mariadb
+    memcached
+    neutron
+    nova
+    octavia
+    opensearch
+    openvswitch
+    ovn
+    placement
+    rabbitmq
+    redis
+    )
 
-for kolla_service in ${kolla_services[*]}; do
-    echo "+ osism apply -a pull $kolla_service"
-    osism apply -a pull $kolla_service
-done
+    for kolla_service in ${kolla_services[*]}; do
+        echo "+ osism apply -a pull $kolla_service"
+        osism apply -a pull $kolla_service
+    done
+fi

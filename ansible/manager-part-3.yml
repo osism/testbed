@@ -37,7 +37,7 @@
 # With this play, we can decouple the pull of the required images from the
 # subsequent roles (traefik, manager, netbox). This makes problems resulting
 # from image pulls more visible in the CI.
-- name: Pull manager images
+- name: Before the deployment of the manager
   hosts: testbed-manager.testbed.osism.xyz
   connection: local
   gather_facts: true
@@ -101,6 +101,23 @@
       ansible.builtin.lineinfile:
         path: /opt/configuration/environments/infrastructure/configuration.yml
         line: "netbox_postgres_volume_type: tmpfs"
+      when:
+        - result.stat.exists is defined
+        - result.stat.exists | bool
+
+    # This speeds up the Refstack tests that interact with Glance. The use of these
+    # paraemters in production is not recommended. Further details in OSSN-0090.
+    # https://wiki.openstack.org/wiki/OSSN/OSSN-0090
+    - name: Use insecure glance configuration
+      ansible.builtin.copy:
+        dest: /opt/configuration/environments/kolla/files/overlays/glance/glance-api.conf
+        content: |
+          [DEFAULT]
+          show_image_direct_url = True
+          show_multiple_locations = True
+        owner: dragon
+        group: dragon
+        mode: 0644
       when:
         - result.stat.exists is defined
         - result.stat.exists | bool

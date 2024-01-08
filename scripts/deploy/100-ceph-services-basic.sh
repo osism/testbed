@@ -3,37 +3,44 @@ set -e
 
 export INTERACTIVE=false
 
-# NOTE: On the OTC, sometimes old partition entries are still
-#       present on physical disks. Therefore they are removed
-#       at this point.
+MANAGER_VERSION=$(docker inspect --format '{{ index .Config.Labels "org.opencontainers.image.version"}}' osism-ansible)
+CEPH_VERSION=$(docker inspect --format '{{ index .Config.Labels "de.osism.release.ceph" }}' ceph-ansible)
+
+# On the OTC, sometimes old partition entries are still present
+# on physical disks. Therefore they are removed at this point.
 if [[ -e /etc/OTC_region ]]; then
     osism apply --environment custom wipe-partitions
 fi
 
-MANAGER_VERSION=$(docker inspect --format '{{ index .Config.Labels "org.opencontainers.image.version"}}' osism-ansible)
-if [[ "$REFSTACK" == "false" ]]; then
-    if [[ $MANAGER_VERSION =~ ^4\.[0-9]\.[0-9]$ ]]; then
-        osism apply ceph-base
+# The callback plugin is not included in the Pacific image. The plugin is no longer
+# added there because the builds for Pacific are disabled. This callback plugin will
+# therefore not be used during the deployment of Ceph.
+if [[ $MANAGER_VERSION == "latest" && $CEPH_VERSION == "pacific" ]]; then
+    sed -i "s/osism.commons.still_alive/community.general.yaml/" /opt/configuration/environments/ansible.cfg
+fi
+
+if [[ $MANAGER_VERSION =~ ^4\.[0-9]\.[0-9]$ ]]; then
+    osism apply ceph-base
+
+    if [[ "$REFSTACK" == "false" ]]; then
         osism apply ceph-mdss
         osism apply ceph-rgws
-    else
-        osism apply ceph -e enable_ceph_mds=true -e enable_ceph_rgw=true
     fi
 else
-    if [[ $MANAGER_VERSION =~ ^4\.[0-9]\.[0-9]$ ]]; then
-        osism apply ceph-base
-    else
-        osism apply ceph
-    fi
+    osism apply ceph
 fi
 
 osism apply copy-ceph-keys
 osism apply cephclient
 osism apply ceph-bootstrap-dashboard
 
+# Once Ceph has been deployed, the callback plugin can be used again.
+if [[ $MANAGER_VERSION == "latest" && $CEPH_VERSION == "pacific" ]]; then
+    sed -i "s/community.general.yaml/osism.commons.still_alive/" /opt/configuration/environments/ansible.cfg
+fi
+
 # osism validate is only available since 5.0.0. To enable the
 # testbed to be used with < 5.0.0, here is this check.
-MANAGER_VERSION=$(docker inspect --format '{{ index .Config.Labels "org.opencontainers.image.version"}}' osism-ansible)
 if [[ $MANAGER_VERSION =~ ^4\.[0-9]\.[0-9]$ ]]; then
     echo "ceph validate not possible with OSISM < 4.3.0"
 else

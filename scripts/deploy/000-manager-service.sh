@@ -3,6 +3,7 @@ set -x
 set -e
 
 source /opt/manager-vars.sh
+source /opt/configuration/scripts/include.sh
 export INTERACTIVE=false
 
 /opt/configuration/scripts/set-manager-version.sh $MANAGER_VERSION
@@ -15,20 +16,6 @@ if [[ $MANAGER_VERSION == "latest" ]]; then
     /opt/configuration/scripts/set-ceph-version.sh $CEPH_VERSION
     /opt/configuration/scripts/set-openstack-version.sh $OPENSTACK_VERSION
 fi
-
-wait_for_container_healthy() {
-    local max_attempts="$1"
-    local name="$2"
-    local attempt_num=1
-
-    until [[ "$(/usr/bin/docker inspect -f '{{.State.Health.Status}}' $name)" == "healthy" ]]; do
-        if (( attempt_num++ == max_attempts )); then
-            return 1
-        else
-            sleep 5
-        fi
-    done
-}
 
 ansible-playbook \
   -i testbed-manager.testbed.osism.xyz, \
@@ -63,8 +50,32 @@ fi
 docker compose --project-directory /opt/manager ps
 docker compose --project-directory /opt/netbox ps
 
+# disable ara service
+if [[ -e /etc/osism-ci-image ]]; then
+    sh -c '/opt/configuration/scripts/disable-ara.sh'
+fi
+
+# use osism.commons.still_alive stdout callback
+if [[ "$MANAGER_VERSION" == "latest" ]]; then
+    # The plugin is available in OSISM 6.1.0 and higher. In future, the callback
+    # plugin will be used by default.
+    sed -i "s/community.general.yaml/osism.commons.still_alive/" /opt/configuration/environments/ansible.cfg
+fi
+
 osism apply sshconfig
 osism apply known-hosts
+
+if [[ "$MANAGER_VERSION" == "latest" ]]; then
+    # The Nexus service is only really operational again from OSISM 6.1.0.
+    osism apply nexus
+
+    if [[ -e /etc/osism-ci-image ]]; then
+        sh -c '/opt/configuration/scripts/set-docker-registry.sh nexus.testbed.osism.xyz:8193'
+	sed -i "s/docker_namespace: osism/docker_namespace: kolla/" /opt/configuration/environments/kolla/configuration.yml
+    else
+        sh -c '/opt/configuration/scripts/set-docker-registry.sh nexus.testbed.osism.xyz:8192'
+    fi
+fi
 
 osism apply squid
 

@@ -1,0 +1,36 @@
+---
+- name: Pull images
+  hosts: manager
+
+  vars:
+    images:
+      - barbican
+      - cinder
+      - common
+      - designate
+      - glance
+      - grafana
+      - heat
+      - horizon
+      - keystone
+      - loadbalancer
+      - mariadb
+      - memcached
+      - neutron
+      - nova
+      - octavia
+      - opensearch
+      - openvswitch
+      - ovn
+      - placement
+      - rabbitmq
+      - redis
+
+  tasks:
+    - name: Pull images
+      ansible.builtin.command:
+        cmd: "osism apply -a pull {{ item }}"
+      environment:
+        INTERACTIVE: "false"
+      loop: "{{ images }}"
+      changed_when: true

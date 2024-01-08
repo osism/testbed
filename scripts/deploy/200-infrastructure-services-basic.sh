@@ -25,11 +25,6 @@ else
     osism apply opensearch
 fi
 
-if [[ "$REFSTACK" == "false" ]]; then
-    osism apply homer
-    osism apply phpmyadmin
-fi
-
 osism apply ovn
 
 if [[ "$REFSTACK" == "false" ]]; then
