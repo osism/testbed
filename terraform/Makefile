@@ -25,6 +25,8 @@ IS_ZUUL ?= false
 
 APPLY_PARAMS = -auto-approve -parallelism=$(PARALLELISM)
 
+export PATH := ${PATH}:${PWD}/../venv/bin
+
 ifneq (,$(wildcard ./local.env))
   include local.env
 endif
