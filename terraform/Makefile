@@ -151,6 +151,7 @@ clean: init
 	@rm -f *.tf
 	@rm -rf customisations
 	@rm -rf overrides
+	@rm -f wg-*.conf
 
 list: init
 	@$(TERRAFORM) state list
