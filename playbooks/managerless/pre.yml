@@ -9,7 +9,6 @@
     basepath: "{{ ansible_user_dir }}/src/{{ repositories['testbed']['path'] }}"
     create_infrastructure: true
     terraform_path: "{{ zuul.project.src_dir }}/terraform"
-    terraform_version: 1.6.6 # renovate: datasource=github-tags depName=hashicorp/terraform
     terraformbase_path: "{{ ansible_user_dir }}/src/{{ repositories['terraform-base']['path'] }}"
 
   tasks:
@@ -29,10 +28,6 @@
         - python3-netifaces
         - sshuttle
         - unzip
-
-    - name: Install terraform
-      ansible.builtin.include_role:
-        name: ensure-terraform
 
     - name: Copy terraform binary
       become: true
