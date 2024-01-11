@@ -20,7 +20,6 @@ sh -c '/opt/configuration/scripts/deploy/000-manager-service.sh'
 osism apply operator -u ubuntu
 osism apply --environment custom facts
 osism apply bootstrap
-osism apply hosts
 
 # copy network configuration
 osism apply network
