@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    The `test-identity` play in the `openstack` environment creates a test
+    domain, a test admin user, a test user, and a test project.
