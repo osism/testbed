@@ -16,6 +16,8 @@ exclude_paths:
 mock_roles:
   - manager
   - stage-output
+mock_modules:
+  - kubernetes.core.k8s
 use_default_rules: true
 rulesdir:
   - ./.ansible-lint-rules/
