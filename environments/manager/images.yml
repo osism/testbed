@@ -26,7 +26,7 @@ postgres_upgrade_tag: "14-to-15"
 postgres_upgrade_image: "{{ docker_registry }}/tianon/postgres-upgrade:{{ postgres_upgrade_tag }}"
 
 
-manager_redis_tag: "7.2.3-alpine"
+manager_redis_tag: "7.2.4-alpine"
 manager_redis_image: "{{ docker_registry }}/library/redis:{{ manager_redis_tag }}"
 
 registry_tag: "2.8"
