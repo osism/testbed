@@ -154,7 +154,7 @@ clean: init
 	@rm -rf customisations
 	@rm -rf overrides
 	@rm -f wg-*.conf
-	@rm -f .terraform .terraform.lock.hcl
+	@rm -rf .terraform .terraform.lock.hcl
 
 list: init
 	@$(TERRAFORM) state list
