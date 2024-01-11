@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    The location of the haproxy certificates changed in OpenStack 2023.2.
+    Because of that it is necessary to handle the location of the
+    haproxy certificates in `environments/kolla/files/overlays/haproxy/services.d/haproxy.cfg`.
