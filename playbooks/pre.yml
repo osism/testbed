@@ -12,7 +12,6 @@
     terraform_path: "{{ basepath }}/terraform"
     terragrunt_version: v0.54.12 # renovate: datasource=github-releases depName=gruntwork-io/terragrunt
     terragrunt_download_url: "https://github.com/gruntwork-io/terragrunt/releases/download/{{ terragrunt_version }}/terragrunt_linux_amd64"
-    terraform_version: 1.6.6 # renovate: datasource=github-tags depName=hashicorp/terraform
 
   tasks:
     - name: Set cloud_env fact (Zuul deployment)
@@ -32,10 +31,6 @@
         chdir: "{{ basepath }}/terraform/scripts"
       failed_when: false
       changed_when: true
-
-    - name: Install terraform
-      ansible.builtin.include_role:
-        name: ensure-terraform
 
     - name: Download terragrunt
       ansible.builtin.get_url:

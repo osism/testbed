@@ -17,7 +17,7 @@ clouds:
   gx-scs:
     profile: gx-scs
     auth:
-      username: USERNAME
-      project_name: PROJECT
-      project_domain_name: DOMAIN
-      user_domain_name: DOMAIN
+      username: USER_ID-GITHUB_HANDLE
+      user_domain_name: DOMAIN_ID
+      project_name: PROJECT_ID-GITHUB_HANDLE
+      project_domain_name: DOMAIN_ID

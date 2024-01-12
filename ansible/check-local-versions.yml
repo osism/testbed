@@ -13,13 +13,13 @@
     - name: Get terraform version
       ansible.builtin.shell: >-
         set -o pipefail &&
-        terraform --version | head -n1  | awk '{print $2}' | awk -Fv '{print $2}'
+        tofu --version | head -n1  | awk '{print $2}' | awk -Fv '{print $2}'
       register: result
       changed_when: false
       args:
         executable: /bin/bash
 
-    - name: Fail if terraform version is lower than 1.5.0
+    - name: Fail if terraform version is lower than 1.6.0
       ansible.builtin.fail:
         msg: "Terraform version is {{ result.stdout }}, see https://osism.github.io/docs/advanced-guides/testbed#software for required version."
-      when: result.stdout < "1.5.0"
+      when: result.stdout < "1.6.0"

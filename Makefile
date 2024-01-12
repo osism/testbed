@@ -5,15 +5,16 @@ ENVIRONMENT ?= the_environment
 VERSION_CEPH ?= quincy
 VERSION_MANAGER ?= latest
 VERSION_OPENSTACK ?= 2023.1
+TOFU_VERSION ?= 1.6.0
 
-TERRAFORM ?= terraform
+TERRAFORM ?= tofu
 TERRAFORM_BLUEPRINT ?= testbed-default
 
 venv = . venv/bin/activate
 export PATH := ${PATH}:${PWD}/venv/bin
 
 help:  ## Display this help.
-	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target>\033[0m\n"} /^[a-zA-Z_0-9-]+:.*?##/ { printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
+	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target>\033[0m\n"} /^[a-zA-Z_0-9-]+:.*?##/ { printf "  \033[36m%-20s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
 
 clean: ## Destroy infrastructure with Terraform.
 	@contrib/setup-testbed.py --environment_check $(ENVIRONMENT)
@@ -22,7 +23,7 @@ clean: ## Destroy infrastructure with Terraform.
 	  TERRAFORM=$(TERRAFORM) \
 	  clean
 
-clean_local:
+wipe-local-install: ## Wipe the software dependencies in `venv`.
 	rm -rf venv .src
 
 create: prepare ## Create required infrastructure with Terraform.
@@ -40,6 +41,18 @@ login: ## Log in on the manager.
 	@make -C terraform \
 	  ENVIRONMENT=$(ENVIRONMENT) \
 	  login
+
+vpn-wireguard: ## Establish a wireguard vpn tunnel.
+	@contrib/setup-testbed.py --environment_check $(ENVIRONMENT)
+	@make -C terraform \
+	  ENVIRONMENT=$(ENVIRONMENT) \
+	  vpn-wireguard
+
+vpn-sshuttle: ## Establish a sshuttle vpn tunnel.
+	@contrib/setup-testbed.py --environment_check $(ENVIRONMENT)
+	@make -C terraform \
+	  ENVIRONMENT=$(ENVIRONMENT) \
+	  vpn-sshuttle
 
 bootstrap: create ## Bootstrap everything.
 	@contrib/setup-testbed.py --environment_check $(ENVIRONMENT)
@@ -91,7 +104,7 @@ deploy: bootstrap ## Deploy everything and then check it.
 	  TERRAFORM=$(TERRAFORM) \
 	  check
 
-prepare: deps
+prepare: deps ## Run local preperations.
 	${venv}; ansible-playbook -i localhost, ansible/check-local-versions.yml
 	@contrib/setup-testbed.py --prepare
 
@@ -103,7 +116,19 @@ venv/bin/activate: Makefile
 	@${venv} && pip3 install -r requirements.txt
 	touch venv/bin/activate
 
+venv/bin/tofu: venv/bin/activate
+	$(eval OS := $(shell uname | tr '[:upper:]' '[:lower:]'))
+	$(eval ARCH := $(shell uname -m | sed -e 's/aarch64/arm64/' -e 's/x86_64/amd64/'))
+	@echo Downloading opentofu version ${TOFU_VERSION}
+	curl -s -L --output venv/bin/tofu.zip \
+		"https://github.com/opentofu/opentofu/releases/download/v${TOFU_VERSION}/tofu_${TOFU_VERSION}_${OS}_${ARCH}.zip"
+	rm -f venv/bin/tofu
+	unzip -d venv/bin/ venv/bin/tofu.zip tofu
+	chmod +x venv/bin/tofu
+	rm -f venv/bin/tofu.zip
+	tofu version
+	touch venv/bin/tofu
 
-deps: venv/bin/activate
+deps: venv/bin/tofu venv/bin/activate ## Install software preconditions to `venv`.
 
-phony: bootstrap clean clean_local create deploy identity login manager prepare ceph deps venv/bin/activate
+phony: bootstrap clean clean-local create deploy identity login manager prepare ceph deps venv/bin/activate venv/bin/tofu vpn-sshuttle vpn-wireguard wipe-local-install

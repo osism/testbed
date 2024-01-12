@@ -6,7 +6,7 @@ ENVIRONMENT ?= regiocloud
 USERNAME = dragon
 
 OPENSTACK = openstack
-TERRAFORM ?= terraform
+TERRAFORM ?= tofu
 export TF_CLI_ARGS ?= -no-color
 
 PARALLELISM = 10
@@ -24,6 +24,8 @@ REFSTACK ?= false
 IS_ZUUL ?= false
 
 APPLY_PARAMS = -auto-approve -parallelism=$(PARALLELISM)
+
+export PATH := ${PATH}:${PWD}/../venv/bin
 
 ifneq (,$(wildcard ./local.env))
   include local.env
@@ -49,6 +51,7 @@ init:
 	@if [ ! -f backend.tf ]; then \
 		$(TERRAFORM) workspace select -or-create ${ENVIRONMENT}; \
 	fi
+
 
 	@rm -f *.auto.tfvars
 	@cp environments/$(ENVIRONMENT).tfvars $(ENVIRONMENT).auto.tfvars
@@ -150,6 +153,8 @@ clean: init
 	@rm -f *.tf
 	@rm -rf customisations
 	@rm -rf overrides
+	@rm -f wg-*.conf
+	@rm -rf .terraform .terraform.lock.hcl
 
 list: init
 	@$(TERRAFORM) state list
@@ -158,11 +163,20 @@ ssh: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
 	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
 	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(ENVIRONMENT) $(USERNAME)@$$MANAGER_ADDRESS
 
+vpn-wireguard: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
+	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
+	scp -o StrictHostKeyChecking=no -i .id_rsa.$(ENVIRONMENT) $(PARAMS) $(USERNAME)@$$MANAGER_ADDRESS:/home/dragon/wireguard-client.conf $(PWD)/wg-$(ENVIRONMENT).conf
+	sudo wg-quick down $(PWD)/wg-$(ENVIRONMENT).conf || true
+	sudo wg-quick up $(PWD)/wg-$(ENVIRONMENT).conf
+	@open "https://osism.github.io/docs/guides/deploy-guide/examples/testbed#webinterfaces"
+	@read -p "STOP?" CONT
+	sudo wg-quick down $(PWD)/wg-$(ENVIRONMENT).conf
+
 scp: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
 	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
 	scp -o StrictHostKeyChecking=no -i .id_rsa.$(ENVIRONMENT) $(PARAMS) $(USERNAME)@$$MANAGER_ADDRESS:$(SOURCE) .
 
-sshuttle: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
+vpn-sshuttle: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
 	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
 	sshuttle --ssh-cmd "ssh -o StrictHostKeyChecking=no -i .id_rsa.$(ENVIRONMENT) " -r $(USERNAME)@$$MANAGER_ADDRESS 192.168.16.0/20 192.168.112.0/20
 
@@ -226,4 +240,4 @@ plan: dry-run
 push: state-push
 tunnel: sshuttle
 
-PHONY: clean console attach detach sshuttle ssh dry-run list deploy deploy-identity deploy-manager upgrade watch openstack create log login scp copy address check rally refstack deploy-ceph upgrade-ceph bootstrap
+PHONY: clean console attach detach ssh dry-run list deploy deploy-identity deploy-manager upgrade watch openstack create log login scp copy address check rally refstack deploy-ceph upgrade-ceph bootstrap vpn-sshuttle vpn-wireguard
