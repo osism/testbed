@@ -21,18 +21,19 @@ fi
 
 if [[ $MANAGER_VERSION =~ ^4\.[0-9]\.[0-9]$ ]]; then
     osism apply ceph-base
-
-    if [[ "$REFSTACK" == "false" ]]; then
-        osism apply ceph-mdss
-        osism apply ceph-rgws
-    fi
+    osism apply ceph-mdss
+    osism apply ceph-rgws
+    osism apply copy-ceph-keys
+    osism apply cephclient
+    osism apply ceph-bootstrap-dashboard
+elif [[ $MANAGER_VERSION =~ ^5\.[0-9]\.[0-9]$ || $MANAGER_VERSION =~ ^6\.[0-9]\.[0-9]$ ]]; then
+    osism apply ceph
+    osism apply copy-ceph-keys
+    osism apply cephclient
+    osism apply ceph-bootstrap-dashboard
 else
     osism apply ceph
 fi
-
-osism apply copy-ceph-keys
-osism apply cephclient
-osism apply ceph-bootstrap-dashboard
 
 # Once Ceph has been deployed, the callback plugin can be used again.
 if [[ $MANAGER_VERSION == "latest" && $CEPH_VERSION == "pacific" ]]; then
@@ -42,7 +43,7 @@ fi
 # osism validate is only available since 5.0.0. To enable the
 # testbed to be used with < 5.0.0, here is this check.
 if [[ $MANAGER_VERSION =~ ^4\.[0-9]\.[0-9]$ ]]; then
-    echo "ceph validate not possible with OSISM < 4.3.0"
+    echo "ceph validate not possible with OSISM 4"
 else
     osism apply facts
     osism validate ceph-mons
