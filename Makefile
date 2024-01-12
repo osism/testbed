@@ -54,8 +54,6 @@ vpn-sshuttle: ## Establish a sshuttle vpn tunnel.
 	  ENVIRONMENT=$(ENVIRONMENT) \
 	  vpn-sshuttle
 
-
-
 bootstrap: create ## Bootstrap everything.
 	@contrib/setup-testbed.py --environment_check $(ENVIRONMENT)
 	${venv} ; ansible-playbook playbooks/deploy.yml \
