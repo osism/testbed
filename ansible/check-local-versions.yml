@@ -19,7 +19,7 @@
       args:
         executable: /bin/bash
 
-    - name: Fail if terraform version is lower than 1.5.0
+    - name: Fail if terraform version is lower than 1.6.0
       ansible.builtin.fail:
         msg: "Terraform version is {{ result.stdout }}, see https://osism.github.io/docs/advanced-guides/testbed#software for required version."
-      when: result.stdout < "1.5.0"
+      when: result.stdout < "1.6.0"
