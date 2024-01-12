@@ -5,7 +5,7 @@ set -e
 source /opt/manager-vars.sh
 export INTERACTIVE=false
 
-osism apply k3s
+osism apply kubernetes
 
 # NOTE: The following lines will be moved to a osism.services.clusterapi role
 
