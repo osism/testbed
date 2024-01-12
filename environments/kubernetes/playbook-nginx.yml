@@ -1,0 +1,18 @@
+---
+- name: Kubernetes nginx deployment
+  hosts: localhost
+  connection: local
+
+  tasks:
+    - name: Create nginx namespace
+      kubernetes.core.k8s:
+        state: present
+        name: nginx
+        kind: Namespace
+        kubeconfig: /share/kubeconfig
+
+    - name: Deploy nginx service on integrated Kubernetes cluster
+      kubernetes.core.k8s:
+        state: present
+        kubeconfig: /share/kubeconfig
+        definition: "{{ lookup('file', 'files/nginx.yml') | from_yaml_all }}"
