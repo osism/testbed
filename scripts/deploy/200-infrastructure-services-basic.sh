@@ -8,13 +8,13 @@ OPENSTACK_VERSION=$(docker inspect --format '{{ index .Config.Labels "de.osism.r
 
 osism apply common
 osism apply loadbalancer
-
 osism apply openstackclient
 osism apply memcached
 osism apply redis
 osism apply mariadb
 osism apply rabbitmq
 osism apply openvswitch
+osism apply ovn
 
 if [[ $MANAGER_VERSION =~ ^4\.[0-9]\.[0-9]$ || $OPENSTACK_VERSION == "yoga" ]]; then
     osism apply elasticsearch
@@ -24,8 +24,6 @@ if [[ $MANAGER_VERSION =~ ^4\.[0-9]\.[0-9]$ || $OPENSTACK_VERSION == "yoga" ]]; 
 else
     osism apply opensearch
 fi
-
-osism apply ovn
 
 if [[ "$REFSTACK" == "false" ]]; then
     # NOTE: Run a backup of the database to test the backup function
