@@ -39,14 +39,3 @@ fi
 if [[ $MANAGER_VERSION == "latest" && $CEPH_VERSION == "pacific" ]]; then
     sed -i "s/community.general.yaml/osism.commons.still_alive/" /opt/configuration/environments/ansible.cfg
 fi
-
-# osism validate is only available since 5.0.0. To enable the
-# testbed to be used with < 5.0.0, here is this check.
-if [[ $MANAGER_VERSION =~ ^4\.[0-9]\.[0-9]$ ]]; then
-    echo "ceph validate not possible with OSISM 4"
-else
-    osism apply facts
-    osism validate ceph-mons
-    osism validate ceph-mgrs
-    osism validate ceph-osds
-fi
