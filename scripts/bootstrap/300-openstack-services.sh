@@ -19,5 +19,4 @@ fi
 
 if [[ "$REFSTACK" == "false" ]]; then
     osism apply --environment openstack test
-    osism apply openstack-health-monitor
 fi
