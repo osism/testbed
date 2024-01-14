@@ -19,11 +19,12 @@ if [[ $MANAGER_VERSION == "latest" ]]; then
   sh -c '/opt/configuration/scripts/deploy/005-kubernetes.sh'
 fi
 
+# deploy ceph services
+sh -c '/opt/configuration/scripts/deploy/100-ceph-services-basic.sh'
+
 # deploy infrastructure services
 sh -c '/opt/configuration/scripts/deploy/200-infrastructure-services-basic.sh'
 
-# deploy service services
-sh -c '/opt/configuration/scripts/deploy/100-ceph-services-basic.sh'
 
 # deploy openstack services
 sh -c '/opt/configuration/scripts/deploy/300-openstack-services-basic.sh'

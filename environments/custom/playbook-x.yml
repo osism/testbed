@@ -1,0 +1,9 @@
+---
+- name: testing
+  hosts: control
+  gather_facts: false
+
+  tasks:
+    - name: testing
+      ansible.builtin.debug:
+        var: ansible_local.testbed_ceph_devices

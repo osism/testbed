@@ -46,6 +46,12 @@ if [[ $MANAGER_VERSION =~ ^4\.[0-9]\.[0-9]$ ]]; then
     echo "ceph validate not possible with OSISM 4"
 else
     osism apply facts
+    ceph -s
+    ceph osd tree
+    osism container testbed-node-0 ps
+    osism container testbed-node-1 ps
+    osism container testbed-node-2 ps
+    osism apply x
     osism validate ceph-mons
     osism validate ceph-mgrs
     osism validate ceph-osds
