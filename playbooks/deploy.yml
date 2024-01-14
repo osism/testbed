@@ -164,8 +164,7 @@
 
     - name: Bootstrap services
       ansible.builtin.command:
-        chdir: "{{ terraform_path }}"
-        cmd: make ENVIRONMENT={{ cloud_env }} bootstrap
+        cmd: "ssh -i {{ terraform_path }}/.id_rsa.{{ cloud_env }} dragon@{{ manager_host }} /opt/configuration/scripts/bootstrap.sh"
       when:
         - not manual_deploy | bool
         - run_bootstrap | bool
@@ -173,8 +172,7 @@
 
     - name: Run checks
       ansible.builtin.command:
-        chdir: "{{ terraform_path }}"
-        cmd: make ENVIRONMENT={{ cloud_env }} check
+        cmd: "ssh -i {{ terraform_path }}/.id_rsa.{{ cloud_env }} dragon@{{ manager_host }} /opt/configuration/scripts/check.sh"
       when:
         - not manual_deploy | bool
         - run_checks | bool
@@ -182,8 +180,7 @@
 
     - name: Run refstack
       ansible.builtin.command:
-        chdir: "{{ terraform_path }}"
-        cmd: make ENVIRONMENT={{ cloud_env }} refstack
+        cmd: "ssh -i {{ terraform_path }}/.id_rsa.{{ cloud_env }} dragon@{{ manager_host }} /opt/configuration/scripts/check/301-openstack-refstack.sh"
       when:
         - not manual_deploy | bool
         - run_refstack | bool
