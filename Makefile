@@ -5,7 +5,8 @@ ENVIRONMENT ?= the_environment
 VERSION_CEPH ?= quincy
 VERSION_MANAGER ?= latest
 VERSION_OPENSTACK ?= 2023.1
-TOFU_VERSION ?= 1.6.0 # renovate: datasource=github-tags depName=opentofu/opentofu
+# renovate: datasource=github-tags depName=opentofu/opentofu
+TOFU_VERSION ?= 1.6.0
 
 TERRAFORM ?= tofu
 TERRAFORM_BLUEPRINT ?= testbed-default
