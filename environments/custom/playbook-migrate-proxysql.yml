@@ -1,0 +1,36 @@
+---
+- name: Prepare configuration repository
+  hosts: manager
+  gather_facts: false
+
+  tasks:
+    - name: Add enable_proxysql parameter
+      ansible.builtin.lineinfile:
+        path: /opt/configuration/environments/kolla/configuration.yml
+        line: "enable_proxysql: yes"
+
+- name: Upgrade loadbalancer service
+  hosts: manager
+  gather_facts: false
+
+  tasks:
+    - name: Run osism apply -a upgrade mariadb
+      ansible.builtin.command:
+        cmd: osism apply -a upgrade mariadb
+      environment:
+        INTERACTIVE: "false"
+      changed_when: true
+
+    - name: Run osism apply -a pull loadbalancer
+      ansible.builtin.command:
+        cmd: osism apply -a pull loadbalancer
+      environment:
+        INTERACTIVE: "false"
+      changed_when: true
+
+    - name: Run osism apply -a upgrade loadbalancer
+      ansible.builtin.command:
+        cmd: osism apply -a upgrade loadbalancer
+      environment:
+        INTERACTIVE: "false"
+      changed_when: true
