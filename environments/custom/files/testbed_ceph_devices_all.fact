@@ -54,4 +54,17 @@ else:
 
 devices = result.stdout.strip().split("\n")
 
+# Remove swap devices
+for device in devices:
+    result = run(
+        f"lsblk -f | grep {device} | awk '{{print $2}}'",
+        stdout=PIPE,
+        stderr=PIPE,
+        universal_newlines=True,
+        shell=True,
+    )
+    filesystem = result.stdout.strip()
+    if filesystem == "swap":
+        devices.remove(device)
+
 print(json.dumps([f"/dev/{x}" for x in devices]))
