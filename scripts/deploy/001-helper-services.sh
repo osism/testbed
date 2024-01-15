@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-export INTERACTIVE=false
+source /opt/configuration/scripts/include.sh
 
 osism apply --no-wait cgit
 osism apply --no-wait dotfiles

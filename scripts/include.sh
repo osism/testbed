@@ -1,3 +1,6 @@
+export INTERACTIVE=false
+export OSISM_APPLY_RETRY=1
+
 wait_for_container_healthy() {
     local max_attempts="$1"
     local name="$2"

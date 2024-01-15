@@ -4,7 +4,6 @@ set -e
 
 source /opt/manager-vars.sh
 source /opt/configuration/scripts/include.sh
-export INTERACTIVE=false
 
 /opt/configuration/scripts/set-manager-version.sh $MANAGER_VERSION
 

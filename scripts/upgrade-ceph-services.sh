@@ -6,6 +6,8 @@ echo
 echo "# UPGRADE"
 echo
 
+source /opt/configuration/scripts/include.sh
+
 export MANAGER_VERSION=${1:-latest}
 CEPH_VERSION=${2:-pacific}
 
@@ -18,8 +20,6 @@ CEPH_VERSION=${2:-pacific}
 if [[ $MANAGER_VERSION == "latest" ]]; then
     /opt/configuration/scripts/set-ceph-version.sh $CEPH_VERSION
 fi
-
-export INTERACTIVE=false
 
 # Sync testbed repo with generics
 pushd /opt/configuration

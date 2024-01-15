@@ -2,6 +2,8 @@
 set -x
 set -e
 
+source /opt/configuration/scripts/include.sh
+
 echo
 echo "# UPGRADE"
 echo
@@ -23,8 +25,6 @@ if [[ $MANAGER_VERSION == "latest" ]]; then
 fi
 
 /opt/configuration/scripts/set-kolla-namespace.sh $KOLLA_NAMESPACE
-
-export INTERACTIVE=false
 
 # Sync testbed repo with generics
 pushd /opt/configuration

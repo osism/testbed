@@ -2,7 +2,7 @@
 set -x
 set -e
 
-export INTERACTIVE=false
+source /opt/configuration/scripts/include.sh
 
 MANAGER_VERSION=$(docker inspect --format '{{ index .Config.Labels "org.opencontainers.image.version"}}' osism-ansible)
 
