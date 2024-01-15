@@ -8,12 +8,12 @@
     - name: Fail if ansible-core version is lower than 2.15.0
       ansible.builtin.fail:
         msg: "Ansible core version is {{ ansible_version.full }}, see https://osism.github.io/docs/guides/deploy-guide/examples/testbed/ for required version."
-      when: ansible_version.full < "2.15.0"
+      when: ansible_version.full is ansible.builtin.version('2.15.0', '<')
 
     - name: Get terraform version
       ansible.builtin.shell: >-
         set -o pipefail &&
-        tofu --version | head -n1  | awk '{print $2}' | awk -Fv '{print $2}'
+        tofu --version | head -n1 | awk '{print $2}' | awk -Fv '{print $2}'
       register: result
       changed_when: false
       args:
@@ -22,7 +22,7 @@
     - name: Fail if terraform version is lower than 1.6.0
       ansible.builtin.fail:
         msg: "Terraform version is {{ result.stdout }}, see https://osism.github.io/docs/guides/deploy-guide/examples/testbed/ for required version."
-      when: result.stdout < "1.6.0"
+      when: result.stdout is ansible.builtin.version('1.6.0', '<')
 
     - name: Get python version
       ansible.builtin.shell: >-
@@ -36,4 +36,4 @@
     - name: Fail if python version is lower than 3.8.0
       ansible.builtin.fail:
         msg: "Python version is {{ result.stdout }}, see https://osism.github.io/docs/guides/deploy-guide/examples/testbed/ for required version."
-      when: result.stdout < "3.8.0"
+      when: result.stdout is ansible.builtin.version('3.8.0', '<')
