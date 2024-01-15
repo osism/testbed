@@ -134,7 +134,6 @@ cinder_backup_driver: "ceph"
 glance_backend_file: "no"
 
 ceph_nova_user: nova
-ceph_nova_keyring: ceph.client.nova.keyring
 
 # NOTE: public_network from environments/ceph/configuration.yml
 ceph_public_network: 192.168.16.0/20
