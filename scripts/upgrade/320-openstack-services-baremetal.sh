@@ -2,6 +2,6 @@
 set -x
 set -e
 
-export INTERACTIVE=false
+source /opt/configuration/scripts/include.sh
 
 osism apply -a upgrade ironic

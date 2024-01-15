@@ -9,9 +9,8 @@ echo
 cat /opt/manager-vars.sh
 echo
 
-source /opt/manager-vars.sh
 source /opt/configuration/scripts/include.sh
-export INTERACTIVE=false
+source /opt/manager-vars.sh
 
 # deploy manager service
 sh -c '/opt/configuration/scripts/deploy/000-manager-service.sh'

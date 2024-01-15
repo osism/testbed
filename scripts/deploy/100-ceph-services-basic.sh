@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-export INTERACTIVE=false
+source /opt/configuration/scripts/include.sh
 
 MANAGER_VERSION=$(docker inspect --format '{{ index .Config.Labels "org.opencontainers.image.version"}}' osism-ansible)
 CEPH_VERSION=$(docker inspect --format '{{ index .Config.Labels "de.osism.release.ceph" }}' ceph-ansible)

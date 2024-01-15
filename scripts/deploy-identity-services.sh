@@ -6,9 +6,8 @@ echo
 echo "# DEPLOY IDENTITY SERVICES"
 echo
 
+source /opt/configuration/scripts/include.sh
 source /opt/manager-vars.sh
-
-export INTERACTIVE=false
 
 osism apply openstackclient
 osism apply keycloak

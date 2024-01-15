@@ -6,6 +6,7 @@ echo
 echo "# DEPLOY SERVICES"
 echo
 
+source /opt/configuration/scripts/include.sh
 source /opt/manager-vars.sh
 
 # pull images
