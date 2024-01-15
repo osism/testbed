@@ -17,6 +17,7 @@
   vars:
     basepath: "{{ ansible_user_dir }}/src/{{ repositories['testbed']['path'] }}"
     terraform_path: "{{ basepath }}/terraform"
+    manager_address_file: "{{ terraform_path }}/.MANAGER_ADDRESS.{{ cloud_env }}"
 
     terraform_binary: "{{ ansible_user_dir }}/terragrunt"
 
@@ -25,6 +26,7 @@
     version_openstack_next: "{{ openstack_version_next | default('2023.1') }}"
 
     run_bootstrap: true
+    run_checks: true
 
   tasks:
     - name: Set facts (Zuul deployment)
@@ -40,23 +42,30 @@
         terragrunt_tfpath: terraform
       when: "'nodepool' not in hostvars[groups['all'][0]]"
 
+    - name: Fetch manager_host address
+      ansible.builtin.command: cat "{{ manager_address_file }}"
+      register: manager_address
+      changed_when: false
+
+    - name: Set manager_host address
+      ansible.builtin.set_fact:
+        manager_host: "{{ manager_address.stdout | split('=') | last }}"
+
     - name: Run upgrade
       ansible.builtin.command:
-        chdir: "{{ terraform_path }}"
-        cmd: make ENVIRONMENT={{ cloud_env }} TERRAFORM={{ terraform_binary }} VERSION_MANAGER={{ version_manager_next }} VERSION_CEPH={{ version_ceph_next }} VERSION_OPENSTACK={{ version_openstack_next }} KOLLA_NAMESPACE={{ kolla_namespace | default("osism") }} upgrade
+        cmd: "ssh -i {{ terraform_path }}/.id_rsa.{{ cloud_env }} dragon@{{ manager_host }} /opt/configuration/scripts/upgrade.sh {{ version_manager_next }} {{ version_ceph_next }} {{ version_openstack_next }} {{ kolla_namespace | default('osism') }}"
       changed_when: true
       environment:
         TERRAGRUNT_TFPATH: "{{ terragrunt_tfpath }}"
 
     - name: Bootstrap services
       ansible.builtin.command:
-        chdir: "{{ terraform_path }}"
-        cmd: make ENVIRONMENT={{ cloud_env }} bootstrap
+        cmd: "ssh -i {{ terraform_path }}/.id_rsa.{{ cloud_env }} dragon@{{ manager_host }} /opt/configuration/scripts/bootstrap.sh"
       when: run_bootstrap | bool
       changed_when: true
 
     - name: Run checks after the upgrade
       ansible.builtin.command:
-        chdir: "{{ terraform_path }}"
-        cmd: make ENVIRONMENT={{ cloud_env }} check
+        cmd: "ssh -i {{ terraform_path }}/.id_rsa.{{ cloud_env }} dragon@{{ manager_host }} /opt/configuration/scripts/check.sh"
+      when: run_checks | bool
       changed_when: true
