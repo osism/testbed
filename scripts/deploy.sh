@@ -11,7 +11,5 @@ if [[ "$(/usr/bin/docker inspect -f '{{.State.Health.Status}}' osism-ansible 2>/
     sh -c '/opt/configuration/scripts/deploy-manager.sh'
 fi
 
-sh -c '/opt/configuration/scripts/disable-ara.sh'
-
 # deploy services
 sh -c '/opt/configuration/scripts/deploy-services.sh'
