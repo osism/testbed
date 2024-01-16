@@ -37,9 +37,21 @@ popd
 
 # upgrade manager
 osism-update-manager
+
+# wait for manager service
+wait_for_container_healthy 60 ceph-ansible
+wait_for_container_healthy 60 kolla-ansible
+wait_for_container_healthy 60 osism-ansible
+
 docker compose --project-directory /opt/manager ps
 docker compose --project-directory /opt/netbox ps
 
+# disable ara service
+if [[ -e /etc/osism-ci-image ]]; then
+    sh -c '/opt/configuration/scripts/disable-ara.sh'
+fi
+
+# refresh facts & reconcile the inventory
 osism reconciler sync
 osism apply facts
 
