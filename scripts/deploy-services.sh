@@ -32,10 +32,10 @@ sh -c '/opt/configuration/scripts/deploy/300-openstack-services-basic.sh'
 if [[ "$REFSTACK" == "false" ]]; then
     # deploy extended openstack services
     sh -c '/opt/configuration/scripts/deploy/310-openstack-services-extended.sh'
-
-    # deploy openstack baremetal services
-    sh -c '/opt/configuration/scripts/deploy/320-openstack-services-baremetal.sh'
 fi
+
+# deploy openstack baremetal services
+sh -c '/opt/configuration/scripts/deploy/320-openstack-services-baremetal.sh'
 
 # deploy monitoring services
 sh -c '/opt/configuration/scripts/deploy/400-monitoring-services.sh'
