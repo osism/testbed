@@ -96,6 +96,13 @@
       refstack: true
 
 - job:
+    name: testbed-deploy-next
+    parent: testbed-abstract-deploy
+    vars:
+      openstack_version: "2023.2"
+      refstack: true
+
+- job:
     name: testbed-upgrade
     parent: testbed-abstract-deploy
     run: playbooks/upgrade.yml
@@ -157,6 +164,7 @@
     label:
       jobs:
         - testbed-deploy
+        - testbed-deploy-next
         - testbed-deploy-stable
         - testbed-upgrade
         - testbed-upgrade-stable
