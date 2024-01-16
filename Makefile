@@ -17,7 +17,7 @@ export PATH := ${PATH}:${PWD}/venv/bin
 help:  ## Display this help.
 	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target>\033[0m\n"} /^[a-zA-Z_0-9-]+:.*?##/ { printf "  \033[36m%-20s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
 
-clean: ## Destroy infrastructure with Terraform.
+clean: ## Destroy infrastructure with OpenTofu.
 	@contrib/setup-testbed.py --environment_check $(ENVIRONMENT)
 	make -C terraform \
 	  ENVIRONMENT=$(ENVIRONMENT) \
@@ -27,7 +27,7 @@ clean: ## Destroy infrastructure with Terraform.
 wipe-local-install: ## Wipe the software dependencies in `venv`.
 	rm -rf venv .src
 
-create: prepare ## Create required infrastructure with Terraform.
+create: prepare ## Create required infrastructure with OpenTofu.
 	@contrib/setup-testbed.py --environment_check $(ENVIRONMENT)
 	make -C terraform \
 	  ENVIRONMENT=$(ENVIRONMENT) \
