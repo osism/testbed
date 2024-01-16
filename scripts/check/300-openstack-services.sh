@@ -4,28 +4,36 @@ set -e
 
 source /opt/configuration/scripts/include.sh
 
+export OS_CLOUD=admin
+
 echo
 echo "# OpenStack endpoints"
 echo
 
-openstack --os-cloud admin endpoint list
+openstack endpoint list
 
 echo
 echo "# Cinder"
 echo
 
-openstack --os-cloud admin volume service list
+openstack volume service list
 
 echo
 echo "# Neutron"
 echo
 
-openstack --os-cloud admin network agent list
-openstack --os-cloud admin network service provider list
+openstack network agent list
+openstack network service provider list
 
 echo
 echo "# Nova"
 echo
 
-openstack --os-cloud admin compute service list
-openstack --os-cloud admin hypervisor list
+openstack compute service list
+openstack hypervisor list
+
+echo
+echo "# Run OpenStack test play"
+echo
+
+osism apply --environment openstack test
