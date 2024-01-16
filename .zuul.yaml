@@ -108,6 +108,14 @@
     run: playbooks/upgrade.yml
 
 - job:
+    name: testbed-upgrade-next
+    parent: testbed-abstract-deploy
+    run: playbooks/upgrade.yml
+    vars:
+      openstack_version: "2023.1"
+      openstack_version_next: "2023.2"
+
+- job:
     name: testbed-deploy-stable
     parent: testbed-abstract-deploy
     vars:
@@ -167,6 +175,7 @@
         - testbed-deploy-next
         - testbed-deploy-stable
         - testbed-upgrade
+        - testbed-upgrade-next
         - testbed-upgrade-stable
     gate:
       jobs:
