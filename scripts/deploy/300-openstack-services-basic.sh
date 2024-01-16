@@ -8,20 +8,22 @@ OPENSTACK_VERSION=$(docker inspect --format '{{ index .Config.Labels "de.osism.r
 
 osism apply keystone
 osism apply placement
-osism apply nova
-osism apply neutron
 
-osism apply horizon
-osism apply glance
-osism apply cinder
-osism apply designate
-osism apply octavia
-osism apply kolla-ceph-rgw
+osism apply --no-wait nova
+osism apply --no-wait neutron
+osism apply --no-wait horizon
+osism apply --no-wait glance
+osism apply --no-wait cinder
+osism apply --no-wait designate
+osism apply --no-wait octavia
+osism apply --no-wait kolla-ceph-rgw
 
 if [[ $MANAGER_VERSION =~ ^6\.[0-9]\.[0-9][a-z]?$ || $MANAGER_VERSION == "latest" ]]; then
-    osism apply magnum
+    osism apply --no-wait magnum
 fi
 
 if [[ "$REFSTACK" == "false" ]]; then
-    osism apply barbican
+    osism apply --no-wait barbican
 fi
+
+osism wait

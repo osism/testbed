@@ -161,9 +161,9 @@
         - flake8
         - python-black
         - yamllint
+        - testbed-deploy
     label:
       jobs:
-        - testbed-deploy
         - testbed-deploy-next
         - testbed-deploy-stable
         - testbed-upgrade
