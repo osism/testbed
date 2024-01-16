@@ -5,7 +5,9 @@
     version_ceph: "{{ ceph_version | default('pacific') }}"
     version_manager: "{{ manager_version | default('latest') }}"
     version_openstack: "{{ openstack_version | default('zed') }}"
-    run_bootstrap: false
+
+    run_bootstrap: true
+    run_checks: true
 
 - name: Upgrade testbed
   hosts: all
@@ -25,7 +27,7 @@
     version_manager_next: "{{ manager_version_next | default('latest') }}"
     version_openstack_next: "{{ openstack_version_next | default('2023.1') }}"
 
-    run_bootstrap: true
+    run_bootstrap: false
     run_checks: true
 
   tasks:
