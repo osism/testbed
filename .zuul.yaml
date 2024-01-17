@@ -96,6 +96,12 @@
       refstack: true
 
 - job:
+    name: testbed-deploy-in-a-nutshell
+    parent: abstract-testbed-deploy
+    vars:
+      nutshell: true
+
+- job:
     name: testbed-upgrade
     parent: abstract-testbed-deploy
     run: playbooks/upgrade.yml
@@ -175,6 +181,7 @@
         - testbed-deploy-managerless
     periodic-daily:
       jobs:
+        - testbed-deploy-in-a-nutshell
         - testbed-deploy-managerless
         - testbed-deploy-stable
         - testbed-upgrade-stable
