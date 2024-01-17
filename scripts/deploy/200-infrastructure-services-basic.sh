@@ -25,10 +25,5 @@ else
     osism apply opensearch
 fi
 
-if [[ "$REFSTACK" == "false" ]]; then
-    # NOTE: Run a backup of the database to test the backup function
-    osism apply mariadb_backup
-fi
-
 osism apply keycloak
 osism apply --environment custom keycloak-oidc-client-config
