@@ -26,13 +26,11 @@ if [[ $MANAGER_VERSION =~ ^4\.[0-9]\.[0-9]$ ]]; then
     osism apply copy-ceph-keys
     osism apply cephclient
     osism apply ceph-bootstrap-dashboard
-elif [[ $MANAGER_VERSION =~ ^5\.[0-9]\.[0-9]$ || $MANAGER_VERSION =~ ^6\.[0-9]\.[0-9]$ ]]; then
+else
     osism apply ceph
     osism apply copy-ceph-keys
     osism apply cephclient
     osism apply ceph-bootstrap-dashboard
-else
-    osism apply ceph
 fi
 
 # Once Ceph has been deployed, the callback plugin can be used again.
