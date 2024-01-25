@@ -6,9 +6,6 @@
     version_manager: "{{ manager_version | default('latest') }}"
     version_openstack: "{{ openstack_version | default('zed') }}"
 
-    run_bootstrap: true
-    run_checks: true
-
 - name: Upgrade testbed
   hosts: all
 

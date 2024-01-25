@@ -3,7 +3,6 @@
   ansible.builtin.import_playbook: deploy.yml
   vars:
     version_manager: "{{ manager_version | default('latest') }}"
-    run_bootstrap: false
 
 - name: Upgrade testbed
   hosts: all
@@ -21,7 +20,7 @@
     version_ceph_next: "{{ ceph_version_next | default('quincy') }}"
     version_openstack_next: "{{ openstack_version_next | default('2023.1') }}"
 
-    run_bootstrap: true
+    run_bootstrap: false
     run_checks: true
 
   tasks:
