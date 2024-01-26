@@ -3,9 +3,8 @@ exclude_paths:
   - .github
   - .src
   - .tox
+  - .zuul.yaml
   - contrib
-  - doc
-  - environments/kolla/files/overlays/ceilometer/event_definitions.yaml
   - environments/kolla/files/overlays/ceilometer/event_pipeline.yaml
   - environments/kolla/files/overlays/ceilometer/pipeline.yaml
   - environments/kolla/files/overlays/prometheus/prometheus.yml.d/50-ceph.yml
