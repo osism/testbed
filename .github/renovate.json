@@ -11,7 +11,7 @@
         "^playbooks\\/pre\\.yml"
       ],
       "matchStrings":[
-        "terraform_version: (?<currentValue>.*?) # renovate: datasource=(?<datasource>.*?) depName=(?<depName>.*?)?\\s"
+        "# renovate: datasource=(?<datasource>github-releases) depName=(?<depName>.*?)\nTOFU_VERSION \\?= (?<currentValue>.*?)"
      ],
      "extractVersionTemplate": "^v(?<version>.*)$"
     },
