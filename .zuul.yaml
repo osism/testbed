@@ -187,9 +187,9 @@
             branches: main
         - testbed-deploy-stable:
             branches: main
-    # post:
-    #   jobs:
-    #     - testbed-deploy-stable
+    post:
+      jobs:
+        - testbed-deploy-managerless
     periodic-daily:
       jobs:
         - testbed-deploy-managerless
