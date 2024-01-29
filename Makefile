@@ -6,7 +6,7 @@ VERSION_CEPH ?= quincy
 VERSION_MANAGER ?= latest
 VERSION_OPENSTACK ?= 2023.1
 # renovate: datasource=github-releases depName=opentofu/opentofu
-TOFU_VERSION ?= 1.6.0
+TOFU_VERSION ?= 1.6.1
 
 TERRAFORM ?= tofu
 TERRAFORM_BLUEPRINT ?= testbed-default

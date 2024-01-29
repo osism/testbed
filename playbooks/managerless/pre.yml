@@ -10,6 +10,8 @@
     create_infrastructure: true
     terraform_path: "{{ zuul.project.src_dir }}/terraform"
     terraformbase_path: "{{ ansible_user_dir }}/src/{{ repositories['terraform-base']['path'] }}"
+    opentofu_version: "1.6.1"
+    opentofu_download_url: "https://github.com/opentofu/opentofu/releases/download/v{{ opentofu_version }}/tofu_{{ opentofu_version }}_linux_amd64.zip"
 
   tasks:
     - name: Install python
@@ -29,13 +31,14 @@
         - sshuttle
         - unzip
 
-    - name: Copy terraform binary
+    - name: Get opentofu binary
       become: true
-      ansible.builtin.copy:
-        src: "{{ ansible_user_dir }}/.local/bin/terraform"
-        dest: "/usr/bin/terraform"
-        mode: 0755
-        remote_src: true
+      ansible.builtin.unarchive:
+        src: "{{ opentofu_download_url }}"
+        dest: /usr/local/bin
+        remote_src: yes
+        include:
+          - tofu
 
     - name: Install python requirements
       become: true
