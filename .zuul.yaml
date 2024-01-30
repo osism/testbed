@@ -40,18 +40,16 @@
     merge-mode: squash-merge
     check:
       jobs:
-        - noop
-#        - ansible-lint
-#        - flake8
+        - flake8
+        - ansible-lint
     post:
       jobs:
          - noop
 #        - testbed-deploy-managerless
     periodic-hourly-otc:
       jobs:
-         - noop
+        - ansible-lint
+        - flake8
 #        - testbed-deploy-managerless
-#        - ansible-lint
-#        - flake8
 #        - python-black
 #        - yamllint
