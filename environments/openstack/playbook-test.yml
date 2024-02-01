@@ -124,18 +124,6 @@
         name: test
         public_key_file: /opt/configuration/environments/openstack/id_rsa.test.pub
 
-    - name: Create test port
-      openstack.cloud.port:
-        name: test-port
-        network: test
-        cloud: test
-        state: present
-        fixed_ips:
-          - ip_address: 192.168.200.10
-        security_groups:
-          - icmp
-          - ssh
-
     - name: Create test instance
       openstack.cloud.server:
         cloud: test
@@ -145,8 +133,10 @@
         flavor: "SCS-1L-1-5"
         delete_fip: true
         key_name: test
-        nics:
-          - port-name: test-port
+        network: test
+        security_groups:
+          - icmp
+          - ssh
 
     - name: Create test volume
       openstack.cloud.volume:
