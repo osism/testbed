@@ -45,7 +45,7 @@
     - name: Install python-gilt on manager
       become: true
       ansible.builtin.command: |
-          pip3 install --no-cache-dir python-gilt
+          pip3 install --no-cache-dir python-gilt==1.2.3
       when: version_manager != "latest"
       changed_when: true
 
