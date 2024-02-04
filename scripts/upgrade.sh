@@ -28,7 +28,7 @@ fi
 
 # Sync testbed repo with generics
 pushd /opt/configuration
-pip3 install --no-cache-dir python-gilt
+pip3 install --no-cache-dir python-gilt==1.2.3
 export PATH=$PATH:/home/dragon/.local/bin
 GILT=$(which gilt)
 ${GILT} overlay

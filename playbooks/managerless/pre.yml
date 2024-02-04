@@ -48,7 +48,11 @@
         - ansible
         - ansible-core
         - openstacksdk
-        - python-gilt
+
+    - name: Install python-gilt
+      become: true
+      ansible.builtin.pip:
+        name: "python-gilt==1.2.3"
 
     - name: Install ansible collections
       ansible.builtin.command: |
