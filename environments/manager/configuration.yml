@@ -45,8 +45,13 @@ ara_server_traefik: true
 
 netbox_enable: true
 
-netbox_host: "netbox.testbed.osism.xyz"
+netbox_host: netbox.testbed.osism.xyz
+netbox_traefik: true
 netbox_api_url: "https://{{ netbox_host }}"
+
+netbox_plugins_extra:
+  - netbox_bgp
+  - netbox_dns
 
 ##########################
 # opensearch
