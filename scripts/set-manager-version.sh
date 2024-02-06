@@ -12,4 +12,9 @@ if [[ $VERSION != "latest" ]]; then
     # manager_version parameter) and not by release names.
     sed -i "/ceph_version:/d" /opt/configuration/environments/manager/configuration.yml
     sed -i "/openstack_version:/d" /opt/configuration/environments/manager/configuration.yml
+
+    pip3 install python-gilt==1.2.3
+    pushd /opt/configuration
+    gilt overlay
+    popd
 fi
