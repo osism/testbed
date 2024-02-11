@@ -28,6 +28,11 @@ wait_for_container_healthy 60 ceph-ansible
 wait_for_container_healthy 60 kolla-ansible
 wait_for_container_healthy 60 osism-ansible
 
+# disable ara service
+if [[ -e /etc/osism-ci-image ]]; then
+    sh -c '/opt/configuration/scripts/disable-ara.sh'
+fi
+
 # wait for netbox service
 if ! wait_for_container_healthy 60 netbox-netbox-1; then
     # The Netbox integration is not mandatory for the use of the testbed.
@@ -48,11 +53,6 @@ fi
 
 docker compose --project-directory /opt/manager ps
 docker compose --project-directory /opt/netbox ps
-
-# disable ara service
-if [[ -e /etc/osism-ci-image ]]; then
-    sh -c '/opt/configuration/scripts/disable-ara.sh'
-fi
 
 # use osism.commons.still_alive stdout callback
 if [[ "$MANAGER_VERSION" == "latest" ]]; then
