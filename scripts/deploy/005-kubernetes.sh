@@ -9,8 +9,8 @@ osism apply kubernetes
 
 # NOTE: The following lines will be moved to a osism.services.clusterapi role
 
-CAPI_VERSION="v1.5.1"
-CAPO_VERSION="v0.8.0"
+CAPI_VERSION="v1.6.1"
+CAPO_VERSION="v0.9.0"
 
 export KUBECONFIG=$HOME/.kube/config
 
