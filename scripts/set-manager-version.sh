@@ -15,7 +15,11 @@ if [[ $VERSION != "latest" ]]; then
 
 fi
 
-pip3 install python-gilt==1.2.3
+# Sync testbed repo with generics
 pushd /opt/configuration
-gilt overlay
+pip3 install --no-cache-dir python-gilt==1.2.3
+export PATH=$PATH:/home/dragon/.local/bin
+GILT=$(which gilt)
+${GILT} overlay
+${GILT} overlay
 popd
