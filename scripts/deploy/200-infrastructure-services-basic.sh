@@ -16,6 +16,7 @@ osism apply rabbitmq
 osism apply openvswitch
 osism apply ovn
 
+# In OSISM >= 5.0.0, the switch was made from Elasticsearch / Kibana to Opensearch.
 if [[ $MANAGER_VERSION =~ ^4\.[0-9]\.[0-9]$ || $OPENSTACK_VERSION == "yoga" ]]; then
     osism apply elasticsearch
     if [[ "$REFSTACK" == "false" ]]; then
@@ -25,5 +26,15 @@ else
     osism apply opensearch
 fi
 
-osism apply keycloak
-osism apply --environment custom keycloak-oidc-client-config
+# In OSISM >= 7.0.0, the Keycloak deployment (technical preview) was switched from
+# Docker Compose to Kubernetes.
+if [[ $MANAGER_VERSION =~ ^7\.[0-9]\.[0-9]$ || $MANAGER_VERSION == "latest" ]]; then
+    osism apply keycloak
+
+    # The Keystone integration is currently deactivated because the Keycloak deployment
+    # with Kubernetes is not yet fully functional.
+    # osism apply keycloak-oidc-client-config
+    sed -i "s/enable_keystone_federation: \"yes\"/enable_keystone_federation: \"no\"/" /opt/configuration/environments/kolla/configuration.yml
+else
+    sed -i "s/enable_keystone_federation: \"yes\"/enable_keystone_federation: \"no\"/" /opt/configuration/environments/kolla/configuration.yml
+fi

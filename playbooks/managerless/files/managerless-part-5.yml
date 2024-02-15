@@ -81,7 +81,7 @@
         - placement
         - neutron
         - designate
-    #     - nova
-    #     - glance
-    #     - cinder
-    #     - octavia
+        # - nova
+        # - glance
+        # - cinder
+        # - octavia

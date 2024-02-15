@@ -10,9 +10,11 @@ source /opt/configuration/scripts/include.sh
 source /opt/manager-vars.sh
 
 osism apply openstackclient
-osism apply keycloak
 
-osism apply --environment custom keycloak-oidc-client-config
+osism apply kubernetes
+
+osism apply keycloak
+osism apply keycloak-oidc-client-config
 
 osism apply common
 osism apply loadbalancer
