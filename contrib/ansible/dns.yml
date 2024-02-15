@@ -16,7 +16,7 @@
       "cgit": "5"
       "flower": "5"
       "homer": "5"
-      "keycloak": "5"
+      "keycloak": "100"
       "netbox": "5"
       "netdata": "5"
       "nexus": "5"

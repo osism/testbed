@@ -8,7 +8,6 @@ rules:
 ignore: |
   .git
   .tox
-  contrib/rally/tests/
   environments/infrastructure/secrets.yml
   environments/kolla/files/overlays/ceilometer/event_definitions.yaml
   environments/kolla/files/overlays/ceilometer/event_pipeline.yaml

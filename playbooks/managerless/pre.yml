@@ -36,7 +36,7 @@
       ansible.builtin.unarchive:
         src: "{{ opentofu_download_url }}"
         dest: /usr/local/bin
-        remote_src: yes
+        remote_src: true
         include:
           - tofu
 
