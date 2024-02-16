@@ -31,6 +31,7 @@ testbed-primary-nodes
 
 [k3s_node:children]
 testbed-nodes
+testbed-managers
 
 # NOTE: After the initial import of the inventory in the netbox,
 #       the groups in this file can be emptied. The systems are
