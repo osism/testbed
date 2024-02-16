@@ -47,7 +47,7 @@
         label: testbed-orchestrator-wavecon
 
 - job:
-    name: testbed-abstract-deploy
+    name: abstract-testbed-deploy
     abstract: true
     parent: base-extra-logs
     pre-run: playbooks/pre.yml
@@ -91,25 +91,25 @@
 
 - job:
     name: testbed-deploy
-    parent: testbed-abstract-deploy
+    parent: abstract-testbed-deploy
     vars:
       refstack: true
 
 - job:
     name: testbed-deploy-next
-    parent: testbed-abstract-deploy
+    parent: abstract-testbed-deploy
     vars:
       openstack_version: "2023.2"
       refstack: true
 
 - job:
     name: testbed-upgrade
-    parent: testbed-abstract-deploy
+    parent: abstract-testbed-deploy
     run: playbooks/upgrade.yml
 
 - job:
     name: testbed-upgrade-next
-    parent: testbed-abstract-deploy
+    parent: abstract-testbed-deploy
     run: playbooks/upgrade.yml
     vars:
       openstack_version: "2023.1"
@@ -117,21 +117,21 @@
 
 - job:
     name: testbed-deploy-stable
-    parent: testbed-abstract-deploy
+    parent: abstract-testbed-deploy
     vars:
       manager_version: 6.0.2
       refstack: true
 
 - job:
     name: testbed-deploy-stable-next
-    parent: testbed-abstract-deploy
+    parent: abstract-testbed-deploy
     vars:
       manager_version: 7.0.0a
       refstack: true
 
 - job:
     name: testbed-upgrade-stable
-    parent: testbed-abstract-deploy
+    parent: abstract-testbed-deploy
     run: playbooks/upgrade-stable.yml
     vars:
       manager_version: 5.3.0
@@ -140,7 +140,7 @@
 
 - job:
     name: testbed-upgrade-stable-next
-    parent: testbed-abstract-deploy
+    parent: abstract-testbed-deploy
     run: playbooks/upgrade-stable.yml
     vars:
       manager_version: 6.0.2
@@ -149,17 +149,17 @@
 
 - job:
     name: testbed-deploy-cleura
-    parent: testbed-abstract-deploy
+    parent: abstract-testbed-deploy
     nodeset: testbed-orchestrator-cleura
 
 - job:
     name: testbed-deploy-pco
-    parent: testbed-abstract-deploy
+    parent: abstract-testbed-deploy
     nodeset: testbed-orchestrator-pco
 
 - job:
     name: testbed-deploy-wavestack
-    parent: testbed-abstract-deploy
+    parent: abstract-testbed-deploy
     nodeset: testbed-orchestrator-wavestack
 
 - job:
