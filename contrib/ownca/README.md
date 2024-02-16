@@ -80,9 +80,9 @@ $(sed 's/^/      /' < contrib/ownca/testbed-ca-certificate.pem)
 $(sed 's/^/      /' < contrib/ownca/testbed-certificate.key)
 %EOF
 testbed$ ansible-vault encrypt --vault-pass-file environments/.vault_pass environments/infrastructure/secrets.yml
-testbed$ cat contrib/ownca/testbed-{certificate.pem,ca-certificate.pem} > environments/custom/files/keycloak/cert.crt
-testbed$ cp contrib/ownca/testbed-certificate.key environments/custom/files/keycloak/private_key.pem
-testbed$ ansible-vault encrypt --vault-pass-file environments/.vault_pass environments/custom/files/keycloak/private_key.pem
+testbed$ cat contrib/ownca/testbed-{certificate.pem,ca-certificate.pem} > environments/infrastructure/files/keycloak/cert.crt
+testbed$ cp contrib/ownca/testbed-certificate.key environments/infrastructure/files/keycloak/private_key.pem
+testbed$ ansible-vault encrypt --vault-pass-file environments/.vault_pass environments/infrastructure/files/keycloak/private_key.pem
 ```
 
 ## TODO

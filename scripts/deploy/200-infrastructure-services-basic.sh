@@ -30,11 +30,7 @@ fi
 # Docker Compose to Kubernetes.
 if [[ $MANAGER_VERSION =~ ^7\.[0-9]\.[0-9]$ || $MANAGER_VERSION == "latest" ]]; then
     osism apply keycloak
-
-    # The Keystone integration is currently deactivated because the Keycloak deployment
-    # with Kubernetes is not yet fully functional.
-    # osism apply keycloak-oidc-client-config
-    sed -i "s/enable_keystone_federation: \"yes\"/enable_keystone_federation: \"no\"/" /opt/configuration/environments/kolla/configuration.yml
+    osism apply keycloak-oidc-client-config
 else
     sed -i "s/enable_keystone_federation: \"yes\"/enable_keystone_federation: \"no\"/" /opt/configuration/environments/kolla/configuration.yml
 fi
