@@ -3,7 +3,7 @@ set -x
 set -e
 
 # pull images
-sh -c '/opt/configuration/scripts/000-pull-images.sh'
+sh -c '/opt/configuration/scripts/pull-images.sh'
 
 # upgrade infrastructure services
 sh -c '/opt/configuration/scripts/upgrade/200-infrastructure-services-basic.sh'

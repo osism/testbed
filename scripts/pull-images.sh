@@ -9,8 +9,8 @@ echo
 echo "# PULL IMAGES"
 echo
 
-if [[ "$MANAGER_VERSION" == "latest" ]]; then
-    # Only works as with OSISM >= 6.1.0 as the osism.common.still_alive
+if [[ "$MANAGER_VERSION" =~ ^7\.[0-9]\.[0-9][a-z]?$ || "$MANAGER_VERSION" == "latest" ]]; then
+    # Only works as with OSISM >= 7.0.0 as the osism.common.still_alive
     # callback plugin can then be used.
     osism apply -r 2 -e custom pull-images
 else
