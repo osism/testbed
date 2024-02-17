@@ -17,6 +17,6 @@ fi
 
 # NOTE: disabled because we have not yet deployed Senlin in the previous version of OSISM
 # MANAGER_VERSION=$(docker inspect --format '{{ index .Config.Labels "org.opencontainers.image.version"}}' osism-ansible)
-# if [[ $MANAGER_VERSION =~ ^6\.[0-9]\.[0-9][b-z]?$ || $MANAGER_VERSION == "latest" ]]; then
+# if [[ $MANAGER_VERSION =~ ^7\.[0-9]\.[0-9][a-z]?$ || $MANAGER_VERSION == "latest" ]]; then
 #     osism apply -a upgrade senlin
 # fi
