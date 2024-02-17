@@ -30,7 +30,6 @@ testbed-primary-nodes
 testbed-primary-nodes
 
 [k3s_node:children]
-testbed-nodes
 testbed-managers
 
 # NOTE: After the initial import of the inventory in the netbox,
