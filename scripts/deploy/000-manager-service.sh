@@ -55,8 +55,8 @@ docker compose --project-directory /opt/manager ps
 docker compose --project-directory /opt/netbox ps
 
 # use osism.commons.still_alive stdout callback
-if [[ "$MANAGER_VERSION" == "latest" ]]; then
-    # The plugin is available in OSISM 6.1.0 and higher. In future, the callback
+if [[ $MANAGER_VERSION =~ ^7\.[0-9]\.[0-9][a-z]?$ || $MANAGER_VERSION == "latest" ]]; then
+    # The plugin is available in OSISM >= 7.0.0 and higher. In future, the callback
     # plugin will be used by default.
     sed -i "s/community.general.yaml/osism.commons.still_alive/" /opt/configuration/environments/ansible.cfg
 fi
@@ -64,7 +64,7 @@ fi
 osism apply sshconfig
 osism apply known-hosts
 
-if [[ "$MANAGER_VERSION" == "latest" ]]; then
+if [[ $MANAGER_VERSION =~ ^7\.[0-9]\.[0-9][a-z]?$ || $MANAGER_VERSION == "latest" ]]; then
     # The Nexus service is only really operational again from OSISM 6.1.0.
     osism apply nexus
 

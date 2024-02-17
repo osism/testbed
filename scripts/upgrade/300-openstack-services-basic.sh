@@ -15,8 +15,6 @@ osism apply -a upgrade barbican
 osism apply -a upgrade designate
 osism apply -a upgrade octavia
 
-# We have only been testing Magnum since the OSISM 6.0.0 release. Accordingly, an upgrade
-# test only makes sense when upgrading to latest. Can be adjusted with OSISM 7.
-if [[ $MANAGER_VERSION == "latest" ]]; then
+if [[ $MANAGER_VERSION =~ ^7\.[0-9]\.[0-9][a-z]?$ || $MANAGER_VERSION == "latest" ]]; then
     osism apply -a upgrade magnum
 fi

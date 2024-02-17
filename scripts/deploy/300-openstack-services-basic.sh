@@ -19,6 +19,6 @@ osism apply designate
 osism apply octavia
 osism apply kolla-ceph-rgw
 
-if [[ $MANAGER_VERSION =~ ^6\.[0-9]\.[0-9][a-z]?$ || $MANAGER_VERSION == "latest" ]]; then
+if [[ $MANAGER_VERSION =~ ^7\.[0-9]\.[0-9][a-z]?$ || $MANAGER_VERSION == "latest" ]]; then
     osism apply magnum
 fi
