@@ -28,7 +28,7 @@ fi
 
 # In OSISM >= 7.0.0, the Keycloak deployment (technical preview) was switched from
 # Docker Compose to Kubernetes.
-if [[ $MANAGER_VERSION =~ ^7\.[0-9]\.[0-9][b-z]?$ || $MANAGER_VERSION == "latest" ]]; then
+if [[ $MANAGER_VERSION =~ ^7\.[0-9]\.[0-9][c-z]?$ || $MANAGER_VERSION == "latest" ]]; then
     osism apply keycloak
     osism apply keycloak-oidc-client-config
 else
