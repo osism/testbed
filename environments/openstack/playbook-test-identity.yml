@@ -50,21 +50,10 @@
         default_project: test
       no_log: true
 
-    - name: Add member roles to user test  # noqa: ignore-errors
+    - name: Add member role to user test
       openstack.cloud.role_assignment:
         cloud: test-admin
         state: present
         user: test
-        role: "{{ item }}"
+        role: member
         project: test
-      loop:
-        - load-balancer_member
-        - member
-        # NOTE The role creator is required to be able to create encrypted volumes
-        #      If this role is not assigned the following error happens inside the
-        #      cinder-volume service:
-        #
-        #      Forbidden: Order creation attempt not allowed - please review your
-        #      user/project privileges
-        - creator
-      ignore_errors: true  # NOTE: necessary when we have not deployed Barbican
