@@ -66,8 +66,4 @@ for device in devices:
     if filesystem == "swap":
         devices.remove(device)
 
-if len(devices) > 1:
-    print(json.dumps([f"/dev/{x}" for x in devices[:-1]]))
-else:
-    # NOTE: If there is only one device for Ceph, this is always used.
-    print(json.dumps([f"/dev/{x}" for x in devices]))
+print(json.dumps(dict.fromkeys([x for x in devices])))

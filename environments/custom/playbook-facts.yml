@@ -70,6 +70,8 @@
       loop:
         - testbed_ceph_devices
         - testbed_ceph_devices_all
+        - testbed_ceph_osd_devices
+        - testbed_ceph_osd_devices_all
 
     - name: Gathers facts about remote hosts
       ansible.builtin.setup:

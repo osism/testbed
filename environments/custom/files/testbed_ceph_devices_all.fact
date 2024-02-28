@@ -4,7 +4,6 @@ from dotenv import load_dotenv
 import json
 import os
 from subprocess import PIPE, run
-import sys
 
 # NOTE: Get the partition on which the / fileysystem is located.
 #       inspired by https://bootlin.com/blog/find-root-device/
