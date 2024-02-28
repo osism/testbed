@@ -93,7 +93,12 @@ octavia_network_interface: ohm0
 monitor_address: "192.168.16.{{ node_id }}"
 radosgw_address: "192.168.16.{{ node_id }}"
 
+# New parameter as of OSISM 7.0.0
+ceph_osd_devices: "{{ ansible_local.testbed_ceph_osd_devices }}"
+
+# Old parameter until OSISM 6.0.2
 devices: "{{ ansible_local.testbed_ceph_devices }}"
 
 # NOTE: to use the third block device for Ceph change this parameter as follows
-# devices: "{{ ansible_local.testbed_ceph_devices_all }}"
+# ceph_osd_devices: "{{ ansible_local.testbed_ceph_osd_devices_all }}"
+# devices: "{{ ansible_local.testbed_ceph_devices }}"
