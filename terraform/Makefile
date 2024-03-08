@@ -168,7 +168,7 @@ vpn-wireguard: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
 	scp -o StrictHostKeyChecking=no -i .id_rsa.$(ENVIRONMENT) $(PARAMS) $(USERNAME)@$$MANAGER_ADDRESS:/home/dragon/wireguard-client.conf $(PWD)/wg-$(ENVIRONMENT).conf
 	sudo wg-quick down $(PWD)/wg-$(ENVIRONMENT).conf || true
 	sudo wg-quick up $(PWD)/wg-$(ENVIRONMENT).conf
-	@open "https://osism.github.io/docs/guides/deploy-guide/examples/testbed#webinterfaces"
+	@open "https://osism.github.io/docs/guides/other-guides/testbed#webinterfaces"
 	@read -p "STOP?" CONT
 	sudo wg-quick down $(PWD)/wg-$(ENVIRONMENT).conf
 
