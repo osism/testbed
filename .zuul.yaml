@@ -44,8 +44,7 @@
         - ansible-lint
     post:
       jobs:
-         - noop
-#        - testbed-deploy-managerless
+        - testbed-deploy-managerless
     periodic-hourly-otc:
       jobs:
         - ansible-lint
