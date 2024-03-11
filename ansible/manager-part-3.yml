@@ -146,7 +146,7 @@
 
   vars_files:
     - /opt/configuration/inventory/group_vars/testbed-managers.yml
-    - /opt/configuration/inventory/host_vars/testbed-manager.testbed.osism.xyz.yml
+    - /opt/configuration/inventory/host_vars/testbed-manager.testbed.osism.xyz/vars.yml
     - /opt/configuration/environments/manager/configuration.yml
     - /opt/configuration/environments/manager/images.yml
     - /opt/configuration/environments/manager/secrets.yml
@@ -185,7 +185,7 @@
 
   vars_files:
     - /opt/configuration/inventory/group_vars/testbed-managers.yml
-    - /opt/configuration/inventory/host_vars/testbed-manager.testbed.osism.xyz.yml
+    - /opt/configuration/inventory/host_vars/testbed-manager.testbed.osism.xyz/vars.yml
     - /opt/configuration/environments/manager/configuration.yml
     - /opt/configuration/environments/manager/images.yml
     - /opt/configuration/environments/manager/secrets.yml
