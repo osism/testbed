@@ -21,7 +21,7 @@
 
     version_ceph: "{{ ceph_version | default('quincy') }}"
     version_manager: "{{ manager_version | default('latest') }}"
-    version_openstack: "{{ openstack_version | default('2023.1') }}"
+    version_openstack: "{{ openstack_version | default('2023.2') }}"
 
     run_bootstrap: true
     run_checks: true
