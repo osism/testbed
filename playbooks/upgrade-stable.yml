@@ -18,7 +18,7 @@
 
     version_manager_next: "{{ manager_version_next | default('latest') }}"
     version_ceph_next: "{{ ceph_version_next | default('quincy') }}"
-    version_openstack_next: "{{ openstack_version_next | default('2023.1') }}"
+    version_openstack_next: "{{ openstack_version_next | default('2023.2') }}"
 
     run_bootstrap: false
     run_checks: true
