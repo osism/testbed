@@ -28,9 +28,8 @@ fi
 
 # In OSISM >= 7.0.0, the Keycloak deployment (technical preview) was switched from
 # Docker Compose to Kubernetes.
-if [[ $MANAGER_VERSION =~ ^7\.[0-9]\.[0-9][c-z]?$ || $MANAGER_VERSION == "latest" ]]; then
+if [[ $MANAGER_VERSION =~ ^7\.[0-9]\.[0-9]$ || $MANAGER_VERSION == "latest" ]]; then
     osism apply keycloak
     osism apply keycloak-oidc-client-config
-else
-    sed -i "s/enable_keystone_federation: \"yes\"/enable_keystone_federation: \"no\"/" /opt/configuration/environments/kolla/configuration.yml
+    sed -i "s/enable_keystone_federation: \"no\"/enable_keystone_federation: \"yes\"/" /opt/configuration/environments/kolla/configuration.yml
 fi

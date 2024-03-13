@@ -39,7 +39,7 @@ openstack_service_workers: 2
 openstack_logging_debug: "True"
 
 # keystone
-enable_keystone_federation: "yes"
+enable_keystone_federation: "no"
 keystone_oidc_forward_header: "X-Forwarded-Proto"
 keystone_enable_federation_openid: "yes"
 keystone_federation_oidc_response_type: "code"
