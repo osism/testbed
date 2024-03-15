@@ -64,8 +64,8 @@
         allocation_pool_end: 192.168.112.200
         gateway_ip: 192.168.112.5
 
-    - name: Create domain-manager role
+    - name: Create manager role
       openstack.cloud.identity_role:
         cloud: admin
         state: present
-        name: domain-manager
+        name: manager
