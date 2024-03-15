@@ -22,8 +22,8 @@
 
     # NOTE: The CLI is used here because the corresponding Ansible module does
     #       not find the test-admin user in the default domain.
-    - name: Add domain-manager role to user test-admin
-      ansible.builtin.command: openstack --os-cloud admin role add --domain test --user test-admin domain-manager
+    - name: Add manager role to user test-admin
+      ansible.builtin.command: openstack --os-cloud admin role add --domain test --user test-admin manager
       changed_when: true
 
     - name: Create test project

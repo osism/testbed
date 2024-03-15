@@ -39,7 +39,7 @@
 # Section B: Domain Manager Extensions
 
 # classify domain managers with a special role
-"is_domain_manager": "role:domain-manager"
+"is_domain_manager": "role:manager"
 
 # specify a rule that whitelists roles which domain admins are permitted
 # to assign and revoke within their domain
