@@ -6,11 +6,9 @@ source /opt/configuration/scripts/include.sh
 MANAGER_VERSION=$(docker inspect --format '{{ index .Config.Labels "org.opencontainers.image.version"}}' osism-ansible)
 CEPH_VERSION=$(docker inspect --format '{{ index .Config.Labels "de.osism.release.ceph" }}' ceph-ansible)
 
-# On the OTC, sometimes old partition entries are still present
-# on physical disks. Therefore they are removed at this point.
-if [[ -e /etc/OTC_region ]]; then
-    osism apply --environment custom wipe-partitions
-fi
+# Make sure that no partitions are present
+osism apply --environment custom wipe-partitions
+osism apply facts
 
 # The callback plugin is not included in the Pacific image. The plugin is no longer
 # added there because the builds for Pacific are disabled. This callback plugin will
