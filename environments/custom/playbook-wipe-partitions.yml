@@ -4,10 +4,10 @@
   gather_facts: false
 
   tasks:
-    - name: Wipe partitions
+    - name: Wipe partitions with wipefs
       become: true
       ansible.builtin.shell: |
         wipefs --all "{{ item }}"
-        dd if=/dev/zero of="{{ item }}" bs=1 count=4096
+        dd if=/dev/zero of="{{ item }}" bs=1M count=32
       changed_when: false
       with_items: "{{ ansible_local.testbed_ceph_devices_all }}"
