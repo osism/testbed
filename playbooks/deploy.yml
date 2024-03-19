@@ -12,9 +12,10 @@
     ansible_playbook: ~/venv/bin/ansible-playbook
     basepath: "{{ ansible_user_dir }}/src/{{ repositories['testbed']['path'] }}"
     manager_address_file: "{{ terraform_path }}/.MANAGER_ADDRESS.{{ cloud_env }}"
+    repo_path: "{{ ansible_user_dir }}/src/{{ repository_server }}"
+
     manual_create: false
     manual_deploy: false
-    repo_path: "{{ ansible_user_dir }}/src/{{ repository_server }}"
 
     terraform_binary: "{{ ansible_user_dir }}/terragrunt"
     terraform_path: "{{ basepath }}/terraform"
@@ -25,6 +26,8 @@
 
     run_bootstrap: true
     run_checks: true
+
+    in_a_nutshell: "{{ nutshell | default(false) | bool }}"
     run_refstack: "{{ refstack | default(false) | bool }}"
 
   tasks:
@@ -159,7 +162,17 @@
     - name: Deploy services
       ansible.builtin.command:
         cmd: "ssh -i {{ terraform_path }}/.id_rsa.{{ cloud_env }} dragon@{{ manager_host }} /opt/configuration/scripts/deploy-services.sh"
-      when: not manual_deploy | bool
+      when:
+        - not manual_deploy | bool
+        - not in_a_nutshell | bool
+      changed_when: true
+
+    - name: Deploy in a nutshell
+      ansible.builtin.command:
+        cmd: "ssh -i {{ terraform_path }}/.id_rsa.{{ cloud_env }} dragon@{{ manager_host }} /opt/configuration/scripts/deploy-in-a-nutshell.sh"
+      when:
+        - not manual_deploy | bool
+        - in_a_nutshell | bool
       changed_when: true
 
     - name: Bootstrap services

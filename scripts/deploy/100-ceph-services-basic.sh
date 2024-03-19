@@ -29,6 +29,7 @@ if [[ $MANAGER_VERSION =~ ^7\.[0-9]\.[0-9]$ || $MANAGER_VERSION == "latest" ]]; 
     done
     osism reconciler sync
     osism apply ceph-create-lvm-devices
+    osism apply facts
 fi
 
 if [[ $MANAGER_VERSION =~ ^4\.[0-9]\.[0-9]$ ]]; then
