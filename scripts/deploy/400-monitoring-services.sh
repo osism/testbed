@@ -6,3 +6,4 @@ source /opt/configuration/scripts/include.sh
 osism apply netdata
 osism apply prometheus
 osism apply grafana
+osism apply thanos_sidecar
