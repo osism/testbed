@@ -7,7 +7,7 @@
   tasks:
     - name: Fail if ansible-core version is lower than 2.15.0
       ansible.builtin.fail:
-        msg: "Ansible core version is {{ ansible_version.full }}, see https://osism.github.io/docs/guides/other-guides/testbed/ for required version."
+        msg: "Ansible core version is {{ ansible_version.full }}, see https://osism.tech/docs/guides/other-guides/testbed/ for required version."
       when: ansible_version.full is ansible.builtin.version('2.15.0', '<')
 
     - name: Get terraform version
@@ -21,7 +21,7 @@
 
     - name: Fail if terraform version is lower than 1.6.0
       ansible.builtin.fail:
-        msg: "Terraform version is {{ result.stdout }}, see https://osism.github.io/docs/guides/other-guides/testbed/ for required version."
+        msg: "Terraform version is {{ result.stdout }}, see https://osism.tech/docs/guides/other-guides/testbed/ for required version."
       when: result.stdout is ansible.builtin.version('1.6.0', '<')
 
     - name: Get python version
@@ -35,5 +35,5 @@
 
     - name: Fail if python version is lower than 3.8.0
       ansible.builtin.fail:
-        msg: "Python version is {{ result.stdout }}, see https://osism.github.io/docs/guides/other-guides/testbed/ for required version."
+        msg: "Python version is {{ result.stdout }}, see https://osism.tech/docs/guides/other-guides/testbed/ for required version."
       when: result.stdout is ansible.builtin.version('3.8.0', '<')
