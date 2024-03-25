@@ -25,13 +25,6 @@
       - name: orchestrator
         label: testbed-orchestrator
 
-# Cleura
-- nodeset:
-    name: testbed-orchestrator-cleura
-    nodes:
-      - name: orchestrator
-        label: testbed-orchestrator-cleura
-
 # PCO
 - nodeset:
     name: testbed-orchestrator-pco
@@ -123,11 +116,6 @@
     nodeset: testbed-orchestrator
 
 - job:
-    name: testbed-deploy-cleura
-    parent: abstract-testbed-deploy
-    nodeset: testbed-orchestrator-cleura
-
-- job:
     name: testbed-deploy-pco
     parent: abstract-testbed-deploy
     nodeset: testbed-orchestrator-pco
@@ -136,11 +124,6 @@
     name: testbed-deploy-wavestack
     parent: abstract-testbed-deploy
     nodeset: testbed-orchestrator-wavestack
-
-- job:
-    name: testbed-upgrade-cleura
-    parent: testbed-upgrade
-    nodeset: testbed-orchestrator-cleura
 
 - job:
     name: testbed-upgrade-pco
@@ -185,10 +168,8 @@
         - testbed-deploy-managerless
         - testbed-deploy-stable
         - testbed-upgrade-stable
-        # - testbed-deploy-cleura
         # - testbed-deploy-pco
         # - testbed-deploy-wavestack
-        # - testbed-upgrade-cleura
         # - testbed-upgrade-pco
         # - testbed-upgrade-wavestack
         - ansible-lint
