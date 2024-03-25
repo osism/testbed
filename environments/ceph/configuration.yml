@@ -15,7 +15,7 @@ enable_ceph_rgw: true
 # osd
 
 dmcrypt: true
-mon_max_pg_per_osd: 512
+openstack_pool_default_pg_num: 32
 
 ##########################
 # network
