@@ -38,6 +38,10 @@ sed -i -e "s/CHANGEME - dragon private key/GEQ5eWshKW+4ZhXMcWkAAbqzj7QA9G64oBFB3
 # apply workarounds
 osism apply --environment custom workarounds
 
+if [[ -e /etc/osism-ci-image ]]; then
+    osism apply --environment custom workarounds-zuul
+fi
+
 # reboot nodes
 osism apply reboot -l testbed-nodes -e ireallymeanit=yes
 osism apply wait-for-connection -l testbed-nodes -e ireallymeanit=yes
