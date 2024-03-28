@@ -33,7 +33,7 @@
       args:
         executable: /bin/bash
 
-    - name: Fail if python version is lower than 3.8.0
+    - name: Fail if python version is lower than 3.10.0
       ansible.builtin.fail:
         msg: "Python version is {{ result.stdout }}, see https://osism.tech/docs/guides/other-guides/testbed/ for required version."
-      when: result.stdout is ansible.builtin.version('3.8.0', '<')
+      when: result.stdout is ansible.builtin.version('3.10.0', '<')
