@@ -34,9 +34,15 @@ enable_senlin: "yes"
 enable_skyline: "yes"
 
 # generic
-
 openstack_service_workers: 2
 openstack_logging_debug: "True"
+
+# opensearch
+# We use debug logs for all OpenStack services on the testbed. Therefore, a lot of
+# logs are collected in a short time. We therefore set the retention time to a very
+# low value to prevent the storage from running full.
+opensearch_soft_retention_period_days: 1
+opensearch_hard_retention_period_days: 1
 
 # keystone
 enable_keystone_federation: "no"
