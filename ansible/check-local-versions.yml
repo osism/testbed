@@ -4,11 +4,16 @@
   connection: local
   gather_facts: false
 
+  vars:
+    ansible_core_version: "2.15.0"
+    python_version: "3.10.0"
+    terraform_version: "1.6.0"
+
   tasks:
-    - name: Fail if ansible-core version is lower than 2.15.0
+    - name: "Fail if ansible-core version is lower than {{ ansible_core_version }}"
       ansible.builtin.fail:
         msg: "Ansible core version is {{ ansible_version.full }}, see https://osism.tech/docs/guides/other-guides/testbed/ for required version."
-      when: ansible_version.full is ansible.builtin.version('2.15.0', '<')
+      when: ansible_version.full is ansible.builtin.version(ansible_core_version, '<')
 
     - name: Get terraform version
       ansible.builtin.shell: >-
@@ -19,10 +24,10 @@
       args:
         executable: /bin/bash
 
-    - name: Fail if terraform version is lower than 1.6.0
+    - name: "Fail if terraform version is lower than {{ terraform_version }}"
       ansible.builtin.fail:
         msg: "Terraform version is {{ result.stdout }}, see https://osism.tech/docs/guides/other-guides/testbed/ for required version."
-      when: result.stdout is ansible.builtin.version('1.6.0', '<')
+      when: result.stdout is ansible.builtin.version(terraform_version, '<')
 
     - name: Get python version
       ansible.builtin.shell: >-
@@ -33,7 +38,7 @@
       args:
         executable: /bin/bash
 
-    - name: Fail if python version is lower than 3.10.0
+    - name: "Fail if python version is lower than {{ python_version }}"
       ansible.builtin.fail:
         msg: "Python version is {{ result.stdout }}, see https://osism.tech/docs/guides/other-guides/testbed/ for required version."
-      when: result.stdout is ansible.builtin.version('3.10.0', '<')
+      when: result.stdout is ansible.builtin.version(python_version, '<')
