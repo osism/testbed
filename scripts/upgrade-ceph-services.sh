@@ -31,7 +31,7 @@ ${GILT} overlay
 popd
 
 # upgrade manager
-osism-update-manager
+osism update manager
 docker compose --project-directory /opt/manager ps
 
 osism reconciler sync
