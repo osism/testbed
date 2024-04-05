@@ -146,14 +146,14 @@ graph: init
 show: init
 	@$(TERRAFORM) show
 
-clean: init
+clean:
 	@$(TERRAFORM) destroy $(APPLY_PARAMS) $(PARAMS)
 	@rm -f .deploy.$(ENVIRONMENT) .MANAGER_ADDRESS.$(ENVIRONMENT)
 	@rm -f .id_rsa.$(ENVIRONMENT)
 
 	@if [ ! -f backend.tf ]; then \
 		$(TERRAFORM) workspace select default; \
-		$(TERRAFORM) workspace delete $(ENVIRONMENT); \
+		$(TERRAFORM) workspace delete $(ENVIRONMENT) || true; \  # If a workspace no longer exists, the delete will fail. This is fine.
 	fi
 	@rm -f *.auto.tfvars
 	@rm -f *.tf
