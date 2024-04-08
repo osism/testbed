@@ -153,7 +153,7 @@ clean:
 
 	@if [ ! -f backend.tf ]; then \
 		$(TERRAFORM) workspace select default; \
-		$(TERRAFORM) workspace delete $(ENVIRONMENT) || true; \  # If a workspace no longer exists, the delete will fail. This is fine.
+		$(TERRAFORM) workspace delete $(ENVIRONMENT) || true; \
 	fi
 	@rm -f *.auto.tfvars
 	@rm -f *.tf
