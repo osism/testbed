@@ -17,8 +17,10 @@ export PATH := ${PATH}:${PWD}/venv/bin
 help:  ## Display this help.
 	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target>\033[0m\n"} /^[a-zA-Z_0-9-]+:.*?##/ { printf "  \033[36m%-20s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
 
-clean: ## Destroy infrastructure with OpenTofu.
+setup: ## Prepare the repository.
 	@contrib/setup-testbed.py --environment_check $(ENVIRONMENT)
+
+clean: setup ## Destroy infrastructure with OpenTofu.
 	make -C terraform \
 	  ENVIRONMENT=$(ENVIRONMENT) \
 	  TERRAFORM=$(TERRAFORM) \
@@ -37,26 +39,22 @@ create: prepare ## Create required infrastructure with OpenTofu.
 	  VERSION_OPENSTACK=$(VERSION_OPENSTACK) \
 	  create
 
-login: ## Log in on the manager.
-	@contrib/setup-testbed.py --environment_check $(ENVIRONMENT)
+login: setup ## Log in on the manager.
 	@make -C terraform \
 	  ENVIRONMENT=$(ENVIRONMENT) \
 	  login
 
-vpn-wireguard: ## Establish a wireguard vpn tunnel.
-	@contrib/setup-testbed.py --environment_check $(ENVIRONMENT)
+vpn-wireguard: setup ## Establish a wireguard vpn tunnel.
 	@make -C terraform \
 	  ENVIRONMENT=$(ENVIRONMENT) \
 	  vpn-wireguard
 
-vpn-sshuttle: ## Establish a sshuttle vpn tunnel.
-	@contrib/setup-testbed.py --environment_check $(ENVIRONMENT)
+vpn-sshuttle: setup ## Establish a sshuttle vpn tunnel.
 	@make -C terraform \
 	  ENVIRONMENT=$(ENVIRONMENT) \
 	  vpn-sshuttle
 
-bootstrap: create ## Bootstrap everything.
-	@contrib/setup-testbed.py --environment_check $(ENVIRONMENT)
+bootstrap: setup create ## Bootstrap everything.
 	${venv} ; ansible-playbook playbooks/deploy.yml \
 	  -i ansible/localhost_inventory.yaml \
 	  -e ansible_galaxy=ansible-galaxy \
@@ -70,28 +68,24 @@ bootstrap: create ## Bootstrap everything.
 	  -e version_manager=$(VERSION_MANAGER) \
 	  -e version_openstack=$(VERSION_OPENSTACK)
 
-manager: bootstrap ## Deploy only the manager service.
-	@contrib/setup-testbed.py --environment_check $(ENVIRONMENT)
+manager: setup bootstrap ## Deploy only the manager service.
 	make -C terraform \
 	  ENVIRONMENT=$(ENVIRONMENT) \
 	  TERRAFORM=$(TERRAFORM) \
 	  deploy-manager
 
-identity: manager ## Deploy only identity services.
-	@contrib/setup-testbed.py --environment_check $(ENVIRONMENT)
+identity: setup manager ## Deploy only identity services.
 	make -C terraform \
 	  ENVIRONMENT=$(ENVIRONMENT) \
 	  TERRAFORM=$(TERRAFORM) \
 	  deploy-identity
 
-ceph: manager ## Deploy only ceph services.
-	@contrib/setup-testbed.py --environment_check $(ENVIRONMENT)
+ceph: setup manager ## Deploy only ceph services.
 	make -C terraform \
 	  ENVIRONMENT=$(ENVIRONMENT) \
 	  deploy-ceph
 
-deploy: bootstrap ## Deploy everything and then check it.
-	@contrib/setup-testbed.py --environment_check $(ENVIRONMENT)
+deploy: setup bootstrap ## Deploy everything and then check it.
 	make -C terraform \
 	  ENVIRONMENT=$(ENVIRONMENT) \
 	  TERRAFORM=$(TERRAFORM) \
