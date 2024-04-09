@@ -49,6 +49,11 @@ vpn-wireguard: setup ## Establish a wireguard vpn tunnel.
 	  ENVIRONMENT=$(ENVIRONMENT) \
 	  vpn-wireguard
 
+vpn-wireguard-config: setup ## Get the configuration for the wireguard vpn tunnel.
+	@make -C terraform \
+	  ENVIRONMENT=$(ENVIRONMENT) \
+	  vpn-wireguard-config
+
 vpn-sshuttle: setup ## Establish a sshuttle vpn tunnel.
 	@make -C terraform \
 	  ENVIRONMENT=$(ENVIRONMENT) \
@@ -126,4 +131,4 @@ venv/bin/tofu: venv/bin/activate
 
 deps: venv/bin/tofu venv/bin/activate ## Install software preconditions to `venv`.
 
-phony: bootstrap clean clean-local create deploy identity login manager prepare ceph deps venv/bin/activate venv/bin/tofu vpn-sshuttle vpn-wireguard wipe-local-install
+phony: bootstrap clean clean-local create deploy identity login manager prepare ceph deps venv/bin/activate venv/bin/tofu vpn-sshuttle vpn-wireguard vpn-wireguard-config wipe-local-install

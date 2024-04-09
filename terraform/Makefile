@@ -165,9 +165,12 @@ ssh: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
 	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
 	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(ENVIRONMENT) $(USERNAME)@$$MANAGER_ADDRESS
 
-vpn-wireguard: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
+vpn-wireguard-config: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
 	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
 	scp -o StrictHostKeyChecking=no -i .id_rsa.$(ENVIRONMENT) $(PARAMS) $(USERNAME)@$$MANAGER_ADDRESS:/home/dragon/wireguard-client.conf $(PWD)/wg-$(ENVIRONMENT).conf
+	@echo Wireguard configuration saved in $(PWD)/wg-$(ENVIRONMENT).conf
+
+vpn-wireguard: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT) vpn-wireguard-config
 	sudo wg-quick down $(PWD)/wg-$(ENVIRONMENT).conf || true
 	sudo wg-quick up $(PWD)/wg-$(ENVIRONMENT).conf
 	@$(OPEN_CMD) "https://osism.tech/docs/guides/other-guides/testbed#webinterfaces"
