@@ -146,7 +146,7 @@ graph: init
 show: init
 	@$(TERRAFORM) show
 
-clean:
+clean: init
 	@$(TERRAFORM) destroy $(APPLY_PARAMS) $(PARAMS)
 	@rm -f .deploy.$(ENVIRONMENT) .MANAGER_ADDRESS.$(ENVIRONMENT)
 	@rm -f .id_rsa.$(ENVIRONMENT)
@@ -155,10 +155,6 @@ clean:
 		$(TERRAFORM) workspace select default; \
 		$(TERRAFORM) workspace delete $(ENVIRONMENT) || true; \
 	fi
-	@rm -f *.auto.tfvars
-	@rm -f *.tf
-	@rm -rf customisations
-	@rm -rf overrides
 	@rm -f wg-*.conf
 	@rm -rf .terraform .terraform.lock.hcl
 
