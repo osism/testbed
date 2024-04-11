@@ -5,7 +5,12 @@ source /opt/configuration/scripts/include.sh
 
 MANAGER_VERSION=$(docker inspect --format '{{ index .Config.Labels "org.opencontainers.image.version"}}' osism-ansible)
 
-osism apply --environment openstack bootstrap-flavors
+if [[ $MANAGER_VERSION =~ ^7\.[0-9]\.[0-9]$ || $MANAGER_VERSION == "latest" ]]; then
+    osism manage flavors
+else
+    osism apply --environment openstack bootstrap-flavors
+fi
+
 osism apply --environment openstack bootstrap-basic
 
 # osism manage images is only available since 5.0.0. To enable the
