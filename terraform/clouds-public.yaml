@@ -7,6 +7,13 @@ public-clouds:
       - name: RegionA
     identity_api_version: 3
     block_storage_api_version: 3
+  regiocloud-fast:
+    auth:
+      auth_url: https://keystone.services.a.regiocloud.tech/v3
+    regions:
+      - name: RegionA
+    identity_api_version: 3
+    block_storage_api_version: 3
   pluscloudopen:
     auth:
       auth_url: https://prod1.api.pco.get-cloud.io:5000
