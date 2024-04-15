@@ -1,13 +1,13 @@
 ---
 - name: Run manager part 1
   hosts: testbed-manager.testbed.osism.xyz
-  gather_facts: false
+  gather_facts: true
 
   vars:
     ansible_ssh_user: dragon
     apt_lock_timeout: 300
     operator_user: dragon
-    repo_path: /home/ubuntu/src/github.com
+    repo_path: /home/cloud-user/src/github.com
     version_manager: latest
     is_zuul: false
 
@@ -55,6 +55,15 @@
       loop:
         - build-essential
         - python3-dev
+      when: ansible_os_family == 'Debian'
+
+    - name: Set pip3.11 as the pip3 command used in deployment
+      become: yes
+      community.general.alternatives:
+        name: pip3
+        path: /usr/bin/pip3.11
+        link: /usr/bin/pip3
+      when: ansible_distribution == 'CentOS'
 
     - name: Remove some python packages
       become: true
@@ -128,6 +137,13 @@
       become: true
       ansible.builtin.command: update-ca-certificates
       changed_when: true
+      when: ansible_os_family == 'Debian'
+
+    - name: Run update-ca-trust
+      become: true
+      ansible.builtin.command: update-ca-trust
+      changed_when: true
+      when: ansible_os_family == 'RedHat'
 
     - name: Run manager part 2
       ansible.builtin.command: "{{ ansible_playbook }} -i testbed-manager.testbed.osism.xyz, -e version_manager={{ version_manager }} /opt/configuration/ansible/manager-part-2.yml"
