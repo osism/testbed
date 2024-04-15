@@ -13,65 +13,147 @@
   hosts: testbed-manager.testbed.osism.xyz
 
   vars:
-    repo_path: /home/ubuntu/src/github.com
-    apt_lock_timeout: 300
+    repo_path: /home/cloud-user/src/github.com
+    dnf_lock_timeout: 300
 
   tasks:
-    - name: Fail if Ubuntu version is lower than 22.04
-      ansible.builtin.fail:
-        msg: "Ubuntu version is {{ ansible_distribution_version }}, see https://osism.tech/docs/advanced-guides/testbed#software for required version."
-      when: ansible_distribution == "Ubuntu" and ansible_distribution_version < "22.04"
+    - name: Ubuntu specific tasks
+      block:
+      - name: Fail if Ubuntu version is lower than 22.04
+        ansible.builtin.fail:
+          msg: "Ubuntu version is {{ ansible_distribution_version }}, see https://osism.tech/docs/advanced-guides/testbed#software for required version."
+        when: ansible_distribution == "Ubuntu" and ansible_distribution_version < "22.04"
 
-    - name: Update APT cache and run dist-upgrade
-      become: true
-      ansible.builtin.apt:
-        upgrade: dist
-        update_cache: true
-        lock_timeout: "{{ apt_lock_timeout }}"
+      - name: Update APT cache and run dist-upgrade
+        become: true
+        ansible.builtin.apt:
+          upgrade: dist
+          update_cache: true
+          lock_timeout: "{{ apt_lock_timeout }}"
 
-    - name: Set APT options on manager
-      become: true
-      ansible.builtin.shell: |
-        set -o pipefail &&
-        echo 'APT::Acquire::Retries "3";' > /etc/apt/apt.conf.d/80-retries
-        echo '* libraries/restart-without-asking boolean true' | debconf-set-selections
-      args:
-        executable: /bin/bash
-      changed_when: true
+      - name: Set APT options on manager
+        become: true
+        ansible.builtin.shell: |
+          set -o pipefail &&
+          echo 'APT::Acquire::Retries "3";' > /etc/apt/apt.conf.d/80-retries
+          echo '* libraries/restart-without-asking boolean true' | debconf-set-selections
+        args:
+          executable: /bin/bash
+        changed_when: true
 
-    - name: Install packages on manager
-      become: true
-      ansible.builtin.apt:
-        name:
-          - linux-generic-hwe-22.04
-          - python3-netaddr
-          - python3-pip
-        update_cache: true
-      changed_when: true
+      - name: Install packages on manager
+        become: true
+        ansible.builtin.apt:
+          name:
+            - linux-generic-hwe-22.04
+            - python3-netaddr
+            - python3-pip
+          update_cache: true
+        changed_when: true
 
-    - name: Remove existing Ansible package if necessary
-      become: true
-      ansible.builtin.apt:
-        name: ansible
-        state: absent
+      - name: Remove existing Ansible package if necessary
+        become: true
+        ansible.builtin.package:
+          name: ansible
+          state: absent
 
-    - name: Install ansible-core on manager
-      become: true
-      ansible.builtin.command: |
+      - name: Install ansible-core on manager
+        become: true
+        ansible.builtin.command: |
           pip3 install --no-cache-dir 'ansible-core>=2.16.0,<2.17.0'
-      changed_when: true
+        changed_when: true
 
-    - name: Create source directories
-      become: true
-      ansible.builtin.file:
-        state: directory
-        path: "/opt/src/{{ item }}"
-        recurse: true
-        mode: '0755'
-        owner: ubuntu
-      with_items:
-        - osism/ansible-collection-commons
-        - osism/ansible-collection-services
+      - name: Install ansible-core on manager
+        become: true
+        ansible.builtin.command: |
+          pip3 install --no-cache-dir 'ansible-core>=2.16.0,<2.17.0'
+        changed_when: true
+
+      - name: Create source directories
+        become: true
+        ansible.builtin.file:
+          state: directory
+          path: "/opt/src/{{ item }}"
+          recurse: true
+          mode: '0755'
+          owner: ubuntu
+        with_items:
+          - osism/ansible-collection-commons
+          - osism/ansible-collection-services
+      when: ansible_distribution == "Ubuntu"
+
+    - name: CentOS specific tasks
+      block:
+      - name: Fail if CentOS Stream version is lower than 9
+        ansible.builtin.fail:
+          msg: "CentOS Stream version is {{ ansible_distribution_version }}, see https://osism.tech/docs/advanced-guides/testbed#software for required version."
+        when: ansible_distribution == "CentOS" and ansible_distribution_version < "9"
+
+      - name: Set DNF options on manager
+        become: true
+        ansible.builtin.copy:
+          content: |
+            [main]
+            fastestmirror=1
+            max_parallel_downloads=10
+          dest: /etc/dnf/dnf.conf
+        changed_when: true
+
+      - name: Update package cache
+        become: true
+        ansible.builtin.dnf:
+          update_cache: true
+          lock_timeout: "{{ dnf_lock_timeout }}"
+
+      - name: Upgrade system packages
+        become: true
+        ansible.builtin.dnf:
+          name: "*"
+          state: latest
+          lock_timeout: "{{ dnf_lock_timeout }}"
+
+      - name: Install packages on manager
+        become: true
+        ansible.builtin.dnf:
+          name:
+            - kernel-devel
+            - python3-netaddr
+            - python3.11
+            - python3.11-pip
+            - git
+          update_cache: true
+        changed_when: true
+
+      - name: Remove existing Ansible package if necessary
+        become: true
+        ansible.builtin.package:
+          name: ansible
+          state: absent
+
+      - name: Install ansible-core on manager
+        become: true
+        ansible.builtin.command: |
+          pip3.11 install --no-cache-dir 'ansible-core>=2.16.0,<2.17.0'
+        changed_when: true
+
+      - name: Install ansible-core on manager
+        become: true
+        ansible.builtin.command: |
+          pip3.11 install --no-cache-dir 'ansible-core>=2.16.0,<2.17.0'
+        changed_when: true
+
+      - name: Create source directories
+        become: true
+        ansible.builtin.file:
+          state: directory
+          path: "/opt/src/{{ item }}"
+          recurse: true
+          mode: '0755'
+          owner: cloud-user
+        with_items:
+          - osism/ansible-collection-commons
+          - osism/ansible-collection-services
+      when: ansible_distribution == "CentOS"
 
     - name: Copy sources
       ansible.posix.synchronize:
@@ -92,11 +174,11 @@
     - name: Install collections
       become: true
       ansible.builtin.shell: |
-          ansible-galaxy collection install --collections-path /usr/share/ansible/collections ansible.netcommon
-          ansible-galaxy collection install --collections-path /usr/share/ansible/collections ansible.posix
-          ansible-galaxy collection install --collections-path /usr/share/ansible/collections community.docker
-          ansible-galaxy collection install --collections-path /usr/share/ansible/collections /opt/src/osism/ansible-collection-commons
-          ansible-galaxy collection install --collections-path /usr/share/ansible/collections /opt/src/osism/ansible-collection-services
+          /usr/local/bin/ansible-galaxy collection install --collections-path /usr/share/ansible/collections ansible.netcommon
+          /usr/local/bin/ansible-galaxy collection install --collections-path /usr/share/ansible/collections ansible.posix
+          /usr/local/bin/ansible-galaxy collection install --collections-path /usr/share/ansible/collections community.docker
+          /usr/local/bin/ansible-galaxy collection install --collections-path /usr/share/ansible/collections /opt/src/osism/ansible-collection-commons
+          /usr/local/bin/ansible-galaxy collection install --collections-path /usr/share/ansible/collections /opt/src/osism/ansible-collection-services
           chmod -R +r /usr/share/ansible
       changed_when: true
 

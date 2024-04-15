@@ -1,12 +1,12 @@
 ---
 - name: Run manager part 1
   hosts: testbed-manager.testbed.osism.xyz
-  gather_facts: false
+  gather_facts: true
 
   vars:
     ansible_ssh_user: dragon
     operator_user: dragon
-    repo_path: /home/ubuntu/src/github.com
+    repo_path: /home/cloud-user/src/github.com
     version_manager: latest
     is_zuul: false
 
@@ -42,10 +42,18 @@
         delete: true
         dest: /opt/configuration
 
+    - name: Set pip3.11 as the pip3 command used in deployment
+      become: yes
+      community.general.alternatives:
+        name: pip3
+        path: /usr/bin/pip3.11
+        link: /usr/bin/pip3
+      when: ansible_distribution == 'CentOS'
+
     - name: Install python-gilt on manager
       become: true
       ansible.builtin.command: |
-          pip3 install --no-cache-dir python-gilt==1.2.3
+        pip3 install --no-cache-dir python-gilt==1.2.3
       when: version_manager != "latest"
       changed_when: true
 
@@ -98,6 +106,13 @@
       become: true
       ansible.builtin.command: update-ca-certificates
       changed_when: true
+      when: ansible_os_family == 'Debian'
+
+    - name: Run update-ca-trust
+      become: true
+      ansible.builtin.command: update-ca-trust
+      changed_when: true
+      when: ansible_os_family == 'RedHat'
 
     - name: Run manager part 2
       ansible.builtin.command: ansible-playbook -i testbed-manager.testbed.osism.xyz, /opt/configuration/ansible/manager-part-2.yml
