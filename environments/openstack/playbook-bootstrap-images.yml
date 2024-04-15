@@ -42,21 +42,21 @@
       register: date
       changed_when: false
 
-    - name: Upload ubuntu minimal 22.04 image
+    - name: Upload CentOS Stream 9 image
       openstack.cloud.image:
         cloud: admin
         state: present
-        name: "Ubuntu 22.04"
+        name: "CentOS Stream 9"
         is_public: true
         container_format: bare
         disk_format: qcow2
-        filename: /tmp/ubuntu.img
+        filename: /tmp/centos.img
         min_disk: 3
         min_ram: 512
         properties:
           architecture: x86_64
           cpu_arch: x86_64
-          distro: ubuntu
+          distro: centos
           hw_disk_bus: scsi
           hw_rng_model: virtio
           hw_scsi_model: virtio-scsi
@@ -64,9 +64,9 @@
           # NOTE: The upload date is taken at this point. The Ubuntu upstream images are rotated and not archived.
           image_build_date: "{{ date.stdout }}"
           image_description: https://launchpad.net/cloud-images
-          image_original_user: ubuntu
+          image_original_user: cloud-user
           image_source: "{{ url_ubuntu_image }}"
-          os_distro: ubuntu
-          os_version: "22.04"
+          os_distro: centos
+          os_version: "9"
           replace_frequency: never
           uuid_validity: forever
