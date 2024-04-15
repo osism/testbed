@@ -7,10 +7,15 @@
   vars:
     venv_path: /opt/venv
     ansible_python_interpreter: "{{ venv_path }}/bin/python3"
-
     apt_lock_timeout: 300
 
   tasks:
+    - name: Install required packages
+      become: true
+      ansible.builtin.package:
+        name: python3-netifaces
+        state: present
+
     - name: Create custom facts directory
       become: true
       ansible.builtin.file:
