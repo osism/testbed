@@ -12,6 +12,8 @@
     terraform_path: "{{ basepath }}/terraform"
     terragrunt_version: v0.57.1 # renovate: datasource=github-releases depName=gruntwork-io/terragrunt
     terragrunt_download_url: "https://github.com/gruntwork-io/terragrunt/releases/download/{{ terragrunt_version }}/terragrunt_linux_amd64"
+    opentofu_version: "1.6.2"
+    opentofu_download_url: "https://github.com/opentofu/opentofu/releases/download/v{{ opentofu_version }}/tofu_{{ opentofu_version }}_linux_amd64.zip"
 
   tasks:
     - name: Set cloud_env fact (Zuul deployment)
@@ -37,6 +39,20 @@
         url: "{{ terragrunt_download_url }}"
         dest: "{{ ansible_user_dir }}/terragrunt"
         mode: "0755"
+
+    - name: Extract tofu binary
+      ansible.builtin.unarchive:
+        src: "{{ opentofu_download_url }}"
+        dest: "{{ ansible_user_dir }}"
+        remote_src: true
+        include:
+          - tofu
+
+    - name: Copy tofu binary
+      ansible.builtin.copy:
+        src: "{{ ansible_user_dir }}/tofu"
+        dest: "{{ ansible_user_dir }}/terraform"
+        remote_src: true
 
     # we run local synchronisation here
     - name: Sync terraform blueprint  # noqa: command-instead-of-module
