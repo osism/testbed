@@ -52,6 +52,7 @@
       ansible.builtin.copy:
         src: "{{ ansible_user_dir }}/tofu"
         dest: "{{ ansible_user_dir }}/terraform"
+        mode: preserve
         remote_src: true
 
     # we run local synchronisation here
