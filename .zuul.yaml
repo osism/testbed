@@ -139,10 +139,9 @@
     merge-mode: squash-merge
     check:
       jobs:
-        - ansible-lint
-        - flake8
-        - python-black
-        - yamllint
+        - testbed-deploy
+        - testbed-deploy-pco
+        - testbed-deploy-wavestack
     label:
       jobs:
         - testbed-deploy
