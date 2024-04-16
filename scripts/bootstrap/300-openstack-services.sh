@@ -6,7 +6,7 @@ source /opt/configuration/scripts/include.sh
 MANAGER_VERSION=$(docker inspect --format '{{ index .Config.Labels "org.opencontainers.image.version"}}' osism-ansible)
 
 if [[ $MANAGER_VERSION =~ ^7\.[0-9]\.[0-9]$ || $MANAGER_VERSION == "latest" ]]; then
-    osism manage flavors
+    osism manage flavors --recommended
 else
     osism apply --environment openstack bootstrap-flavors
 fi
