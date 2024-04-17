@@ -14,6 +14,13 @@
         vcpus: 4
         disk: 0
         ephemeral: 0
+        extra_specs:
+          "local_storage": "false"
+          "hw_rng:allowed": "True"
+          "scs:cpu-type": "shared-core"
+          "scs:disk0-type": "network"
+          "scs:name-v1": "SCS-4V:8"
+          "scs:name-v2": "SCS-4V-8"
 
     - name: "Create SCS-4V-8-20 SCS flavor"
       openstack.cloud.compute_flavor:
@@ -24,6 +31,13 @@
         vcpus: 4
         disk: 20
         ephemeral: 0
+        extra_specs:
+          "local_storage": "false"
+          "hw_rng:allowed": "True"
+          "scs:cpu-type": "shared-core"
+          "scs:disk0-type": "network"
+          "scs:name-v1": "SCS-4V:8:20"
+          "scs:name-v2": "SCS-4V-8-20"
 
     # vCPU:RAM ratio: 2:8
     - name: "Create SCS-2V-8 SCS flavor"
@@ -35,6 +49,13 @@
         vcpus: 2
         disk: 0
         ephemeral: 0
+        extra_specs:
+          "local_storage": "false"
+          "hw_rng:allowed": "True"
+          "scs:cpu-type": "shared-core"
+          "scs:disk0-type": "network"
+          "scs:name-v1": "SCS-2V:8"
+          "scs:name-v2": "SCS-2V-8"
 
     - name: "Create SCS-2V-8-20 SCS flavor"
       openstack.cloud.compute_flavor:
@@ -45,6 +66,13 @@
         vcpus: 2
         disk: 20
         ephemeral: 0
+        extra_specs:
+          "local_storage": "false"
+          "hw_rng:allowed": "True"
+          "scs:cpu-type": "shared-core"
+          "scs:disk0-type": "network"
+          "scs:name-v1": "SCS-2V:8:20"
+          "scs:name-v2": "SCS-2V-8-20"
 
     # vCPU:RAM ratio: 1:8
     - name: "Create SCS-1V-8 SCS flavor"
@@ -56,6 +84,13 @@
         vcpus: 1
         disk: 0
         ephemeral: 0
+        extra_specs:
+          "local_storage": "false"
+          "hw_rng:allowed": "True"
+          "scs:cpu-type": "shared-core"
+          "scs:disk0-type": "network"
+          "scs:name-v1": "SCS-1V:8"
+          "scs:name-v2": "SCS-1V-8"
 
     - name: "Create SCS-1V-8-20 SCS flavor"
       openstack.cloud.compute_flavor:
@@ -66,6 +101,13 @@
         vcpus: 1
         disk: 20
         ephemeral: 0
+        extra_specs:
+          "local_storage": "false"
+          "hw_rng:allowed": "True"
+          "scs:cpu-type": "shared-core"
+          "scs:disk0-type": "network"
+          "scs:name-v1": "SCS-1V:8:20"
+          "scs:name-v2": "SCS-1V-8-20"
 
     # vCPU:RAM ratio: 2:4
     - name: "Create SCS-2V-4 SCS flavor"
@@ -77,6 +119,13 @@
         vcpus: 2
         disk: 0
         ephemeral: 0
+        extra_specs:
+          "local_storage": "false"
+          "hw_rng:allowed": "True"
+          "scs:cpu-type": "shared-core"
+          "scs:disk0-type": "network"
+          "scs:name-v1": "SCS-2V:8"
+          "scs:name-v2": "SCS-2V-8"
 
     - name: "Create SCS-2V-4-10 SCS flavor"
       openstack.cloud.compute_flavor:
@@ -87,6 +136,13 @@
         vcpus: 2
         disk: 10
         ephemeral: 0
+        extra_specs:
+          "local_storage": "false"
+          "hw_rng:allowed": "True"
+          "scs:cpu-type": "shared-core"
+          "scs:disk0-type": "network"
+          "scs:name-v1": "SCS-2V:4:10"
+          "scs:name-v2": "SCS-2V-4-10"
 
     # vCPU:RAM ratio: 1:4
     - name: "Create SCS-1V-4 SCS flavor"
@@ -98,6 +154,13 @@
         vcpus: 1
         disk: 0
         ephemeral: 0
+        extra_specs:
+          "local_storage": "false"
+          "hw_rng:allowed": "True"
+          "scs:cpu-type": "shared-core"
+          "scs:disk0-type": "network"
+          "scs:name-v1": "SCS-1V:4"
+          "scs:name-v2": "SCS-1V-4"
 
     - name: "Create SCS-1V-4-10 SCS flavor"
       openstack.cloud.compute_flavor:
@@ -108,6 +171,13 @@
         vcpus: 1
         disk: 10
         ephemeral: 0
+        extra_specs:
+          "local_storage": "false"
+          "hw_rng:allowed": "True"
+          "scs:cpu-type": "shared-core"
+          "scs:disk0-type": "network"
+          "scs:name-v1": "SCS-1V:4:10"
+          "scs:name-v2": "SCS-1V-4-10"
 
     # vCPU:RAM ratio: 1:2
     - name: "Create SCS-1V-2 SCS flavor"
@@ -119,6 +189,13 @@
         vcpus: 1
         disk: 0
         ephemeral: 0
+        extra_specs:
+          "local_storage": "false"
+          "hw_rng:allowed": "True"
+          "scs:cpu-type": "shared-core"
+          "scs:disk0-type": "network"
+          "scs:name-v1": "SCS-1V:2"
+          "scs:name-v2": "SCS-1V-2"
 
     - name: "Create SCS-1V-2-5 SCS flavor"
       openstack.cloud.compute_flavor:
@@ -129,6 +206,13 @@
         vcpus: 1
         disk: 5
         ephemeral: 0
+        extra_specs:
+          "local_storage": "false"
+          "hw_rng:allowed": "True"
+          "scs:cpu-type": "shared-core"
+          "scs:disk0-type": "network"
+          "scs:name-v1": "SCS-1V:2:5"
+          "scs:name-v2": "SCS-1V-2-5"
 
     # vCPU:RAM ratio: 1:1
     - name: "Create SCS-1L-1 SCS flavor"
@@ -140,6 +224,13 @@
         vcpus: 1
         disk: 0
         ephemeral: 0
+        extra_specs:
+          "local_storage": "false"
+          "hw_rng:allowed": "True"
+          "scs:cpu-type": "crowded-core"
+          "scs:disk0-type": "network"
+          "scs:name-v1": "SCS-1L:1"
+          "scs:name-v2": "SCS-1L-1"
 
     - name: "Create SCS-1L-1-5 SCS flavor"
       openstack.cloud.compute_flavor:
@@ -150,3 +241,10 @@
         vcpus: 1
         disk: 5
         ephemeral: 0
+        extra_specs:
+          "local_storage": "false"
+          "hw_rng:allowed": "True"
+          "scs:cpu-type": "crowded-core"
+          "scs:disk0-type": "network"
+          "scs:name-v1": "SCS-1L:1:5"
+          "scs:name-v2": "SCS-1L-1-5"
