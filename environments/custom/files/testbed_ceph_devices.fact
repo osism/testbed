@@ -5,6 +5,8 @@ import json
 import os
 from subprocess import PIPE, run
 
+NUMBER_OF_DEVICES = -1
+
 # NOTE: Get the partition on which the / fileysystem is located.
 #       inspired by https://bootlin.com/blog/find-root-device/
 result = run(
@@ -67,7 +69,7 @@ for device in devices:
         devices.remove(device)
 
 if len(devices) > 1:
-    print(json.dumps([f"/dev/{x}" for x in devices[:-1]]))
+    print(json.dumps([f"/dev/{x}" for x in devices[:NUMBER_OF_DEVICES]]))
 else:
     # NOTE: If there is only one device for Ceph, this is always used.
     print(json.dumps([f"/dev/{x}" for x in devices]))
