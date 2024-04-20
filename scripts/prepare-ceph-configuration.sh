@@ -9,9 +9,9 @@ MANAGER_VERSION=$(docker inspect --format '{{ index .Config.Labels "org.opencont
 osism apply --environment custom wipe-partitions
 osism apply facts
 
-# In preparation for deployment with Rook, the pre-built LVM2 volumes are always used
-# from OSISM 7 onwards.
 if [[ $MANAGER_VERSION =~ ^7\.[0-9]\.[0-9]$ || $MANAGER_VERSION == "latest" ]]; then
+    # In preparation for deployment with Rook, the pre-built LVM2 volumes are always used
+    # from OSISM 7 onwards.
     sed -i "/^devices:/d" /opt/configuration/inventory/group_vars/testbed-nodes.yml
     osism apply ceph-configure-lvm-volumes
     for node in $(find /opt/configuration/inventory/host_vars -mindepth 1 -type d); do
@@ -22,4 +22,9 @@ if [[ $MANAGER_VERSION =~ ^7\.[0-9]\.[0-9]$ || $MANAGER_VERSION == "latest" ]]; 
     osism reconciler sync
     osism apply ceph-create-lvm-devices
     osism apply facts
+
+    # With OSISM 7 we have introduced a play to manage the Ceph pools independently
+    # of the play for the Ceph OSDs. The openstack_config parameter is therefore removed
+    # and the new ceph-pools play is then used.
+    sed -i "/^openstack_config:/d" /opt/configuration/environments/ceph/configuration.yml
 fi
