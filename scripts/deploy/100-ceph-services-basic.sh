@@ -23,13 +23,6 @@ if [[ $MANAGER_VERSION =~ ^4\.[0-9]\.[0-9]$ ]]; then
     osism apply cephclient
     osism apply ceph-bootstrap-dashboard
 else
-    # With OSISM 7 we have introduced a play to manage the Ceph pools independently
-    # of the play for the Ceph OSDs. The openstack_config parameter is therefore removed
-    # and the new ceph-pools play is then used.
-    if [[ $MANAGER_VERSION =~ ^7\.[0-9]\.[0-9]$ || $MANAGER_VERSION == "latest" ]]; then
-        sed -i "/^openstack_config:/d" /opt/configuration/environments/ceph/configuration.yml
-    fi
-
     osism apply ceph
 
     if [[ $MANAGER_VERSION =~ ^7\.[0-9]\.[0-9]$ || $MANAGER_VERSION == "latest" ]]; then
