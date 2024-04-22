@@ -66,3 +66,6 @@ sudo ln -s /opt/configuration/scripts/upgrade/400-monitoring-services.sh /usr/lo
 
 # create symlinks for bootstrap scripts
 sudo ln -s /opt/configuration/scripts/bootstrap/300-openstack-services.sh /usr/local/bin/bootstrap-openstack
+
+sudo ln -s /opt/configuration/scripts/bootstrap/301-openstack-octavia-amhpora-image.sh /usr/local/bin/bootstrap-octavia
+sudo ln -s /opt/configuration/scripts/bootstrap/302-openstack-k8s-clusterapi-images.sh /usr/local/bin/bootstrap-clusterapi
