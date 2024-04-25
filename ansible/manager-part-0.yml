@@ -155,6 +155,71 @@
           - osism/ansible-collection-services
       when: ansible_distribution == "CentOS"
 
+    - name: Debian specific tasks
+      block:
+      - name: Fail if Debian version is lower than 12
+        ansible.builtin.fail:
+          msg: "Ubuntu version is {{ ansible_distribution_version }}, see https://osism.tech/docs/advanced-guides/testbed#software for required version."
+        when: ansible_distribution == "Debian" and ansible_distribution_version < "12"
+
+      - name: Update APT cache and run dist-upgrade
+        become: true
+        ansible.builtin.apt:
+          upgrade: dist
+          update_cache: true
+          lock_timeout: "{{ apt_lock_timeout }}"
+
+      - name: Set APT options on manager
+        become: true
+        ansible.builtin.shell: |
+          set -o pipefail &&
+          echo 'APT::Acquire::Retries "3";' > /etc/apt/apt.conf.d/80-retries
+          echo '* libraries/restart-without-asking boolean true' | debconf-set-selections
+        args:
+          executable: /bin/bash
+        changed_when: true
+
+      - name: Install packages on manager
+        become: true
+        ansible.builtin.apt:
+          name:
+            - linux-generic-hwe-22.04
+            - python3-netaddr
+            - python3-pip
+          update_cache: true
+        changed_when: true
+
+      - name: Remove existing Ansible package if necessary
+        become: true
+        ansible.builtin.package:
+          name: ansible
+          state: absent
+
+      - name: Install ansible-core on manager
+        become: true
+        ansible.builtin.command: |
+          pip3 install --no-cache-dir 'ansible-core>=2.16.0,<2.17.0'
+        changed_when: true
+
+      - name: Install ansible-core on manager
+        become: true
+        ansible.builtin.command: |
+          pip3 install --no-cache-dir 'ansible-core>=2.16.0,<2.17.0'
+        changed_when: true
+
+      - name: Create source directories
+        become: true
+        ansible.builtin.file:
+          state: directory
+          path: "/opt/src/{{ item }}"
+          recurse: true
+          mode: '0755'
+          owner: debian
+        with_items:
+          - osism/ansible-collection-commons
+          - osism/ansible-collection-services
+      when: ansible_distribution == "Debian"
+
     - name: Copy sources
       ansible.posix.synchronize:
         src: "{{ repo_path }}/{{ item }}"

@@ -5,8 +5,8 @@
 # override:nodes_boot_from_image
 flavor_node               = "XL.mem+"
 flavor_manager            = "XL.mem+"
-image                     = "CentOS Stream 9 LTS x64"
-image_node                = "CentOS Stream 9 LTS x64"
+image                     = "Debian 12"
+image_node                = "Debian 12"
 availability_zone         = "AZ2"
 volume_availability_zone  = "nova"
 network_availability_zone = "nova"

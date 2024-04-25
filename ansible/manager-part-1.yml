@@ -6,7 +6,7 @@
   vars:
     ansible_ssh_user: dragon
     operator_user: dragon
-    repo_path: /home/cloud-user/src/github.com
+    repo_path: /home/debian/src/github.com
     version_manager: latest
     is_zuul: false
 
