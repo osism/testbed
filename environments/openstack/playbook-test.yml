@@ -68,7 +68,7 @@
         cloud: test
         state: present
         name: test
-        mtu: 1350  # NOTE: necessary because VxLAN in Geneve/VxLAN
+        mtu: 1342  # NOTE: necessary because VxLAN in Geneve/VxLAN
 
     - name: Create test subnet
       openstack.cloud.subnet:
