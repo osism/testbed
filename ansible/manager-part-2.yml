@@ -12,6 +12,7 @@
     docker_storage_driver: overlay2
     docker_user: dragon
     docker_version: "5:24.0.9"
+    docker_cli_version: "5:24.0.9"
     docker_opts:
       max-concurrent-downloads: 20
     docker_insecure_registries:
