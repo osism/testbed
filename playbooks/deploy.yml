@@ -134,12 +134,11 @@
           {{ ansible_playbook }} -i {{ terraform_path }}/inventory.{{ cloud_env }} --key-file {{ terraform_path }}/.id_rsa.{{ cloud_env }} manager-part-1.yml -e cloud_env={{ cloud_env }} -e repo_path={{ repo_path }} -e version_manager={{ version_manager }} -e is_zuul={{ is_zuul }}
       changed_when: true
 
-    # NOTE: Errors are ignored as the connection is lost immediately
-    - name: Reboot manager  # noqa ignore-errors
+    - name: Reboot manager
       ansible.builtin.command:
         cmd: "ssh -i {{ terraform_path }}/.id_rsa.{{ cloud_env }} dragon@{{ manager_host }} sudo shutdown -r now"
       changed_when: true
-      ignore_errors: true
+      failed_when: false
 
     - name: Wait up to 300 seconds for port 22 to become open and contain "OpenSSH"
       ansible.builtin.wait_for:
