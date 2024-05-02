@@ -1,4 +1,38 @@
 ---
+- name: Prepare manager part 2
+  hosts: testbed-manager.testbed.osism.xyz
+  connection: local
+  gather_facts: true
+
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+
+    version_manager: latest
+
+  tasks:
+    - name: Set docker version facts for OSISM 6
+      ansible.builtin.set_fact:
+        __docker_version: "5:20.10.24"
+        __docker_cli_version: "5:20.10.24"
+      when:
+        - version_manager != "latest"
+        - version_manager is ansible.builtin.version("7.0.0", '<')
+
+    - name: Set docker version facts for OSISM 7
+      ansible.builtin.set_fact:
+        __docker_version: "5:24.0.9"
+        __docker_cli_version: "5:24.0.9"
+      when:
+        - version_manager != "latest"
+        - version_manager is ansible.builtin.version("7.0.0", '>=')
+
+    - name: Set docker version facts for OSISM latest
+      ansible.builtin.set_fact:
+        __docker_version: "5:24.0.9"
+        __docker_cli_version: "5:24.0.9"
+      when:
+        - version_manager == "latest"
+
 - name: Run manager part 2
   hosts: testbed-manager.testbed.osism.xyz
   connection: local
@@ -13,8 +47,6 @@
     docker_configure_storage_driver: true
     docker_storage_driver: overlay2
     docker_user: dragon
-    docker_version: "5:24.0.9"
-    docker_cli_version: "5:24.0.9"
     docker_opts:
       max-concurrent-downloads: 20
     docker_insecure_registries:
@@ -27,24 +59,10 @@
 
     docker_compose_install_type: package
 
-  tasks:
-    - name: Set docker version facts for OSISM 6
-      ansible.builtin.set_fact:
-        docker_version: "5:20.10.24"
-        docker_cli_version: "5:20.10.24"
-      when:
-        - version_manager != "latest"
-        - version_manager is ansible.builtin.version("7.0.0", '<')
-
-    - name: Set docker version facts for OSISM 7
-      ansible.builtin.set_fact:
-        docker_version: "5:24.0.9"
-        docker_cli_version: "5:24.0.9"
-      when:
-        - version_manager != "latest"
-        - version_manager is ansible.builtin.version("7.0.0", '>=')
-
   roles:
     - role: osism.services.docker
+      vars:
+        docker_version: "{{ __docker_version }}"
+        docker_cli_version: "{{ __docker_cli_version }}"
     - role: osism.commons.docker_compose
     - role: osism.services.rng
