@@ -19,7 +19,7 @@ osism apply ovn
 # In OSISM >= 5.0.0, the switch was made from Elasticsearch / Kibana to Opensearch.
 if [[ $MANAGER_VERSION =~ ^4\.[0-9]\.[0-9]$ || $OPENSTACK_VERSION == "yoga" ]]; then
     osism apply elasticsearch
-    if [[ "$REFSTACK" == "false" ]]; then
+    if [[ "$REFSTACK" == "false" && "$TEMPEST" == "false" ]]; then
         osism apply kibana
     fi
 else

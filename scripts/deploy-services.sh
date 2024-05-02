@@ -29,7 +29,7 @@ sh -c '/opt/configuration/scripts/deploy/100-ceph-services-basic.sh'
 # deploy openstack services
 sh -c '/opt/configuration/scripts/deploy/300-openstack-services-basic.sh'
 
-if [[ "$REFSTACK" == "false" ]]; then
+if [[ "$REFSTACK" == "false" && "$TEMPEST" == "false" ]]; then
     # deploy extended openstack services
     sh -c '/opt/configuration/scripts/deploy/310-openstack-services-extended.sh'
 fi

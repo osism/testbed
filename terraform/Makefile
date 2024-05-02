@@ -21,6 +21,7 @@ KOLLA_NAMESPACE ?= osism
 
 RALLY ?= false
 REFSTACK ?= false
+TEMPEST ?= false
 IS_ZUUL ?= false
 
 APPLY_PARAMS = -auto-approve -parallelism=$(PARALLELISM)
@@ -66,6 +67,7 @@ init:
 	@echo "manager_version = \"$(VERSION_MANAGER)\"" >> $(ENVIRONMENT).auto.tfvars
 	@echo "openstack_version = \"$(VERSION_OPENSTACK)\"" >> $(ENVIRONMENT).auto.tfvars
 	@echo "refstack = \"$(REFSTACK)\"" >> $(ENVIRONMENT).auto.tfvars
+	@echo "tempest = \"$(TEMPEST)\"" >> $(ENVIRONMENT).auto.tfvars
 	@echo "is_zuul = \"$(IS_ZUUL)\"" >> $(ENVIRONMENT).auto.tfvars
 
 	@rm -f *_custom.tf
@@ -135,6 +137,10 @@ rally: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
 refstack: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
 	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
 	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(ENVIRONMENT) $(USERNAME)@$$MANAGER_ADDRESS /opt/configuration/scripts/check/301-openstack-refstack.sh
+
+tempest: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
+	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
+	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(ENVIRONMENT) $(USERNAME)@$$MANAGER_ADDRESS /opt/configuration/scripts/check/302-openstack-tempest.sh
 
 bootstrap: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
 	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
@@ -245,4 +251,4 @@ plan: dry-run
 push: state-push
 tunnel: sshuttle
 
-PHONY: clean console attach detach ssh dry-run list deploy deploy-identity deploy-manager upgrade watch openstack create log login scp copy address check rally refstack deploy-ceph upgrade-ceph bootstrap vpn-sshuttle vpn-wireguard vpn-wireguard-config
+PHONY: clean console attach detach ssh dry-run list deploy deploy-identity deploy-manager upgrade watch openstack create log login scp copy address check rally refstack tempest deploy-ceph upgrade-ceph bootstrap vpn-sshuttle vpn-wireguard vpn-wireguard-config
