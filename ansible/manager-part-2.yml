@@ -7,6 +7,8 @@
   vars:
     ansible_python_interpreter: /usr/bin/python3
 
+    version_manager: latest
+
     docker_configure_repository: true
     docker_configure_storage_driver: true
     docker_storage_driver: overlay2
@@ -24,6 +26,23 @@
       - nexus.testbed.osism.xyz:8193
 
     docker_compose_install_type: package
+
+  tasks:
+    - name: Set docker version facts for OSISM 6
+      ansible.builtin.set_fact:
+        docker_version: "5:20.10.24"
+        docker_cli_version: "5:20.10.24"
+      when:
+        - version_manager != "latest"
+        - version_manager is ansible.builtin.version("7.0.0", '<')
+
+    - name: Set docker version facts for OSISM 7
+      ansible.builtin.set_fact:
+        docker_version: "5:24.0.9"
+        docker_cli_version: "5:24.0.9"
+      when:
+        - version_manager != "latest"
+        - version_manager is ansible.builtin.version("7.0.0", '>=')
 
   roles:
     - role: osism.services.docker

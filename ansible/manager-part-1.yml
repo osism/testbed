@@ -100,5 +100,5 @@
       changed_when: true
 
     - name: Run manager part 2
-      ansible.builtin.command: ansible-playbook -i testbed-manager.testbed.osism.xyz, /opt/configuration/ansible/manager-part-2.yml
+      ansible.builtin.command: "ansible-playbook -i testbed-manager.testbed.osism.xyz, -e version_manager={{ version_manager }} /opt/configuration/ansible/manager-part-2.yml"
       changed_when: true
