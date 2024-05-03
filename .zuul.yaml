@@ -74,6 +74,7 @@
     parent: abstract-testbed-deploy
     vars:
       tempest: true
+      prometheus_alert_status: false
 
 - job:
     name: abstract-testbed-deploy-in-a-nutshell
@@ -164,6 +165,7 @@
     vars:
       manager_version: 8.1.0
       tempst: true
+      prometheus_alert_status: false
 
 - job:
     name: testbed-deploy-stable-ubuntu-22.04
