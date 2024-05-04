@@ -59,6 +59,7 @@ sudo ln -sf /opt/configuration/scripts/deploy/300-openstack-services-basic.sh /u
 sudo ln -sf /opt/configuration/scripts/deploy/400-monitoring-services.sh /usr/local/bin/deploy-monitoring
 
 # create symlinks for upgrade scripts
+sudo ln -sf /opt/configuration/scripts/upgrade/005-kubernetes.sh /usr/local/bin/upgrade-kubernetes
 sudo ln -sf /opt/configuration/scripts/upgrade/100-ceph-services.sh /usr/local/bin/upgrade-ceph
 sudo ln -sf /opt/configuration/scripts/upgrade/200-infrastructure-services-basic.sh /usr/local/bin/upgrade-infrastructure
 sudo ln -sf /opt/configuration/scripts/upgrade/300-openstack-services-basic.sh /usr/local/bin/upgrade-openstack
