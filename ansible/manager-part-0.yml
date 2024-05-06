@@ -13,21 +13,14 @@
   hosts: testbed-manager.testbed.osism.xyz
 
   vars:
-    apt_lock_timeout: 300
     repo_path: /home/ubuntu/src/github.com
-    venv_path: /opt/venv
-    ansible_galaxy: "{{ venv_path }}/bin/ansible-galaxy"
+    apt_lock_timeout: 300
 
   tasks:
     - name: Fail if Ubuntu version is lower than 22.04
       ansible.builtin.fail:
         msg: "Ubuntu version is {{ ansible_distribution_version }}, see https://osism.tech/docs/advanced-guides/testbed#software for required version."
       when: ansible_distribution == "Ubuntu" and ansible_distribution_version < "22.04"
-
-    - name: Get current user
-      ansible.builtin.user:
-        name: "{{ ansible_user }}"
-      register: current_user
 
     - name: Update APT cache and run dist-upgrade
       become: true
@@ -39,81 +32,48 @@
     - name: Set APT options on manager
       become: true
       ansible.builtin.shell: |
-        set -o pipefail
+        set -o pipefail &&
         echo 'APT::Acquire::Retries "3";' > /etc/apt/apt.conf.d/80-retries
         echo '* libraries/restart-without-asking boolean true' | debconf-set-selections
       args:
         executable: /bin/bash
       changed_when: true
 
-    - name: Install HWE kernel package on Ubuntu
+    - name: Install packages on manager
       become: true
       ansible.builtin.apt:
         name:
-          # The correct package name is linux-generic-hwe-22.04 on Ubuntu 22.04
-          # and linux-generic-hwe-24.04 on Ubuntu 24.04.
-          - "linux-generic-hwe-{{ ansible_distribution_version }}"
-      when: ansible_distribution == "Ubuntu"
+          - linux-generic-hwe-22.04
+          - python3-netaddr
+          - python3-pip
+        update_cache: true
+      changed_when: true
 
-    - name: Install python3-venv package
+    - name: Remove existing Ansible package if necessary
       become: true
       ansible.builtin.apt:
-        name: python3-venv
+        name: ansible
+        state: absent
 
-    - name: Create venv directory
+    - name: Install ansible-core on manager
       become: true
-      ansible.builtin.file:
-        owner: "{{ ansible_user }}"
-        group: "{{ current_user.group }}"
-        path: "{{ venv_path }}"
-        state: directory
-        mode: 0755
+      ansible.builtin.command: |
+          pip3 install --no-cache-dir 'ansible-core>=2.16.0,<2.17.0'
+      changed_when: true
 
-    - name: Install netaddr in venv
-      ansible.builtin.pip:
-        umask: "0022"
-        name: netaddr
-        state: present
-        virtualenv: "{{ venv_path }}"
-        virtualenv_command: python3 -m venv
-
-    - name: Install ansible-core in venv
-      ansible.builtin.pip:
-        umask: "0022"
-        name: "ansible-core>=2.16.0,<2.17.0"
-        state: present
-        virtualenv: "{{ venv_path }}"
-        virtualenv_command: python3 -m venv
-
-    - name: Install requests >= 2.32.2
-      ansible.builtin.pip:
-        umask: "0022"
-        name: "requests>=2.32.2"
-        state: present
-        virtualenv: "{{ venv_path }}"
-        virtualenv_command: python3 -m venv
-
-    - name: Install docker >= 7.1.0
-      ansible.builtin.pip:
-        umask: "0022"
-        name: "docker>=7.1.0"
-        state: present
-        virtualenv: "{{ venv_path }}"
-        virtualenv_command: python3 -m venv
-
-    - name: Create directories in /opt/src
+    - name: Create source directories
       become: true
       ansible.builtin.file:
         state: directory
         path: "/opt/src/{{ item }}"
         recurse: true
-        mode: 0755
-        owner: "{{ ansible_user }}"
+        mode: '0755'
+        owner: ubuntu
       with_items:
         - osism/ansible-collection-commons
         - osism/ansible-collection-services
 
-    - name: Sync sources in /opt/src
+    - name: Copy sources
       ansible.posix.synchronize:
         src: "{{ repo_path }}/{{ item }}"
         delete: true
@@ -127,28 +87,18 @@
       ansible.builtin.file:
         state: directory
         path: /usr/share/ansible
-        mode: 0755
+        mode: '0755'
 
-    - name: Install collections from Ansible galaxy
+    - name: Install collections
       become: true
-      ansible.builtin.command: |
-        {{ ansible_galaxy }} collection install --collections-path /usr/share/ansible/collections {{ item }}
-      register: result
-      changed_when: "'was installed successfully' in result.stdout"
-      loop:
-        - ansible.netcommon
-        - ansible.posix
-        - "community.docker>=3.10.2"
-
-    - name: Install local collections
-      become: true
-      ansible.builtin.command: |
-        {{ ansible_galaxy }} collection install --collections-path /usr/share/ansible/collections /opt/src/osism/{{ item }}
-      register: result
-      changed_when: "'was installed successfully' in result.stdout"
-      loop:
-        - ansible-collection-commons
-        - ansible-collection-services
+      ansible.builtin.shell: |
+          ansible-galaxy collection install --collections-path /usr/share/ansible/collections ansible.netcommon
+          ansible-galaxy collection install --collections-path /usr/share/ansible/collections ansible.posix
+          ansible-galaxy collection install --collections-path /usr/share/ansible/collections community.docker
+          ansible-galaxy collection install --collections-path /usr/share/ansible/collections /opt/src/osism/ansible-collection-commons
+          ansible-galaxy collection install --collections-path /usr/share/ansible/collections /opt/src/osism/ansible-collection-services
+          chmod -R +r /usr/share/ansible
+      changed_when: true
 
 - name: Create operator user
   hosts: testbed-manager.testbed.osism.xyz
@@ -160,26 +110,5 @@
     operator_authorized_keys:
       - "{{ lookup('file', '.id_rsa.' + cloud_env + '.pub') }}"
 
-    venv_path: /opt/venv
-    ansible_python_interpreter: "{{ venv_path }}/bin/python3"
-
   roles:
     - role: osism.commons.operator
-
-- name: Run manager part 0
-  hosts: testbed-manager.testbed.osism.xyz
-
-  vars:
-    operator_user: dragon
-    operator_group: dragon
-    venv_path: /opt/venv
-
-  tasks:
-    - name: "Recursively change ownership of {{ venv_path }}"
-      become: true
-      ansible.builtin.file:
-        path: "{{ venv_path }}"
-        state: directory
-        owner: "{{ operator_user }}"
-        group: "{{ operator_group }}"
-        recurse: true

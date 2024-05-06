@@ -4,16 +4,15 @@ repositories:
   ansible-collection-commons:
     path: github.com/osism/ansible-collection-commons
     repo: https://github.com/osism/ansible-collection-commons
-    branch: main
   ansible-collection-services:
     path: github.com/osism/ansible-collection-services
     repo: https://github.com/osism/ansible-collection-services
-    branch: main
+    branch: test-ubuntu_24.04
   terraform-base:
     path: github.com/osism/terraform-base
     repo: https://github.com/osism/terraform-base
-    branch: main
+    branch: test-ubuntu_24.04
   testbed:
     path: github.com/osism/testbed
     repo: https://github.com/osism/testbed
-    branch: main
+    branch: test-ubuntu_24.04
