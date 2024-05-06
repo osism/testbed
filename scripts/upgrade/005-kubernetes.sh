@@ -8,8 +8,5 @@ MANAGER_VERSION=$(docker inspect --format '{{ index .Config.Labels "org.opencont
 
 if [[ $MANAGER_VERSION == "latest" ]]; then
     osism apply kubernetes
-fi
-
-if [[ $MANAGER_VERSION =~ ^7\.[0-9]\.[0-9]?$ || $MANAGER_VERSION == "latest" ]]; then
     osism apply clusterapi
 fi
