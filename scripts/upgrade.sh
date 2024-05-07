@@ -26,8 +26,14 @@ fi
 
 /opt/configuration/scripts/set-kolla-namespace.sh $KOLLA_NAMESPACE
 
-# Sync configuration repository
-sh -c '/opt/configuration/scripts/sync-configuration-repository.sh'
+# Sync testbed repo with generics
+pushd /opt/configuration
+pip3 install --no-cache-dir python-gilt==1.2.3
+export PATH=$PATH:/home/dragon/.local/bin
+GILT=$(which gilt)
+${GILT} overlay
+${GILT} overlay
+popd
 
 # upgrade manager
 osism update manager
@@ -41,7 +47,7 @@ docker compose --project-directory /opt/manager ps
 docker compose --project-directory /opt/netbox ps
 
 # disable ara service
-if [[ -e /etc/osism-ci-image || "$ARA" == "false" ]]; then
+if [[ -e /etc/osism-ci-image ]]; then
     sh -c '/opt/configuration/scripts/disable-ara.sh'
 fi
 

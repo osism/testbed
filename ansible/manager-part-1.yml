@@ -5,14 +5,10 @@
 
   vars:
     ansible_ssh_user: dragon
-    apt_lock_timeout: 300
     operator_user: dragon
     repo_path: /home/ubuntu/src/github.com
     version_manager: latest
     is_zuul: false
-
-    venv_path: /opt/venv
-    ansible_playbook: "{{ venv_path }}/bin/ansible-playbook"
 
   tasks:
     - name: Copy SSH public key
@@ -46,45 +42,19 @@
         delete: true
         dest: /opt/configuration
 
-    - name: Install required packages
+    - name: Install python-gilt on manager
       become: true
-      ansible.builtin.apt:
-        name: "{{ item }}"
-        state: present
-        lock_timeout: "{{ apt_lock_timeout }}"
-      loop:
-        - build-essential
-        - python3-dev
+      ansible.builtin.command: |
+          pip3 install --no-cache-dir python-gilt==1.2.3
+      when: version_manager != "latest"
+      changed_when: true
 
-    - name: Remove some python packages
-      become: true
-      ansible.builtin.apt:
-        state: absent
-        name:
-          - python3-docker
-          - python3-requests
-
-    - name: Install python requirements in venv
-      ansible.builtin.pip:
-        umask: "0022"
-        name: "{{ item }}"
-        state: present
-        virtualenv: "{{ venv_path }}"
-        virtualenv_command: python3 -m venv
-      loop:
-        - netifaces
-        - "python-gilt==1.2.3"
-        - "requests>=2.32.2"
-        - "docker>=7.1.0"
-
-    - name: Sync configuration with generics
-      ansible.builtin.shell: |
-          set -o pipefail
-          source {{ venv_path }}/bin/activate
-          MANAGER_VERSION={{ version_manager }} gilt overlay
-      args:
+    # shell required because of: command module does not accept
+    # setting environment variables inline.
+    - name: Sync configuration with generics  # noqa: command-instead-of-shell
+      ansible.builtin.shell:
         chdir: /opt/configuration
-        executable: /bin/bash
+        cmd: MANAGER_VERSION={{ version_manager }} gilt overlay
       when: version_manager != "latest"
       changed_when: true
 
@@ -130,5 +100,5 @@
       changed_when: true
 
     - name: Run manager part 2
-      ansible.builtin.command: "{{ ansible_playbook }} -i testbed-manager.testbed.osism.xyz, -e version_manager={{ version_manager }} /opt/configuration/ansible/manager-part-2.yml"
+      ansible.builtin.command: "ansible-playbook -i testbed-manager.testbed.osism.xyz, -e version_manager={{ version_manager }} /opt/configuration/ansible/manager-part-2.yml"
       changed_when: true
