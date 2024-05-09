@@ -118,6 +118,19 @@ parser.add_argument(
 
 args = parser.parse_args()
 
+try:
+    assert sys.version_info >= (3, 10)
+except AssertionError:
+    print("ERROR: Python version >= 3.10 is required to work with the OSISM Testbed.")
+    print()
+    print(f"Your version: {sys.version}")
+    print()
+    print("Further details in the Ansible support matrix:")
+    print(
+        "https://docs.ansible.com/ansible/latest/reference_appendices/release_and_maintenance.html#ansible-core-support-matrix"
+    )
+    sys.exit(1)
+
 with open(args.config, "r") as file:
     data = yaml.safe_load(file)
 
