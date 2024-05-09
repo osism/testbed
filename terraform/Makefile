@@ -49,16 +49,17 @@ else
   OPEN_CMD := open
 endif
 
+.PHONY: reset
 reset:
 	@rm -rf .terraform/providers
 
+.PHONY: init
 init:
 	@if [ ! -d .terraform/providers ]; then $(TERRAFORM) init -upgrade; fi
 
 	@if [ ! -f backend.tf ]; then \
 		$(TERRAFORM) workspace select -or-create ${ENVIRONMENT}; \
 	fi
-
 
 	@rm -f *.auto.tfvars
 	@cp environments/$(ENVIRONMENT).tfvars $(ENVIRONMENT).auto.tfvars
@@ -82,76 +83,96 @@ init:
 
 	@$(TERRAFORM) fmt
 
+.PHONY: validate
 validate: init
 	@$(TERRAFORM) validate $(PARAMS)
 
+.PHONY: attach
 attach: init
 	@$(TERRAFORM) import $(RESOURCE) $(PARAMS)
 
+.PHONY: detach
 detach: init
 	@$(TERRAFORM) state rm $(RESOURCE) $(PARAMS)
 
+.PHONY: state-push
 state-push: init
 	@$(TERRAFORM) state push $(STATE)
 
+.PHONY: dry-run
 dry-run: init
 	@$(TERRAFORM) plan $(PARAMS)
 
+.PHONY: create
 create: init
 	@touch .deploy.$(ENVIRONMENT)
 	@echo "configuration_version = \"$(CONFIGURATION)\"" >> $(ENVIRONMENT).auto.tfvars
 	@$(TERRAFORM) apply $(APPLY_PARAMS) $(PARAMS)
 
+.PHONY: deploy
 deploy: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
 	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
 	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(ENVIRONMENT) $(USERNAME)@$$MANAGER_ADDRESS "/opt/configuration/scripts/deploy.sh"
 
+.PHONY: deploy-ceph
 deploy-ceph: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
 	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
 	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(ENVIRONMENT) $(USERNAME)@$$MANAGER_ADDRESS "/opt/configuration/scripts/deploy-ceph-services.sh"
 
+.PHONY: deploy-manager
 deploy-manager: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
 	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
 	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(ENVIRONMENT) $(USERNAME)@$$MANAGER_ADDRESS "/opt/configuration/scripts/deploy-manager.sh"
 
+.PHONY: deploy-identity
 deploy-identity: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
 	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
 	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(ENVIRONMENT) $(USERNAME)@$$MANAGER_ADDRESS "/opt/configuration/scripts/deploy-identity-services.sh"
 
+.PHONY: upgrade
 upgrade: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
 	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
 	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(ENVIRONMENT) $(USERNAME)@$$MANAGER_ADDRESS "/opt/configuration/scripts/upgrade.sh $(VERSION_MANAGER) $(VERSION_CEPH) $(VERSION_OPENSTACK) $(KOLLA_NAMESPACE)"
 
+.PHONY: upgrade-ceph
 upgrade-ceph: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
 	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
 	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(ENVIRONMENT) $(USERNAME)@$$MANAGER_ADDRESS "/opt/configuration/scripts/upgrade-ceph-services.sh $(VERSION_MANAGER) $(VERSION_CEPH)"
 
+.PHONY: check
 check: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
 	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
 	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(ENVIRONMENT) $(USERNAME)@$$MANAGER_ADDRESS /opt/configuration/scripts/check.sh
 
+.PHONY: rally
 rally: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
 	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
 	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(ENVIRONMENT) $(USERNAME)@$$MANAGER_ADDRESS /opt/configuration/contrib/rally/rally.sh
 
+.PHONY: refstack
 refstack: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
 	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
 	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(ENVIRONMENT) $(USERNAME)@$$MANAGER_ADDRESS /opt/configuration/scripts/check/301-openstack-refstack.sh
 
+.PHONY: tempest
 tempest: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
 	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
 	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(ENVIRONMENT) $(USERNAME)@$$MANAGER_ADDRESS /opt/configuration/scripts/check/302-openstack-tempest.sh
 
+.PHONY: bootstrap
 bootstrap: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
 	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
 	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(ENVIRONMENT) $(USERNAME)@$$MANAGER_ADDRESS /opt/configuration/scripts/bootstrap.sh
 
+.PHONY: graph
 graph: init
 	@$(TERRAFORM) graph
 
+.PHONY: show
 show: init
 	@$(TERRAFORM) show
 
+.PHONY: clean
 clean: init
 	@$(TERRAFORM) destroy $(APPLY_PARAMS) $(PARAMS)
 	@rm -f .deploy.$(ENVIRONMENT) .MANAGER_ADDRESS.$(ENVIRONMENT)
@@ -164,18 +185,22 @@ clean: init
 	@rm -f wg-*.conf
 	@rm -rf .terraform .terraform.lock.hcl
 
+.PHONY: list
 list: init
 	@$(TERRAFORM) state list
 
+.PHONY: ssh
 ssh: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
 	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
 	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(ENVIRONMENT) $(USERNAME)@$$MANAGER_ADDRESS
 
+.PHONY: vpn-wireguard-config
 vpn-wireguard-config: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
 	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
 	scp -o StrictHostKeyChecking=no -i .id_rsa.$(ENVIRONMENT) $(PARAMS) $(USERNAME)@$$MANAGER_ADDRESS:/home/dragon/wireguard-client.conf $(PWD)/wg-$(ENVIRONMENT).conf
 	@echo Wireguard configuration saved in $(PWD)/wg-$(ENVIRONMENT).conf
 
+.PHONY: vpn-wireguard
 vpn-wireguard: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT) vpn-wireguard-config
 	sudo wg-quick down $(PWD)/wg-$(ENVIRONMENT).conf || true
 	sudo wg-quick up $(PWD)/wg-$(ENVIRONMENT).conf
@@ -183,21 +208,26 @@ vpn-wireguard: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT) vpn-wiregu
 	@read -p "STOP?" CONT
 	sudo wg-quick down $(PWD)/wg-$(ENVIRONMENT).conf
 
+.PHONY: scp
 scp: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
 	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
 	scp -o StrictHostKeyChecking=no -i .id_rsa.$(ENVIRONMENT) $(PARAMS) $(USERNAME)@$$MANAGER_ADDRESS:$(SOURCE) .
 
+.PHONY: vpn-sshuttle
 vpn-sshuttle: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
 	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
 	sshuttle --ssh-cmd "ssh -o StrictHostKeyChecking=no -i .id_rsa.$(ENVIRONMENT) " -r $(USERNAME)@$$MANAGER_ADDRESS 192.168.16.0/20 192.168.112.0/20
 
+.PHONY: address
 address: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
 	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
 	echo $$MANAGER_ADDRESS
 
+.PHONY: console
 console: .deploy.$(ENVIRONMENT)
 	@$(OPENSTACK) console url show testbed-$(CONSOLE)
 
+.PHONY: log
 log: .deploy.$(ENVIRONMENT)
 	@$(OPENSTACK) console log show testbed-$(CONSOLE)
 
@@ -214,6 +244,7 @@ log: .deploy.$(ENVIRONMENT)
 	echo "$$PRIVATE_KEY" > $@; \
         chmod 0600 $@
 
+.PHONY: watch
 watch: .id_rsa.$(ENVIRONMENT) .MANAGER_ADDRESS.$(ENVIRONMENT)
 	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
 	DISP=0; \
@@ -233,22 +264,32 @@ watch: .id_rsa.$(ENVIRONMENT) .MANAGER_ADDRESS.$(ENVIRONMENT)
 	done;
 	#@$(OPENSTACK) server list
 
+.PHONY: ping
 ping: .MANAGER_ADDRESS.$(ENVIRONMENT)
 	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
 	ping -c3 $$MANAGER_ADDRESS
 
+.PHONY: openstack
 openstack: init
 	@$(OPENSTACK)
 
+.PHONY: endpoints
 endpoints: init
 	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
 	echo "| ARA        | http://$$MANAGER_ADDRESS:8120  |"; \
 	echo "| phpMyAdmin | http://$$MANAGER_ADDRESS:8110  |";
 
+.PHONY: coy
 copy: scp
-login: ssh
-plan: dry-run
-push: state-push
-tunnel: sshuttle
 
-PHONY: clean console attach detach ssh dry-run list deploy deploy-identity deploy-manager upgrade watch openstack create log login scp copy address check rally refstack tempest deploy-ceph upgrade-ceph bootstrap vpn-sshuttle vpn-wireguard vpn-wireguard-config
+.PHONY: login
+login: ssh
+
+.PHONY: plan
+plan: dry-run
+
+.PHONY: push
+push: state-push
+
+.PHONY: tunnel
+tunnel: sshuttle
