@@ -14,21 +14,26 @@ TERRAFORM_BLUEPRINT ?= testbed-default
 venv = . venv/bin/activate
 export PATH := ${PATH}:${PWD}/venv/bin
 
+.PHONY: help
 help:  ## Display this help.
 	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target>\033[0m\n"} /^[a-zA-Z_0-9-]+:.*?##/ { printf "  \033[36m%-20s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
 
+.PHONY: setup
 setup: ## Prepare the repository.
 	@contrib/setup-testbed.py --environment_check $(ENVIRONMENT)
 
+.PHONY: clean
 clean: setup ## Destroy infrastructure with OpenTofu.
 	make -C terraform \
 	  ENVIRONMENT=$(ENVIRONMENT) \
 	  TERRAFORM=$(TERRAFORM) \
 	  clean
 
+.PHONY: wipe-local-install
 wipe-local-install: ## Wipe the software dependencies in `venv`.
 	rm -rf venv .src
 
+.PHONY: create
 create: prepare ## Create required infrastructure with OpenTofu.
 	@contrib/setup-testbed.py --environment_check $(ENVIRONMENT)
 	make -C terraform \
@@ -39,26 +44,31 @@ create: prepare ## Create required infrastructure with OpenTofu.
 	  VERSION_OPENSTACK=$(VERSION_OPENSTACK) \
 	  create
 
+.PHONY: login
 login: setup ## Log in on the manager.
 	@make -C terraform \
 	  ENVIRONMENT=$(ENVIRONMENT) \
 	  login
 
+.PHONY: vpn-wireguard
 vpn-wireguard: setup ## Establish a wireguard vpn tunnel.
 	@make -C terraform \
 	  ENVIRONMENT=$(ENVIRONMENT) \
 	  vpn-wireguard
 
+.PHONY: vpn-wireguard-config
 vpn-wireguard-config: setup ## Get the configuration for the wireguard vpn tunnel.
 	@make -C terraform \
 	  ENVIRONMENT=$(ENVIRONMENT) \
 	  vpn-wireguard-config
 
+.PHONY: vpn-sshuttle
 vpn-sshuttle: setup ## Establish a sshuttle vpn tunnel.
 	@make -C terraform \
 	  ENVIRONMENT=$(ENVIRONMENT) \
 	  vpn-sshuttle
 
+.PHONY: bootstrap
 bootstrap: setup create ## Bootstrap everything.
 	${venv} ; ansible-playbook playbooks/deploy.yml \
 	  -i ansible/localhost_inventory.yaml \
@@ -73,23 +83,27 @@ bootstrap: setup create ## Bootstrap everything.
 	  -e version_manager=$(VERSION_MANAGER) \
 	  -e version_openstack=$(VERSION_OPENSTACK)
 
+.PHONY: manager
 manager: setup bootstrap ## Deploy only the manager service.
 	make -C terraform \
 	  ENVIRONMENT=$(ENVIRONMENT) \
 	  TERRAFORM=$(TERRAFORM) \
 	  deploy-manager
 
+.PHONY: identity
 identity: setup manager ## Deploy only identity services.
 	make -C terraform \
 	  ENVIRONMENT=$(ENVIRONMENT) \
 	  TERRAFORM=$(TERRAFORM) \
 	  deploy-identity
 
+.PHONY: ceph
 ceph: setup manager ## Deploy only ceph services.
 	make -C terraform \
 	  ENVIRONMENT=$(ENVIRONMENT) \
 	  deploy-ceph
 
+.PHONY: deploy
 deploy: setup bootstrap ## Deploy everything and then check it.
 	make -C terraform \
 	  ENVIRONMENT=$(ENVIRONMENT) \
@@ -104,6 +118,7 @@ deploy: setup bootstrap ## Deploy everything and then check it.
 	  TERRAFORM=$(TERRAFORM) \
 	  check
 
+.PHONY: prepare
 prepare: deps ## Run local preperations.
 	${venv}; ansible-playbook -i localhost, ansible/check-local-versions.yml
 	@contrib/setup-testbed.py --prepare
@@ -129,6 +144,5 @@ venv/bin/tofu: venv/bin/activate
 	tofu version
 	touch venv/bin/tofu
 
+.PHONY: deps
 deps: venv/bin/tofu venv/bin/activate ## Install software preconditions to `venv`.
-
-phony: bootstrap clean clean-local create deploy identity login manager prepare ceph deps venv/bin/activate venv/bin/tofu vpn-sshuttle vpn-wireguard vpn-wireguard-config wipe-local-install
