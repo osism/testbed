@@ -28,11 +28,12 @@ fi
 
 # Sync testbed repo with generics
 pushd /opt/configuration
-pip3 install --no-cache-dir python-gilt==1.2.3
-export PATH=$PATH:/home/dragon/.local/bin
+source /opt/venv/bin/activate
+pip3 install --no-cache-dir python-gilt==1.2.3 requests
 GILT=$(which gilt)
 ${GILT} overlay
 ${GILT} overlay
+deactivate
 popd
 
 # upgrade manager

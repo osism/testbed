@@ -75,13 +75,18 @@ def clone_repo(path: str, repo_address: str, branch: str) -> None:
         print(f"+ {repo_command}")
         subprocess.check_output(repo_command, shell=True)
 
-    repo_command = f"git -C {checkout_path} checkout {branch or 'main'}"
+    repo_command = f"git -C {checkout_path} checkout 'main'"
     print(f"+ {repo_command}")
     subprocess.check_output(repo_command, shell=True)
 
     repo_command = f"git -C {checkout_path} pull"
     print(f"+ {repo_command}")
     subprocess.check_output(repo_command, shell=True)
+
+    if branch and branch != "main":
+        repo_command = f"git -C {checkout_path} checkout {branch}"
+        print(f"+ {repo_command}")
+        subprocess.check_output(repo_command, shell=True)
 
 
 basedir = os.path.realpath(os.path.dirname(os.path.realpath(__file__)) + "/../")
