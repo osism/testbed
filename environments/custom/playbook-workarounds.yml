@@ -37,18 +37,20 @@
       changed_when: false
       failed_when: false  # netplan apply can lead to disconnections, ignore them
 
-- name: Add testbed custom CA to non-manager nodes
+- name: Add custom CA certificates to non-manager nodes
   hosts: all:!manager
   gather_facts: false
 
   tasks:
-    - name: Copy testbed crt
+    - name: Copy custom CA certificates
       become: true
       ansible.builtin.copy:
-        src: /opt/configuration/environments/kolla/certificates/ca/testbed.crt
+        src: "{{ item }}"
         dest: /usr/local/share/ca-certificates/
-        mode: '0644'
+        mode: 0644
         owner: root
+      with_fileglob:
+        - "/opt/configuration/environments/kolla/certificates/ca/*.crt"
 
     - name: Run update-ca-certificates
       become: true

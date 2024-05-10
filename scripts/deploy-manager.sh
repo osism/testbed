@@ -67,6 +67,9 @@ sudo ln -sf /opt/configuration/scripts/upgrade/400-monitoring-services.sh /usr/l
 
 # create symlinks for bootstrap scripts
 sudo ln -sf /opt/configuration/scripts/bootstrap/300-openstack-services.sh /usr/local/bin/bootstrap-openstack
-
 sudo ln -sf /opt/configuration/scripts/bootstrap/301-openstack-octavia-amhpora-image.sh /usr/local/bin/bootstrap-octavia
 sudo ln -sf /opt/configuration/scripts/bootstrap/302-openstack-k8s-clusterapi-images.sh /usr/local/bin/bootstrap-clusterapi
+
+if [[ "$EXTERNAL_API" == "true" ]]; then
+    sh -c '/opt/configuration/scripts/customisations/external-api.sh'
+fi
