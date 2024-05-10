@@ -5,7 +5,12 @@ set -e
 source /opt/manager-vars.sh
 source /opt/configuration/scripts/include.sh
 
-/opt/configuration/scripts/set-manager-version.sh $MANAGER_VERSION
+# The latest version of the Manager is used by default. If a different
+# version is to be used, it must be used accordingly.
+
+if [[ $MANAGER_VERSION != "latest" ]]; then
+    /opt/configuration/scripts/set-manager-version.sh $MANAGER_VERSION
+fi
 
 # For a stable release, the versions of Ceph and OpenStack to use
 # are set by the version of the stable release (set via the
@@ -16,10 +21,12 @@ if [[ $MANAGER_VERSION == "latest" ]]; then
     /opt/configuration/scripts/set-openstack-version.sh $OPENSTACK_VERSION
 fi
 
+source /opt/venv/bin/activate
 ansible-playbook \
   -i testbed-manager.testbed.osism.xyz, \
   --vault-password-file /opt/configuration/environments/.vault_pass \
   /opt/configuration/ansible/manager-part-3.yml
+deactivate
 
 cp /home/dragon/.ssh/id_rsa.pub /opt/ansible/secrets/id_rsa.operator.pub
 

@@ -5,17 +5,12 @@
   gather_facts: false
 
   vars:
-    ansible_python_interpreter: /usr/bin/python3
+    venv_path: /opt/venv
+    ansible_python_interpreter: "{{ venv_path }}/bin/python3"
+
     apt_lock_timeout: 300
 
   tasks:
-    - name: Install required packages
-      become: true
-      ansible.builtin.apt:
-        name: python3-netifaces
-        state: present
-        lock_timeout: "{{ apt_lock_timeout }}"
-
     - name: Create custom facts directory
       become: true
       ansible.builtin.file:
@@ -43,6 +38,9 @@
   gather_facts: true
 
   vars:
+    venv_path: /opt/venv
+    ansible_python_interpreter: "{{ venv_path }}/bin/python3"
+
     images:
       - "{{ ara_server_image }}"
       - "{{ ara_server_mariadb_image }}"
@@ -142,7 +140,8 @@
   gather_facts: true
 
   vars:
-    ansible_python_interpreter: /usr/bin/python3
+    venv_path: /opt/venv
+    ansible_python_interpreter: "{{ venv_path }}/bin/python3"
 
   vars_files:
     - /opt/configuration/inventory/group_vars/testbed-managers.yml
@@ -180,7 +179,9 @@
   gather_facts: true
 
   vars:
-    ansible_python_interpreter: /usr/bin/python3
+    venv_path: /opt/venv
+    ansible_python_interpreter: "{{ venv_path }}/bin/python3"
+
     manager_service_restart: false
 
   vars_files:

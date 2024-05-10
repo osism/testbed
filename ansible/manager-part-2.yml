@@ -5,7 +5,8 @@
   gather_facts: true
 
   vars:
-    ansible_python_interpreter: /usr/bin/python3
+    venv_path: /opt/venv
+    ansible_python_interpreter: "{{ venv_path }}/bin/python3"
 
     version_manager: latest
 
@@ -39,7 +40,8 @@
   gather_facts: true
 
   vars:
-    ansible_python_interpreter: /usr/bin/python3
+    venv_path: /opt/venv
+    ansible_python_interpreter: "{{ venv_path }}/bin/python3"
 
     version_manager: latest
 

@@ -7,10 +7,10 @@
     - src: src/render-images.py
       dst: environments/manager/
       post_commands:
-        - python3 render-images.py
+        - /opt/configuration/scripts/wrapper-gilt.sh render-images
         - rm render-images.py
     - src: src/set-versions.py
       dst: environments/
       post_commands:
-        - python3 set-versions.py
+        - /opt/configuration/scripts/wrapper-gilt.sh set-versions
         - rm set-versions.py

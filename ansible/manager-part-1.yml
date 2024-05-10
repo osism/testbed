@@ -5,10 +5,14 @@
 
   vars:
     ansible_ssh_user: dragon
+    apt_lock_timeout: 300
     operator_user: dragon
     repo_path: /home/ubuntu/src/github.com
     version_manager: latest
     is_zuul: false
+
+    venv_path: /opt/venv
+    ansible_playbook: "{{ venv_path }}/bin/ansible-playbook"
 
   tasks:
     - name: Copy SSH public key
@@ -42,12 +46,28 @@
         delete: true
         dest: /opt/configuration
 
-    - name: Install python-gilt on manager
+    - name: Install required packages
       become: true
-      ansible.builtin.command: |
-          pip3 install --no-cache-dir python-gilt==1.2.3
-      when: version_manager != "latest"
-      changed_when: true
+      ansible.builtin.apt:
+        name: "{{ item }}"
+        state: present
+        lock_timeout: "{{ apt_lock_timeout }}"
+      loop:
+        - build-essential
+        - python3-dev
+
+    - name: Install python requirements in venv
+      ansible.builtin.pip:
+        umask: "0022"
+        name: "{{ item }}"
+        state: present
+        virtualenv: "{{ venv_path }}"
+        virtualenv_command: python3 -m venv
+      loop:
+        - docker
+        - netifaces
+        - "python-gilt==1.2.3"
+        - requests
 
     # shell required because of: command module does not accept
     # setting environment variables inline.
@@ -100,5 +120,5 @@
       changed_when: true
 
     - name: Run manager part 2
-      ansible.builtin.command: "ansible-playbook -i testbed-manager.testbed.osism.xyz, -e version_manager={{ version_manager }} /opt/configuration/ansible/manager-part-2.yml"
+      ansible.builtin.command: "{{ ansible_playbook }} -i testbed-manager.testbed.osism.xyz, -e version_manager={{ version_manager }} /opt/configuration/ansible/manager-part-2.yml"
       changed_when: true
