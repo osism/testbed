@@ -70,6 +70,7 @@
     pre-run: playbooks/managerless/pre.yml
     run: playbooks/managerless/deploy.yml
     post-run: playbooks/managerless/post.yml
+    cleanup-run: playbooks/managerless/cleanup.yml
     required-projects:
       - osism/terraform-base
     timeout: 10800
