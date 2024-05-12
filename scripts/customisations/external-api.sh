@@ -40,6 +40,7 @@ cat >> /opt/configuration/environments/infrastructure/configuration.yml <<%EOF
 traefik_ports_extra:
   - 5000
   - 5050
+  - 6080
   - 6385
   - 6780
   - 8774
@@ -111,6 +112,10 @@ traefik_configuration_dynamic:
         loadBalancer:
           servers:
             - address: "192.168.16.254:5050"
+      service-novnc:
+        loadBalancer:
+          servers:
+            - address: "192.168.16.254:6080"
     routers:
       router-horizon:
         rule: "HostSNI(\`${api_fqdn}\`)"
@@ -208,6 +213,13 @@ traefik_configuration_dynamic:
         service: service-ironic-inspector
         entryPoints:
           - port_5050
+        tls:
+          passthrough: true
+      router-novnc:
+        rule: "HostSNI(\`${api_fqdn}\`)"
+        service: service-novnc
+        entryPoints:
+          - port_6080
         tls:
           passthrough: true
 %EOF
