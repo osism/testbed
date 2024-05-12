@@ -4,10 +4,22 @@
   gather_facts: false
 
   tasks:
-    - name: Wipe partitions with wipefs
+    # https://github.com/rook/rook/issues/6865#issuecomment-756698522
+    - name: Remove all ceph related logical devices
       become: true
       ansible.builtin.shell: |
-        wipefs --all "{{ item }}"
-        dd if=/dev/zero of="{{ item }}" bs=1M count=32
+        set -o pipefail
+        ls /dev/mapper/ceph-* | xargs -I% -- dmsetup remove %
+      changed_when: false
+
+    - name: Wipe partitions with wipefs
+      become: true
+      ansible.builtin.command: "wipefs --all {{ item }}"
+      changed_when: false
+      with_items: "{{ ansible_local.testbed_ceph_devices_all }}"
+
+    - name: Overwrite first 32M with zeros
+      become: true
+      ansible.builtin.command: "dd if=/dev/zero of={{ item }} bs=1M count=32 oflag=direct,dsync"
       changed_when: false
       with_items: "{{ ansible_local.testbed_ceph_devices_all }}"
