@@ -69,12 +69,12 @@
         - "python-gilt==1.2.3"
         - requests
 
-    # shell required because of: command module does not accept
-    # setting environment variables inline.
-    - name: Sync configuration with generics  # noqa: command-instead-of-shell
-      ansible.builtin.shell:
+    - name: Sync configuration with generics
+      ansible.builtin.shell: |
+          source {{ venv_path }}/bin/activate
+          MANAGER_VERSION={{ version_manager }} gilt overlay
+      args:
         chdir: /opt/configuration
-        cmd: MANAGER_VERSION={{ version_manager }} gilt overlay
       when: version_manager != "latest"
       changed_when: true
 
