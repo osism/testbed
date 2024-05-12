@@ -1,5 +1,6 @@
 # customisation:access_floatingip
 # customisation:default
+# customisation:external_api
 # customisation:neutron_floatingip
 # override:manager_boot_from_volume
 # override:neutron_router_enable_snat
@@ -15,3 +16,4 @@ volume_size_storage       = "10"
 public                    = "admin_external_net"
 dns_nameservers           = ["9.9.9.9"]
 number_of_volumes         = "0"
+external_api              = true
