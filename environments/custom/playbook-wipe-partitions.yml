@@ -10,6 +10,8 @@
       ansible.builtin.shell: |
         set -o pipefail
         ls /dev/mapper/ceph-* | xargs -I% -- dmsetup remove %
+      args:
+        executable: /bin/bash
       changed_when: false
 
     - name: Wipe partitions with wipefs
