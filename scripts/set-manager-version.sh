@@ -15,12 +15,5 @@ if [[ $VERSION != "latest" ]]; then
 
 fi
 
-# Sync testbed repo with generics
-pushd /opt/configuration
-source /opt/venv/bin/activate
-pip3 install --no-cache-dir python-gilt==1.2.3 requests
-GILT=$(which gilt)
-${GILT} overlay
-${GILT} overlay
-deactivate
-popd
+# Sync configuration repository
+sh -c '/opt/configuration/scripts/sync-configuration-repository.sh'

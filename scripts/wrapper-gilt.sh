@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
-source /opt/venv/bin/activate
+if [[ -e /opt/venv/bin/activate ]]; then
+    source /opt/venv/bin/activate
+fi
+
 if [[ $1 == "set-versions" ]]; then
     pushd /opt/configuration/environments
     python3 set-versions.py
@@ -12,4 +15,7 @@ elif [[ $1 == "render-images" ]]; then
 else
     echo "unsupported script $1"
 fi
-deactivate
+
+if [[ -e /opt/venv/bin/activate ]]; then
+    deactivate
+fi

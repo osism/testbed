@@ -4,7 +4,9 @@ set -e
 
 source /opt/manager-vars.sh
 
-source /opt/venv/bin/activate
+if [[ -e /opt/venv/bin/activate ]]; then
+    source /opt/venv/bin/activate
+fi
 
 # prepare fqdn
 api_fqdn="api-${MANAGER_PUBLIC_IP_ADDRESS//./-}.traefik.me"
@@ -224,7 +226,9 @@ traefik_configuration_dynamic:
           passthrough: true
 %EOF
 
-deactivate
+if [[ -e /opt/venv/bin/activate ]]; then
+    deactivate
+fi
 
 osism apply hosts
 osism apply traefik

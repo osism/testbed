@@ -21,12 +21,18 @@ if [[ $MANAGER_VERSION == "latest" ]]; then
     /opt/configuration/scripts/set-openstack-version.sh $OPENSTACK_VERSION
 fi
 
-source /opt/venv/bin/activate
+if [[ -e /opt/venv/bin/activate ]]; then
+    source /opt/venv/bin/activate
+fi
+
 ansible-playbook \
   -i testbed-manager.testbed.osism.xyz, \
   --vault-password-file /opt/configuration/environments/.vault_pass \
   /opt/configuration/ansible/manager-part-3.yml
-deactivate
+
+if [[ -e /opt/venv/bin/activate ]]; then
+    deactivate
+fi
 
 cp /home/dragon/.ssh/id_rsa.pub /opt/ansible/secrets/id_rsa.operator.pub
 
