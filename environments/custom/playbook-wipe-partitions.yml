@@ -4,24 +4,29 @@
   gather_facts: false
 
   tasks:
+    - name: Find all logical devices with prefix ceph
+      ansible.builtin.find:
+        paths: /dev/mapper
+        recurse: false
+        file_type: link
+        patterns: "ceph*"
+      register: result
+
     # https://github.com/rook/rook/issues/6865#issuecomment-756698522
     - name: Remove all ceph related logical devices
       become: true
-      ansible.builtin.shell: |
-        set -o pipefail
-        ls /dev/mapper/ceph-* | xargs -I% -- dmsetup remove %
-      args:
-        executable: /bin/bash
-      changed_when: false
+      ansible.builtin.command: "dmsetup remove {{ item.path }}"
+      loop: "{{ result.files }}"
+      changed_when: true
 
     - name: Wipe partitions with wipefs
       become: true
       ansible.builtin.command: "wipefs --all {{ item }}"
-      changed_when: false
-      with_items: "{{ ansible_local.testbed_ceph_devices_all }}"
+      changed_when: true
+      loop: "{{ ansible_local.testbed_ceph_devices_all }}"
 
     - name: Overwrite first 32M with zeros
       become: true
       ansible.builtin.command: "dd if=/dev/zero of={{ item }} bs=1M count=32 oflag=direct,dsync"
-      changed_when: false
-      with_items: "{{ ansible_local.testbed_ceph_devices_all }}"
+      changed_when: true
+      loop: "{{ ansible_local.testbed_ceph_devices_all }}"
