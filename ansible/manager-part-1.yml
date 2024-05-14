@@ -71,10 +71,12 @@
 
     - name: Sync configuration with generics
       ansible.builtin.shell: |
+          set -o pipefail
           source {{ venv_path }}/bin/activate
           MANAGER_VERSION={{ version_manager }} gilt overlay
       args:
         chdir: /opt/configuration
+        executable: /bin/bash
       when: version_manager != "latest"
       changed_when: true
 
