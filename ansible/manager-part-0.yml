@@ -39,7 +39,7 @@
     - name: Set APT options on manager
       become: true
       ansible.builtin.shell: |
-        set -o pipefail &&
+        set -o pipefail
         echo 'APT::Acquire::Retries "3";' > /etc/apt/apt.conf.d/80-retries
         echo '* libraries/restart-without-asking boolean true' | debconf-set-selections
       args:
