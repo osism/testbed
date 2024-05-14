@@ -104,7 +104,7 @@
     name: testbed-deploy-stable
     parent: abstract-testbed-deploy
     vars:
-      manager_version: 7.0.3
+      manager_version: 7.0.4
       refstack: true
 
 - job:
@@ -113,7 +113,7 @@
     run: playbooks/upgrade-stable.yml
     vars:
       manager_version: 6.0.2
-      manager_version_next: 7.0.3
+      manager_version_next: 7.0.4
     nodeset: testbed-orchestrator
 
 - job:
