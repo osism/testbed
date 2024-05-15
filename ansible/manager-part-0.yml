@@ -41,6 +41,7 @@
       ansible.builtin.shell: |
         set -o pipefail
         echo 'APT::Acquire::Retries "3";' > /etc/apt/apt.conf.d/80-retries
+        echo 'DPkg::Lock::Timeout "300";' >> /etc/apt/apt.conf.d/80-retries
         echo '* libraries/restart-without-asking boolean true' | debconf-set-selections
       args:
         executable: /bin/bash

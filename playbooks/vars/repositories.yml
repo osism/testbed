@@ -12,8 +12,8 @@ repositories:
   terraform-base:
     path: github.com/osism/terraform-base
     repo: https://github.com/osism/terraform-base
-    branch: main
+    branch: test-ubuntu_24.04
   testbed:
     path: github.com/osism/testbed
     repo: https://github.com/osism/testbed
-    branch: main
+    branch: integrate_ubuntu_2404

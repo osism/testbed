@@ -5,7 +5,7 @@
 # override:neutron_availability_zone_hints_router
 # override:nodes_boot_from_image
 flavor_node               = "SCS-8V-32-100s"
-image_node                = "Ubuntu 22.04"
+image_node                = "Ubuntu 24.04"
 public                    = "public"
 availability_zone         = "nova"
 volume_availability_zone  = "nova"

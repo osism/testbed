@@ -75,7 +75,7 @@ def clone_repo(path: str, repo_address: str, branch: str) -> None:
         print(f"+ {repo_command}")
         subprocess.check_output(repo_command, shell=True)
 
-    repo_command = f"git -C {checkout_path} checkout 'main'"
+    repo_command = f"git -C {checkout_path} checkout {branch or 'main'}"
     print(f"+ {repo_command}")
     subprocess.check_output(repo_command, shell=True)
 
