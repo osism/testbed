@@ -10,8 +10,8 @@
     create_infrastructure: true
     terraform_path: "{{ zuul.project.src_dir }}/terraform"
     terraformbase_path: "{{ ansible_user_dir }}/src/{{ repositories['terraform-base']['path'] }}"
-    opentofu_version: "1.6.2"
-    opentofu_download_url: "https://github.com/opentofu/opentofu/releases/download/v{{ opentofu_version }}/tofu_{{ opentofu_version }}_linux_amd64.zip"
+    opentofu_version: v1.6.2 # renovate: datasource=github-releases depName=opentofu/opentofu
+    opentofu_download_url: "https://github.com/opentofu/opentofu/releases/download/{{ opentofu_version }}/tofu_{{ opentofu_version[1:] }}_linux_amd64.zip"
 
   tasks:
     - name: Install python
