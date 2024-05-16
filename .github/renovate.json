@@ -20,6 +20,14 @@
       "matchStrings":[
         "terragrunt_version: (?<currentValue>.*?) # renovate: datasource=(?<datasource>.*?) depName=(?<depName>.*?)?\\s"
       ]
+    },
+    {
+      "fileMatch":[
+        "^playbooks\\/.*\\.yml"
+      ],
+      "matchStrings":[
+        "opentofu_version: (?<currentValue>.*?) # renovate: datasource=(?<datasource>.*?) depName=(?<depName>.*?)?\\s"
+      ]
     }
   ]
 }
