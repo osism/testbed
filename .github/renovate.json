@@ -9,7 +9,7 @@
         "^Makefile"
       ],
       "matchStrings":[
-        "# renovate: datasource=(?<datasource>github-releases) depName=(?<depName>.*?)\nTOFU_VERSION \\?= (?<currentValue>.*?)"
+        "# renovate: datasource=(?<datasource>github-releases) depName=(?<depName>.*?)\nTOFU_VERSION \\?= (?<currentValue>.*?)\n"
      ],
      "extractVersionTemplate": "^v(?<version>.*)$"
     },
