@@ -54,6 +54,11 @@
       ansible.builtin.pip:
         name: "python-gilt==1.2.3"
 
+    - name: Install docker >= 7.1.0
+      become: true
+      ansible.builtin.pip:
+        name: "docker>=7.1.0"
+
     - name: Install ansible collections
       ansible.builtin.command: |
         ansible-galaxy collection install {{ item }}
