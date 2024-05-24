@@ -74,6 +74,22 @@
         virtualenv: "{{ venv_path }}"
         virtualenv_command: python3 -m venv
 
+    - name: Install requests >= 2.32.2
+      ansible.builtin.pip:
+        umask: "0022"
+        name: "requests>=2.32.2"
+        state: present
+        virtualenv: "{{ venv_path }}"
+        virtualenv_command: python3 -m venv
+
+    - name: Install docker >= 7.1.0
+      ansible.builtin.pip:
+        umask: "0022"
+        name: "docker>=7.1.0"
+        state: present
+        virtualenv: "{{ venv_path }}"
+        virtualenv_command: python3 -m venv
+
     - name: Create directories in /opt/src
       become: true
       ansible.builtin.file:

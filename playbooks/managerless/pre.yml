@@ -54,6 +54,11 @@
       ansible.builtin.pip:
         name: "python-gilt==1.2.3"
 
+    - name: Install requests >= 2.32.2
+      become: true
+      ansible.builtin.pip:
+        name: "requests>=2.32.2"
+
     - name: Install docker >= 7.1.0
       become: true
       ansible.builtin.pip:
