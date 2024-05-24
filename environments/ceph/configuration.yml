@@ -29,6 +29,12 @@ cluster_network: 192.168.16.0/20
 openstack_config: true
 
 ##########################
+# dashboard
+
+ceph_dashboard_standby_behaviour: error
+ceph_dashboard_standby_error_status_code: 404
+
+##########################
 # custom
 
 ceph_conf_overrides:
