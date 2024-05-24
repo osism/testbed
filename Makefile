@@ -123,6 +123,10 @@ prepare: deps ## Run local preperations.
 	${venv}; ansible-playbook -i localhost, ansible/check-local-versions.yml
 	@contrib/setup-testbed.py --prepare
 
+.PHONY: sync
+sync: venv/bin/activate
+        @${venv} && gilt overlay && gilt overlay
+
 venv/bin/activate: Makefile
 	@which python3 > /dev/null || { echo "Missing requirement: python3" >&2; exit 1; }
 	@which jq > /dev/null || { echo "Missing requirement: jq" >&2; exit 1; }
