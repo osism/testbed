@@ -125,7 +125,7 @@ prepare: deps ## Run local preperations.
 
 .PHONY: sync
 sync: venv/bin/activate
-        @${venv} && gilt overlay && gilt overlay
+	@${venv} && gilt overlay && gilt overlay
 
 venv/bin/activate: Makefile
 	@which python3 > /dev/null || { echo "Missing requirement: python3" >&2; exit 1; }
