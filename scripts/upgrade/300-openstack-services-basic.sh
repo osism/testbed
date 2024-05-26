@@ -8,10 +8,10 @@ MANAGER_VERSION=$(docker inspect --format '{{ index .Config.Labels "org.opencont
 
 osism apply -a upgrade keystone
 osism apply -a upgrade placement
+osism apply -a upgrade neutron
 osism apply -a upgrade nova
 osism apply -a upgrade horizon
 osism apply -a upgrade glance
-osism apply -a upgrade neutron
 osism apply -a upgrade cinder
 osism apply -a upgrade barbican
 osism apply -a upgrade designate
