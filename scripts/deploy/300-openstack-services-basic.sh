@@ -8,8 +8,8 @@ OPENSTACK_VERSION=$(docker inspect --format '{{ index .Config.Labels "de.osism.r
 
 osism apply keystone
 osism apply placement
-osism apply nova
 osism apply neutron
+osism apply nova
 
 osism apply horizon
 osism apply glance
