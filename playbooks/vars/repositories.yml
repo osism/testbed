@@ -8,7 +8,7 @@ repositories:
   ansible-collection-services:
     path: github.com/osism/ansible-collection-services
     repo: https://github.com/osism/ansible-collection-services
-    branch: test-centos
+    # branch: test-centos
   terraform-base:
     path: github.com/osism/terraform-base
     repo: https://github.com/osism/terraform-base
