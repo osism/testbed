@@ -14,15 +14,15 @@
 
   vars:
     apt_lock_timeout: 300
-    repo_path: /home/ubuntu/src/github.com
+    repo_path: /home/debian/src/github.com
     venv_path: /opt/venv
     ansible_galaxy: "{{ venv_path }}/bin/ansible-galaxy"
 
   tasks:
-    - name: Fail if Ubuntu version is lower than 22.04
+    - name: Fail if Debian version is lower than 12
       ansible.builtin.fail:
-        msg: "Ubuntu version is {{ ansible_distribution_version }}, see https://osism.tech/docs/advanced-guides/testbed#software for required version."
-      when: ansible_distribution == "Ubuntu" and ansible_distribution_version < "22.04"
+        msg: "Debian version is {{ ansible_distribution_version }}, see https://osism.tech/docs/advanced-guides/testbed#software for required version."
+      when: ansible_distribution == "Debian" and ansible_distribution_version < "12"
 
     - name: Get current user
       ansible.builtin.user:
@@ -46,19 +46,24 @@
         executable: /bin/bash
       changed_when: true
 
-    - name: Install HWE kernel package on Ubuntu
+    - name: Install Ubuntu HWE Kernel packages
       become: true
       ansible.builtin.apt:
         name:
           # The correct package name is linux-generic-hwe-22.04 on Ubuntu 22.04
           # and linux-generic-hwe-24.04 on Ubuntu 24.04.
           - "linux-generic-hwe-{{ ansible_distribution_version }}"
+      changed_when: true
       when: ansible_distribution == "Ubuntu"
 
     - name: Install python3-venv package
       become: true
       ansible.builtin.apt:
-        name: python3-venv
+        name:
+          - python3-netaddr
+          - python3-venv
+          - rsync
+      changed_when: true
 
     - name: Create venv directory
       become: true
