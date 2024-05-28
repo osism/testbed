@@ -1,6 +1,0 @@
----
-features:
-  - |
-    Starting with OSISM 6.1.0, a new stdout callback plugin (`osism.commons.still_alive`)
-    is available. This is to be used by default in future. The plugin prevents timeouts
-    caused by long running tasks (> 5 minutes).

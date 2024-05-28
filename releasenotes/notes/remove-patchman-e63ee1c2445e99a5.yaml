@@ -1,5 +1,0 @@
----
-features:
-  - |
-    The Patchman service was removed from OSISM some time ago and is no
-    longer deployed in the testbed.

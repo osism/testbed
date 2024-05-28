@@ -1,5 +1,0 @@
----
-features:
-  - |
-    Instead of a custom playbook for creating the Swift endpoint, the role ceph-rgw,
-    which is available in Kolla for this purpose, is used from now on.

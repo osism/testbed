@@ -1,4 +1,0 @@
----
-features:
-  - |
-    Use `-a upgrade` instead of `-e kolla_action=upgrade` in all scripts.

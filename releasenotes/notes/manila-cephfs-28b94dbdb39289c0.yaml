@@ -1,4 +1,0 @@
----
-features:
-  - |
-    CephFS is now used as the default file system for OpenStack Manila.

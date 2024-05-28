@@ -1,4 +1,0 @@
----
-features:
-  - |
-    Move the deployment of Kubernetes to a separate script `005-kubernetes.sh`.

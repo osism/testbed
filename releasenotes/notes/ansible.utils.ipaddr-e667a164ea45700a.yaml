@@ -1,6 +1,0 @@
----
-features:
-  - |
-    Use `ansible.utils.ipaddr` instead of `ansible.netcommon.ipaddr`.
-    `ipaddr``feature will be removed from `ansible.netcommon` in a release
-    after 2024-01-01.
