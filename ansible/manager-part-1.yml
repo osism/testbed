@@ -7,7 +7,7 @@
     ansible_ssh_user: dragon
     apt_lock_timeout: 300
     operator_user: dragon
-    repo_path: /home/ubuntu/src/github.com
+    repo_path: /home/debian/src/github.com
     version_manager: latest
     is_zuul: false
 
