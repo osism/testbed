@@ -5,7 +5,7 @@ CONSOLE = manager
 ENVIRONMENT ?= regiocloud
 CLOUD ?= $(ENVIRONMENT)
 USERNAME = dragon
-IMAGE_USERNAME = ubuntu
+IMAGE_USERNAME = debian
 
 OPENSTACK = openstack
 TERRAFORM ?= tofu

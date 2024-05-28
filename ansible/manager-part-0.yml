@@ -4,7 +4,6 @@
   gather_facts: false
 
   tasks:
-    # source: https://github.com/hashicorp/packer/issues/2639
     - name: Check /var/lib/cloud/instance/boot-finished
       ansible.builtin.raw: timeout 600 /bin/bash -c 'until stat /var/lib/cloud/instance/boot-finished 2>/dev/null; do echo Wait for cloud-init to finish; sleep 1; done'
       changed_when: false
@@ -14,8 +13,7 @@
 
   vars:
     apt_lock_timeout: 300
-    dnf_lock_timeout: 300
-
+    repo_path: /home/debian/src/github.com
     venv_path: /opt/venv
     ansible_galaxy: "{{ venv_path }}/bin/ansible-galaxy"
 
@@ -34,7 +32,7 @@
         repo_path: "{{ result_home.stdout }}/src/github.com"
       when: repo_path is not defined
 
-    - name: CentOS specific tasks  # noqa: osism-fqcn
+    - name: CentOS specific tasks
       when: ansible_os_family == "RedHat"
       block:
         - name: Update package cache
@@ -69,7 +67,7 @@
           ansible.builtin.set_fact:
             venv_command: python3.11 -m venv
 
-    - name: Debian/Ubuntu specific tasks  # noqa: osism-fqcn
+    - name: Debian/Ubuntu specific tasks
       when: ansible_os_family == "Debian"
       block:
         - name: Fail if Ubuntu version is lower than 22.04
@@ -94,8 +92,6 @@
             update_cache: true
             lock_timeout: "{{ apt_lock_timeout }}"
 
-        # The correct package name is linux-generic-hwe-22.04 on Ubuntu 22.04
-        # and linux-generic-hwe-24.04 on Ubuntu 24.04.
         - name: Install HWE kernel package on Ubuntu
           become: true
           ansible.builtin.apt:
@@ -124,10 +120,49 @@
           ansible.builtin.set_fact:
             venv_command: python3 -m venv
 
+    - name: Fail if Debian version is lower than 12
+      ansible.builtin.fail:
+        msg: "Debian version is {{ ansible_distribution_version }}, see https://osism.tech/docs/advanced-guides/testbed#software for required version."
+      when: ansible_distribution == "Debian" and ansible_distribution_version < "12"
+
     - name: Get current user
       ansible.builtin.user:
         name: "{{ ansible_user }}"
       register: current_user
+
+    - name: Update APT cache and run dist-upgrade
+      become: true
+      ansible.builtin.apt:
+        upgrade: dist
+        update_cache: true
+        lock_timeout: "{{ apt_lock_timeout }}"
+
+    - name: Set APT options on manager
+      become: true
+      ansible.builtin.shell: |
+        set -o pipefail
+        echo 'APT::Acquire::Retries "3";' > /etc/apt/apt.conf.d/80-retries
+        echo '* libraries/restart-without-asking boolean true' | debconf-set-selections
+      args:
+        executable: /bin/bash
+      changed_when: true
+
+    - name: Install Ubuntu HWE Kernel packages
+      become: true
+      ansible.builtin.apt:
+        name:
+          - "linux-generic-hwe-{{ ansible_distribution_version }}"
+      changed_when: true
+      when: ansible_distribution == "Ubuntu"
+
+    - name: Install required packages
+      become: true
+      ansible.builtin.apt:
+        name:
+          - python3-netaddr
+          - python3-venv
+          - rsync
+      changed_when: true
 
     - name: Create venv directory
       become: true

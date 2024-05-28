@@ -5,6 +5,7 @@
   vars:
     ansible_ssh_user: dragon
     operator_user: dragon
+    repo_path: /home/debian/src/github.com
     repo: osism/testbed
     version_manager: latest
     is_zuul: false
@@ -12,6 +13,7 @@
     venv_path: /opt/venv
 
     ansible_playbook: "{{ venv_path }}/bin/ansible-playbook"
+
 
   tasks:
     - name: Set venv_command fact (RedHat)

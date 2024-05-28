@@ -202,6 +202,7 @@
     - /opt/configuration/environments/manager/images.yml
     - /opt/configuration/environments/manager/secrets.yml
     - /opt/configuration/environments/configuration.yml
+    - /opt/configuration/environments/configuration-{{ ansible_distribution }}.yml
     - /opt/configuration/environments/secrets.yml
 
   tasks:

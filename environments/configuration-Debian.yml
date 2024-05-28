@@ -1,0 +1,3 @@
+---
+# NOTE: Debian currently has no extra Packages like HWE Kernel
+required_packages_extra: []
