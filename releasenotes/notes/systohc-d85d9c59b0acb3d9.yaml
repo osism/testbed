@@ -1,4 +1,0 @@
----
-features:
-  - |
-    Remove the `systohc` parameter. This way the hardware clock is synced in the testbed.

@@ -1,5 +1,0 @@
----
-features:
-  - |
-    When using the OSISM CI image move the PostgreSQL of the Netbox
-    service on the manager to a tmpfs to speed up the processes.

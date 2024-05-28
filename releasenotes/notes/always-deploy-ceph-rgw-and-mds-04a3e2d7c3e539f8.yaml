@@ -1,4 +1,0 @@
----
-features:
-  - |
-    Always deploy the Ceph MDS & RGW services.

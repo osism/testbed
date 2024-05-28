@@ -1,6 +1,0 @@
----
-features:
-  - |
-    Since only Ironic is deployed/upgraded in the testbed, but it is not used
-    functionally per se, dummy files are now used for the Ironic images. This
-    saves resources and time.

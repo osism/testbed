@@ -1,6 +1,0 @@
----
-features:
-  - |
-    Increase the Ansible connection timeout from 10 seconds to 60 seconds.
-    This prevents terminations when the target systems are sometimes too slow
-    to react because they are virtual systems.

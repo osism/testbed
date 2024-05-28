@@ -1,6 +1,0 @@
----
-features:
-  - |
-    The policy of the domain-manager role from SCS standard 0302 v1 was added in the Keystone service.
-    More details on the domain-manager role:
-    https://github.com/SovereignCloudStack/standards/blob/main/Standards/scs-0302-v1-domain-manager-role.md

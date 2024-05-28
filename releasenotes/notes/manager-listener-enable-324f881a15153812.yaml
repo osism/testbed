@@ -1,6 +1,0 @@
----
-features:
-  - |
-    Since the listener service is now deactivated by default in osism.services.manager,
-    the new parameter `enable_listener: true` in `environments/manager/configuration.yml`
-    now ensures that the listener service is activated.
