@@ -36,18 +36,16 @@
   gather_facts: false
 
   tasks:
-    - name: Debian specific tasks
+    - name: Install required packages on Debian
       become: true
-      block:
-        - name: Install required packages
-          become: true
-          ansible.builtin.package:
-            name: ["python3-dotenv", "hwinfo"]
-            state: present
       when: "'Debian' in ansible_os_family"
+      ansible.builtin.apt:
+        name: ["python3-dotenv", "hwinfo"]
+        state: present
 
-    - name: RedHat specific tasks
+    - name: Install required packages on RedHat  # noqa: osism-fqcn
       become: true
+      when: "'RedHat' in ansible_os_family"
       block:
         - name: Install epel-release
           ansible.builtin.dnf:
@@ -59,7 +57,6 @@
             name: ["python3-dotenv", "hwinfo"]
             state: present
             enablerepo: epel
-      when: "'RedHat' in ansible_os_family"
 
     - name: Create custom facts directory
       become: true
