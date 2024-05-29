@@ -31,6 +31,8 @@
     _refstack: "{{ refstack | default(false) | bool }}"
     _tempest: "{{ tempest | default(false) | bool }}"
 
+    _ceph_stack: "{{ ceph_stack | default('ceph-ansible') }}"
+
   tasks:
     - name: Set facts (Zuul deployment)
       ansible.builtin.set_fact:
@@ -49,7 +51,7 @@
     - name: Create infrastructure (latest)
       ansible.builtin.command:
         chdir: "{{ terraform_path }}"
-        cmd: make ENVIRONMENT={{ cloud_env }} TERRAFORM={{ terraform_binary }} VERSION_CEPH={{ _ceph_version }} VERSION_MANAGER={{ _manager_version }} VERSION_OPENSTACK={{ _openstack_version }} REFSTACK={{ _refstack | lower }} TEMPEST={{ _tempest | lower }} IS_ZUUL={{ is_zuul | lower }} create
+        cmd: make ENVIRONMENT={{ cloud_env }} TERRAFORM={{ terraform_binary }} VERSION_CEPH={{ _ceph_version }} VERSION_MANAGER={{ _manager_version }} VERSION_OPENSTACK={{ _openstack_version }} REFSTACK={{ _refstack | lower }} TEMPEST={{ _tempest | lower }} IS_ZUUL={{ is_zuul | lower }}} CEPH_STACK={{ _ceph_stack }} create create
       when:
         - not manual_create | bool
         - _manager_version == "latest"
@@ -60,7 +62,7 @@
     - name: Create infrastructure (stable)
       ansible.builtin.command:
         chdir: "{{ terraform_path }}"
-        cmd: make ENVIRONMENT={{ cloud_env }} TERRAFORM={{ terraform_binary }} VERSION_MANAGER={{ _manager_version }} REFSTACK={{ refstack | lower }} TEMPEST={{ tempest | lower }} IS_ZUUL={{ is_zuul | lower }} create
+        cmd: make ENVIRONMENT={{ cloud_env }} TERRAFORM={{ terraform_binary }} VERSION_MANAGER={{ _manager_version }} REFSTACK={{ refstack | lower }} TEMPEST={{ tempest | lower }} IS_ZUUL={{ is_zuul | lower }} CEPH_STACK={{ _ceph_stack }} create
       when:
         - not manual_create | bool
         - _manager_version != "latest"
