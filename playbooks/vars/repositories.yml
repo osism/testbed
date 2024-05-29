@@ -9,6 +9,10 @@ repositories:
     path: github.com/osism/ansible-collection-services
     repo: https://github.com/osism/ansible-collection-services
     branch: main
+  ansible-playbooks:
+    path: github.com/osism/ansible-playbooks
+    repo: https://github.com/osism/ansible-playbooks
+    branch: main
   terraform-base:
     path: github.com/osism/terraform-base
     repo: https://github.com/osism/terraform-base

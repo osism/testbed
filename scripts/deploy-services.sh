@@ -23,8 +23,12 @@ fi
 # deploy infrastructure services
 sh -c '/opt/configuration/scripts/deploy/200-infrastructure-services-basic.sh'
 
-# deploy service services
-sh -c '/opt/configuration/scripts/deploy/100-ceph-services-basic.sh'
+# deploy ceph services
+if [[ $CEPH_STACK == "ceph-ansible" ]]; then
+    sh -c '/opt/configuration/scripts/deploy/100-ceph-services-basic.sh'
+elif [[ $CEPH_STACK == "rook" ]]; then
+    sh -c '/opt/configuration/scripts/deploy/100-rook-services.sh'
+fi
 
 # deploy openstack services
 sh -c '/opt/configuration/scripts/deploy/300-openstack-services-basic.sh'
