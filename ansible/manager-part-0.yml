@@ -29,7 +29,8 @@
         name: "{{ ansible_user }}"
       register: current_user
 
-    - name: Ubuntu specific tasks
+    - name: Ubuntu specific tasks  # noqa: osism-fqcn
+      when: ansible_distribution == "Ubuntu"
       block:
         - name: Update APT cache and run dist-upgrade
           become: true
@@ -59,16 +60,17 @@
               - python3-venv
           changed_when: true
 
-      when: ansible_distribution == "Ubuntu"
-
-    - name: CentOS specific tasks
+    - name: CentOS specific tasks  # noqa: osism-fqcn
       become: true
+      when: ansible_distribution == "CentOS"
       block:
-        - name: Update package cache and upgrade packages
-          ansible.builtin.package:
-            name: "*"
-            state: latest
+        - name: Update package cache
+          ansible.builtin.dnf:
             update_cache: true
+
+        - name: Upgrade all installed packages
+          ansible.builtin.command: dnf upgrade
+          changed_when: true
 
         - name: Install packages on CentOS
           ansible.builtin.dnf:
@@ -80,18 +82,6 @@
               - python3.11-pip
               - git
             state: present
-
-#        - name: Update alternatives for python3
-#          alternatives:
-#            name: python3
-#            link: /usr/bin/python3
-#            path: /usr/bin/python3.11
-#            priority: 30
-#
-#        - name: Set Python 3.11 as default
-#          ansible.builtin.command: alternatives --set python3 /usr/bin/python3.11
-
-      when: ansible_distribution == "CentOS"
 
     - name: Create venv directory
       become: true

@@ -57,7 +57,7 @@
         - python3-dev
       when: ansible_os_family == 'Debian'
 
-    - name: Set pip3.11 as the pip3 command used in deployment
+    - name: Set pip3.11 as the pip3 command used in deployment  # noqa: osism-fqcn
       become: yes
       community.general.alternatives:
         name: pip3
