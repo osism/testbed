@@ -16,7 +16,7 @@ source /opt/manager-vars.sh
 sh -c '/opt/configuration/scripts/deploy/000-manager-service.sh'
 
 # bootstrap nodes
-osism apply operator -u ubuntu
+osism apply operator -u $IMAGE_NODE_USER -l testbed-nodes
 osism apply --environment custom facts
 osism apply bootstrap
 
