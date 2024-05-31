@@ -56,6 +56,14 @@
         - build-essential
         - python3-dev
 
+    - name: Remove some python packages
+      become: true
+      ansible.builtin.apt:
+        state: absent
+        name:
+          - python3-docker
+          - python3-requests
+
     - name: Install python requirements in venv
       ansible.builtin.pip:
         umask: "0022"
@@ -64,10 +72,10 @@
         virtualenv: "{{ venv_path }}"
         virtualenv_command: python3 -m venv
       loop:
-        - docker
         - netifaces
         - "python-gilt==1.2.3"
-        - requests
+        - "requests>=2.32.2"
+        - "docker>=7.1.0"
 
     - name: Sync configuration with generics
       ansible.builtin.shell: |
