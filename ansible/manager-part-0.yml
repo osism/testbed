@@ -46,16 +46,21 @@
         executable: /bin/bash
       changed_when: true
 
-    - name: Install packages
+    - name: Install HWE kernel package on Ubuntu
       become: true
       ansible.builtin.apt:
         name:
           # The correct package name is linux-generic-hwe-22.04 on Ubuntu 22.04
           # and linux-generic-hwe-24.04 on Ubuntu 24.04.
           - "linux-generic-hwe-{{ ansible_distribution_version }}"
+      when: ansible_distribution == "Ubuntu"
+
+    - name: Install packages
+      become: true
+      ansible.builtin.apt:
+        name:
           - python3-netaddr
           - python3-venv
-      changed_when: true
 
     - name: Create venv directory
       become: true
