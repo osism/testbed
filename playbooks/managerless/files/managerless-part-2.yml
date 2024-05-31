@@ -17,6 +17,7 @@
   vars:
     docker_compose_install_type: package
     docker_facts: false
+    docker_python_install: false
 
   roles:
     - role: osism.commons.timezone
