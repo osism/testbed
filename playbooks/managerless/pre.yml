@@ -40,6 +40,14 @@
         include:
           - tofu
 
+    - name: Remove some python packages
+      become: true
+      ansible.builtin.apt:
+        state: absent
+        name:
+          - python3-docker
+          - python3-requests
+
     - name: Install python requirements
       become: true
       ansible.builtin.pip:
@@ -48,21 +56,9 @@
         - ansible
         - ansible-core
         - openstacksdk
-
-    - name: Install python-gilt
-      become: true
-      ansible.builtin.pip:
-        name: "python-gilt==1.2.3"
-
-    - name: Install requests >= 2.32.2
-      become: true
-      ansible.builtin.pip:
-        name: "requests>=2.32.2"
-
-    - name: Install docker >= 7.1.0
-      become: true
-      ansible.builtin.pip:
-        name: "docker>=7.1.0"
+        - "python-gilt==1.2.3"
+        - "requests>=2.32.2"
+        - "docker>=7.1.0"
 
     - name: Install ansible collections
       ansible.builtin.command: |
