@@ -7,13 +7,13 @@ adminer_image: "{{ docker_registry }}/library/adminer:{{ adminer_tag }}"
 ara_server_tag: "latest"
 ara_server_image: "{{ docker_registry_ansible|default('quay.io') }}/osism/ara-server:{{ ara_server_tag }}"
 
-ara_server_mariadb_tag: "11.3.2"
+ara_server_mariadb_tag: "11.4.2"
 ara_server_mariadb_image: "{{ docker_registry }}/library/mariadb:{{ ara_server_mariadb_tag }}"
 
 netbox_tag: "latest"
 netbox_image: "{{ docker_registry_netbox|default('quay.io') }}/osism/netbox:{{ netbox_tag }}"
 
-nginx_tag: "1.26.0-alpine"
+nginx_tag: "1.27.0-alpine"
 nginx_image: "{{ docker_registry }}/library/nginx:{{ nginx_tag }}"
 
 phpmyadmin_tag: "5.2.1"
