@@ -23,15 +23,16 @@ openstack_cacert: /etc/ssl/certs/ca-certificates.crt
 # openstack
 
 # enable services
-enable_aodh: "yes"
+enable_aodh: "no"
 enable_barbican: "yes"
-enable_ceilometer: "yes"
-enable_gnocchi: "yes"
+enable_ceilometer: "no"
+enable_gnocchi: "no"
 enable_ironic: "yes"
-enable_magnum: "yes"
-enable_manila: "yes"
-enable_senlin: "yes"
-enable_skyline: "yes"
+enable_magnum: "no"
+enable_manila: "no"
+enable_senlin: "no"
+enable_skyline: "no"
+enable_heat: "no"
 
 # generic
 openstack_service_workers: 2
@@ -97,6 +98,7 @@ ironic_dnsmasq_dhcp_range: "192.168.112.50,192.168.112.60"
 ironic_dnsmasq_dhcp_ranges:
   - range: "192.168.112.50,192.168.112.60"
 ironic_cleaning_network: "public"
+enable_ironic_prometheus_exporter: "no"
 
 # ceilometer
 enable_ceilometer_prometheus_pushgateway: "yes"
