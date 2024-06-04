@@ -1,4 +1,18 @@
 ---
+- name: Include repository role
+  hosts: testbed-manager.testbed.osism.xyz
+  gather_facts: true
+
+  vars:
+    operator_user: dragon
+    operator_group: dragon
+
+    venv_path: /opt/venv
+    ansible_python_interpreter: "{{ venv_path }}/bin/python3"
+
+  roles:
+    - role: osism.commons.repository
+
 - name: Run manager part 1
   hosts: testbed-manager.testbed.osism.xyz
   gather_facts: true
@@ -67,7 +81,7 @@
 
     - name: Remove some python packages
       become: true
-      ansible.builtin.apt:
+      ansible.builtin.package:
         state: absent
         name:
           - python3-docker

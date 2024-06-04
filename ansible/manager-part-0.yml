@@ -68,10 +68,6 @@
           ansible.builtin.dnf:
             update_cache: true
 
-        - name: Upgrade all installed packages
-          ansible.builtin.command: dnf upgrade
-          changed_when: true
-
         - name: Install packages on CentOS
           ansible.builtin.dnf:
             name:
