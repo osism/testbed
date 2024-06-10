@@ -132,7 +132,7 @@
       loop:
         - ansible.netcommon
         - ansible.posix
-        - community.docker
+        - "community.docker>=3.10.2"
 
     - name: Install local collections
       become: true
