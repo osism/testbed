@@ -1,0 +1,4 @@
+---
+hddtemp_enable_module: false
+
+required_packages_extra: []

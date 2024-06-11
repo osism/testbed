@@ -63,7 +63,7 @@ manager_opensearch_address: api-int.testbed.osism.xyz
 configuration_directory: /opt/configuration
 
 configuration_type: git
-configuration_git_version: test-centos
+configuration_git_version: main
 configuration_git_host: github.com
 configuration_git_port: 443
 configuration_git_repository: osism/testbed.git
