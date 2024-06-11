@@ -4,7 +4,7 @@ repositories:
   ansible-collection-commons:
     path: github.com/osism/ansible-collection-commons
     repo: https://github.com/osism/ansible-collection-commons
-    branch: test-centos
+    branch: main
   ansible-collection-services:
     path: github.com/osism/ansible-collection-services
     repo: https://github.com/osism/ansible-collection-services
