@@ -25,12 +25,3 @@ if [[ $MANAGER_VERSION =~ ^4\.[0-9]\.[0-9]$ || $OPENSTACK_VERSION == "yoga" ]]; 
 else
     osism apply opensearch
 fi
-
-# In OSISM >= 7.0.0, the Keycloak deployment (technical preview) was switched from
-# Docker Compose to Kubernetes. When using the External API customisation, the Keycloak
-# service and the Keystone federation are currently not used.
-if [[ ($MANAGER_VERSION =~ ^7\.[0-9]\.[0-9]$ || $MANAGER_VERSION == "latest") && "$EXTERNAL_API" == "false" ]]; then
-    osism apply keycloak
-    osism apply keycloak-oidc-client-config
-    sed -i "s/enable_keystone_federation: \"no\"/enable_keystone_federation: \"yes\"/" /opt/configuration/environments/kolla/configuration.yml
-fi
