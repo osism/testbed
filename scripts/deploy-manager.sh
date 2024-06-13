@@ -42,6 +42,10 @@ osism apply --environment custom workarounds
 osism apply reboot -l testbed-nodes -e ireallymeanit=yes
 osism apply wait-for-connection -l testbed-nodes -e ireallymeanit=yes
 
+# The role can only be applied after the nodes have been rebooted as a necessary
+# kernel module is only then available.
+osism apply hddtemp
+
 # restart the manager services to update the /etc/hosts file
 sudo systemctl restart docker-compose@manager
 
