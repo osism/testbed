@@ -1,0 +1,16 @@
+---
+keystone_oidc_forward_header: "X-Forwarded-Proto"
+keystone_federation_oidc_response_type: "code"
+keystone_identity_providers:
+  - name: "keycloak"
+    openstack_domain: "keycloak"
+    protocol: "openid"
+    identifier: "https://keycloak.testbed.osism.xyz/auth/realms/osism"
+    public_name: "Authenticate via Keycloak"
+    attribute_mapping: "mappingId1"
+    metadata_folder: "{{ node_custom_config }}/keystone/federation/oidc/metadata"
+keystone_identity_mappings:
+  - name: "mappingId1"
+    file: "{{ node_custom_config }}/keystone/federation/oidc/attribute_maps/oidc_attribute_mappingId1.json"
+# Keystone auth endpoint
+keystone_logout_url: "https://api.testbed.osism.xyz/auth/"
