@@ -57,6 +57,8 @@ phpmyadmin_database_host: 192.168.16.9
 ##########################
 # squid
 
+# testing
+#squid_host: "{{ (hostvars[inventory_hostname]['ansible_' + (internal_interface | default('eth0'))]['ipv4']['address'] | default('192.168.16.5')) }}"
 squid_host: "{{ hostvars[inventory_hostname]['ansible_' + internal_interface]['ipv4']['address'] }}"
 
 # NOTE: This can be removed in the future if the list of shared sources is
@@ -80,6 +82,7 @@ squid_allowed_addresses:
   - pypi.org
   - registry-1.docker.io
   - swift.services.a.regiocloud.tech
+  - https://mirrors.centos.org
 
 ##########################
 # traefik
