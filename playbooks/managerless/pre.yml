@@ -117,12 +117,12 @@
       changed_when: true
 
     - name: Ensure /tmp/logs/ dir
-      file:
+      ansible.builtin.file:
         path: "/tmp/logs"
         state: "directory"
 
     - name: Ensure node directories
-      file:
+      ansible.builtin.file:
         path: "/tmp/logs/{{ item }}"
         state: "directory"
         mode: 0777
@@ -134,13 +134,13 @@
     - name: Run diagnostics script
       environment:
         LOG_DIR: "/tmp/logs/pre"
-      script: "{{ zuul.project.src_dir }}/scripts/get_logs.sh"
+      ansible.builtin.script: "get_logs.sh"
       register: get_logs_result
       become: true
       failed_when: false
 
     - name: Print get_logs output
-      debug:
+      ansible.builtin.debug:
         msg: "{{ get_logs_result.stdout }}"
 
 - name: Create infrastructure
@@ -245,8 +245,13 @@
   tasks:
     - name: Run managerless part 1
       ansible.builtin.command: |
-        ansible-playbook -i localhost, /tmp/managerless-part-1.yml &> /tmp/logs/managerless/part-1.log
+        ansible-playbook -i localhost, /tmp/managerless-part-1.yml
       changed_when: true
+      register: managerless_part1
+
+    - name: Print managerless part 1 output
+      ansible.builtin.debug:
+        msg: "{{ managerless_part1.stdout }}"
 
     - name: Install ansible collections
       become: true

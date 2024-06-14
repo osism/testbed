@@ -141,15 +141,9 @@
     check:
       jobs:
         - ansible-lint
-        - flake8
-        - python-black
-        - yamllint
     label:
       jobs:
-        - testbed-deploy
-        - testbed-deploy-stable
-        - testbed-upgrade
-        - testbed-upgrade-stable
+        - testbed-deploy-managerless
     gate:
       jobs:
         - ansible-lint

@@ -19,7 +19,7 @@
           -e @/opt/configuration/environments/images.yml \
           -e @/opt/configuration/environments/configuration.yml \
           -i localhost, \
-          /tmp/managerless-part-2.yml &> /tmp/logs/managerless/part-2.log
+          /tmp/managerless-part-2.yml
       changed_when: true
 
     - name: Run managerless part 3
@@ -37,7 +37,7 @@
           -e @/opt/configuration/environments/secrets.yml \
           -i testbed-manager.testbed.osism.xyz, \
           --vault-password-file /opt/configuration/environments/.vault_pass \
-          /tmp/managerless-part-3.yml &> /tmp/logs/managerless/part-3.log
+          /tmp/managerless-part-3.yml
       changed_when: true
 
     - name: Run managerless part 4
@@ -55,7 +55,7 @@
           -e @/opt/configuration/environments/secrets.yml \
           -i testbed-manager.testbed.osism.xyz, \
           --vault-password-file /opt/configuration/environments/.vault_pass \
-          /tmp/managerless-part-4.yml &> /tmp/logs/managerless/part-4.log
+          /tmp/managerless-part-4.yml
       changed_when: true
 
     - name: Fetch node_0_host address
@@ -149,5 +149,5 @@
           -e @/opt/configuration/environments/secrets.yml \
           -i testbed-manager.testbed.osism.xyz, \
           --vault-password-file /opt/configuration/environments/.vault_pass \
-          /tmp/managerless-part-5.yml &> /tmp/logs/managerless/part-5.log
+          /tmp/managerless-part-5.yml
       changed_when: true
