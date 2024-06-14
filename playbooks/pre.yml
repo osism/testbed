@@ -65,19 +65,3 @@
         src: local.env.j2
         dest: "{{ terraform_path }}/local.env"
         mode: "0644"
-
-    - name: Remove some python packages
-      become: true
-      ansible.builtin.apt:
-        state: absent
-        name:
-          - python3-docker
-          - python3-requests
-
-    - name: Install python requirements
-      become: true
-      ansible.builtin.pip:
-        name: "{{ item }}"
-      loop:
-        - "requests>=2.32.2"
-        - "docker>=7.1.0"
