@@ -116,6 +116,33 @@
         cmd: "sed -i 's/cloud_env: .*/cloud_env: {{ cloud_env }}/g' /tmp/managerless-part-4.yml"
       changed_when: true
 
+    - name: Ensure /tmp/logs/ dir
+      file:
+        path: "/tmp/logs"
+        state: "directory"
+
+    - name: Ensure node directories
+      file:
+        path: "/tmp/logs/{{ item }}"
+        state: "directory"
+        mode: 0777
+      with_items:
+        - "ansible"
+        - "pre"
+        - "terraform"
+
+    - name: Run diagnostics script
+      environment:
+        LOG_DIR: "/tmp/logs/pre"
+      script: "{{ zuul.project.src_dir }}/scripts/get_logs.sh"
+      register: get_logs_result
+      become: true
+      failed_when: false
+
+    - name: Print get_logs output
+      debug:
+        msg: "{{ get_logs_result.stdout }}"
+
 - name: Create infrastructure
   hosts: all
 
@@ -218,7 +245,7 @@
   tasks:
     - name: Run managerless part 1
       ansible.builtin.command: |
-        ansible-playbook -i localhost, /tmp/managerless-part-1.yml
+        ansible-playbook -i localhost, /tmp/managerless-part-1.yml &> /tmp/logs/managerless/part-1.log
       changed_when: true
 
     - name: Install ansible collections
