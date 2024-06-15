@@ -55,12 +55,10 @@
           - "linux-generic-hwe-{{ ansible_distribution_version }}"
       when: ansible_distribution == "Ubuntu"
 
-    - name: Install packages
+    - name: Install python3-venv package
       become: true
       ansible.builtin.apt:
-        name:
-          - python3-netaddr
-          - python3-venv
+        name: python3-venv
 
     - name: Create venv directory
       become: true
@@ -70,6 +68,14 @@
         path: "{{ venv_path }}"
         state: directory
         mode: 0755
+
+    - name: Install netaddr in venv
+      ansible.builtin.pip:
+        umask: "0022"
+        name: netaddr
+        state: present
+        virtualenv: "{{ venv_path }}"
+        virtualenv_command: python3 -m venv
 
     - name: Install ansible-core in venv
       ansible.builtin.pip:
