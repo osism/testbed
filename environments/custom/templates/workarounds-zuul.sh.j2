@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+modprobe zram
+sleep 5
+
+# prepare mariadb
+zramctl --size 1G --algorithm lz4 --streams 2 /dev/zram0
+mkfs.ext4 /dev/zram0
+mount /dev/zram0 /opt/data/mariadb
+
+# prepare rabbitmq
+zramctl --size 1G --algorithm lz4 --streams 2 /dev/zram1
+mkfs.ext4 /dev/zram1
+mount /dev/zram1 /opt/data/rabbitmq

@@ -1,0 +1,4 @@
+---
+features:
+  - |
+    If deployment is running on Zuul then use zram for the MariaDB & RabbitMQ volumes.
