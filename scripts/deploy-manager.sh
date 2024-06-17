@@ -15,6 +15,12 @@ source /opt/manager-vars.sh
 # deploy manager service
 sh -c '/opt/configuration/scripts/deploy/000-manager-service.sh'
 
+# Do not use the Keystone/Keycloak integration by default. We only use this integration
+# in a special identity testbed.
+rm -f /opt/configuration/environments/kolla/group_vars/keystone.yml
+rm -f /opt/configuration/environments/kolla/files/overlays/keystone/wsgi-keystone.conf
+rm -rf /opt/configuration/environments/kolla/files/overlays/keystone/federation
+
 # bootstrap nodes
 osism apply operator -u $IMAGE_NODE_USER -l testbed-nodes
 osism apply --environment custom facts
