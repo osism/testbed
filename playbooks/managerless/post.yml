@@ -4,6 +4,8 @@
 
   vars:
     stage_dir: "{{ ansible_user_dir }}/zuul-output"
+    zuul_copy_output:
+      /tmp/logs/.*/.*: logs_txt
 
   roles:
     - stage-output
