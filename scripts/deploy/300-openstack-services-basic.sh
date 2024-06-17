@@ -6,12 +6,6 @@ source /opt/configuration/scripts/include.sh
 MANAGER_VERSION=$(docker inspect --format '{{ index .Config.Labels "org.opencontainers.image.version"}}' osism-ansible)
 OPENSTACK_VERSION=$(docker inspect --format '{{ index .Config.Labels "de.osism.release.openstack"}}' kolla-ansible)
 
-# Do not use the Keystone/Keycloak integration by default. We only use this integration
-# in a special identity testbed.
-rm -f /opt/configuration/environments/kolla/group_vars/keystone.yml
-rm -f /opt/configuration/environments/kolla/files/overlays/keystone/wsgi-keystone.conf
-rm -rf /opt/configuration/environments/kolla/files/overlays/keystone/federation
-
 osism apply keystone
 osism apply placement
 osism apply neutron

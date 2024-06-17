@@ -9,6 +9,12 @@ echo
 source /opt/configuration/scripts/include.sh
 source /opt/manager-vars.sh
 
+pushd /opt/configuration
+git checkout -- environments/kolla/group_vars/keystone.yml
+git checkout -- environments/kolla/files/overlays/keystone/wsgi-keystone.conf
+git checkout -- environments/kolla/files/overlays/keystone/federation
+popd
+
 osism apply openstackclient
 
 osism apply kubernetes
