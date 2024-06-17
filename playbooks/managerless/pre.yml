@@ -66,6 +66,7 @@
       loop:
         - osism.commons
         - osism.services
+        - "community.docker>=3.10.2"
       changed_when: true
 
     # we run local synchronisation here
@@ -261,6 +262,7 @@
       loop:
         - osism.commons
         - osism.services
+        - "community.docker>=3.10.2"
       changed_when: true
 
     - name: Create configuration directory
