@@ -53,8 +53,8 @@
       ansible.builtin.pip:
         name: "{{ item }}"
       loop:
-        - ansible
-        - ansible-core
+        - "ansible==9.6.1"
+        - "ansible-core==2.16.6"
         - openstacksdk
         - "python-gilt==1.2.3"
         - "requests>=2.32.2"
