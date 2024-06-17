@@ -252,3 +252,14 @@
         owner: "{{ operator_user }}"
         group: "{{ operator_group }}"
         recurse: true
+
+    # Do not use the Keystone/Keycloak integration by default. We only use this integration
+    # in a special identity testbed.
+    - name: Remove Keystone/Keycloak related files
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: absent
+      loop:
+        - /opt/configuration/environments/kolla/group_vars/keystone.yml
+        - /opt/configuration/environments/kolla/files/overlays/keystone/wsgi-keystone.conf
+        - /opt/configuration/environments/kolla/files/overlays/keystone/federation
