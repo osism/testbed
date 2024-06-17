@@ -256,6 +256,7 @@
     # Do not use the Keystone/Keycloak integration by default. We only use this integration
     # in a special identity testbed.
     - name: Remove Keystone/Keycloak related files
+      become: true
       ansible.builtin.file:
         path: "{{ item }}"
         state: absent
