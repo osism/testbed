@@ -35,6 +35,9 @@ registry_image: "{{ docker_registry }}/library/registry:{{ registry_tag }}"
 osism_ansible_tag: "{{ manager_version|default('latest') }}"
 osism_ansible_image: "{{ docker_registry_ansible|default('quay.io') }}/osism/osism-ansible:{{ osism_ansible_tag }}"
 
+osism_kubernetes_tag: "{{ manager_version|default('latest') }}"
+osism_kubernetes_image: "{{ docker_registry_ansible|default('quay.io') }}/osism/osism-kubernetes:{{ osism_kubernetes_tag }}"
+
 inventory_reconciler_tag: "{{ inventory_reconciler_version|default('latest') }}"
 inventory_reconciler_image: "{{ docker_registry_ansible }}/osism/inventory-reconciler:{{ inventory_reconciler_tag }}"
 
@@ -47,7 +50,7 @@ osism_netbox_image: "{{ docker_registry_ansible }}/osism/osism-netbox:{{ osism_n
 vault_tag: "1.17.0"
 vault_image: "{{ docker_registry }}/hashicorp/vault:{{ vault_tag }}"
 
-traefik_tag: "v2.11.4"
+traefik_tag: "v2.11.5"
 traefik_image: "{{ docker_registry }}/library/traefik:{{ traefik_tag }}"
 
 # image tag depends on CEPH_VERSION or OPENSTACK_VERSION
