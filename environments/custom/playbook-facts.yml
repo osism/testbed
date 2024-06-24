@@ -3,16 +3,12 @@
   hosts: all
   gather_facts: false
 
-  vars:
-    apt_lock_timeout: 300
-
   tasks:
     - name: Install required packages
       become: true
-      ansible.builtin.apt:
+      ansible.builtin.package:
         name: python3-netifaces
         state: present
-        lock_timeout: "{{ apt_lock_timeout }}"
 
     - name: Create custom facts directory
       become: true
@@ -39,16 +35,28 @@
   hosts: ceph-resource
   gather_facts: false
 
-  vars:
-    apt_lock_timeout: 300
-
   tasks:
-    - name: Install required packages
+    - name: Install required packages on Debian
       become: true
+      when: "'Debian' in ansible_os_family"
       ansible.builtin.apt:
         name: ["python3-dotenv", "hwinfo"]
         state: present
-        lock_timeout: "{{ apt_lock_timeout }}"
+
+    - name: Install required packages on RedHat  # noqa: osism-fqcn
+      become: true
+      when: "'RedHat' in ansible_os_family"
+      block:
+        - name: Install epel-release
+          ansible.builtin.dnf:
+            name: epel-release
+            state: present
+
+        - name: Install required packages
+          ansible.builtin.dnf:
+            name: ["python3-dotenv", "hwinfo"]
+            state: present
+            enablerepo: epel
 
     - name: Create custom facts directory
       become: true

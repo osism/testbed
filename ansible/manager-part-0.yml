@@ -14,7 +14,7 @@
 
   vars:
     apt_lock_timeout: 300
-    repo_path: /home/ubuntu/src/github.com
+    repo_path: ~/src/github.com
     venv_path: /opt/venv
     ansible_galaxy: "{{ venv_path }}/bin/ansible-galaxy"
 
@@ -29,36 +29,55 @@
         name: "{{ ansible_user }}"
       register: current_user
 
-    - name: Update APT cache and run dist-upgrade
-      become: true
-      ansible.builtin.apt:
-        upgrade: dist
-        update_cache: true
-        lock_timeout: "{{ apt_lock_timeout }}"
-
-    - name: Set APT options on manager
-      become: true
-      ansible.builtin.shell: |
-        set -o pipefail
-        echo 'APT::Acquire::Retries "3";' > /etc/apt/apt.conf.d/80-retries
-        echo '* libraries/restart-without-asking boolean true' | debconf-set-selections
-      args:
-        executable: /bin/bash
-      changed_when: true
-
-    - name: Install HWE kernel package on Ubuntu
-      become: true
-      ansible.builtin.apt:
-        name:
-          # The correct package name is linux-generic-hwe-22.04 on Ubuntu 22.04
-          # and linux-generic-hwe-24.04 on Ubuntu 24.04.
-          - "linux-generic-hwe-{{ ansible_distribution_version }}"
+    - name: Ubuntu specific tasks  # noqa: osism-fqcn
       when: ansible_distribution == "Ubuntu"
+      block:
+        - name: Update APT cache and run dist-upgrade
+          become: true
+          ansible.builtin.apt:
+            upgrade: dist
+            update_cache: true
+            lock_timeout: "{{ apt_lock_timeout }}"
 
-    - name: Install python3-venv package
+        - name: Set APT options on manager
+          become: true
+          ansible.builtin.shell: |
+            set -o pipefail
+            echo 'APT::Acquire::Retries "3";' > /etc/apt/apt.conf.d/80-retries
+            echo '* libraries/restart-without-asking boolean true' | debconf-set-selections
+          args:
+            executable: /bin/bash
+          changed_when: true
+
+        - name: Install packages on Ubuntu
+          become: true
+          ansible.builtin.apt:
+            name:
+              # The correct package name is linux-generic-hwe-22.04 on Ubuntu 22.04
+              # and linux-generic-hwe-24.04 on Ubuntu 24.04.
+              - "linux-generic-hwe-{{ ansible_distribution_version }}"
+              - python3-netaddr
+              - python3-venv
+          changed_when: true
+
+    - name: CentOS specific tasks  # noqa: osism-fqcn
       become: true
-      ansible.builtin.apt:
-        name: python3-venv
+      when: ansible_distribution == "CentOS"
+      block:
+        - name: Update package cache
+          ansible.builtin.dnf:
+            update_cache: true
+
+        - name: Install packages on CentOS
+          ansible.builtin.dnf:
+            name:
+              - kernel-devel
+              - python3-netaddr
+              - python3.11
+              - python3.11-devel
+              - python3.11-pip
+              - git
+            state: present
 
     - name: Create venv directory
       become: true
@@ -83,7 +102,7 @@
         name: "ansible-core>=2.16.0,<2.17.0"
         state: present
         virtualenv: "{{ venv_path }}"
-        virtualenv_command: python3 -m venv
+        virtualenv_command: python3.11 -m venv
 
     - name: Install requests >= 2.32.2
       ansible.builtin.pip:

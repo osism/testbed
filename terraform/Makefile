@@ -4,7 +4,7 @@ CONFIGURATION = main
 CONSOLE = manager
 ENVIRONMENT ?= regiocloud
 USERNAME = dragon
-IMAGE_USERNAME = ubuntu
+IMAGE_USERNAME = cloud-user
 
 OPENSTACK = openstack
 TERRAFORM ?= tofu
