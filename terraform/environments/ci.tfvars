@@ -8,9 +8,10 @@
 flavor_manager            = "SCS-4V-16"
 flavor_node               = "SCS-8V-32"
 volume_type               = "ssd"
-image                     = "OSISM CI"
-image_node                = "OSISM CI"
+image                     = "Ubuntu 22.04"
+image_node                = "Ubuntu 22.04"
 availability_zone         = "nova"
 network_availability_zone = "nova"
 volume_availability_zone  = "nova"
 public                    = "public"
+ara                       = false
