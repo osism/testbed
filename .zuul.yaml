@@ -58,7 +58,7 @@
       - ^README.md$
       - ^\.github/.*$
     # NOTE(frickler): Default zuul maximum timeout is 3h, this needs to
-    # be explictly bumped in the tenant configuration
+    # be explicitly bumped in the tenant configuration
     timeout: 16200
     vars:
       terraform_blueprint: testbed-default
@@ -99,6 +99,7 @@
     name: testbed-upgrade
     parent: abstract-testbed-deploy
     run: playbooks/upgrade.yml
+    timeout: 25200
 
 - job:
     name: testbed-deploy-stable
@@ -115,6 +116,7 @@
       manager_version: 6.0.2
       manager_version_next: 7.0.4
     nodeset: testbed-orchestrator
+    timeout: 25200
 
 - job:
     name: testbed-deploy-pco
