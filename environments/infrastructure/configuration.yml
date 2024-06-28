@@ -46,7 +46,6 @@ netbox_traefik: true
 netbox_host: netbox.testbed.osism.xyz
 netbox_plugins_extra:
   - netbox_bgp
-  - netbox_dns
 
 ##########################
 # phpmyadmin

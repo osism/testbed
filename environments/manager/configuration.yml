@@ -51,7 +51,6 @@ netbox_api_url: "https://{{ netbox_host }}"
 
 netbox_plugins_extra:
   - netbox_bgp
-  - netbox_dns
 
 ##########################
 # opensearch
