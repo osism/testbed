@@ -1,0 +1,6 @@
+---
+# NOTE: Disabling hddtemp module
+hddtemp_enable_module: false
+
+# NOTE: Debian currently has no extra Packages like HWE Kernel
+required_packages_extra: []
