@@ -6,6 +6,7 @@ cephclient_mons:
   - 192.168.16.10
   - 192.168.16.11
   - 192.168.16.12
+cephclient_install_type: rook
 
 ##########################
 # cgit

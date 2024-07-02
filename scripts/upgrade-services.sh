@@ -2,6 +2,8 @@
 set -x
 set -e
 
+source /opt/manager-vars.sh
+
 # pull images
 sh -c '/opt/configuration/scripts/pull-images.sh'
 
@@ -12,7 +14,11 @@ sh -c '/opt/configuration/scripts/upgrade/005-kubernetes.sh'
 sh -c '/opt/configuration/scripts/upgrade/200-infrastructure-services-basic.sh'
 
 # upgrade ceph services
-sh -c '/opt/configuration/scripts/upgrade/100-ceph-services.sh'
+if [[ $CEPH_STACK == "ceph-ansible" ]]; then
+    sh -c '/opt/configuration/scripts/upgrade/100-ceph-services.sh'
+elif [[ $CEPH_STACK == "rook" ]]; then
+    sh -c '/opt/configuration/scripts/upgrade/100-rook-services.sh'
+fi
 
 # upgrade openstack services
 sh -c '/opt/configuration/scripts/upgrade/300-openstack-services-basic.sh'

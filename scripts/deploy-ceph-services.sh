@@ -9,4 +9,9 @@ echo
 source /opt/configuration/scripts/include.sh
 source /opt/manager-vars.sh
 
-sh -c '/opt/configuration/scripts/deploy/100-ceph-services-basic.sh'
+# deploy ceph services
+if [[ $CEPH_STACK == "ceph-ansible" ]]; then
+    sh -c '/opt/configuration/scripts/deploy/100-ceph-services-basic.sh'
+elif [[ $CEPH_STACK == "rook" ]]; then
+    sh -c '/opt/configuration/scripts/deploy/100-rook-services.sh'
+fi

@@ -14,6 +14,7 @@ PARALLELISM = 10
 RESOURCE = openstack_networking_floatingip_v2.manager_floating_ip
 STATE = errored.tfstate
 
+CEPH_STACK ?= ceph-ansible
 VERSION_CEPH ?= quincy
 VERSION_MANAGER ?= latest
 VERSION_OPENSTACK ?= 2023.2
@@ -71,6 +72,7 @@ init:
 	@echo "refstack = \"$(REFSTACK)\"" >> $(ENVIRONMENT).auto.tfvars
 	@echo "tempest = \"$(TEMPEST)\"" >> $(ENVIRONMENT).auto.tfvars
 	@echo "is_zuul = \"$(IS_ZUUL)\"" >> $(ENVIRONMENT).auto.tfvars
+	@echo "ceph_stack = \"$(CEPH_STACK)\"" >> $(ENVIRONMENT).auto.tfvars
 
 	@rm -f *_custom.tf
 	@for custom in `grep '^# *customisation:' "environments/${ENVIRONMENT}.tfvars" | sed 's/^# *customisation://'`; do \
