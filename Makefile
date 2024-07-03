@@ -2,6 +2,7 @@ export LC_ALL = C.UTF-8
 
 ENVIRONMENT ?= the_environment
 
+CEPH_STACK ?= ceph-ansible
 VERSION_CEPH ?= quincy
 VERSION_MANAGER ?= latest
 VERSION_OPENSTACK ?= 2023.2
@@ -42,6 +43,7 @@ create: prepare ## Create required infrastructure with OpenTofu.
 	  VERSION_CEPH=$(VERSION_CEPH) \
 	  VERSION_MANAGER=$(VERSION_MANAGER) \
 	  VERSION_OPENSTACK=$(VERSION_OPENSTACK) \
+	  CEPH_STACK=$(CEPH_STACK) \
 	  create
 
 .PHONY: login
@@ -81,7 +83,8 @@ bootstrap: setup create ## Bootstrap everything.
 	  -e manual_deploy=true \
 	  -e version_ceph=$(VERSION_CEPH) \
 	  -e version_manager=$(VERSION_MANAGER) \
-	  -e version_openstack=$(VERSION_OPENSTACK)
+	  -e version_openstack=$(VERSION_OPENSTACK) \
+	  -e ceph_stack=$(CEPH_STACK)
 
 .PHONY: manager
 manager: setup bootstrap ## Deploy only the manager service.

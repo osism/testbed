@@ -1,4 +1,24 @@
 ---
-# Dummy variable to avoid error because ansible does not recognize the
-# file as a good configuration file when no variable in it.
-dummy:
+rook_network_public: "192.168.16.0/20"
+rook_storage_devicefilter: "^sd[b-c]"
+rook_storage_nodes:
+  - name: "testbed-node-0"
+  - name: "testbed-node-1"
+  - name: "testbed-node-2"
+## reduce resources to fit into testbed
+rook_resources_cephfilesystem:
+  limits:
+    memory: "4Gi"
+  requests:
+    cpu: "500m"
+    memory: "4Gi"
+rook_resources_cephobjecstore:
+  limits:
+    memory: "2Gi"
+  requests:
+    cpu: "500m"
+    memory: "1Gi"
+## set to true to enable monitoring
+# rook_monitoring_enabled: true
+## set to true to enable cleanup
+# rook_cleanup: true

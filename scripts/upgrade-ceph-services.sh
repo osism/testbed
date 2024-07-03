@@ -7,6 +7,7 @@ echo "# UPGRADE"
 echo
 
 source /opt/configuration/scripts/include.sh
+source /opt/manager-vars.sh
 
 export MANAGER_VERSION=${1:-latest}
 CEPH_VERSION=${2:-pacific}
@@ -32,4 +33,8 @@ osism reconciler sync
 osism apply facts
 
 # upgrade services
-sh -c '/opt/configuration/scripts/upgrade/100-ceph-services.sh'
+if [[ $CEPH_STACK == "ceph-ansible" ]]; then
+    sh -c '/opt/configuration/scripts/upgrade/100-ceph-services.sh'
+elif [[ $CEPH_STACK == "rook" ]]; then
+    sh -c '/opt/configuration/scripts/upgrade/100-rook-services.sh'
+fi
