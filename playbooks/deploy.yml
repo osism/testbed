@@ -17,19 +17,19 @@
     manual_create: false
     manual_deploy: false
 
-    terraform_binary: "{{ ansible_user_dir }}/terragrunt"
-    terraform_path: "{{ basepath }}/terraform"
-
-    version_ceph: "{{ ceph_version | default('quincy') }}"
-    version_manager: "{{ manager_version | default('latest') }}"
-    version_openstack: "{{ openstack_version | default('2023.2') }}"
-
     run_bootstrap: true
     run_checks: true
 
-    in_a_nutshell: "{{ nutshell | default(false) | bool }}"
-    run_refstack: "{{ refstack | default(false) | bool }}"
-    run_tempest: "{{ tempest | default(false) | bool }}"
+    terraform_binary: "{{ ansible_user_dir }}/terragrunt"
+    terraform_path: "{{ basepath }}/terraform"
+
+    _ceph_version: "{{ ceph_version | default('quincy') }}"
+    _manager_version: "{{ manager_version | default('latest') }}"
+    _openstack_version: "{{ openstack_version | default('2023.2') }}"
+
+    _nutshell: "{{ nutshell | default(false) | bool }}"
+    _refstack: "{{ refstack | default(false) | bool }}"
+    _tempest: "{{ tempest | default(false) | bool }}"
 
   tasks:
     - name: Set facts (Zuul deployment)
@@ -49,10 +49,10 @@
     - name: Create infrastructure (latest)
       ansible.builtin.command:
         chdir: "{{ terraform_path }}"
-        cmd: make ENVIRONMENT={{ cloud_env }} TERRAFORM={{ terraform_binary }} VERSION_CEPH={{ version_ceph }} VERSION_MANAGER={{ version_manager }} VERSION_OPENSTACK={{ version_openstack }} REFSTACK={{ run_refstack | lower }} TEMPEST={{ run_tempest | lower }} IS_ZUUL={{ is_zuul | lower }} create
+        cmd: make ENVIRONMENT={{ cloud_env }} TERRAFORM={{ terraform_binary }} VERSION_CEPH={{ _ceph_version }} VERSION_MANAGER={{ _manager_version }} VERSION_OPENSTACK={{ _openstack_version }} REFSTACK={{ _refstack | lower }} TEMPEST={{ _tempest | lower }} IS_ZUUL={{ is_zuul | lower }} create
       when:
         - not manual_create | bool
-        - version_manager == "latest"
+        - _manager_version == "latest"
       changed_when: true
       environment:
         TERRAGRUNT_TFPATH: "{{ terragrunt_tfpath }}"
@@ -60,10 +60,10 @@
     - name: Create infrastructure (stable)
       ansible.builtin.command:
         chdir: "{{ terraform_path }}"
-        cmd: make ENVIRONMENT={{ cloud_env }} TERRAFORM={{ terraform_binary }} VERSION_MANAGER={{ version_manager }} REFSTACK={{ run_refstack | lower }} TEMPEST={{ run_tempest | lower }} IS_ZUUL={{ is_zuul | lower }} create
+        cmd: make ENVIRONMENT={{ cloud_env }} TERRAFORM={{ terraform_binary }} VERSION_MANAGER={{ _manager_version }} REFSTACK={{ refstack | lower }} TEMPEST={{ tempest | lower }} IS_ZUUL={{ is_zuul | lower }} create
       when:
         - not manual_create | bool
-        - version_manager != "latest"
+        - _manager_version != "latest"
       changed_when: true
       environment:
         TERRAGRUNT_TFPATH: "{{ terragrunt_tfpath }}"
@@ -132,7 +132,7 @@
       ansible.builtin.shell:
         chdir: "{{ ansible_path }}"
         cmd: |
-          {{ ansible_playbook }} -i {{ terraform_path }}/inventory.{{ cloud_env }} --key-file {{ terraform_path }}/.id_rsa.{{ cloud_env }} manager-part-1.yml -e cloud_env={{ cloud_env }} -e repo_path={{ repo_path }} -e version_manager={{ version_manager }} -e is_zuul={{ is_zuul }}
+          {{ ansible_playbook }} -i {{ terraform_path }}/inventory.{{ cloud_env }} --key-file {{ terraform_path }}/.id_rsa.{{ cloud_env }} manager-part-1.yml -e cloud_env={{ cloud_env }} -e repo_path={{ repo_path }} -e version_manager={{ _manager_version }} -e is_zuul={{ is_zuul }}
       changed_when: true
 
     - name: Reboot manager
@@ -164,7 +164,7 @@
         cmd: "ssh -i {{ terraform_path }}/.id_rsa.{{ cloud_env }} dragon@{{ manager_host }} /opt/configuration/scripts/deploy-services.sh"
       when:
         - not manual_deploy | bool
-        - not in_a_nutshell | bool
+        - not _nutshell | bool
       changed_when: true
 
     - name: Deploy in a nutshell
@@ -172,7 +172,7 @@
         cmd: "ssh -i {{ terraform_path }}/.id_rsa.{{ cloud_env }} dragon@{{ manager_host }} /opt/configuration/scripts/deploy-in-a-nutshell.sh"
       when:
         - not manual_deploy | bool
-        - in_a_nutshell | bool
+        - _nutshell | bool
       changed_when: true
 
     - name: Bootstrap services
@@ -196,7 +196,7 @@
         cmd: "ssh -i {{ terraform_path }}/.id_rsa.{{ cloud_env }} dragon@{{ manager_host }} /opt/configuration/scripts/check/301-openstack-refstack.sh"
       when:
         - not manual_deploy | bool
-        - run_refstack | bool
+        - refstack | bool
       changed_when: true
 
     - name: Run tempest
@@ -204,5 +204,5 @@
         cmd: "ssh -i {{ terraform_path }}/.id_rsa.{{ cloud_env }} dragon@{{ manager_host }} /opt/configuration/scripts/check/302-openstack-tempest.sh"
       when:
         - not manual_deploy | bool
-        - run_tempest | bool
+        - tempest | bool
       changed_when: true
