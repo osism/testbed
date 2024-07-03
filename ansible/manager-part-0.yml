@@ -132,7 +132,7 @@
     - name: Install collections from Ansible galaxy
       become: true
       ansible.builtin.command: |
-        {{ ansible_galaxy }} collection install --collections-path /usr/share/ansible/collections {{ item }}
+        {{ ansible_galaxy }} collection install --force --collections-path /usr/share/ansible/collections {{ item }}
       register: result
       changed_when: "'was installed successfully' in result.stdout"
       loop:
@@ -143,7 +143,7 @@
     - name: Install local collections
       become: true
       ansible.builtin.command: |
-        {{ ansible_galaxy }} collection install --collections-path /usr/share/ansible/collections /opt/src/osism/{{ item }}
+        {{ ansible_galaxy }} collection install --force --collections-path /usr/share/ansible/collections /opt/src/osism/{{ item }}
       register: result
       changed_when: "'was installed successfully' in result.stdout"
       loop:
