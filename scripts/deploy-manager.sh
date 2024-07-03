@@ -56,7 +56,9 @@ osism apply hddtemp
 sudo systemctl restart docker-compose@manager
 
 # wait for manager service
-wait_for_container_healthy 60 ceph-ansible
+if [[ $CEPH_STACK == "ceph-ansible" ]]; then
+    wait_for_container_healthy 60 ceph-ansible
+fi
 wait_for_container_healthy 60 kolla-ansible
 wait_for_container_healthy 60 osism-ansible
 
