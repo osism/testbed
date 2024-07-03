@@ -21,4 +21,6 @@ fi
 osism apply rook-operator
 osism apply rook
 osism apply rook-fetch-keys
-# osism apply rook-cephclient
+
+echo "cephclient_install_type: rook" >> /opt/configuration/environments/infrastructure/configuration.yml
+osism apply cephclient
