@@ -16,7 +16,16 @@ result = run(
     universal_newlines=True,
     shell=True,
 )
-major, minor = divmod(int(result.stdout.strip()[:-1], base=16), 0x100)
+
+try:
+    # Ubuntu <= 22.04
+    # e.g. "Device: 801h/2049d	Inode: 2           Links: 19"
+    major, minor = divmod(int(result.stdout.strip()[:-1], base=16), 0x100)
+except ValueError:
+    # Ubuntu >= 24.04
+    # e.g. "Device: 8,1	Inode: 2           Links: 21"
+    major, minor = result.stdout.strip().split(",")
+
 load_dotenv(f"/sys/dev/block/{major}:{minor}/uevent")
 partition = os.environ.get("DEVNAME")
 
