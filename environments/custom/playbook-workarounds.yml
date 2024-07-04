@@ -90,3 +90,20 @@
       ansible.builtin.service:
         name: workarounds
         enabled: true
+
+# https://github.com/docker/docker-py/issues/3113
+# docker.errors.DockerException: Error while fetching server API version:
+# HTTPConnection.request() got an unexpected keyword argument 'chunked'
+
+- name: On Ubuntu 24.04 Install python3-docker from Debian Sid
+  hosts: all
+  gather_facts: false
+
+  tasks:
+    - name: Install python3-docker
+      become: true
+      ansible.builtin.apt:
+        deb: http://ftp.de.debian.org/debian/pool/main/p/python-docker/python3-docker_7.1.0-1_all.deb
+      when:
+        - "ansible_distribution == 'Ubuntu'"
+        - "ansible_distribution_version is version('24.04', '>=')"
