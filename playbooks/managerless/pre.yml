@@ -53,12 +53,13 @@
       ansible.builtin.pip:
         name: "{{ item }}"
       loop:
-        - "ansible==9.6.1"
         - "ansible-core==2.16.6"
+        - "ansible==9.6.1"
+        - "docker>=7.1.0"
+        - netaddr
         - openstacksdk
         - "python-gilt==1.2.3"
         - "requests>=2.32.2"
-        - "docker>=7.1.0"
 
     - name: Install ansible collections
       ansible.builtin.command: |
