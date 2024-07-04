@@ -198,7 +198,7 @@
         cmd: "ssh -i {{ terraform_path }}/.id_rsa.{{ cloud_env }} dragon@{{ manager_host }} /opt/configuration/scripts/check/301-openstack-refstack.sh"
       when:
         - not manual_deploy | bool
-        - refstack | bool
+        - _refstack | bool
       changed_when: true
 
     - name: Run tempest
@@ -206,5 +206,5 @@
         cmd: "ssh -i {{ terraform_path }}/.id_rsa.{{ cloud_env }} dragon@{{ manager_host }} /opt/configuration/scripts/check/302-openstack-tempest.sh"
       when:
         - not manual_deploy | bool
-        - tempest | bool
+        - _tempest | bool
       changed_when: true
