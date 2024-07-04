@@ -8,8 +8,7 @@ MANAGER_VERSION=$(docker inspect --format '{{ index .Config.Labels "org.opencont
 # CEPH_VERSION=$(docker inspect --format '{{ index .Config.Labels "de.osism.release.ceph" }}' osism-ansible)
 
 # check/deploy kubernetes
-KUBECTL_FOUND=$(which kubectl || true)
-if [[ $KUBECTL_FOUND == 0 ]]; then
+if command -v kubectl &> /dev/null; then
     K8S_READY_COUNT=$(kubectl get nodes | grep -c Ready)
     if [[ $K8S_READY_COUNT == 0 ]]; then
         /opt/configuration/scripts/deploy/005-kubernetes.sh
