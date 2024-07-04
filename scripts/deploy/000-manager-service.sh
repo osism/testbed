@@ -21,6 +21,11 @@ if [[ $MANAGER_VERSION == "latest" ]]; then
     /opt/configuration/scripts/set-openstack-version.sh $OPENSTACK_VERSION
 fi
 
+# disable ceph-ansible if rook should be used for the ceph deployment
+if [[ $CEPH_STACK == "rook" ]]; then
+    echo "enable_ceph_ansible: false" >> /opt/configuration/environments/manager/configuration.yml
+fi
+
 if [[ -e /opt/venv/bin/activate ]]; then
     source /opt/venv/bin/activate
 fi
@@ -37,7 +42,9 @@ fi
 cp /home/dragon/.ssh/id_rsa.pub /opt/ansible/secrets/id_rsa.operator.pub
 
 # wait for manager service
-wait_for_container_healthy 60 ceph-ansible
+if [[ $CEPH_STACK == "ceph-ansible" ]]; then
+    wait_for_container_healthy 60 ceph-ansible
+fi
 wait_for_container_healthy 60 kolla-ansible
 wait_for_container_healthy 60 osism-ansible
 

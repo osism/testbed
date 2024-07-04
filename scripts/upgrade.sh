@@ -33,7 +33,9 @@ sh -c '/opt/configuration/scripts/sync-configuration-repository.sh'
 osism update manager
 
 # wait for manager service
-wait_for_container_healthy 60 ceph-ansible
+if [[ $CEPH_STACK == "ceph-ansible" ]]; then
+    wait_for_container_healthy 60 ceph-ansible
+fi
 wait_for_container_healthy 60 kolla-ansible
 wait_for_container_healthy 60 osism-ansible
 
