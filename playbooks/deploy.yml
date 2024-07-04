@@ -51,7 +51,7 @@
     - name: Create infrastructure (latest)
       ansible.builtin.command:
         chdir: "{{ terraform_path }}"
-        cmd: make ENVIRONMENT={{ cloud_env }} TERRAFORM={{ terraform_binary }} VERSION_CEPH={{ _ceph_version }} VERSION_MANAGER={{ _manager_version }} VERSION_OPENSTACK={{ _openstack_version }} REFSTACK={{ _refstack | lower }} TEMPEST={{ _tempest | lower }} IS_ZUUL={{ is_zuul | lower }}} CEPH_STACK={{ _ceph_stack }} create create
+        cmd: make ENVIRONMENT={{ cloud_env }} TERRAFORM={{ terraform_binary }} VERSION_CEPH={{ _ceph_version }} VERSION_MANAGER={{ _manager_version }} VERSION_OPENSTACK={{ _openstack_version }} REFSTACK={{ _refstack | lower }} TEMPEST={{ _tempest | lower }} IS_ZUUL={{ is_zuul | lower }} CEPH_STACK={{ _ceph_stack }} create create
       when:
         - not manual_create | bool
         - _manager_version == "latest"
@@ -62,7 +62,7 @@
     - name: Create infrastructure (stable)
       ansible.builtin.command:
         chdir: "{{ terraform_path }}"
-        cmd: make ENVIRONMENT={{ cloud_env }} TERRAFORM={{ terraform_binary }} VERSION_MANAGER={{ _manager_version }} REFSTACK={{ refstack | lower }} TEMPEST={{ tempest | lower }} IS_ZUUL={{ is_zuul | lower }} CEPH_STACK={{ _ceph_stack }} create
+        cmd: make ENVIRONMENT={{ cloud_env }} TERRAFORM={{ terraform_binary }} VERSION_MANAGER={{ _manager_version }} REFSTACK={{ _refstack | lower }} TEMPEST={{ _tempest | lower }} IS_ZUUL={{ is_zuul | lower }} CEPH_STACK={{ _ceph_stack }} create
       when:
         - not manual_create | bool
         - _manager_version != "latest"
@@ -198,7 +198,7 @@
         cmd: "ssh -i {{ terraform_path }}/.id_rsa.{{ cloud_env }} dragon@{{ manager_host }} /opt/configuration/scripts/check/301-openstack-refstack.sh"
       when:
         - not manual_deploy | bool
-        - refstack | bool
+        - _refstack | bool
       changed_when: true
 
     - name: Run tempest
@@ -206,5 +206,5 @@
         cmd: "ssh -i {{ terraform_path }}/.id_rsa.{{ cloud_env }} dragon@{{ manager_host }} /opt/configuration/scripts/check/302-openstack-tempest.sh"
       when:
         - not manual_deploy | bool
-        - tempest | bool
+        - _tempest | bool
       changed_when: true
