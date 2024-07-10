@@ -105,7 +105,7 @@
     name: testbed-deploy-stable
     parent: abstract-testbed-deploy
     vars:
-      manager_version: 7.0.4
+      manager_version: 7.1.0
       refstack: true
 
 - job:
@@ -114,7 +114,7 @@
     run: playbooks/upgrade-stable.yml
     vars:
       manager_version: 6.0.2
-      manager_version_next: 7.0.4
+      manager_version_next: 7.1.0
     nodeset: testbed-orchestrator
     timeout: 25200
 
