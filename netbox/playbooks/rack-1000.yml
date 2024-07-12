@@ -127,7 +127,6 @@
             ironic_enabled: false
           tags:
             - managed-by-osism
-            - managed-by-bifrost
             - generic
             - control
             - compute
@@ -155,7 +154,6 @@
             ironic_enabled: false
           tags:
             - managed-by-osism
-            - managed-by-bifrost
             - generic
             - control
             - compute
@@ -183,7 +181,6 @@
             ironic_enabled: false
           tags:
             - managed-by-osism
-            - managed-by-bifrost
             - generic
             - control
             - compute
