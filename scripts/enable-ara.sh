@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-if [[ $CEPH_STACK == "ceph-ansible" ]]; then
-    docker exec -t ceph-ansible mv /ansible/ara.env.disabled /ansible/ara.env || true
-fi
-docker exec -t kolla-ansible mv /ansible/ara.env.disabled /ansible/ara.env || true
-docker exec -t osism-ansible mv /ansible/ara.env.disabled /ansible/ara.env || true
+for name in ceph-ansible kolla-ansible osism-ansible osism-kubernetes; do
+    [[ ! -z "$(docker ps -a | grep $name )" ]] && docker exec -t $name mv /ansible/ara.env.disabled /ansible/ara.env || echo "ARA in $name already enabled."
+done
