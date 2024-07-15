@@ -26,6 +26,11 @@ if [[ $CEPH_STACK == "rook" ]]; then
     echo "enable_ceph_ansible: false" >> /opt/configuration/environments/manager/configuration.yml
 fi
 
+# enable new kubernetes service
+if [[ $MANAGER_VERSION =~ ^7\.[0-9]\.[0-9]?$ || $MANAGER_VERSION == "latest" ]]; then
+    echo "enable_osism_kubernetes: true" >> /opt/configuration/environments/manager/configuration.yml
+fi
+
 if [[ -e /opt/venv/bin/activate ]]; then
     source /opt/venv/bin/activate
 fi
