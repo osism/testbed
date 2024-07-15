@@ -19,20 +19,26 @@
       loop: "{{ result.files }}"
       changed_when: true
 
+    # Debugging and testing
+    - name: Debug testbed_ceph_devices_all
+      ansible.builtin.debug:
+        var: ansible_local.testbed_ceph_devices_all
+
     - name: Check device availability
       ansible.builtin.command: "lsblk -no MOUNTPOINT {{ item }}"
-      register: result_lsblk
-      changed_when: true
+      register: device_check
+      changed_when: false
+      failed_when: false
       loop: "{{ ansible_local.testbed_ceph_devices_all }}"
 
     - name: Wipe partitions with wipefs
       become: true
       ansible.builtin.command: "wipefs --all {{ item.item }}"
-      register: result_wipefs
-      changed_when: result_wipefs.rc == 0 and result_wipefs.stdout != ""
-      failed_when: result_wipefs.rc != 0 and result_wipefs.rc != 1
+      register: wipefs_result
+      changed_when: wipefs_result.rc == 0 and wipefs_result.stdout != ""
+      failed_when: wipefs_result.rc != 0 and wipefs_result.rc != 1
       when: item.stdout == ""
-      loop: "{{ result_lsblk.results }}"
+      loop: "{{ device_check.results }}"
       loop_control:
         label: "{{ item.item }}"
 
@@ -41,6 +47,6 @@
       ansible.builtin.command: "dd if=/dev/zero of={{ item.item }} bs=1M count=32 oflag=direct,dsync"
       changed_when: true
       when: item.stdout == ""
-      loop: "{{ result_lsblk.results }}"
+      loop: "{{ device_check.results }}"
       loop_control:
         label: "{{ item.item }}"

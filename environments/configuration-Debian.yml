@@ -1,3 +1,6 @@
 ---
 # NOTE: Debian currently has no extra Packages like HWE Kernel
-required_packages_extra: []
+required_packages_extra:
+  # The lvm2 package is not installed by default on CentOS.
+  # It is required by /opt/configuration/scripts/deploy/100-ceph-services.sh
+  - lvm2

@@ -65,6 +65,7 @@ init:
 
 	@rm -f *.auto.tfvars
 	@cp environments/$(ENVIRONMENT).tfvars $(CLOUD).auto.tfvars
+	@echo "" >> $(CLOUD).auto.tfvars
 	@echo "ceph_stack = \"$(CEPH_STACK)\"" >> $(CLOUD).auto.tfvars
 	@echo "ceph_version = \"$(VERSION_CEPH)\"" >> $(CLOUD).auto.tfvars
 	@echo "cloud_provider = \"$(OS_CLOUD)\"" >> $(CLOUD).auto.tfvars

@@ -5,7 +5,7 @@ CONFIGURATION ?= main
 ENVIRONMENT ?= the_environment
 CLOUD ?= $(ENVIRONMENT)
 
-IMAGE_USERNAME ?= ubuntu
+IMAGE_USERNAME ?= debian
 
 VERSION_CEPH ?= quincy
 VERSION_MANAGER ?= latest
