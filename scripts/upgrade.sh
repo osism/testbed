@@ -4,6 +4,8 @@ set -e
 
 source /opt/configuration/scripts/include.sh
 
+OLD_MANAGER_VERSION=$(docker inspect --format '{{ index .Config.Labels "org.opencontainers.image.version"}}' osism-ansible)
+
 echo
 echo "# UPGRADE"
 echo
@@ -28,6 +30,11 @@ fi
 
 # Sync configuration repository
 sh -c '/opt/configuration/scripts/sync-configuration-repository.sh'
+
+# enable new kubernetes service
+if [[ $OLD_MANAGER_VERSION =~ ^6\.[0-9]\.[0-9]?$ ]]; then
+    echo "enable_osism_kubernetes: true" >> /opt/configuration/environments/manager/configuration.yml
+fi
 
 # upgrade manager
 osism update manager
