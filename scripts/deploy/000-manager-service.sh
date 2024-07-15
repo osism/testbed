@@ -53,24 +53,6 @@ if [[ -e /etc/osism-ci-image || "$ARA" == "false" ]]; then
     sh -c '/opt/configuration/scripts/disable-ara.sh'
 fi
 
-# wait for netbox service
-if ! wait_for_container_healthy 60 netbox-netbox-1; then
-    # The Netbox integration is not mandatory for the use of the testbed.
-    # Therefore it is ok to skip if the deployment did not work. A separate
-    # job will be created later for the integration tests of the netbox which
-    # will then be built into osism/python-osism.
-    echo The deployment of the Netbox did not work. Skip the Netbox integration.
-else
-    osism netbox import
-    osism netbox init
-    osism netbox manage 1000
-    osism netbox connect 1000 --state a
-
-    osism netbox disable --no-wait testbed-switch-0
-    osism netbox disable --no-wait testbed-switch-1
-    osism netbox disable --no-wait testbed-switch-2
-fi
-
 docker compose --project-directory /opt/manager ps
 docker compose --project-directory /opt/netbox ps
 
