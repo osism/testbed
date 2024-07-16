@@ -3,7 +3,7 @@
   hosts: testbed-managers
 
   tasks:
-    - name: Accpet FORWARD on the management interface (incoming)
+    - name: Accept FORWARD on the management interface (incoming)
       become: true
       ansible.builtin.iptables:
         chain: FORWARD
@@ -52,6 +52,10 @@
         provider_physical_network: physnet1
         mtu: 1342  # NOTE: necessary because VxLAN in Geneve/VxLAN
 
+    - name: Set public network to default
+      ansible.builtin.command: openstack --os-cloud admin network set --default public
+      changed_when: true
+
     - name: Create public subnet
       openstack.cloud.subnet:
         cloud: admin
@@ -63,6 +67,19 @@
         allocation_pool_start: 192.168.112.100
         allocation_pool_end: 192.168.112.200
         gateway_ip: 192.168.112.5
+
+    - name: Create default IPv4 subnet pool
+      openstack.cloud.subnet_pool:
+        cloud: admin
+        state: present
+        name: default-subnet-pool-ipv4
+        is_default: true
+        is_shared: true
+        prefixes:
+          - 10.42.0.0/16
+        maximum_prefix_length: 29
+        minimum_prefix_length: 20
+        default_prefix_length: 26
 
     - name: Create manager role
       openstack.cloud.identity_role:
