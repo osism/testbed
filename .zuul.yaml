@@ -87,7 +87,7 @@
     name: testbed-deploy
     parent: abstract-testbed-deploy
     vars:
-      refstack: true
+      tempest: true
 
 - job:
     name: testbed-deploy-in-a-nutshell
@@ -106,7 +106,7 @@
     parent: abstract-testbed-deploy
     vars:
       manager_version: 7.1.0
-      refstack: true
+      tempst: true
 
 - job:
     name: testbed-upgrade-stable
