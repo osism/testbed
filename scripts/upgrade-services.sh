@@ -11,7 +11,7 @@ sh -c '/opt/configuration/scripts/pull-images.sh'
 sh -c '/opt/configuration/scripts/upgrade/005-kubernetes.sh'
 
 # upgrade infrastructure services
-sh -c '/opt/configuration/scripts/upgrade/200-infrastructure-services-basic.sh'
+sh -c '/opt/configuration/scripts/upgrade/200-infrastructure-services.sh'
 
 # upgrade ceph services
 if [[ $CEPH_STACK == "ceph-ansible" ]]; then
@@ -21,7 +21,7 @@ elif [[ $CEPH_STACK == "rook" ]]; then
 fi
 
 # upgrade openstack services
-sh -c '/opt/configuration/scripts/upgrade/300-openstack-services-basic.sh'
+sh -c '/opt/configuration/scripts/upgrade/300-openstack-services.sh'
 sh -c '/opt/configuration/scripts/upgrade/310-openstack-services-extended.sh'
 sh -c '/opt/configuration/scripts/upgrade/320-openstack-services-baremetal.sh'
 

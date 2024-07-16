@@ -21,17 +21,17 @@ if [[ $MANAGER_VERSION =~ ^7\.[0-9]\.[0-9]?$ || $MANAGER_VERSION == "latest" ]];
 fi
 
 # deploy infrastructure services
-sh -c '/opt/configuration/scripts/deploy/200-infrastructure-services-basic.sh'
+sh -c '/opt/configuration/scripts/deploy/200-infrastructure-services.sh'
 
 # deploy ceph services
 if [[ $CEPH_STACK == "ceph-ansible" ]]; then
-    sh -c '/opt/configuration/scripts/deploy/100-ceph-services-basic.sh'
+    sh -c '/opt/configuration/scripts/deploy/100-ceph-services.sh'
 elif [[ $CEPH_STACK == "rook" ]]; then
     sh -c '/opt/configuration/scripts/deploy/100-rook-services.sh'
 fi
 
 # deploy openstack services
-sh -c '/opt/configuration/scripts/deploy/300-openstack-services-basic.sh'
+sh -c '/opt/configuration/scripts/deploy/300-openstack-services.sh'
 
 if [[ "$REFSTACK" == "false" && "$TEMPEST" == "false" ]]; then
     # deploy extended openstack services
