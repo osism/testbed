@@ -21,7 +21,7 @@
 
     - name: Wipe partitions with wipefs
       become: true
-      ansible.builtin.command: "wipefs --all {{ item }}"
+      ansible.builtin.command: "wipefs --all --force {{ item }}"
       changed_when: true
       loop: "{{ ansible_local.testbed_ceph_devices_all }}"
 
