@@ -65,17 +65,17 @@ wait_for_container_healthy 60 osism-ansible
 # create symlinks for deploy scripts
 sudo ln -sf /opt/configuration/scripts/deploy/001-helper-services.sh /usr/local/bin/deploy-helper
 sudo ln -sf /opt/configuration/scripts/deploy/005-kubernetes.sh /usr/local/bin/deploy-kubernetes
-sudo ln -sf /opt/configuration/scripts/deploy/100-ceph-services-basic.sh /usr/local/bin/deploy-ceph
+sudo ln -sf /opt/configuration/scripts/deploy/100-ceph-services.sh /usr/local/bin/deploy-ceph
 sudo ln -sf /opt/configuration/scripts/deploy/100-rook-services.sh /usr/local/bin/deploy-rook
-sudo ln -sf /opt/configuration/scripts/deploy/200-infrastructure-services-basic.sh /usr/local/bin/deploy-infrastructure
-sudo ln -sf /opt/configuration/scripts/deploy/300-openstack-services-basic.sh /usr/local/bin/deploy-openstack
+sudo ln -sf /opt/configuration/scripts/deploy/200-infrastructure-services.sh /usr/local/bin/deploy-infrastructure
+sudo ln -sf /opt/configuration/scripts/deploy/300-openstack-services.sh /usr/local/bin/deploy-openstack
 sudo ln -sf /opt/configuration/scripts/deploy/400-monitoring-services.sh /usr/local/bin/deploy-monitoring
 
 # create symlinks for upgrade scripts
 sudo ln -sf /opt/configuration/scripts/upgrade/005-kubernetes.sh /usr/local/bin/upgrade-kubernetes
 sudo ln -sf /opt/configuration/scripts/upgrade/100-ceph-services.sh /usr/local/bin/upgrade-ceph
-sudo ln -sf /opt/configuration/scripts/upgrade/200-infrastructure-services-basic.sh /usr/local/bin/upgrade-infrastructure
-sudo ln -sf /opt/configuration/scripts/upgrade/300-openstack-services-basic.sh /usr/local/bin/upgrade-openstack
+sudo ln -sf /opt/configuration/scripts/upgrade/200-infrastructure-services.sh /usr/local/bin/upgrade-infrastructure
+sudo ln -sf /opt/configuration/scripts/upgrade/300-openstack-services.sh /usr/local/bin/upgrade-openstack
 sudo ln -sf /opt/configuration/scripts/upgrade/400-monitoring-services.sh /usr/local/bin/upgrade-monitoring
 
 # create symlinks for bootstrap scripts
