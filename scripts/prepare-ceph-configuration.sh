@@ -5,6 +5,12 @@ source /opt/configuration/scripts/include.sh
 
 MANAGER_VERSION=$(docker inspect --format '{{ index .Config.Labels "org.opencontainers.image.version"}}' osism-ansible)
 
+# Make the new plays for preparing the OSDs also available for OSISM 6.
+if [[ $MANAGER_VERSION =~ ^6\.[0-9]\.[0-9]$ ]]; then
+    curl -o /opt/configuration/environments/custom/playbook-ceph-create-lvm-devices.yml https://raw.githubusercontent.com/osism/container-image-ceph-ansible/main/files/playbooks/ceph-create-lvm-devices.yml
+    curl -o /opt/configuration/environments/custom/playbook-ceph-configure-lvm-volumes.yml https://raw.githubusercontent.com/osism/container-image-ceph-ansible/main/files/playbooks/ceph-configure-lvm-volumes.yml
+fi
+
 # Make sure that no partitions are present
 osism apply --environment custom wipe-partitions
 osism apply facts
