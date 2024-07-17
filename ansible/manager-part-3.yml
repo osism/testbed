@@ -6,7 +6,7 @@
 
   vars:
     venv_path: /opt/venv
-    ansible_python_interpreter: "{{ venv_path }}/bin/python3"
+    ansible_python_interpreter: "{{ venv_path }}/bin/python3.11"
     apt_lock_timeout: 300
 
   tasks:
@@ -44,7 +44,7 @@
 
   vars:
     venv_path: /opt/venv
-    ansible_python_interpreter: "{{ venv_path }}/bin/python3"
+    ansible_python_interpreter: "{{ venv_path }}/bin/python3.11"
 
     images:
       - "{{ ara_server_image }}"
@@ -146,7 +146,7 @@
 
   vars:
     venv_path: /opt/venv
-    ansible_python_interpreter: "{{ venv_path }}/bin/python3"
+    ansible_python_interpreter: "{{ venv_path }}/bin/python3.11"
 
   vars_files:
     - /opt/configuration/inventory/group_vars/testbed-managers.yml
@@ -185,7 +185,7 @@
 
   vars:
     venv_path: /opt/venv
-    ansible_python_interpreter: "{{ venv_path }}/bin/python3"
+    ansible_python_interpreter: "{{ venv_path }}/bin/python3.11"
 
     manager_service_restart: false
 

@@ -8,7 +8,7 @@
     operator_group: dragon
 
     venv_path: /opt/venv
-    ansible_python_interpreter: "{{ venv_path }}/bin/python3"
+    ansible_python_interpreter: "{{ venv_path }}/bin/python3.11"
 
   roles:
     - role: osism.commons.repository
@@ -93,7 +93,7 @@
         name: "{{ item }}"
         state: present
         virtualenv: "{{ venv_path }}"
-        virtualenv_command: python3 -m venv
+        virtualenv_command: python3.11 -m venv
       loop:
         - netifaces
         - "python-gilt==1.2.3"
