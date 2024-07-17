@@ -68,7 +68,7 @@
           ansible.builtin.dnf:
             update_cache: true
 
-        - name: Install packages on CentOS
+        - name: Install necessary packages on CentOS
           ansible.builtin.dnf:
             name:
               - kernel-devel
@@ -88,37 +88,17 @@
         state: directory
         mode: 0755
 
-    - name: Install netaddr in venv
+    - name: Install required packages in venv
       ansible.builtin.pip:
         umask: "0022"
-        name: netaddr
-        state: present
-        virtualenv: "{{ venv_path }}"
-        virtualenv_command: python3 -m venv
-
-    - name: Install ansible-core in venv
-      ansible.builtin.pip:
-        umask: "0022"
-        name: "ansible-core>=2.16.0,<2.17.0"
+        name:
+          - netaddr
+          - "ansible-core>=2.16.0,<2.17.0"
+          - "requests>=2.32.2"
+          - "docker>=7.1.0"
         state: present
         virtualenv: "{{ venv_path }}"
         virtualenv_command: python3.11 -m venv
-
-    - name: Install requests >= 2.32.2
-      ansible.builtin.pip:
-        umask: "0022"
-        name: "requests>=2.32.2"
-        state: present
-        virtualenv: "{{ venv_path }}"
-        virtualenv_command: python3 -m venv
-
-    - name: Install docker >= 7.1.0
-      ansible.builtin.pip:
-        umask: "0022"
-        name: "docker>=7.1.0"
-        state: present
-        virtualenv: "{{ venv_path }}"
-        virtualenv_command: python3 -m venv
 
     - name: Create directories in /opt/src
       become: true
@@ -180,7 +160,7 @@
       - "{{ lookup('file', '.id_rsa.' + cloud_env + '.pub') }}"
 
     venv_path: /opt/venv
-    ansible_python_interpreter: "{{ venv_path }}/bin/python3"
+    ansible_python_interpreter: "{{ venv_path }}/bin/python3.11"
 
   roles:
     - role: osism.commons.operator
