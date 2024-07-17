@@ -5,6 +5,10 @@ set -e
 source /opt/manager-vars.sh
 source /opt/configuration/scripts/include.sh
 
+if [[ $IS_ZUUL == "true" ]]; then
+    sudo touch /etc/osism-ci-image
+fi
+
 # The latest version of the Manager is used by default. If a different
 # version is to be used, it must be used accordingly.
 
