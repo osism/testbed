@@ -36,22 +36,22 @@
   tasks:
     - name: Set facts (Zuul deployment)
       ansible.builtin.set_fact:
+        _is_zuul: true
         cloud_env: "{{ cloud_envs[hostvars[groups['all'][0]]['nodepool']['label']] }}"
-        is_zuul: true
         terragrunt_tfpath: "{{ ansible_user_dir }}/terraform"
       when: "'nodepool' in hostvars[groups['all'][0]]"
 
     - name: Set facts (local deployment)
       ansible.builtin.set_fact:
+        _is_zuul: false
         cloud_env: "{{ testbed_environment | default('ci') }}"
-        is_zuul: false
         terragrunt_tfpath: terraform
       when: "'nodepool' not in hostvars[groups['all'][0]]"
 
     - name: Create infrastructure (latest)
       ansible.builtin.command:
         chdir: "{{ terraform_path }}"
-        cmd: make ENVIRONMENT={{ cloud_env }} TERRAFORM={{ terraform_binary }} VERSION_CEPH={{ _ceph_version }} VERSION_MANAGER={{ _manager_version }} VERSION_OPENSTACK={{ _openstack_version }} REFSTACK={{ _refstack | lower }} TEMPEST={{ _tempest | lower }} IS_ZUUL={{ is_zuul | lower }} CEPH_STACK={{ _ceph_stack }} create create
+        cmd: make ENVIRONMENT={{ cloud_env }} TERRAFORM={{ terraform_binary }} VERSION_CEPH={{ _ceph_version }} VERSION_MANAGER={{ _manager_version }} VERSION_OPENSTACK={{ _openstack_version }} REFSTACK={{ _refstack | lower }} TEMPEST={{ _tempest | lower }} IS_ZUUL={{ _is_zuul | lower }} CEPH_STACK={{ _ceph_stack }} create create
       when:
         - not manual_create | bool
         - _manager_version == "latest"
@@ -62,7 +62,7 @@
     - name: Create infrastructure (stable)
       ansible.builtin.command:
         chdir: "{{ terraform_path }}"
-        cmd: make ENVIRONMENT={{ cloud_env }} TERRAFORM={{ terraform_binary }} VERSION_MANAGER={{ _manager_version }} REFSTACK={{ _refstack | lower }} TEMPEST={{ _tempest | lower }} IS_ZUUL={{ is_zuul | lower }} CEPH_STACK={{ _ceph_stack }} create
+        cmd: make ENVIRONMENT={{ cloud_env }} TERRAFORM={{ terraform_binary }} VERSION_MANAGER={{ _manager_version }} REFSTACK={{ _refstack | lower }} TEMPEST={{ _tempest | lower }} IS_ZUUL={{ _is_zuul | lower }} CEPH_STACK={{ _ceph_stack }} create
       when:
         - not manual_create | bool
         - _manager_version != "latest"
@@ -134,7 +134,7 @@
       ansible.builtin.shell:
         chdir: "{{ ansible_path }}"
         cmd: |
-          {{ ansible_playbook }} -i {{ terraform_path }}/inventory.{{ cloud_env }} --key-file {{ terraform_path }}/.id_rsa.{{ cloud_env }} manager-part-1.yml -e cloud_env={{ cloud_env }} -e repo_path={{ repo_path }} -e version_manager={{ _manager_version }} -e is_zuul={{ is_zuul }}
+          {{ ansible_playbook }} -i {{ terraform_path }}/inventory.{{ cloud_env }} --key-file {{ terraform_path }}/.id_rsa.{{ cloud_env }} manager-part-1.yml -e cloud_env={{ cloud_env }} -e repo_path={{ repo_path }} -e version_manager={{ _manager_version }} -e is_zuul={{ _is_zuul }}
       changed_when: true
 
     - name: Reboot manager
