@@ -8,7 +8,7 @@
     operator_group: dragon
 
     venv_path: /opt/venv
-    ansible_python_interpreter: "{{ venv_path }}/bin/python3.11"
+    ansible_python_interpreter: "{{ venv_path }}/bin/python3"
 
   roles:
     - role: osism.commons.repository
@@ -70,14 +70,6 @@
         - build-essential
         - python3-dev
       when: ansible_os_family == 'Debian'
-
-    - name: Set pip3.11 as the pip3 command used in deployment  # noqa: osism-fqcn
-      become: yes
-      community.general.alternatives:
-        name: pip3
-        path: /usr/bin/pip3.11
-        link: /usr/bin/pip3
-      when: ansible_distribution == 'CentOS'
 
     - name: Remove some python packages
       become: true

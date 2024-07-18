@@ -100,6 +100,11 @@
         virtualenv: "{{ venv_path }}"
         virtualenv_command: python3.11 -m venv
 
+    - name: Replace Python symlink in venv
+      become: true
+      ansible.builtin.command: "ln -sf {{ venv_path }}/bin/python3.11 {{ venv_path }}/bin/python3"
+      changed_when: true
+
     - name: Create directories in /opt/src
       become: true
       ansible.builtin.file:
