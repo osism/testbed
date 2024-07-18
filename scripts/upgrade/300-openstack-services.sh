@@ -15,6 +15,7 @@ rm -rf /opt/configuration/environments/kolla/files/overlays/keystone/federation
 osism apply -a upgrade keystone
 osism apply -a upgrade placement
 osism apply -a upgrade neutron
+osism apply -a upgrade ironic
 osism apply -a upgrade nova
 osism apply -a upgrade horizon
 osism apply -a upgrade glance
