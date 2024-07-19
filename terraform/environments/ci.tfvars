@@ -14,4 +14,3 @@ availability_zone         = "nova"
 network_availability_zone = "nova"
 volume_availability_zone  = "nova"
 public                    = "public"
-is_zuul                   = true
