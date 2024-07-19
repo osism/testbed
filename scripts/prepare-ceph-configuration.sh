@@ -5,11 +5,12 @@ source /opt/configuration/scripts/include.sh
 
 MANAGER_VERSION=$(docker inspect --format '{{ index .Config.Labels "org.opencontainers.image.version"}}' osism-ansible)
 
-mkdir -p /opt/configuration/environments/custom/tasks
-curl -o /opt/configuration/environments/custom/playbook-ceph-create-lvm-devices.yml https://raw.githubusercontent.com/osism/container-image-ceph-ansible/main/files/playbooks/ceph-create-lvm-devices.yml
+mkdir -p /opt/configuration/environments/custom/tasks /opt/configuration/environments/custom/templates
 curl -o /opt/configuration/environments/custom/playbook-ceph-configure-lvm-volumes.yml https://raw.githubusercontent.com/osism/container-image-ceph-ansible/main/files/playbooks/ceph-configure-lvm-volumes.yml
+curl -o /opt/configuration/environments/custom/playbook-ceph-create-lvm-devices.yml https://raw.githubusercontent.com/osism/container-image-ceph-ansible/main/files/playbooks/ceph-create-lvm-devices.yml
 curl -o /opt/configuration/environments/custom/tasks/_add-device-links.yml https://raw.githubusercontent.com/osism/container-image-ceph-ansible/main/files/playbooks/tasks/_add-device-links.yml
 curl -o /opt/configuration/environments/custom/tasks/_add-device-partitions.yml https://raw.githubusercontent.com/osism/container-image-ceph-ansible/main/files/playbooks/tasks/_add-device-partitions.yml
+curl -o /opt/configuration/environments/custom/templates/ceph-configure-lvm-volumes.yml.j2 https://raw.githubusercontent.com/osism/container-image-ceph-ansible/main/files/playbooks/templates/ceph-configure-lvm-volumes.yml.j2
 
 # Make sure that no partitions are present
 osism apply --environment custom wipe-partitions
