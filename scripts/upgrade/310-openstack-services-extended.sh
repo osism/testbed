@@ -20,3 +20,6 @@ fi
 # if [[ $MANAGER_VERSION =~ ^7\.[0-9]\.[0-9]?$ || $MANAGER_VERSION == "latest" ]]; then
 #     osism apply -a upgrade senlin
 # fi
+
+osism apply -a upgrade aodh
+osism apply -a upgrade manila
