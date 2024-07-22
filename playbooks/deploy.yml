@@ -1,6 +1,7 @@
 ---
 - name: Deploy testbed
   hosts: all
+  gather_facts: true
 
   vars_files:
     - vars/cloud_envs.yml
