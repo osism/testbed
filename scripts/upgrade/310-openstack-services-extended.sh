@@ -6,7 +6,6 @@ source /opt/configuration/scripts/include.sh
 MANAGER_VERSION=$(docker inspect --format '{{ index .Config.Labels "org.opencontainers.image.version"}}' osism-ansible)
 
 osism apply -a upgrade gnocchi
-osism apply -a upgrade ceilometer
 osism apply -a upgrade heat
 
 if [[ $MANAGER_VERSION =~ ^4\.[0-9]\.[0-9]$ ]]; then
@@ -21,5 +20,4 @@ fi
 #     osism apply -a upgrade senlin
 # fi
 
-osism apply -a upgrade aodh
 osism apply -a upgrade manila

@@ -7,7 +7,6 @@ MANAGER_VERSION=$(docker inspect --format '{{ index .Config.Labels "org.opencont
 OPENSTACK_VERSION=$(docker inspect --format '{{ index .Config.Labels "de.osism.release.openstack" }}' kolla-ansible)
 
 osism apply gnocchi
-osism apply ceilometer
 osism apply heat
 
 if [[ $MANAGER_VERSION =~ ^4\.[0-9]\.[0-9]$ ]]; then
@@ -25,5 +24,4 @@ fi
 #     osism apply senlin
 # fi
 
-osism apply aodh
 osism apply manila

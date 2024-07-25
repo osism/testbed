@@ -18,6 +18,9 @@ osism apply cinder
 osism apply barbican
 osism apply designate
 osism apply octavia
+osism apply ceilometer
+osism apply aodh
+
 osism apply kolla-ceph-rgw
 
 if [[ $MANAGER_VERSION =~ ^7\.[0-9]\.[0-9]?$ || $MANAGER_VERSION == "latest" ]]; then
