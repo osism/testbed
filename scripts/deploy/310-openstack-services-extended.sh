@@ -7,7 +7,6 @@ MANAGER_VERSION=$(docker inspect --format '{{ index .Config.Labels "org.opencont
 OPENSTACK_VERSION=$(docker inspect --format '{{ index .Config.Labels "de.osism.release.openstack" }}' kolla-ansible)
 
 osism apply gnocchi
-osism apply ceilometer
 osism apply heat
 
 # NOTE: disabled because we have not yet deployed Senlin in the previous version of OSISM
@@ -15,5 +14,4 @@ osism apply heat
 #     osism apply senlin
 # fi
 
-osism apply aodh
 osism apply manila

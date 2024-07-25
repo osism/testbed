@@ -23,6 +23,8 @@ osism apply -a upgrade glance
 osism apply -a upgrade cinder
 osism apply -a upgrade barbican
 osism apply -a upgrade designate
+osism apply -a upgrade ceilometer
+osism apply -a upgrade aodh
 
 # In OSISM >= 7.0.0 the persistence feature in Octavia was enabled by default.
 # This requires an additional database, which is only created when Octavia play

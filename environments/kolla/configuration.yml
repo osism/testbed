@@ -26,7 +26,6 @@ openstack_cacert: /etc/ssl/certs/ca-certificates.crt
 enable_aodh: "yes"
 enable_barbican: "yes"
 enable_ceilometer: "yes"
-enable_gnocchi: "yes"
 enable_ironic: "yes"
 enable_magnum: "yes"
 enable_manila: "yes"

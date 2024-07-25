@@ -6,7 +6,6 @@ source /opt/configuration/scripts/include.sh
 MANAGER_VERSION=$(docker inspect --format '{{ index .Config.Labels "org.opencontainers.image.version"}}' osism-ansible)
 
 osism apply -a upgrade gnocchi
-osism apply -a upgrade ceilometer
 osism apply -a upgrade heat
 
 # NOTE: disabled because we have not yet deployed Senlin in the previous version of OSISM
@@ -15,5 +14,4 @@ osism apply -a upgrade heat
 #     osism apply -a upgrade senlin
 # fi
 
-osism apply -a upgrade aodh
 osism apply -a upgrade manila
