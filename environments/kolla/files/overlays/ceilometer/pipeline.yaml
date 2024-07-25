@@ -15,6 +15,6 @@ sinks:
       - prometheus://{{ ceilometer_prometheus_pushgateway_host }}:{{ ceilometer_prometheus_pushgateway_port }}/metrics/job/openstack-telemetry{% if ceilometer_prometheus_pushgateway_options %}/?{{ (ceilometer_prometheus_pushgateway_options | dict2items | rejectattr("value", "equalto", None) | list | items2dict).items() | map("join", "=") | join("&")}}{% endif %}
 {% endif %}
 
-{% if enable_metering | bool %}
+{% if enable_metering | default(false) | bool %}
       - http://{{ ceilometer_metering_pushgateway_host }}:{{ ceilometer_metering_pushgateway_port }}/post_json
 {% endif %}
