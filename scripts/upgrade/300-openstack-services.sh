@@ -18,6 +18,7 @@ osism apply -a upgrade neutron
 osism apply -a upgrade ironic
 osism apply -a upgrade nova
 osism apply -a upgrade horizon
+osism apply -a upgrade skyline
 osism apply -a upgrade glance
 osism apply -a upgrade cinder
 osism apply -a upgrade barbican

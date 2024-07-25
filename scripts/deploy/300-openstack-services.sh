@@ -13,6 +13,7 @@ osism apply ironic
 osism apply nova
 
 osism apply horizon
+osism apply skyline
 osism apply glance
 osism apply cinder
 osism apply barbican
