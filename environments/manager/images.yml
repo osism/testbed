@@ -10,7 +10,7 @@ ara_server_image: "{{ docker_registry_ansible|default('quay.io') }}/osism/ara-se
 ara_server_mariadb_tag: "11.4.2"
 ara_server_mariadb_image: "{{ docker_registry }}/library/mariadb:{{ ara_server_mariadb_tag }}"
 
-netbox_tag: "v4.0.7"
+netbox_tag: "v4.0.8"
 netbox_image: "{{ docker_registry_netbox|default('quay.io') }}/osism/netbox:{{ netbox_tag }}"
 
 nginx_tag: "1.27.0-alpine"
@@ -19,12 +19,8 @@ nginx_image: "{{ docker_registry }}/library/nginx:{{ nginx_tag }}"
 phpmyadmin_tag: "5.2.1"
 phpmyadmin_image: "{{ docker_registry }}/phpmyadmin/phpmyadmin:{{ phpmyadmin_tag }}"
 
-postgres_tag: "15.7-alpine"
+postgres_tag: "16.3-alpine"
 postgres_image: "{{ docker_registry }}/library/postgres:{{ postgres_tag }}"
-
-postgres_upgrade_tag: "14-to-15"
-postgres_upgrade_image: "{{ docker_registry }}/tianon/postgres-upgrade:{{ postgres_upgrade_tag }}"
-
 
 manager_redis_tag: "7.2.5-alpine"
 manager_redis_image: "{{ docker_registry }}/library/redis:{{ manager_redis_tag }}"
