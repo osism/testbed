@@ -88,6 +88,9 @@ ceilometer_prometheus_pushgateway_host: "testbed-manager.testbed.osism.xyz"
 ceilometer_metering_pushgateway_host: "testbed-manager.testbed.osism.xyz"
 ceilometer_metering_pushgateway_port: 8088
 
+# cinder
+enable_cinder_backend_lvm: "yes"
+
 # rgw integration
 
 enable_ceph_rgw: true
@@ -141,3 +144,13 @@ prometheus_external_labels:
 # with the testbed.
 om_enable_rabbitmq_high_availability: false
 external_ceph_always_copy_cinder_keyring: "no"
+
+# dev mode
+cinder_dev_mode: true
+cinder_git_repository: "https://github.com/janhorstmann/openstack-cinder.git"
+cinder_dev_repos_pull: true
+cinder_source_version: "feature/{{ openstack_version }}/dm-clone-driver"
+nova_dev_mode: true
+nova_git_repository: "https://github.com/janhorstmann/openstack-nova.git"
+nova_dev_repos_pull: true
+nova_source_version: "feature/{{ openstack_version }}/libvirt-volume-local-extend-volume"

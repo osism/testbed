@@ -4,6 +4,8 @@ set -e
 source /opt/configuration/scripts/include.sh
 source /opt/configuration/scripts/manager-version.sh
 
+osism apply -e custom lvm2-volume-group-local
+
 OPENSTACK_VERSION=$(docker inspect --format '{{ index .Config.Labels "de.osism.release.openstack" }}' kolla-ansible)
 
 osism apply common
@@ -15,6 +17,7 @@ osism apply mariadb
 osism apply rabbitmq
 osism apply openvswitch
 osism apply ovn
+osism apply iscsi
 
 # In OSISM >= 5.0.0, the switch was made from Elasticsearch / Kibana to Opensearch.
 if [[ ( $(semver $MANAGER_VERSION 5.0.0) -eq -1 && $MANAGER_VERSION != "latest" ) || $OPENSTACK_VERSION == "yoga" ]]; then

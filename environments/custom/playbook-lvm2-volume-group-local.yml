@@ -1,0 +1,29 @@
+---
+- name: Create physical volumes and groups for local storage
+  hosts: storage
+  gather_facts: true
+
+  tasks:
+    - name: Create physical volumes and volume group on empty disks
+      become: True
+      community.general.lvg:
+        vg: local
+        pvresize: True
+        pvs: >-
+          {{
+            ['/dev']
+            | product(
+                ansible_facts['ansible_local']['testbed_ceph_osd_devices_all']
+                | dict2items
+                | map(attribute='key')
+                | list
+                | difference(
+                    ansible_facts['ansible_local']['testbed_ceph_osd_devices']
+                    | dict2items
+                    | map(attribute='key')
+                    | list
+                )
+            )
+            | map('join', '/')
+            | list
+          }}
