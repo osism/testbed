@@ -99,7 +99,8 @@ ceph_osd_devices: "{{ ansible_local.testbed_ceph_osd_devices }}"
 # Old parameter until OSISM 6.0.2
 devices: "{{ ansible_local.testbed_ceph_devices }}"
 
-# NOTE: to use the third block device for Ceph change this parameter as follows
+# NOTE: to use the third block device for Ceph instead of the cinder local
+# volume type change this parameter as follows
 # ceph_osd_devices: "{{ ansible_local.testbed_ceph_osd_devices_all }}"
 # devices: "{{ ansible_local.testbed_ceph_devices }}"
 
