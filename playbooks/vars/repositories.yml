@@ -16,4 +16,4 @@ repositories:
   testbed:
     path: github.com/osism/testbed
     repo: https://github.com/osism/testbed
-    branch: main
+    branch: preview/cinder_local_volumes
