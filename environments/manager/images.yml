@@ -22,7 +22,7 @@ phpmyadmin_image: "{{ docker_registry }}/phpmyadmin/phpmyadmin:{{ phpmyadmin_tag
 postgres_tag: "16.3-alpine"
 postgres_image: "{{ docker_registry }}/library/postgres:{{ postgres_tag }}"
 
-manager_redis_tag: "7.2.5-alpine"
+manager_redis_tag: "7.4.0-alpine"
 manager_redis_image: "{{ docker_registry }}/library/redis:{{ manager_redis_tag }}"
 
 registry_tag: "2.8"
