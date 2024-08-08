@@ -114,3 +114,83 @@
       when:
         - "ansible_distribution == 'Ubuntu'"
         - "ansible_distribution_version is version('24.04', '>=')"
+
+# testing: should be implemented to network role in ansible-collection-commons
+# vxlan interface needed by /opt/configuration/scripts/deploy/200-infrastructure-services.sh
+
+- name: Set up persistent vxlan0 interface on CentOS
+  hosts: all:!manager
+  gather_facts: true
+  become: true
+
+  tasks:
+    - name: Get IP address of management interface
+      ansible.builtin.set_fact:
+        management_ip: "{{ ansible_facts[ansible_local.testbed_network_devices.management]['ipv4']['address'] }}"
+
+    - name: Debug management interface and IP
+      ansible.builtin.debug:
+        msg:
+          - "Management interface: {{ ansible_local.testbed_network_devices.management }}"
+          - "Management IP: {{ management_ip }}"
+
+    - name: Create vxlan0 setup script
+      ansible.builtin.copy:
+        dest: /usr/local/bin/setup-vxlan0.sh
+        content: |
+          #!/bin/bash
+          ip link add vxlan0 type vxlan id 42 dev {{ ansible_local.testbed_network_devices.management }} dstport 4789
+          ip link set vxlan0 up
+        mode: '0755'
+
+    - name: Create systemd service for vxlan0 setup
+      ansible.builtin.copy:
+        dest: /etc/systemd/system/vxlan0-setup.service
+        content: |
+          [Unit]
+          Description=Setup VXLAN0 interface
+          After=network.target
+
+          [Service]
+          Type=oneshot
+          ExecStart=/usr/local/bin/setup-vxlan0.sh
+
+          [Install]
+          WantedBy=multi-user.target
+        mode: '0644'
+
+    - name: Enable and start vxlan0-setup service
+      ansible.builtin.systemd:
+        name: vxlan0-setup
+        enabled: yes
+        state: started
+        daemon_reload: yes
+
+    - name: Create systemd-networkd configuration for vxlan0
+      ansible.builtin.copy:
+        dest: /etc/systemd/network/vxlan0.network
+        content: |
+          [Match]
+          Name=vxlan0
+
+          [Network]
+          DHCP=yes
+        mode: '0644'
+
+    - name: Restart systemd-networkd
+      ansible.builtin.systemd:
+        name: systemd-networkd
+        state: restarted
+
+    - name: Wait for systemd-networkd to settle
+      ansible.builtin.pause:
+        seconds: 10
+
+    - name: Debug vxlan0 interface status
+      ansible.builtin.command: ip addr show vxlan0
+      register: vxlan_status
+      changed_when: false
+
+    - name: Display vxlan0 interface status
+      ansible.builtin.debug:
+        var: vxlan_status.stdout_lines
