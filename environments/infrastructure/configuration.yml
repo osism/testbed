@@ -88,6 +88,7 @@ squid_allowed_addresses:
   - pypi.org
   - registry-1.docker.io
   - swift.services.a.regiocloud.tech
+  - https://mirrors.centos.org
 
 ##########################
 # traefik

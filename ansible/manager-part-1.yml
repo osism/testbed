@@ -1,13 +1,27 @@
 ---
+- name: Include repository role
+  hosts: testbed-manager.testbed.osism.xyz
+  gather_facts: true
+
+  vars:
+    operator_user: dragon
+    operator_group: dragon
+
+    venv_path: /opt/venv
+    ansible_python_interpreter: "{{ venv_path }}/bin/python3"
+
+  roles:
+    - role: osism.commons.repository
+
 - name: Run manager part 1
   hosts: testbed-manager.testbed.osism.xyz
-  gather_facts: false
+  gather_facts: true
 
   vars:
     ansible_ssh_user: dragon
     apt_lock_timeout: 300
     operator_user: dragon
-    repo_path: /home/ubuntu/src/github.com
+    repo_path: /home/cloud-user/src/github.com
     version_manager: latest
     is_zuul: false
 
@@ -55,10 +69,11 @@
       loop:
         - build-essential
         - python3-dev
+      when: ansible_os_family == 'Debian'
 
     - name: Remove some python packages
       become: true
-      ansible.builtin.apt:
+      ansible.builtin.package:
         state: absent
         name:
           - python3-docker
@@ -70,7 +85,7 @@
         name: "{{ item }}"
         state: present
         virtualenv: "{{ venv_path }}"
-        virtualenv_command: python3 -m venv
+        virtualenv_command: python3.11 -m venv
       loop:
         - netifaces
         - "python-gilt==1.2.3"
@@ -128,6 +143,13 @@
       become: true
       ansible.builtin.command: update-ca-certificates
       changed_when: true
+      when: ansible_os_family == 'Debian'
+
+    - name: Run update-ca-trust
+      become: true
+      ansible.builtin.command: update-ca-trust
+      changed_when: true
+      when: ansible_os_family == 'RedHat'
 
     - name: Run manager part 2
       ansible.builtin.command: "{{ ansible_playbook }} -i testbed-manager.testbed.osism.xyz, -e version_manager={{ version_manager }} /opt/configuration/ansible/manager-part-2.yml"
