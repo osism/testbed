@@ -36,6 +36,8 @@ fi
 osism apply -a upgrade octavia
 
 if [[ $MANAGER_VERSION =~ ^7\.[0-9]\.[0-9]?$ || $MANAGER_VERSION == "latest" ]]; then
+    osism apply clusterapi
+
     # In the testbed, the service was only added with OSISM 7.0.0. It is therefore necessary
     # to check in advance whether the service is already available. If not, a deployment must
     # be carried out instead of an upgrade.
