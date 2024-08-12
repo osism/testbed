@@ -194,3 +194,16 @@
     - name: Display vxlan0 interface status
       ansible.builtin.debug:
         var: vxlan_status.stdout_lines
+
+# testing: needed by /opt/configuration/scripts/deploy/100-ceph-services.sh on CentOS
+#- name: Ensure Podman is Installed on CentOS Testbed Nodes
+#  hosts: all:!manager
+#  gather_facts: true
+#  become: true
+#
+#  tasks:
+#    - name: Ensure Podman is installed
+#      ansible.builtin.dnf:
+#        name: podman
+#        state: present
+#      when: ansible_facts['os_family'] == 'RedHat' and ansible_facts['distribution'] == 'CentOS'

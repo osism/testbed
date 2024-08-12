@@ -65,3 +65,7 @@ ceph_conf_overrides:
     "rgw swift account in url": "true"
     "rgw swift versioning enabled": "true"
     "rgw verify ssl": "false"
+
+# testing on CentOS: Deployment configuration
+containerized_deployment: true
+container_binary: docker
