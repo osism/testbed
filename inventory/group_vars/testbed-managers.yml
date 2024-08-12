@@ -47,4 +47,4 @@ network_dispatcher_scripts:
 # kolla
 
 network_interface: "{{ ansible_local.testbed_network_devices.management }}"
-cilium_iface: "{{ ansible_local.testbed_network_devices.management }}"
+flannel_iface: "{{ ansible_local.testbed_network_devices.management }}"

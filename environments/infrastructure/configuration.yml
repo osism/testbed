@@ -34,14 +34,6 @@ homer_url_prometheus: "https://api-int.testbed.osism.xyz:9091/"
 homer_url_rabbitmq: "https://api-int.testbed.osism.xyz:15672/"
 
 ##########################
-# k3s
-
-cilium_bgp: true
-kube_vip_arp: false
-kube_vip_bgp: true
-kube_vip_iface:
-
-##########################
 # keycloak
 
 keycloak_traefik: true
