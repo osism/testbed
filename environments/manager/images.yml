@@ -7,7 +7,7 @@ adminer_image: "{{ docker_registry }}/library/adminer:{{ adminer_tag }}"
 ara_server_tag: "1.7.1"
 ara_server_image: "{{ docker_registry_ansible|default('quay.io') }}/osism/ara-server:{{ ara_server_tag }}"
 
-ara_server_mariadb_tag: "11.4.2"
+ara_server_mariadb_tag: "11.4.3"
 ara_server_mariadb_image: "{{ docker_registry }}/library/mariadb:{{ ara_server_mariadb_tag }}"
 
 netbox_tag: "v4.0.8"
@@ -19,7 +19,7 @@ nginx_image: "{{ docker_registry }}/library/nginx:{{ nginx_tag }}"
 phpmyadmin_tag: "5.2.1"
 phpmyadmin_image: "{{ docker_registry }}/phpmyadmin/phpmyadmin:{{ phpmyadmin_tag }}"
 
-postgres_tag: "16.3-alpine"
+postgres_tag: "16.4-alpine"
 postgres_image: "{{ docker_registry }}/library/postgres:{{ postgres_tag }}"
 
 manager_redis_tag: "7.4.0-alpine"
