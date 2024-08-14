@@ -22,7 +22,6 @@ VERSION_OPENSTACK ?= 2023.2
 KOLLA_NAMESPACE ?= osism
 
 RALLY ?= false
-REFSTACK ?= false
 TEMPEST ?= false
 IS_ZUUL ?= false
 
@@ -69,7 +68,6 @@ init:
 	@echo "ceph_version = \"$(VERSION_CEPH)\"" >> $(ENVIRONMENT).auto.tfvars
 	@echo "manager_version = \"$(VERSION_MANAGER)\"" >> $(ENVIRONMENT).auto.tfvars
 	@echo "openstack_version = \"$(VERSION_OPENSTACK)\"" >> $(ENVIRONMENT).auto.tfvars
-	@echo "refstack = \"$(REFSTACK)\"" >> $(ENVIRONMENT).auto.tfvars
 	@echo "tempest = \"$(TEMPEST)\"" >> $(ENVIRONMENT).auto.tfvars
 	@echo "is_zuul = \"$(IS_ZUUL)\"" >> $(ENVIRONMENT).auto.tfvars
 	@echo "ceph_stack = \"$(CEPH_STACK)\"" >> $(ENVIRONMENT).auto.tfvars
@@ -151,11 +149,6 @@ check: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
 rally: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
 	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
 	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(ENVIRONMENT) $(USERNAME)@$$MANAGER_ADDRESS /opt/configuration/contrib/rally/rally.sh
-
-.PHONY: refstack
-refstack: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
-	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
-	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(ENVIRONMENT) $(USERNAME)@$$MANAGER_ADDRESS /opt/configuration/scripts/check/301-openstack-refstack.sh
 
 .PHONY: tempest
 tempest: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)

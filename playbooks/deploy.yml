@@ -28,7 +28,6 @@
     _openstack_version: "{{ openstack_version | default('2023.2') }}"
 
     _nutshell: "{{ nutshell | default(false) | bool }}"
-    _refstack: "{{ refstack | default(false) | bool }}"
     _tempest: "{{ tempest | default(false) | bool }}"
 
     _ceph_stack: "{{ ceph_stack | default('ceph-ansible') }}"
@@ -51,7 +50,7 @@
     - name: Create infrastructure (latest)
       ansible.builtin.command:
         chdir: "{{ terraform_path }}"
-        cmd: make ENVIRONMENT={{ cloud_env }} TERRAFORM={{ terraform_binary }} VERSION_CEPH={{ _ceph_version }} VERSION_MANAGER={{ _manager_version }} VERSION_OPENSTACK={{ _openstack_version }} REFSTACK={{ _refstack | lower }} TEMPEST={{ _tempest | lower }} IS_ZUUL={{ _is_zuul | lower }} CEPH_STACK={{ _ceph_stack }} create create
+        cmd: make ENVIRONMENT={{ cloud_env }} TERRAFORM={{ terraform_binary }} VERSION_CEPH={{ _ceph_version }} VERSION_MANAGER={{ _manager_version }} VERSION_OPENSTACK={{ _openstack_version }} TEMPEST={{ _tempest | lower }} IS_ZUUL={{ _is_zuul | lower }} CEPH_STACK={{ _ceph_stack }} create create
       when:
         - not manual_create | bool
         - _manager_version == "latest"
@@ -62,7 +61,7 @@
     - name: Create infrastructure (stable)
       ansible.builtin.command:
         chdir: "{{ terraform_path }}"
-        cmd: make ENVIRONMENT={{ cloud_env }} TERRAFORM={{ terraform_binary }} VERSION_MANAGER={{ _manager_version }} REFSTACK={{ _refstack | lower }} TEMPEST={{ _tempest | lower }} IS_ZUUL={{ _is_zuul | lower }} CEPH_STACK={{ _ceph_stack }} create
+        cmd: make ENVIRONMENT={{ cloud_env }} TERRAFORM={{ terraform_binary }} VERSION_MANAGER={{ _manager_version }} TEMPEST={{ _tempest | lower }} IS_ZUUL={{ _is_zuul | lower }} CEPH_STACK={{ _ceph_stack }} create
       when:
         - not manual_create | bool
         - _manager_version != "latest"
@@ -191,14 +190,6 @@
       when:
         - not manual_deploy | bool
         - run_checks | bool
-      changed_when: true
-
-    - name: Run refstack
-      ansible.builtin.command:
-        cmd: "ssh -i {{ terraform_path }}/.id_rsa.{{ cloud_env }} dragon@{{ manager_host }} /opt/configuration/scripts/check/301-openstack-refstack.sh"
-      when:
-        - not manual_deploy | bool
-        - _refstack | bool
       changed_when: true
 
     - name: Run tempest

@@ -33,7 +33,7 @@ fi
 # deploy openstack services
 sh -c '/opt/configuration/scripts/deploy/300-openstack-services.sh'
 
-if [[ "$REFSTACK" == "false" && "$TEMPEST" == "false" ]]; then
+if [[ "$TEMPEST" == "false" ]]; then
     # deploy extended openstack services
     sh -c '/opt/configuration/scripts/deploy/310-openstack-services-extended.sh'
 fi

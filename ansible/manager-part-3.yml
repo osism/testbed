@@ -103,8 +103,7 @@
         - result.stat.exists is defined
         - result.stat.exists | bool
 
-    # This speeds up the Refstack tests that interact with Glance. The use of these
-    # paraemters in production is not recommended. Further details in OSSN-0090.
+    # The use of these paraemters in production is not recommended. Further details in OSSN-0090.
     # https://wiki.openstack.org/wiki/OSSN/OSSN-0090
     - name: Use insecure glance configuration
       ansible.builtin.blockinfile:
