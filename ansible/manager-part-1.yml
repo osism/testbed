@@ -8,6 +8,7 @@
     apt_lock_timeout: 300
     operator_user: dragon
     repo_path: /home/ubuntu/src/github.com
+    repo: osism/testbed
     version_manager: latest
     is_zuul: false
 
@@ -42,7 +43,7 @@
       become: true
       become_user: dragon
       ansible.posix.synchronize:
-        src: "{{ repo_path }}/osism/testbed/"
+        src: "{{ repo_path }}/{{ repo }}/"
         delete: true
         dest: /opt/configuration
 
