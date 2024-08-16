@@ -13,7 +13,7 @@ ara_server_mariadb_image: "{{ docker_registry }}/library/mariadb:{{ ara_server_m
 netbox_tag: "v4.0.9"
 netbox_image: "{{ docker_registry_netbox|default('quay.io') }}/osism/netbox:{{ netbox_tag }}"
 
-nginx_tag: "1.27.0-alpine"
+nginx_tag: "1.27.1-alpine"
 nginx_image: "{{ docker_registry }}/library/nginx:{{ nginx_tag }}"
 
 phpmyadmin_tag: "5.2.1"
