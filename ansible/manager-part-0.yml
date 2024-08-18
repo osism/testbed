@@ -14,7 +14,8 @@
 
   vars:
     apt_lock_timeout: 300
-    repo_path: /home/ubuntu/src/github.com
+    # relative to the home directory of the ansible_user
+    repo_path: src/github.com
     venv_path: /opt/venv
     ansible_galaxy: "{{ venv_path }}/bin/ansible-galaxy"
 
@@ -28,6 +29,16 @@
       ansible.builtin.user:
         name: "{{ ansible_user }}"
       register: current_user
+
+    - name: Get home directory of current user
+      become: true
+      ansible.builtin.shell: |
+        set -o pipefail
+        getent passwd {{ ansible_user }} | cut -d: -f6
+      args:
+        executable: /bin/bash
+      changed_when: false
+      register: result_home
 
     - name: Update APT cache and run dist-upgrade
       become: true
@@ -115,7 +126,7 @@
 
     - name: Sync sources in /opt/src
       ansible.posix.synchronize:
-        src: "{{ repo_path }}/{{ item }}"
+        src: "{{ result_home.stdout }}/{{ repo_path }}/{{ item }}"
         delete: true
         dest: "/opt/src/{{ item }}"
       with_items:

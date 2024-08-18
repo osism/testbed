@@ -7,7 +7,8 @@
     ansible_ssh_user: dragon
     apt_lock_timeout: 300
     operator_user: dragon
-    repo_path: /home/ubuntu/src/github.com
+    # relative to the home directory of the ansible_user
+    repo_path: src/github.com
     repo: osism/testbed
     version_manager: latest
     is_zuul: false
@@ -16,6 +17,16 @@
     ansible_playbook: "{{ venv_path }}/bin/ansible-playbook"
 
   tasks:
+    - name: Get home directory of current user
+      become: true
+      ansible.builtin.shell: |
+        set -o pipefail
+        getent passwd {{ ansible_user }} | cut -d: -f6
+      args:
+        executable: /bin/bash
+      changed_when: false
+      register: result_home
+
     - name: Copy SSH public key
       ansible.builtin.copy:
         content: "{{ lookup('file', '.id_rsa.' + cloud_env + '.pub') }}\n"
@@ -43,7 +54,7 @@
       become: true
       become_user: dragon
       ansible.posix.synchronize:
-        src: "{{ repo_path }}/{{ repo }}/"
+        src: "{{ result_home.stdout }}/{{ repo_path }}/{{ repo }}/"
         delete: true
         dest: /opt/configuration
 
