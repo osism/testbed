@@ -3,7 +3,7 @@ export LC_ALL = C.UTF-8
 CONFIGURATION ?= main
 
 ENVIRONMENT ?= the_environment
-CLOUD_ENVIRONMENT ?= $(ENVIRONMENT)
+CLOUD ?= $(ENVIRONMENT)
 
 IMAGE_USERNAME ?= ubuntu
 
@@ -27,11 +27,14 @@ help:  ## Display this help.
 
 .PHONY: setup
 setup: ## Prepare the repository.
-	@contrib/setup-testbed.py --environment_check $(ENVIRONMENT)
+	@contrib/setup-testbed.py \
+	  --environment $(ENVIRONMENT) \
+	  --cloud $(CLOUD) \
 
 .PHONY: clean
 clean: setup ## Destroy infrastructure with OpenTofu.
 	make -C terraform \
+	  CLOUD=$(CLOUD) \
 	  ENVIRONMENT=$(ENVIRONMENT) \
 	  TERRAFORM=$(TERRAFORM) \
 	  clean
@@ -42,10 +45,12 @@ wipe-local-install: ## Wipe the software dependencies in `venv`.
 
 .PHONY: create
 create: prepare ## Create required infrastructure with OpenTofu.
-	@contrib/setup-testbed.py --environment_check $(ENVIRONMENT)
+	@contrib/setup-testbed.py \
+	  --environment $(ENVIRONMENT) \
+	  --cloud $(CLOUD)
 	make -C terraform \
 	  CEPH_STACK=$(CEPH_STACK) \
-	  CLOUD_ENVIRONMENT=$(CLOUD_ENVIRONMENT) \
+	  CLOUD=$(CLOUD) \
 	  CONFIGURATION=$(CONFIGURATION) \
 	  ENVIRONMENT=$(ENVIRONMENT) \
 	  IMAGE_USERNAME=$(IMAGE_USERNAME) \
@@ -58,24 +63,28 @@ create: prepare ## Create required infrastructure with OpenTofu.
 .PHONY: login
 login: setup ## Log in on the manager.
 	@make -C terraform \
+	  CLOUD=$(CLOUD) \
 	  ENVIRONMENT=$(ENVIRONMENT) \
 	  login
 
 .PHONY: vpn-wireguard
 vpn-wireguard: setup ## Establish a wireguard vpn tunnel.
 	@make -C terraform \
+	  CLOUD=$(CLOUD) \
 	  ENVIRONMENT=$(ENVIRONMENT) \
 	  vpn-wireguard
 
 .PHONY: vpn-wireguard-config
 vpn-wireguard-config: setup ## Get the configuration for the wireguard vpn tunnel.
 	@make -C terraform \
+	  CLOUD=$(CLOUD) \
 	  ENVIRONMENT=$(ENVIRONMENT) \
 	  vpn-wireguard-config
 
 .PHONY: vpn-sshuttle
 vpn-sshuttle: setup ## Establish a sshuttle vpn tunnel.
 	@make -C terraform \
+	  CLOUD=$(CLOUD) \
 	  ENVIRONMENT=$(ENVIRONMENT) \
 	  vpn-sshuttle
 
@@ -86,7 +95,7 @@ bootstrap: setup create ## Bootstrap everything.
 	  -e ansible_galaxy=ansible-galaxy \
 	  -e ansible_playbook=ansible-playbook \
 	  -e basepath="$(PWD)" \
-	  -e cloud_env=$(ENVIRONMENT) \
+	  -e cloud_env=$(CLOUD) \
 	  -e repo_path="$(PWD)/.src/$(shell contrib/setup-testbed.py --query "repository_server")" \
 	  -e manual_create=true \
 	  -e manual_deploy=true \
@@ -98,6 +107,7 @@ bootstrap: setup create ## Bootstrap everything.
 .PHONY: manager
 manager: setup bootstrap ## Deploy only the manager service.
 	make -C terraform \
+	  CLOUD=$(CLOUD) \
 	  ENVIRONMENT=$(ENVIRONMENT) \
 	  TERRAFORM=$(TERRAFORM) \
 	  deploy-manager
@@ -105,6 +115,7 @@ manager: setup bootstrap ## Deploy only the manager service.
 .PHONY: identity
 identity: setup manager ## Deploy only identity services.
 	make -C terraform \
+	  CLOUD=$(CLOUD) \
 	  ENVIRONMENT=$(ENVIRONMENT) \
 	  TERRAFORM=$(TERRAFORM) \
 	  deploy-identity
@@ -112,20 +123,24 @@ identity: setup manager ## Deploy only identity services.
 .PHONY: ceph
 ceph: setup manager ## Deploy only ceph services.
 	make -C terraform \
+	  CLOUD=$(CLOUD) \
 	  ENVIRONMENT=$(ENVIRONMENT) \
 	  deploy-ceph
 
 .PHONY: deploy
 deploy: setup bootstrap ## Deploy everything and then check it.
 	make -C terraform \
+	  CLOUD=$(CLOUD) \
 	  ENVIRONMENT=$(ENVIRONMENT) \
 	  TERRAFORM=$(TERRAFORM) \
 	  deploy
 	make -C terraform \
+	  CLOUD=$(CLOUD) \
 	  ENVIRONMENT=$(ENVIRONMENT) \
 	  TERRAFORM=$(TERRAFORM) \
 	  bootstrap
 	make -C terraform \
+	  CLOUD=$(CLOUD) \
 	  ENVIRONMENT=$(ENVIRONMENT) \
 	  TERRAFORM=$(TERRAFORM) \
 	  check
