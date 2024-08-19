@@ -4,14 +4,18 @@
   gather_facts: false
 
   vars:
-    ansible_ssh_user: dragon
     apt_lock_timeout: 300
+    dnf_lock_timeout: 300
+
+    ansible_ssh_user: dragon
     operator_user: dragon
     repo: osism/testbed
     version_manager: latest
     is_zuul: false
 
     venv_path: /opt/venv
+    venv_command: python3 -m venv
+
     ansible_playbook: "{{ venv_path }}/bin/ansible-playbook"
 
   tasks:
@@ -60,23 +64,38 @@
         delete: true
         dest: /opt/configuration
 
-    - name: Install required packages
-      become: true
-      ansible.builtin.apt:
-        name: "{{ item }}"
-        state: present
-        lock_timeout: "{{ apt_lock_timeout }}"
-      loop:
-        - build-essential
-        - python3-dev
+    - name: CentOS specific tasks  # noqa: osism-fqcn
+      when: ansible_os_family == "RedHat"
+      block:
+        - name: Remove some python packages
+          become: true
+          ansible.builtin.dnf:
+            state: absent
+            lock_timeout: "{{ dnf_lock_timeout }}"
+            name:
+              - python3-docker
+              - python3-requests
 
-    - name: Remove some python packages
-      become: true
-      ansible.builtin.apt:
-        state: absent
-        name:
-          - python3-docker
-          - python3-requests
+    - name: Debian/Ubuntu specific tasks  # noqa: osism-fqcn
+      when: ansible_os_family == "Debian"
+      block:
+        - name: Install required packages
+          become: true
+          ansible.builtin.apt:
+            name: "{{ item }}"
+            state: present
+            lock_timeout: "{{ apt_lock_timeout }}"
+          loop:
+            - build-essential
+            - python3-dev
+
+        - name: Remove some python packages
+          become: true
+          ansible.builtin.apt:
+            state: absent
+            name:
+              - python3-docker
+              - python3-requests
 
     - name: Install python requirements in venv
       ansible.builtin.pip:
@@ -84,7 +103,7 @@
         name: "{{ item }}"
         state: present
         virtualenv: "{{ venv_path }}"
-        virtualenv_command: python3 -m venv
+        virtualenv_command: "{{ venv_command }}"
       loop:
         - netifaces
         - "python-gilt==1.2.3"
@@ -142,6 +161,13 @@
       become: true
       ansible.builtin.command: update-ca-certificates
       changed_when: true
+      when: ansible_os_family == "Debian"
+
+    - name: Run update-ca-trust
+      become: true
+      ansible.builtin.command: update-ca-trust
+      changed_when: true
+      when: ansible_os_family == "RedHat"
 
     - name: Run manager part 2
       ansible.builtin.command: "{{ ansible_playbook }} -i testbed-manager.testbed.osism.xyz, -e version_manager={{ version_manager }} /opt/configuration/ansible/manager-part-2.yml"

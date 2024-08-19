@@ -14,7 +14,10 @@
 
   vars:
     apt_lock_timeout: 300
+    dnf_lock_timeout: 300
+
     venv_path: /opt/venv
+    venv_command: python3 -m venv
     ansible_galaxy: "{{ venv_path }}/bin/ansible-galaxy"
 
   tasks:
@@ -32,49 +35,76 @@
         repo_path: "{{ result_home.stdout }}/src/github.com"
       when: repo_path is not defined
 
-    - name: Fail if Ubuntu version is lower than 22.04
-      ansible.builtin.fail:
-        msg: "Ubuntu version is {{ ansible_distribution_version }}, see https://osism.tech/docs/advanced-guides/testbed#software for required version."
-      when: ansible_distribution == "Ubuntu" and ansible_distribution_version < "22.04"
+    - name: CentOS specific tasks  # noqa: osism-fqcn
+      when: ansible_os_family == "RedHat"
+      block:
+        - name: Update package cache
+          become: true
+          ansible.builtin.dnf:
+            update_cache: true
+            lock_timeout: "{{ dnf_lock_timeout }}"
+
+        - name: Install necessary packages on CentOS
+          become: true
+          ansible.builtin.dnf:
+            name:
+              - git
+              - python3-netaddr
+              - python3.11
+            state: present
+            lock_timeout: "{{ dnf_lock_timeout }}"
+
+        - name: Use python 3.11 by default
+          become: true
+          ansible.builtin.command: |
+            update-alternatives --config python3
+          changed_when: false
+
+    - name: Debian/Ubuntu specific tasks  # noqa: osism-fqcn
+      when: ansible_os_family == "Debian"
+      block:
+        - name: Fail if Ubuntu version is lower than 22.04
+          ansible.builtin.fail:
+            msg: "Ubuntu version is {{ ansible_distribution_version }}, see https://osism.tech/docs/advanced-guides/testbed#software for required version."
+          when: ansible_distribution == "Ubuntu" and ansible_distribution_version < "22.04"
+
+        - name: Set APT options on manager
+          become: true
+          ansible.builtin.shell: |
+            set -o pipefail
+            echo 'APT::Acquire::Retries "3";' > /etc/apt/apt.conf.d/80-retries
+            echo '* libraries/restart-without-asking boolean true' | debconf-set-selections
+          args:
+            executable: /bin/bash
+          changed_when: true
+
+        - name: Update APT cache and run dist-upgrade
+          become: true
+          ansible.builtin.apt:
+            upgrade: dist
+            update_cache: true
+            lock_timeout: "{{ apt_lock_timeout }}"
+
+        # The correct package name is linux-generic-hwe-22.04 on Ubuntu 22.04
+        # and linux-generic-hwe-24.04 on Ubuntu 24.04.
+        - name: Install HWE kernel package on Ubuntu
+          become: true
+          ansible.builtin.apt:
+            name: "linux-generic-hwe-{{ ansible_distribution_version }}"
+          when: ansible_distribution == "Ubuntu"
+
+        - name: Install required packages
+          become: true
+          ansible.builtin.apt:
+            name:
+              - python3-netaddr
+              - python3-venv
+              - rsync
 
     - name: Get current user
       ansible.builtin.user:
         name: "{{ ansible_user }}"
       register: current_user
-
-    - name: Update APT cache and run dist-upgrade
-      become: true
-      ansible.builtin.apt:
-        upgrade: dist
-        update_cache: true
-        lock_timeout: "{{ apt_lock_timeout }}"
-
-    - name: Set APT options on manager
-      become: true
-      ansible.builtin.shell: |
-        set -o pipefail
-        echo 'APT::Acquire::Retries "3";' > /etc/apt/apt.conf.d/80-retries
-        echo '* libraries/restart-without-asking boolean true' | debconf-set-selections
-      args:
-        executable: /bin/bash
-      changed_when: true
-
-    - name: Install HWE kernel package on Ubuntu
-      become: true
-      ansible.builtin.apt:
-        name:
-          # The correct package name is linux-generic-hwe-22.04 on Ubuntu 22.04
-          # and linux-generic-hwe-24.04 on Ubuntu 24.04.
-          - "linux-generic-hwe-{{ ansible_distribution_version }}"
-      when: ansible_distribution == "Ubuntu"
-
-    - name: Install required packages
-      become: true
-      ansible.builtin.apt:
-        name:
-          - python3-netaddr
-          - python3-venv
-          - rsync
 
     - name: Create venv directory
       become: true
@@ -91,7 +121,7 @@
         name: netaddr
         state: present
         virtualenv: "{{ venv_path }}"
-        virtualenv_command: python3 -m venv
+        virtualenv_command: "{{ venv_command }}"
 
     - name: Install ansible-core in venv
       ansible.builtin.pip:
@@ -99,7 +129,7 @@
         name: "ansible-core>=2.16.0,<2.17.0"
         state: present
         virtualenv: "{{ venv_path }}"
-        virtualenv_command: python3 -m venv
+        virtualenv_command: "{{ venv_command }}"
 
     - name: Install requests >= 2.32.2
       ansible.builtin.pip:
@@ -107,7 +137,7 @@
         name: "requests>=2.32.2"
         state: present
         virtualenv: "{{ venv_path }}"
-        virtualenv_command: python3 -m venv
+        virtualenv_command: "{{ venv_command }}"
 
     - name: Install docker >= 7.1.0
       ansible.builtin.pip:
@@ -115,7 +145,7 @@
         name: "docker>=7.1.0"
         state: present
         virtualenv: "{{ venv_path }}"
-        virtualenv_command: python3 -m venv
+        virtualenv_command: "{{ venv_command }}"
 
     - name: Create directories in /opt/src
       become: true
