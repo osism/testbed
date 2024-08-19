@@ -33,7 +33,6 @@
 - name: Before the deployment of the manager
   hosts: testbed-manager.testbed.osism.xyz
   connection: local
-  gather_facts: true
 
   vars:
     venv_path: /opt/venv
@@ -143,7 +142,6 @@
 - name: Apply role traefik & netbox
   hosts: testbed-manager.testbed.osism.xyz
   connection: local
-  gather_facts: true
 
   vars:
     venv_path: /opt/venv
@@ -182,7 +180,6 @@
 - name: Deploy manager service
   hosts: testbed-manager.testbed.osism.xyz
   connection: local
-  gather_facts: true
 
   vars:
     venv_path: /opt/venv

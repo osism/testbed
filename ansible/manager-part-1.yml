@@ -1,7 +1,6 @@
 ---
 - name: Run manager part 1
   hosts: testbed-manager.testbed.osism.xyz
-  gather_facts: false
 
   vars:
     apt_lock_timeout: 300

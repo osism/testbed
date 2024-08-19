@@ -198,7 +198,6 @@
 
 - name: Create operator user
   hosts: testbed-manager.testbed.osism.xyz
-  gather_facts: true
 
   vars:
     operator_user: dragon
