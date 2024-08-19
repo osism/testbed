@@ -1,14 +1,16 @@
 export LC_ALL = C.UTF-8
 
+CONFIGURATION ?= main
 ENVIRONMENT ?= the_environment
 
-CEPH_STACK ?= ceph-ansible
 VERSION_CEPH ?= quincy
 VERSION_MANAGER ?= latest
 VERSION_OPENSTACK ?= 2023.2
+
+CEPH_STACK ?= ceph-ansible
+
 # renovate: datasource=github-releases depName=opentofu/opentofu
 TOFU_VERSION ?= 1.8.1
-
 TERRAFORM ?= tofu
 TERRAFORM_BLUEPRINT ?= testbed-default
 
@@ -38,6 +40,7 @@ wipe-local-install: ## Wipe the software dependencies in `venv`.
 create: prepare ## Create required infrastructure with OpenTofu.
 	@contrib/setup-testbed.py --environment_check $(ENVIRONMENT)
 	make -C terraform \
+	  CONFIGURATION=$(CONFIGURATION) \
 	  ENVIRONMENT=$(ENVIRONMENT) \
 	  TERRAFORM=$(TERRAFORM) \
 	  VERSION_CEPH=$(VERSION_CEPH) \
