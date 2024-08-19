@@ -7,7 +7,6 @@
     ansible_ssh_user: dragon
     apt_lock_timeout: 300
     operator_user: dragon
-    repo_path: /home/ubuntu/src/github.com
     repo: osism/testbed
     version_manager: latest
     is_zuul: false
@@ -16,6 +15,20 @@
     ansible_playbook: "{{ venv_path }}/bin/ansible-playbook"
 
   tasks:
+    - name: Get home directory of ansible user
+      ansible.builtin.shell: |
+        set -o pipefail
+        getent passwd {{ ansible_user }} | cut -d: -f6
+      args:
+        executable: /bin/bash
+      changed_when: false
+      register: result_home
+
+    - name: Set repo_path fact
+      ansible.builtin.set_fact:
+        repo_path: "{{ result_home.stdout }}/src/github.com"
+      when: repo_path is not defined
+
     - name: Copy SSH public key
       ansible.builtin.copy:
         content: "{{ lookup('file', '.id_rsa.' + cloud_env + '.pub') }}\n"
