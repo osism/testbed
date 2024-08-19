@@ -47,7 +47,7 @@ root = result.stdout.strip()
 #       virtual and physical devices.
 if os.path.isfile("/etc/OTC_region"):
     result = run(
-        f"hwinfo --disk --short | tail -n +2 | awk '{{print $1}}' | xargs -n1 basename | sort | grep -v {root}",
+        f"/usr/sbin/hwinfo --disk --short | tail -n +2 | awk '{{print $1}}' | xargs -n1 basename | sort | grep -v {root}",
         stdout=PIPE,
         stderr=PIPE,
         universal_newlines=True,
@@ -55,7 +55,7 @@ if os.path.isfile("/etc/OTC_region"):
     )
 else:
     result = run(
-        f"hwinfo --disk --short | tail -n +2 | grep -i disk | awk '{{print $1}}' | xargs -n1 basename | sort | grep -v {root}",
+        f"/usr/sbin/hwinfo --disk --short | tail -n +2 | grep -i disk | awk '{{print $1}}' | xargs -n1 basename | sort | grep -v {root}",
         stdout=PIPE,
         stderr=PIPE,
         universal_newlines=True,

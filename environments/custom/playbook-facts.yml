@@ -46,7 +46,9 @@
     - name: Install required packages
       become: true
       ansible.builtin.apt:
-        name: ["python3-dotenv", "hwinfo"]
+        name:
+          - hwinfo
+          - python3-dotenv
         state: present
         lock_timeout: "{{ apt_lock_timeout }}"
 
