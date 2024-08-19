@@ -20,7 +20,7 @@ def lookup(yaml_path: str, local_data: dict) -> None | str | dict:
     return local_data
 
 
-def check_environment(name: str) -> None:
+def check_environment(name: str, cloud: str) -> None:
     def _check_file(filename: str, name: str):
         if not os.path.exists(filename):
             raise RuntimeError(
@@ -43,7 +43,7 @@ def check_environment(name: str) -> None:
                 )
 
     try:
-        _check_file("terraform/clouds.yaml", name)
+        _check_file("terraform/clouds.yaml", cloud)
     except Exception as e:
         print(e)
         sys.exit(1)
@@ -51,7 +51,7 @@ def check_environment(name: str) -> None:
     # TODO: as discussed in https://github.com/osism/testbed/pull/1879 we add a app credential check later
     # to make a smart distinction if that check is needed or not.
     try:
-        _check_file("terraform/secure.yaml", name)
+        _check_file("terraform/secure.yaml", cloud)
     except Exception as e:
         print(e)
         time.sleep(2)
@@ -100,24 +100,25 @@ parser = argparse.ArgumentParser(
 )
 
 parser.add_argument(
-    "-c",
     "--config",
-    help="the cloud.yaml config file",
+    help="the clouds.yaml config file",
     required=False,
     default=file_path,
 )
 parser.add_argument(
-    "-q",
     "--query",
     help="specify a path to the config item seperated by dots",
     required=False,
 )
 parser.add_argument("--prepare", action="store_true")
-
 parser.add_argument(
-    "-e",
-    "--environment_check",
+    "--environment",
     help="check if specified environment is okay",
+    required=False,
+)
+parser.add_argument(
+    "--cloud",
+    help="check if specified cloud is okay",
     required=False,
 )
 
@@ -139,8 +140,8 @@ except AssertionError:
 with open(args.config, "r") as file:
     data = yaml.safe_load(file)
 
-if args.environment_check:
-    check_environment(args.environment_check)
+if args.environment:
+    check_environment(args.environment, args.cloud)
 elif args.query:
     sys.stdout.write(lookup(args.query, data))
 elif args.prepare:

@@ -3,7 +3,7 @@ export LC_ALL = C.UTF-8
 CONFIGURATION = main
 CONSOLE = manager
 ENVIRONMENT ?= regiocloud
-CLOUD_ENVIRONMENT ?= $(ENVIRONMENT)
+CLOUD ?= $(ENVIRONMENT)
 USERNAME = dragon
 IMAGE_USERNAME = ubuntu
 
@@ -34,9 +34,9 @@ ifneq (,$(wildcard ./local.env))
   include local.env
 endif
 
-export OS_CLOUD ?= $(CLOUD_ENVIRONMENT)
+export OS_CLOUD ?= $(CLOUD)
 
-export TF_VAR_cloud_provider=$(CLOUD_ENVIRONMENT)
+export TF_VAR_cloud_provider=$(CLOUD)
 ifneq (,$(wildcard terraformrc))
   export TF_CLI_CONFIG_FILE ?= terraformrc
 endif
@@ -60,20 +60,20 @@ init:
 	@if [ ! -d .terraform/providers ]; then $(TERRAFORM) init -upgrade; fi
 
 	@if [ ! -f backend.tf ]; then \
-		$(TERRAFORM) workspace select -or-create ${ENVIRONMENT}; \
+		$(TERRAFORM) workspace select -or-create ${CLOUD}; \
 	fi
 
 	@rm -f *.auto.tfvars
-	@cp environments/$(ENVIRONMENT).tfvars $(ENVIRONMENT).auto.tfvars
-	@echo "ceph_stack = \"$(CEPH_STACK)\"" >> $(ENVIRONMENT).auto.tfvars
-	@echo "ceph_version = \"$(VERSION_CEPH)\"" >> $(ENVIRONMENT).auto.tfvars
-	@echo "cloud_provider = \"$(OS_CLOUD)\"" >> $(ENVIRONMENT).auto.tfvars
-	@echo "image_node_user = \"$(IMAGE_USERNAME)\"" >> $(ENVIRONMENT).auto.tfvars
-	@echo "image_user = \"$(IMAGE_USERNAME)\"" >> $(ENVIRONMENT).auto.tfvars
-	@echo "is_zuul = \"$(IS_ZUUL)\"" >> $(ENVIRONMENT).auto.tfvars
-	@echo "manager_version = \"$(VERSION_MANAGER)\"" >> $(ENVIRONMENT).auto.tfvars
-	@echo "openstack_version = \"$(VERSION_OPENSTACK)\"" >> $(ENVIRONMENT).auto.tfvars
-	@echo "tempest = \"$(TEMPEST)\"" >> $(ENVIRONMENT).auto.tfvars
+	@cp environments/$(ENVIRONMENT).tfvars $(CLOUD).auto.tfvars
+	@echo "ceph_stack = \"$(CEPH_STACK)\"" >> $(CLOUD).auto.tfvars
+	@echo "ceph_version = \"$(VERSION_CEPH)\"" >> $(CLOUD).auto.tfvars
+	@echo "cloud_provider = \"$(OS_CLOUD)\"" >> $(CLOUD).auto.tfvars
+	@echo "image_node_user = \"$(IMAGE_USERNAME)\"" >> $(CLOUD).auto.tfvars
+	@echo "image_user = \"$(IMAGE_USERNAME)\"" >> $(CLOUD).auto.tfvars
+	@echo "is_zuul = \"$(IS_ZUUL)\"" >> $(CLOUD).auto.tfvars
+	@echo "manager_version = \"$(VERSION_MANAGER)\"" >> $(CLOUD).auto.tfvars
+	@echo "openstack_version = \"$(VERSION_OPENSTACK)\"" >> $(CLOUD).auto.tfvars
+	@echo "tempest = \"$(TEMPEST)\"" >> $(CLOUD).auto.tfvars
 
 	@rm -f *_custom.tf
 	@for custom in `grep '^# *customisation:' "environments/${ENVIRONMENT}.tfvars" | sed 's/^# *customisation://'`; do \
@@ -109,59 +109,59 @@ dry-run: init
 
 .PHONY: create
 create: init
-	@touch .deploy.$(ENVIRONMENT)
-	@echo "configuration_version = \"$(CONFIGURATION)\"" >> $(ENVIRONMENT).auto.tfvars
+	@touch .deploy.$(CLOUD)
+	@echo "configuration_version = \"$(CONFIGURATION)\"" >> $(CLOUD).auto.tfvars
 	@$(TERRAFORM) apply $(APPLY_PARAMS) $(PARAMS)
 
 .PHONY: deploy
-deploy: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
-	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
-	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(ENVIRONMENT) $(USERNAME)@$$MANAGER_ADDRESS "/opt/configuration/scripts/deploy.sh"
+deploy: .MANAGER_ADDRESS.$(CLOUD) .id_rsa.$(CLOUD)
+	@. ./.MANAGER_ADDRESS.$(CLOUD); \
+	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(CLOUD) $(USERNAME)@$$MANAGER_ADDRESS "/opt/configuration/scripts/deploy.sh"
 
 .PHONY: deploy-ceph
-deploy-ceph: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
-	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
-	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(ENVIRONMENT) $(USERNAME)@$$MANAGER_ADDRESS "/opt/configuration/scripts/deploy-ceph-services.sh"
+deploy-ceph: .MANAGER_ADDRESS.$(CLOUD) .id_rsa.$(CLOUD)
+	@. ./.MANAGER_ADDRESS.$(CLOUD); \
+	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(CLOUD) $(USERNAME)@$$MANAGER_ADDRESS "/opt/configuration/scripts/deploy-ceph-services.sh"
 
 .PHONY: deploy-manager
-deploy-manager: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
-	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
-	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(ENVIRONMENT) $(USERNAME)@$$MANAGER_ADDRESS "/opt/configuration/scripts/deploy-manager.sh"
+deploy-manager: .MANAGER_ADDRESS.$(CLOUD) .id_rsa.$(CLOUD)
+	@. ./.MANAGER_ADDRESS.$(CLOUD); \
+	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(CLOUD) $(USERNAME)@$$MANAGER_ADDRESS "/opt/configuration/scripts/deploy-manager.sh"
 
 .PHONY: deploy-identity
-deploy-identity: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
-	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
-	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(ENVIRONMENT) $(USERNAME)@$$MANAGER_ADDRESS "/opt/configuration/scripts/deploy-identity-services.sh"
+deploy-identity: .MANAGER_ADDRESS.$(CLOUD) .id_rsa.$(CLOUD)
+	@. ./.MANAGER_ADDRESS.$(CLOUD); \
+	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(CLOUD) $(USERNAME)@$$MANAGER_ADDRESS "/opt/configuration/scripts/deploy-identity-services.sh"
 
 .PHONY: upgrade
-upgrade: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
-	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
-	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(ENVIRONMENT) $(USERNAME)@$$MANAGER_ADDRESS "/opt/configuration/scripts/upgrade.sh $(VERSION_MANAGER) $(VERSION_CEPH) $(VERSION_OPENSTACK) $(KOLLA_NAMESPACE)"
+upgrade: .MANAGER_ADDRESS.$(CLOUD) .id_rsa.$(CLOUD)
+	@. ./.MANAGER_ADDRESS.$(CLOUD); \
+	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(CLOUD) $(USERNAME)@$$MANAGER_ADDRESS "/opt/configuration/scripts/upgrade.sh $(VERSION_MANAGER) $(VERSION_CEPH) $(VERSION_OPENSTACK) $(KOLLA_NAMESPACE)"
 
 .PHONY: upgrade-ceph
-upgrade-ceph: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
-	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
-	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(ENVIRONMENT) $(USERNAME)@$$MANAGER_ADDRESS "/opt/configuration/scripts/upgrade-ceph-services.sh $(VERSION_MANAGER) $(VERSION_CEPH)"
+upgrade-ceph: .MANAGER_ADDRESS.$(CLOUD) .id_rsa.$(CLOUD)
+	@. ./.MANAGER_ADDRESS.$(CLOUD); \
+	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(CLOUD) $(USERNAME)@$$MANAGER_ADDRESS "/opt/configuration/scripts/upgrade-ceph-services.sh $(VERSION_MANAGER) $(VERSION_CEPH)"
 
 .PHONY: check
-check: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
-	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
-	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(ENVIRONMENT) $(USERNAME)@$$MANAGER_ADDRESS /opt/configuration/scripts/check.sh
+check: .MANAGER_ADDRESS.$(CLOUD) .id_rsa.$(CLOUD)
+	@. ./.MANAGER_ADDRESS.$(CLOUD); \
+	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(CLOUD) $(USERNAME)@$$MANAGER_ADDRESS /opt/configuration/scripts/check.sh
 
 .PHONY: rally
-rally: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
-	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
-	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(ENVIRONMENT) $(USERNAME)@$$MANAGER_ADDRESS /opt/configuration/contrib/rally/rally.sh
+rally: .MANAGER_ADDRESS.$(CLOUD) .id_rsa.$(CLOUD)
+	@. ./.MANAGER_ADDRESS.$(CLOUD); \
+	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(CLOUD) $(USERNAME)@$$MANAGER_ADDRESS /opt/configuration/contrib/rally/rally.sh
 
 .PHONY: tempest
-tempest: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
-	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
-	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(ENVIRONMENT) $(USERNAME)@$$MANAGER_ADDRESS /opt/configuration/scripts/check/302-openstack-tempest.sh
+tempest: .MANAGER_ADDRESS.$(CLOUD) .id_rsa.$(CLOUD)
+	@. ./.MANAGER_ADDRESS.$(CLOUD); \
+	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(CLOUD) $(USERNAME)@$$MANAGER_ADDRESS /opt/configuration/scripts/check/302-openstack-tempest.sh
 
 .PHONY: bootstrap
-bootstrap: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
-	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
-	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(ENVIRONMENT) $(USERNAME)@$$MANAGER_ADDRESS /opt/configuration/scripts/bootstrap.sh
+bootstrap: .MANAGER_ADDRESS.$(CLOUD) .id_rsa.$(CLOUD)
+	@. ./.MANAGER_ADDRESS.$(CLOUD); \
+	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(CLOUD) $(USERNAME)@$$MANAGER_ADDRESS /opt/configuration/scripts/bootstrap.sh
 
 .PHONY: graph
 graph: init
@@ -174,12 +174,12 @@ show: init
 .PHONY: clean
 clean: init
 	@$(TERRAFORM) destroy $(APPLY_PARAMS) $(PARAMS)
-	@rm -f .deploy.$(ENVIRONMENT) .MANAGER_ADDRESS.$(ENVIRONMENT)
-	@rm -f .id_rsa.$(ENVIRONMENT)
+	@rm -f .deploy.$(CLOUD) .MANAGER_ADDRESS.$(CLOUD)
+	@rm -f .id_rsa.$(CLOUD)
 
 	@if [ ! -f backend.tf ]; then \
 		$(TERRAFORM) workspace select default; \
-		$(TERRAFORM) workspace delete $(ENVIRONMENT) || true; \
+		$(TERRAFORM) workspace delete $(CLOUD) || true; \
 	fi
 	@rm -f wg-*.conf
 	@rm -rf .terraform .terraform.lock.hcl
@@ -189,72 +189,72 @@ list: init
 	@$(TERRAFORM) state list
 
 .PHONY: ssh
-ssh: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
-	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
-	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(ENVIRONMENT) $(USERNAME)@$$MANAGER_ADDRESS
+ssh: .MANAGER_ADDRESS.$(CLOUD) .id_rsa.$(CLOUD)
+	@. ./.MANAGER_ADDRESS.$(CLOUD); \
+	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(CLOUD) $(USERNAME)@$$MANAGER_ADDRESS
 
 .PHONY: vpn-wireguard-config
-vpn-wireguard-config: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
-	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
-	scp -o StrictHostKeyChecking=no -i .id_rsa.$(ENVIRONMENT) $(PARAMS) $(USERNAME)@$$MANAGER_ADDRESS:/home/dragon/wireguard-client.conf $(PWD)/wg-$(ENVIRONMENT).conf
-	@echo Wireguard configuration saved in $(PWD)/wg-$(ENVIRONMENT).conf
+vpn-wireguard-config: .MANAGER_ADDRESS.$(CLOUD) .id_rsa.$(CLOUD)
+	@. ./.MANAGER_ADDRESS.$(CLOUD); \
+	scp -o StrictHostKeyChecking=no -i .id_rsa.$(CLOUD) $(PARAMS) $(USERNAME)@$$MANAGER_ADDRESS:/home/dragon/wireguard-client.conf $(PWD)/wg-$(CLOUD).conf
+	@echo Wireguard configuration saved in $(PWD)/wg-$(CLOUD).conf
 
 .PHONY: vpn-wireguard
-vpn-wireguard: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT) vpn-wireguard-config
-	sudo wg-quick down $(PWD)/wg-$(ENVIRONMENT).conf || true
-	sudo wg-quick up $(PWD)/wg-$(ENVIRONMENT).conf
+vpn-wireguard: .MANAGER_ADDRESS.$(CLOUD) .id_rsa.$(CLOUD) vpn-wireguard-config
+	sudo wg-quick down $(PWD)/wg-$(CLOUD).conf || true
+	sudo wg-quick up $(PWD)/wg-$(CLOUD).conf
 	@$(OPEN_CMD) "https://osism.tech/docs/guides/other-guides/testbed#webinterfaces"
 	@read -p "STOP?" CONT
-	sudo wg-quick down $(PWD)/wg-$(ENVIRONMENT).conf
+	sudo wg-quick down $(PWD)/wg-$(CLOUD).conf
 
 .PHONY: scp
-scp: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
-	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
-	scp -o StrictHostKeyChecking=no -i .id_rsa.$(ENVIRONMENT) $(PARAMS) $(USERNAME)@$$MANAGER_ADDRESS:$(SOURCE) .
+scp: .MANAGER_ADDRESS.$(CLOUD) .id_rsa.$(CLOUD)
+	@. ./.MANAGER_ADDRESS.$(CLOUD); \
+	scp -o StrictHostKeyChecking=no -i .id_rsa.$(CLOUD) $(PARAMS) $(USERNAME)@$$MANAGER_ADDRESS:$(SOURCE) .
 
 .PHONY: vpn-sshuttle
-vpn-sshuttle: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
-	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
-	sshuttle --ssh-cmd "ssh -o StrictHostKeyChecking=no -i .id_rsa.$(ENVIRONMENT) " -r $(USERNAME)@$$MANAGER_ADDRESS 192.168.16.0/20 192.168.112.0/20
+vpn-sshuttle: .MANAGER_ADDRESS.$(CLOUD) .id_rsa.$(CLOUD)
+	@. ./.MANAGER_ADDRESS.$(CLOUD); \
+	sshuttle --ssh-cmd "ssh -o StrictHostKeyChecking=no -i .id_rsa.$(CLOUD) " -r $(USERNAME)@$$MANAGER_ADDRESS 192.168.16.0/20 192.168.112.0/20
 
 .PHONY: address
-address: .MANAGER_ADDRESS.$(ENVIRONMENT) .id_rsa.$(ENVIRONMENT)
-	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
+address: .MANAGER_ADDRESS.$(CLOUD) .id_rsa.$(CLOUD)
+	@. ./.MANAGER_ADDRESS.$(CLOUD); \
 	echo $$MANAGER_ADDRESS
 
 .PHONY: console
-console: .deploy.$(ENVIRONMENT)
+console: .deploy.$(CLOUD)
 	@$(OPENSTACK) console url show testbed-$(CONSOLE)
 
 .PHONY: log
-log: .deploy.$(ENVIRONMENT)
+log: .deploy.$(CLOUD)
 	@$(OPENSTACK) console log show testbed-$(CONSOLE)
 
-.deploy.$(ENVIRONMENT): init
+.deploy.$(CLOUD): init
 	@STAT=$$($(TERRAFORM) state list); \
-	if test -n "$$STAT"; then touch .deploy.$(ENVIRONMENT); else echo "use make deploy or deploy-identity"; exit 1; fi
+	if test -n "$$STAT"; then touch .deploy.$(CLOUD); else echo "use make deploy or deploy-identity"; exit 1; fi
 
-.MANAGER_ADDRESS.$(ENVIRONMENT): .deploy.$(ENVIRONMENT)
+.MANAGER_ADDRESS.$(CLOUD): .deploy.$(CLOUD)
 	@MANAGER_ADDRESS=$$($(TERRAFORM) output manager_address); \
 	echo "MANAGER_ADDRESS=$$MANAGER_ADDRESS" > $@;
 
-.id_rsa.$(ENVIRONMENT): .deploy.$(ENVIRONMENT)
+.id_rsa.$(CLOUD): .deploy.$(CLOUD)
 	@PRIVATE_KEY=$$($(TERRAFORM) output private_key); \
 	echo "$$PRIVATE_KEY" > $@; \
         chmod 0600 $@
 
 .PHONY: watch
-watch: .id_rsa.$(ENVIRONMENT) .MANAGER_ADDRESS.$(ENVIRONMENT)
-	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
+watch: .id_rsa.$(CLOUD) .MANAGER_ADDRESS.$(CLOUD)
+	@. ./.MANAGER_ADDRESS.$(CLOUD); \
 	DISP=0; \
 	if test "$$COLORTERM" = "1"; then \
 	  GREEN=$$(echo -e "\e[0;32m"); GREENBOLD=$$(echo -e "\e[1;32m"); BOLD=$$(echo -e "\e[0;1m"); RED=$$(echo -e "\e[0;31m"); YELLOW=$$(echo -e "\e[0;33m"); NORM=$$(echo -e "\e[0;0m"); \
 	fi; \
 	while true; do \
-		LEN=$$(ssh -o StrictHostKeyChecking=no -i .id_rsa.$(ENVIRONMENT) $(IMAGE_USERNAME)@$$MANAGER_ADDRESS sudo wc -l /var/log/cloud-init-output.log 2>/dev/null); \
+		LEN=$$(ssh -o StrictHostKeyChecking=no -i .id_rsa.$(CLOUD) $(IMAGE_USERNAME)@$$MANAGER_ADDRESS sudo wc -l /var/log/cloud-init-output.log 2>/dev/null); \
 		LEN=$${LEN%% *}; \
 		if test -n "$$LEN" -a "$$LEN" != "$$DISP"; then \
-		  OUT=$$(ssh -o StrictHostKeyChecking=no -i .id_rsa.$(ENVIRONMENT) $(IMAGE_USERNAME)@$$MANAGER_ADDRESS sudo tail -n $$((LEN-DISP)) /var/log/cloud-init-output.log 2>/dev/null); \
+		  OUT=$$(ssh -o StrictHostKeyChecking=no -i .id_rsa.$(CLOUD) $(IMAGE_USERNAME)@$$MANAGER_ADDRESS sudo tail -n $$((LEN-DISP)) /var/log/cloud-init-output.log 2>/dev/null); \
 		  echo "$$OUT" | sed -e "s/^\(TASK.*\)$$/$$BOLD\1$$NORM/" -e "s/^\(PLAY.*\)$$/$$GREEN\1$$NORM/" -e "s/^\(The system is finally up.*\)$$/$$GREENBOLD\1$$NORM/" -e "s/\(FAILED\)/$$RED\1$$NORM/g" -e "s/\(failed=[1-9][0-9]*\|unreachable=[1-9][0-9]*\)/$$RED\1$$NORM/g" -e "s/\(warn\|WARN\|RETRYING\)/$$YELLOW\1$$NORM/" -e "s/\(ok:\|ok=[0-9]*\)/$$GREEN\1$$NORM/"; \
 		  if echo "$$OUT" | grep '^The system is finally up' >/dev/null 2>&1; then break; fi; \
 		  DISP=$$LEN; \
@@ -264,8 +264,8 @@ watch: .id_rsa.$(ENVIRONMENT) .MANAGER_ADDRESS.$(ENVIRONMENT)
 	#@$(OPENSTACK) server list
 
 .PHONY: ping
-ping: .MANAGER_ADDRESS.$(ENVIRONMENT)
-	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
+ping: .MANAGER_ADDRESS.$(CLOUD)
+	@. ./.MANAGER_ADDRESS.$(CLOUD); \
 	ping -c3 $$MANAGER_ADDRESS
 
 .PHONY: openstack
@@ -274,7 +274,7 @@ openstack: init
 
 .PHONY: endpoints
 endpoints: init
-	@. ./.MANAGER_ADDRESS.$(ENVIRONMENT); \
+	@. ./.MANAGER_ADDRESS.$(CLOUD); \
 	echo "| ARA        | http://$$MANAGER_ADDRESS:8120  |"; \
 	echo "| phpMyAdmin | http://$$MANAGER_ADDRESS:8110  |";
 
