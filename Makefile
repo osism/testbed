@@ -3,6 +3,8 @@ export LC_ALL = C.UTF-8
 CONFIGURATION ?= main
 ENVIRONMENT ?= the_environment
 
+IMAGE_USERNAME ?= ubuntu
+
 VERSION_CEPH ?= quincy
 VERSION_MANAGER ?= latest
 VERSION_OPENSTACK ?= 2023.2
@@ -40,13 +42,14 @@ wipe-local-install: ## Wipe the software dependencies in `venv`.
 create: prepare ## Create required infrastructure with OpenTofu.
 	@contrib/setup-testbed.py --environment_check $(ENVIRONMENT)
 	make -C terraform \
+	  CEPH_STACK=$(CEPH_STACK) \
 	  CONFIGURATION=$(CONFIGURATION) \
 	  ENVIRONMENT=$(ENVIRONMENT) \
+	  IMAGE_USERNAME=$(IMAGE_USERNAME) \
 	  TERRAFORM=$(TERRAFORM) \
 	  VERSION_CEPH=$(VERSION_CEPH) \
 	  VERSION_MANAGER=$(VERSION_MANAGER) \
 	  VERSION_OPENSTACK=$(VERSION_OPENSTACK) \
-	  CEPH_STACK=$(CEPH_STACK) \
 	  create
 
 .PHONY: login

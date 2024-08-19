@@ -64,13 +64,15 @@ init:
 
 	@rm -f *.auto.tfvars
 	@cp environments/$(ENVIRONMENT).tfvars $(ENVIRONMENT).auto.tfvars
-	@echo "cloud_provider = \"$(OS_CLOUD)\"" >> $(ENVIRONMENT).auto.tfvars
+	@echo "ceph_stack = \"$(CEPH_STACK)\"" >> $(ENVIRONMENT).auto.tfvars
 	@echo "ceph_version = \"$(VERSION_CEPH)\"" >> $(ENVIRONMENT).auto.tfvars
+	@echo "cloud_provider = \"$(OS_CLOUD)\"" >> $(ENVIRONMENT).auto.tfvars
+	@echo "image_node_user = \"$(IMAGE_USERNAME)\"" >> $(ENVIRONMENT).auto.tfvars
+	@echo "image_user = \"$(IMAGE_USERNAME)\"" >> $(ENVIRONMENT).auto.tfvars
+	@echo "is_zuul = \"$(IS_ZUUL)\"" >> $(ENVIRONMENT).auto.tfvars
 	@echo "manager_version = \"$(VERSION_MANAGER)\"" >> $(ENVIRONMENT).auto.tfvars
 	@echo "openstack_version = \"$(VERSION_OPENSTACK)\"" >> $(ENVIRONMENT).auto.tfvars
 	@echo "tempest = \"$(TEMPEST)\"" >> $(ENVIRONMENT).auto.tfvars
-	@echo "is_zuul = \"$(IS_ZUUL)\"" >> $(ENVIRONMENT).auto.tfvars
-	@echo "ceph_stack = \"$(CEPH_STACK)\"" >> $(ENVIRONMENT).auto.tfvars
 
 	@rm -f *_custom.tf
 	@for custom in `grep '^# *customisation:' "environments/${ENVIRONMENT}.tfvars" | sed 's/^# *customisation://'`; do \
