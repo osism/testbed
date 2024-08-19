@@ -103,6 +103,14 @@
         - result.stat.exists is defined
         - result.stat.exists | bool
 
+    # The correct package name is linux-generic-hwe-22.04 on Ubuntu 22.04
+    # and linux-generic-hwe-24.04 on Ubuntu 24.04.
+    - name: Install HWE kernel package on Ubuntu
+      ansible.builtin.lineinfile:
+        path: /opt/configuration/environments/configuration.yml
+        line: "required_packages_extra: ['linux-generic-hwe-{{ ansible_distribution_version }}']"
+      when: ansible_distribution == "Ubuntu"
+
     # The use of these paraemters in production is not recommended. Further details in OSSN-0090.
     # https://wiki.openstack.org/wiki/OSSN/OSSN-0090
     - name: Use insecure glance configuration
