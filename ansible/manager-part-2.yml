@@ -2,7 +2,6 @@
 - name: Prepare manager part 2
   hosts: testbed-manager.testbed.osism.xyz
   connection: local
-  gather_facts: true
 
   vars:
     venv_path: /opt/venv
@@ -46,7 +45,6 @@
 - name: Run manager part 2
   hosts: testbed-manager.testbed.osism.xyz
   connection: local
-  gather_facts: true
 
   vars:
     venv_path: /opt/venv
