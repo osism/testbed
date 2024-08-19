@@ -56,6 +56,13 @@
       become: true
       ansible.builtin.command: update-ca-certificates
       changed_when: true
+      when: ansible_os_family == "Debian"
+
+    - name: Run update-ca-trust
+      become: true
+      ansible.builtin.command: update-ca-trust
+      changed_when: true
+      when: ansible_os_family == "RedHat"
 
 - name: Add a workaround service to non-manager nodes
   hosts: all:!manager
