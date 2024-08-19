@@ -3,6 +3,7 @@ export LC_ALL = C.UTF-8
 CONFIGURATION = main
 CONSOLE = manager
 ENVIRONMENT ?= regiocloud
+CLOUD_ENVIRONMENT ?= $(ENVIRONMENT)
 USERNAME = dragon
 IMAGE_USERNAME = ubuntu
 
@@ -33,9 +34,9 @@ ifneq (,$(wildcard ./local.env))
   include local.env
 endif
 
-export OS_CLOUD ?= $(ENVIRONMENT)
+export OS_CLOUD ?= $(CLOUD_ENVIRONMENT)
 
-export TF_VAR_cloud_provider=$(ENVIRONMENT)
+export TF_VAR_cloud_provider=$(CLOUD_ENVIRONMENT)
 ifneq (,$(wildcard terraformrc))
   export TF_CLI_CONFIG_FILE ?= terraformrc
 endif

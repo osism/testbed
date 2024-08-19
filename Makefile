@@ -1,7 +1,9 @@
 export LC_ALL = C.UTF-8
 
 CONFIGURATION ?= main
+
 ENVIRONMENT ?= the_environment
+CLOUD_ENVIRONMENT ?= $(ENVIRONMENT)
 
 IMAGE_USERNAME ?= ubuntu
 
@@ -43,6 +45,7 @@ create: prepare ## Create required infrastructure with OpenTofu.
 	@contrib/setup-testbed.py --environment_check $(ENVIRONMENT)
 	make -C terraform \
 	  CEPH_STACK=$(CEPH_STACK) \
+	  CLOUD_ENVIRONMENT=$(CLOUD_ENVIRONMENT) \
 	  CONFIGURATION=$(CONFIGURATION) \
 	  ENVIRONMENT=$(ENVIRONMENT) \
 	  IMAGE_USERNAME=$(IMAGE_USERNAME) \
