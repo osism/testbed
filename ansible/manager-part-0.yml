@@ -57,7 +57,7 @@
         - name: Use python 3.11 by default
           become: true
           ansible.builtin.command: |
-            update-alternatives --config python3
+            update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.11 20
           changed_when: false
 
     - name: Debian/Ubuntu specific tasks  # noqa: osism-fqcn
