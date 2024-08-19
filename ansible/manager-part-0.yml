@@ -51,6 +51,7 @@
               - git
               - python3-netaddr
               - python3.11
+              - python3.11-pip
             state: present
             lock_timeout: "{{ dnf_lock_timeout }}"
 
@@ -100,6 +101,11 @@
               - python3-netaddr
               - python3-venv
               - rsync
+
+    # This is required to be able to Switch from Python 3.9 -> Python 3.11
+    # on CentOS. The ansible.builtin.meta does not support when statements.
+    - name: Reset connection
+      ansible.builtin.meta: reset_connection
 
     - name: Get current user
       ansible.builtin.user:
