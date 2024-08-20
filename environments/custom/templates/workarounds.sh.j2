@@ -11,6 +11,10 @@ fi
     ip addr add {{ '192.168.112.0/20' | ansible.utils.ipaddr('net') | ansible.utils.ipaddr(node_id) | ansible.utils.ipaddr('address') }}/20 dev vxlan0
     ip link set up dev vxlan0
 
+    ip link add vxlan1 type vxlan id 23 group 239.1.1.1 dstport 4789 dev {{ ansible_local.testbed_network_devices.management }}
+    ip addr add {{ '192.168.128.0/20' | ansible.utils.ipaddr('net') | ansible.utils.ipaddr(node_id) | ansible.utils.ipaddr('address') }}/20 dev vxlan1
+    ip link set up dev vxlan1
+
     iptables -A FORWARD -i {{ ansible_local.testbed_network_devices.management }} -j ACCEPT
     iptables -A FORWARD -o {{ ansible_local.testbed_network_devices.management }} -j ACCEPT
     iptables -t nat -A POSTROUTING -o {{ ansible_local.testbed_network_devices.management }} -j MASQUERADE

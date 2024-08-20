@@ -84,7 +84,7 @@ network_dispatcher_scripts:
 # kolla
 
 network_interface: "{{ ansible_local.testbed_network_devices.management }}"
-flannel_iface: "{{ ansible_local.testbed_network_devices.management }}"
+flannel_iface: vxlan1
 neutron_external_interface: vxlan0
 octavia_network_interface: ohm0
 
