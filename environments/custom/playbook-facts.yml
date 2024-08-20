@@ -5,14 +5,24 @@
 
   vars:
     apt_lock_timeout: 300
+    dnf_lock_timeout: 300
 
   tasks:
-    - name: Install required packages
+    - name: Install required packages (RedHat)
+      become: true
+      ansible.builtin.dnf:
+        name: python3-netifaces
+        state: present
+        lock_timeout: "{{ dnf_lock_timeout }}"
+      when: ansible_os_family == "RedHat"
+
+    - name: Install required packages (Debian)
       become: true
       ansible.builtin.apt:
         name: python3-netifaces
         state: present
         lock_timeout: "{{ apt_lock_timeout }}"
+      when: ansible_os_family == "Debian"
 
     - name: Create custom facts directory
       become: true
@@ -41,9 +51,25 @@
 
   vars:
     apt_lock_timeout: 300
+    dnf_lock_timeout: 300
 
   tasks:
-    - name: Install required packages
+    - name: Apply osism.commons.repository role
+      ansible.builtin.import_role:
+        name: osism.commons.repository
+
+    - name: Install required packages (RedHat)
+      become: true
+      ansible.builtin.dnf:
+        name:
+          - hwinfo
+          - python3-dotenv
+        enablerepo: epel
+        state: present
+        lock_timeout: "{{ dnf_lock_timeout }}"
+      when: ansible_os_family == "RedHat"
+
+    - name: Install required packages (Debian)
       become: true
       ansible.builtin.apt:
         name:
@@ -51,6 +77,7 @@
           - python3-dotenv
         state: present
         lock_timeout: "{{ apt_lock_timeout }}"
+      when: ansible_os_family == "Ubuntu"
 
     - name: Create custom facts directory
       become: true
