@@ -3,9 +3,6 @@
   hosts: testbed-manager.testbed.osism.xyz
 
   vars:
-    apt_lock_timeout: 300
-    dnf_lock_timeout: 300
-
     ansible_ssh_user: dragon
     operator_user: dragon
     repo: osism/testbed
