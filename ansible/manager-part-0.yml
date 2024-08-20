@@ -44,15 +44,25 @@
             update_cache: true
             lock_timeout: "{{ dnf_lock_timeout }}"
 
-        - name: Install necessary packages on CentOS
+        - name: Install required packages
           become: true
           ansible.builtin.dnf:
             name:
+              - gcc
               - git
               - python3-netaddr
               - python3.11
               - python3.11-pip
             state: present
+            lock_timeout: "{{ dnf_lock_timeout }}"
+
+        - name: Remove some python packages
+          become: true
+          ansible.builtin.dnf:
+            name:
+              - python3-docker
+              - python3-requests
+            state: absent
             lock_timeout: "{{ dnf_lock_timeout }}"
 
         - name: Use python 3.11 by default
@@ -98,9 +108,19 @@
           become: true
           ansible.builtin.apt:
             name:
+              - build-essential
+              - python3-dev
               - python3-netaddr
               - python3-venv
               - rsync
+
+        - name: Remove some python packages
+          become: true
+          ansible.builtin.apt:
+            state: absent
+            name:
+              - python3-docker
+              - python3-requests
 
     # This is required to be able to Switch from Python 3.9 -> Python 3.11
     # on CentOS. The ansible.builtin.meta does not support when statements.

@@ -18,6 +18,10 @@
     ansible_playbook: "{{ venv_path }}/bin/ansible-playbook"
 
   tasks:
+    - name: Apply osism.commons.repository role
+      ansible.builtin.import_role:
+        name: osism.commons.repository
+
     - name: Get home directory of ansible user
       ansible.builtin.shell: |
         set -o pipefail
@@ -62,39 +66,6 @@
         src: "{{ repo_path }}/{{ repo }}/"
         delete: true
         dest: /opt/configuration
-
-    - name: CentOS specific tasks  # noqa: osism-fqcn
-      when: ansible_os_family == "RedHat"
-      block:
-        - name: Remove some python packages
-          become: true
-          ansible.builtin.dnf:
-            state: absent
-            lock_timeout: "{{ dnf_lock_timeout }}"
-            name:
-              - python3-docker
-              - python3-requests
-
-    - name: Debian/Ubuntu specific tasks  # noqa: osism-fqcn
-      when: ansible_os_family == "Debian"
-      block:
-        - name: Install required packages
-          become: true
-          ansible.builtin.apt:
-            name: "{{ item }}"
-            state: present
-            lock_timeout: "{{ apt_lock_timeout }}"
-          loop:
-            - build-essential
-            - python3-dev
-
-        - name: Remove some python packages
-          become: true
-          ansible.builtin.apt:
-            state: absent
-            name:
-              - python3-docker
-              - python3-requests
 
     - name: Install python requirements in venv
       ansible.builtin.pip:
