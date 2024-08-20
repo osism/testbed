@@ -52,6 +52,7 @@
               - git
               - python3-netaddr
               - python3.11
+              - python3.11-devel
               - python3.11-pip
             state: present
             lock_timeout: "{{ dnf_lock_timeout }}"
