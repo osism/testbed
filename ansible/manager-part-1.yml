@@ -10,11 +10,20 @@
     is_zuul: false
 
     venv_path: /opt/venv
-    venv_command: python3 -m venv
 
     ansible_playbook: "{{ venv_path }}/bin/ansible-playbook"
 
   tasks:
+    - name: Set venv_command fact (RedHat)
+      ansible.builtin.set_fact:
+        venv_command: python3.11 -m venv
+      when: ansible_os_family == "RedHat"
+
+    - name: Set venv_command fact (Debian)
+      ansible.builtin.set_fact:
+        venv_command: python3 -m venv
+      when: ansible_os_family == "Debian"
+
     - name: Apply osism.commons.repository role
       ansible.builtin.import_role:
         name: osism.commons.repository
