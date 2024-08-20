@@ -1,7 +1,17 @@
 #!/usr/bin/env bash
 
+{% if ansible_os_family == "Debian" and inventory_hostname_short != "testbed-manager" %}
 if [[ -e /usr/sbin/ifup ]]; then
     ifdown {{ ansible_local.testbed_network_devices.management }} && ifup {{ ansible_local.testbed_network_devices.management }}
 else
     netplan apply
 fi
+{% elif ansible_os_family == "RedHat" %}
+    ip link add vxlan0 type vxlan id 42 group 239.1.1.1 dstport 4789 dev {{ ansible_local.testbed_network_devices.management }}
+    ip addr add {{ '192.168.112.0/20' | ansible.utils.ipaddr('net') | ansible.utils.ipaddr(node_id) | ansible.utils.ipaddr('address') }}/20 dev vxlan0
+    ip link set up dev vxlan0
+
+    iptables -A FORWARD -i {{ ansible_local.testbed_network_devices.management }} -j ACCEPT
+    iptables -A FORWARD -o {{ ansible_local.testbed_network_devices.management }} -j ACCEPT
+    iptables -t nat -A POSTROUTING -o {{ ansible_local.testbed_network_devices.management }} -j MASQUERADE
+{% endif %}
