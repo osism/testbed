@@ -11,10 +11,9 @@
         - virtualization_role_{{ ansible_virtualization_role }}
       tags: always
 
-# NOTE: The netplan apply call is made separately and not via the osism.commons.network role in order
-#       to keep the default configuration in the testbed. In the default configuration, network restarts
-#       are deactivated.
-
+# NOTE: The netplan apply call is made separately and not via the osism.commons.network
+#       role in order to keep the default configuration in the testbed. In the default
+#       configuration, network restarts are deactivated.
 - name: Apply netplan configuration on the manager node
   hosts: manager
   gather_facts: false
@@ -64,8 +63,8 @@
       changed_when: true
       when: ansible_os_family == "RedHat"
 
-- name: Add a workaround service to non-manager nodes
-  hosts: all:!manager
+- name: Add a workaround service
+  hosts: all
   gather_facts: false
 
   tasks:
@@ -101,8 +100,7 @@
 # https://github.com/docker/docker-py/issues/3113
 # docker.errors.DockerException: Error while fetching server API version:
 # HTTPConnection.request() got an unexpected keyword argument 'chunked'
-
-- name: On Ubuntu 24.04 Install python3-docker from Debian Sid
+- name: On Ubuntu 24.04 install python3-docker from Debian Sid
   hosts: all
   gather_facts: false
 
