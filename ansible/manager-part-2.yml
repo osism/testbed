@@ -4,9 +4,6 @@
   connection: local
 
   vars:
-    venv_path: /opt/venv
-    ansible_python_interpreter: "{{ venv_path }}/bin/python3"
-
     version_manager: latest
 
   tasks:
@@ -47,9 +44,6 @@
   connection: local
 
   vars:
-    venv_path: /opt/venv
-    ansible_python_interpreter: "{{ venv_path }}/bin/python3"
-
     version_manager: latest
 
     docker_configure_repository: true
