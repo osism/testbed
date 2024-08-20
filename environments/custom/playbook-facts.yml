@@ -77,7 +77,7 @@
           - python3-dotenv
         state: present
         lock_timeout: "{{ apt_lock_timeout }}"
-      when: ansible_os_family == "Ubuntu"
+      when: ansible_os_family == "Debian"
 
     - name: Create custom facts directory
       become: true
