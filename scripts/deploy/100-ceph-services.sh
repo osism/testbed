@@ -15,11 +15,6 @@ if [[ $MANAGER_VERSION == "latest" && $CEPH_VERSION == "pacific" ]]; then
     sed -i "s/osism.commons.still_alive/community.general.yaml/" /opt/configuration/environments/ansible.cfg
 fi
 
-# On CentOS the Ceph deployment only works with podman.
-if [[ -e /etc/redhat-release ]]; then
-    osism apply podman
-fi
-
 if [[ $MANAGER_VERSION =~ ^4\.[0-9]\.[0-9]$ ]]; then
     osism apply ceph-base
     osism apply ceph-mdss
