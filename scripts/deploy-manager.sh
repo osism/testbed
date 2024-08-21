@@ -26,6 +26,11 @@ osism apply operator -u $IMAGE_NODE_USER -l testbed-nodes
 osism apply --environment custom facts
 osism apply bootstrap
 
+# On CentOS the Ceph deployment only works with podman.
+if [[ -e /etc/redhat-release ]]; then
+    osism apply podman
+fi
+
 # copy network configuration
 osism apply network
 
