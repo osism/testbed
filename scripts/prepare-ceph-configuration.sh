@@ -37,4 +37,9 @@ if [[ $MANAGER_VERSION =~ ^7\.[0-9]\.[0-9]$ || $MANAGER_VERSION == "latest" ]]; 
     # of the play for the Ceph OSDs. The openstack_config parameter is therefore removed
     # and the new ceph-pools play is then used.
     sed -i "/^openstack_config:/d" /opt/configuration/environments/ceph/configuration.yml
+
+    # Looks like it is not possible to use Nexus with authentication with Podman.
+    if [[ -e /etc/redhat-release ]]; then
+        sed -i "/^ceph_docker_registry:/d" /opt/configuration/environments/configuration.yml
+    fi
 fi
