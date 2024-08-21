@@ -91,11 +91,20 @@
       ansible.builtin.systemd:
         daemon_reload: true
 
-    - name: Enable workarounds.service
+    - name: Enable workarounds.service (Debian)
       become: true
       ansible.builtin.service:
         name: workarounds
         enabled: true
+      when: ansible_os_family == "Debian"
+
+    - name: Enable and start workarounds.service (RedHat)
+      become: true
+      ansible.builtin.service:
+        name: workarounds
+        enabled: true
+        state: started
+      when: ansible_os_family == "RedHat"
 
 # https://github.com/docker/docker-py/issues/3113
 # docker.errors.DockerException: Error while fetching server API version:
