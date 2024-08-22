@@ -25,20 +25,6 @@
       - name: orchestrator
         label: testbed-orchestrator
 
-# PCO
-- nodeset:
-    name: testbed-orchestrator-pco
-    nodes:
-      - name: orchestrator
-        label: testbed-orchestrator-pco
-
-# Wavestack
-- nodeset:
-    name: testbed-orchestrator-wavestack
-    nodes:
-      - name: orchestrator
-        label: testbed-orchestrator-wavecon
-
 - job:
     name: abstract-testbed-deploy
     abstract: true
@@ -75,7 +61,7 @@
       - osism/terraform-base
     timeout: 10800
     vars:
-      cloud_env: managerless
+      cloud: managerless
       terraform_blueprint: testbed-managerless
     secrets:
       - name: secret
@@ -90,10 +76,35 @@
       tempest: true
 
 - job:
-    name: testbed-deploy-in-a-nutshell
+    name: abstract-testbed-deploy-in-a-nutshell
+    abstract: true
     parent: abstract-testbed-deploy
     vars:
       nutshell: true
+
+- job:
+    name: testbed-deploy-in-a-nutshell-ubuntu-22.04
+    parent: abstract-testbed-deploy-in-a-nutshell
+    vars:
+      terraform_environment: ubuntu-22.04
+
+- job:
+    name: testbed-deploy-in-a-nutshell-ubuntu-24.04
+    parent: abstract-testbed-deploy-in-a-nutshell
+    vars:
+      terraform_environment: ubuntu-24.04
+
+- job:
+    name: testbed-deploy-in-a-nutshell-debian-12
+    parent: abstract-testbed-deploy-in-a-nutshell
+    vars:
+      terraform_environment: debian-12
+
+- job:
+    name: testbed-deploy-in-a-nutshell-centos-stream-9
+    parent: abstract-testbed-deploy-in-a-nutshell
+    vars:
+      terraform_environment: centos-stream-9
 
 - job:
     name: testbed-upgrade
@@ -102,14 +113,38 @@
     timeout: 25200
 
 - job:
-    name: testbed-deploy-stable
+    name: abstract-testbed-deploy-stable
     parent: abstract-testbed-deploy
     vars:
       manager_version: 7.1.2
       tempst: true
 
 - job:
-    name: testbed-upgrade-stable
+    name: testbed-deploy-stable-ubuntu-22.04
+    parent: abstract-testbed-deploy-stable
+    vars:
+      terraform_environment: ubuntu-22.04
+
+- job:
+    name: testbed-deploy-stable-ubuntu-24.04
+    parent: abstract-testbed-deploy-stable
+    vars:
+      terraform_environment: ubuntu-24.04
+
+- job:
+    name: testbed-deploy-stable-centos-stream-9
+    parent: abstract-testbed-deploy-stable
+    vars:
+      terraform_environment: centos-stream-9
+
+- job:
+    name: testbed-deploy-stable-debian-12
+    parent: abstract-testbed-deploy-stable
+    vars:
+      terraform_environment: debian-12
+
+- job:
+    name: abstract-testbed-upgrade-stable
     parent: abstract-testbed-deploy
     run: playbooks/upgrade-stable.yml
     vars:
@@ -119,24 +154,10 @@
     timeout: 25200
 
 - job:
-    name: testbed-deploy-pco
-    parent: abstract-testbed-deploy
-    nodeset: testbed-orchestrator-pco
-
-- job:
-    name: testbed-deploy-wavestack
-    parent: abstract-testbed-deploy
-    nodeset: testbed-orchestrator-wavestack
-
-- job:
-    name: testbed-upgrade-pco
-    parent: testbed-upgrade
-    nodeset: testbed-orchestrator-pco
-
-- job:
-    name: testbed-upgrade-wavestack
-    parent: testbed-upgrade
-    nodeset: testbed-orchestrator-wavestack
+    name: testbed-upgrade-stable-ubuntu-22.04
+    parent: abstract-testbed-upgrade-stable
+    vars:
+      terraform_environment: ubuntu-22.04
 
 - project:
     merge-mode: squash-merge
@@ -148,33 +169,19 @@
         - yamllint
     label:
       jobs:
-        - testbed-deploy
-        - testbed-deploy-stable
-        - testbed-upgrade
-        - testbed-upgrade-stable
+        - testbed-deploy-in-a-nutshell-ubuntu-22.04
+        - testbed-deploy-in-a-nutshell-ubuntu-24.04
+        - testbed-deploy-in-a-nutshell-debian-12
+        - testbed-deploy-in-a-nutshell-centos-stream-9
     gate:
       jobs:
         - ansible-lint
         - yamllint
         - flake8
         - python-black
-        - testbed-deploy:
-            branches: main
-        - testbed-deploy-stable:
-            branches: main
-    post:
-      jobs:
-        - testbed-deploy-managerless
     periodic-daily:
       jobs:
-        - testbed-deploy-in-a-nutshell
-        - testbed-deploy-managerless
-        - testbed-deploy-stable
-        - testbed-upgrade-stable
-        # - testbed-deploy-pco
-        # - testbed-deploy-wavestack
-        # - testbed-upgrade-pco
-        # - testbed-upgrade-wavestack
+        - testbed-deploy-stable-ubuntu-22.04
         - ansible-lint
         - flake8
         - python-black

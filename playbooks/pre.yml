@@ -3,33 +3,33 @@
   hosts: all
 
   vars_files:
-    - vars/cloud_envs.yml
+    - vars/mappings.yml
     - vars/repositories.yml
 
   vars:
     basepath: "{{ ansible_user_dir }}/src/{{ repositories['testbed']['path'] }}"
     terraformbase_path: "{{ ansible_user_dir }}/src/{{ repositories['terraform-base']['path'] }}"
     terraform_path: "{{ basepath }}/terraform"
-    terragrunt_version: v0.66.8 # renovate: datasource=github-releases depName=gruntwork-io/terragrunt
+    terragrunt_version: v0.66.8  # renovate: datasource=github-releases depName=gruntwork-io/terragrunt
     terragrunt_download_url: "https://github.com/gruntwork-io/terragrunt/releases/download/{{ terragrunt_version }}/terragrunt_linux_amd64"
-    opentofu_version: v1.8.1 # renovate: datasource=github-releases depName=opentofu/opentofu
+    opentofu_version: v1.8.1  # renovate: datasource=github-releases depName=opentofu/opentofu
     opentofu_download_url: "https://github.com/opentofu/opentofu/releases/download/{{ opentofu_version }}/tofu_{{ opentofu_version[1:] }}_linux_amd64.zip"
 
   tasks:
-    - name: Set cloud_env fact (Zuul deployment)
+    - name: Set cloud fact (Zuul deployment)
       ansible.builtin.set_fact:
-        cloud_env: "{{ cloud_envs[hostvars[groups['all'][0]]['nodepool']['label']] }}"
+        cloud: "{{ cloud_envs[hostvars[groups['all'][0]]['nodepool']['label']] }}"
       when: "'nodepool' in hostvars[groups['all'][0]]"
 
-    - name: Set cloud_env fact (local deployment)
+    - name: Set cloud fact (local deployment)
       ansible.builtin.set_fact:
-        cloud_env: "{{ testbed_environment | default('ci') }}"
+        cloud: "{{ testbed_cloud | default('ci') }}"
       when: "'nodepool' not in hostvars[groups['all'][0]]"
 
     - name: Clean the cloud environment
       ansible.builtin.shell:
         cmd: |
-          OS_CLOUD={{ cloud_env }} ~/venv/bin/python3 cleanup.py
+          OS_CLOUD={{ cloud }} ~/venv/bin/python3 cleanup.py
         chdir: "{{ basepath }}/terraform/scripts"
       failed_when: false
       changed_when: true

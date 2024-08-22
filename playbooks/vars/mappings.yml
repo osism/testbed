@@ -1,0 +1,13 @@
+---
+# Mapping of the labels of the used nodes to the cloud
+# environment to be used.
+cloud_envs:
+  testbed-orchestrator: ci
+
+# Mapping of the terraform environments to the image
+# username to be used.
+image_usernames:
+  ubuntu-22.04: ubuntu
+  ubuntu-24.04: ubuntu
+  debian-12: debian
+  centos-stream-9: cloud-user

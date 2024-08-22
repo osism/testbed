@@ -6,13 +6,13 @@
 
   vars:
     create_infrastructure: true
-    cloud_env: default
+    cloud: default
 
     terraform_path: /opt/configuration/terraform
 
-    node_0_address_file: "{{ terraform_path }}/.NODE_0_ADDRESS.{{ cloud_env }}"
-    node_1_address_file: "{{ terraform_path }}/.NODE_1_ADDRESS.{{ cloud_env }}"
-    node_2_address_file: "{{ terraform_path }}/.NODE_2_ADDRESS.{{ cloud_env }}"
+    node_0_address_file: "{{ terraform_path }}/.NODE_0_ADDRESS.{{ cloud }}"
+    node_1_address_file: "{{ terraform_path }}/.NODE_1_ADDRESS.{{ cloud }}"
+    node_2_address_file: "{{ terraform_path }}/.NODE_2_ADDRESS.{{ cloud }}"
 
   tasks:
     - name: Remove testbed-manager from the inventory

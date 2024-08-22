@@ -44,14 +44,14 @@
 
     - name: Copy SSH public key
       ansible.builtin.copy:
-        content: "{{ lookup('file', '.id_rsa.' + cloud_env + '.pub') }}\n"
+        content: "{{ lookup('file', '.id_rsa.' + cloud + '.pub') }}\n"
         dest: .ssh/id_rsa.pub
         mode: '0644'
         owner: "{{ operator_user }}"
 
     - name: Copy SSH private key
       ansible.builtin.copy:
-        content: "{{ lookup('file', '.id_rsa.' + cloud_env) }}\n"
+        content: "{{ lookup('file', '.id_rsa.' + cloud) }}\n"
         dest: .ssh/id_rsa
         mode: '0600'
         owner: "{{ operator_user }}"

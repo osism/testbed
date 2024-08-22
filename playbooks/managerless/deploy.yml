@@ -6,7 +6,7 @@
     operator_user: dragon
 
     terraform_path: /opt/configuration/terraform
-    node_0_address_file: "{{ terraform_path }}/.NODE_0_ADDRESS.{{ cloud_env }}"
+    node_0_address_file: "{{ terraform_path }}/.NODE_0_ADDRESS.{{ cloud }}"
 
   tasks:
     - name: Run managerless part 2
