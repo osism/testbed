@@ -90,6 +90,9 @@ sudo ln -sf /opt/configuration/scripts/bootstrap/300-openstack-services.sh /usr/
 sudo ln -sf /opt/configuration/scripts/bootstrap/301-openstack-octavia-amhpora-image.sh /usr/local/bin/bootstrap-octavia
 sudo ln -sf /opt/configuration/scripts/bootstrap/302-openstack-k8s-clusterapi-images.sh /usr/local/bin/bootstrap-clusterapi
 
+# create symlinks for other scripts
+sudo ln -sf /opt/configuration/scripts/pull-images.sh /usr/local/bin/pull-images
+
 if [[ "$EXTERNAL_API" == "true" ]]; then
     sh -c '/opt/configuration/scripts/customisations/external-api.sh'
 fi
