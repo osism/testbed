@@ -125,23 +125,33 @@
         - version_manager == "latest"
       changed_when: true
 
-    - name: Copy testbed crt
+    - name: Copy testbed custom CA certificate on Debian/Ubuntu
       become: true
       ansible.builtin.copy:
         src: ../environments/kolla/certificates/ca/testbed.crt
         dest: /usr/local/share/ca-certificates/
         mode: '0644'
         owner: root
+      when: ansible_os_family == "Debian"
 
-    - name: Run update-ca-certificates
+    - name: Copy testbed custom CA certificate on CentOS
+      become: true
+      ansible.builtin.copy:
+        src: ../environments/kolla/certificates/ca/testbed.crt
+        dest: /etc/pki/ca-trust/source/anchors/
+        mode: '0644'
+        owner: root
+      when: ansible_os_family == "RedHat"
+
+    - name: Run update-ca-certificates on Debian/Ubuntu
       become: true
       ansible.builtin.command: update-ca-certificates
       changed_when: true
       when: ansible_os_family == "Debian"
 
-    - name: Run update-ca-trust
+    - name: Run update-ca-trust on RedHat
       become: true
-      ansible.builtin.command: update-ca-trust
+      ansible.builtin.command: update-ca-trust extract
       changed_when: true
       when: ansible_os_family == "RedHat"
 
