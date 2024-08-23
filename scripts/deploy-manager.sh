@@ -38,7 +38,7 @@ osism apply network
 osism apply wireguard
 
 # prepare wireguard configuration
-sh -c '/opt/configuration/script/prepare-wireguard-configuration.sh'
+sh -c '/opt/configuration/scripts/prepare-wireguard-configuration.sh'
 
 # apply workarounds
 osism apply --environment custom workarounds
