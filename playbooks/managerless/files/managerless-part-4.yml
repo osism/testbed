@@ -13,7 +13,7 @@
   gather_facts: true
 
   vars:
-    cloud_env: default
+    cloud: default
     create_infrastructure: true
 
   tasks:
@@ -24,7 +24,7 @@
 
     - name: Copy id_rsa key
       ansible.builtin.copy:
-        src: "/opt/configuration/terraform/.id_rsa.{{ cloud_env }}"
+        src: "/opt/configuration/terraform/.id_rsa.{{ cloud }}"
         dest: "{{ item }}"
         mode: 0600
         remote_src: true
@@ -36,7 +36,7 @@
 
     - name: Copy id_rsa.pub key
       ansible.builtin.copy:
-        src: "/opt/configuration/terraform/.id_rsa.{{ cloud_env }}.pub"
+        src: "/opt/configuration/terraform/.id_rsa.{{ cloud }}.pub"
         dest: "{{ item }}"
         mode: 0644
         remote_src: true
@@ -66,14 +66,14 @@
   gather_facts: true
 
   vars:
-    cloud_env: default
+    cloud: default
     create_infrastructure: true
 
     terraform_path: /opt/configuration/terraform
 
-    node_0_address_file: "{{ terraform_path }}/.NODE_0_ADDRESS.{{ cloud_env }}"
-    node_1_address_file: "{{ terraform_path }}/.NODE_1_ADDRESS.{{ cloud_env }}"
-    node_2_address_file: "{{ terraform_path }}/.NODE_2_ADDRESS.{{ cloud_env }}"
+    node_0_address_file: "{{ terraform_path }}/.NODE_0_ADDRESS.{{ cloud }}"
+    node_1_address_file: "{{ terraform_path }}/.NODE_1_ADDRESS.{{ cloud }}"
+    node_2_address_file: "{{ terraform_path }}/.NODE_2_ADDRESS.{{ cloud }}"
 
   tasks:
     - name: Run operator
