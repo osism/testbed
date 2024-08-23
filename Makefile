@@ -95,7 +95,7 @@ bootstrap: setup create ## Bootstrap everything.
 	  -e ansible_galaxy=ansible-galaxy \
 	  -e ansible_playbook=ansible-playbook \
 	  -e basepath="$(PWD)" \
-	  -e cloud_env=$(CLOUD) \
+	  -e testbed_cloud=$(CLOUD) \
 	  -e repo_path="$(PWD)/.src/$(shell contrib/setup-testbed.py --query "repository_server")" \
 	  -e manual_create=true \
 	  -e manual_deploy=true \
