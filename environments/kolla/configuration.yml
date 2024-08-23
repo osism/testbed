@@ -47,10 +47,6 @@ opensearch_hard_retention_period_days: 1
 enable_keystone_federation: "no"
 keystone_enable_federation_openid: "no"
 
-# libvirt
-# NOTE: Doesn't work yet with our setup
-libvirt_enable_sasl: "no"
-
 # neutron
 neutron_plugin_agent: ovn
 neutron_ovn_availability_zones:
