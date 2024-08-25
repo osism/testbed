@@ -4,9 +4,6 @@ set -e
 
 source /opt/manager-vars.sh
 
-# pull images
-sh -c '/opt/configuration/scripts/pull-images.sh'
-
 # upgrade kubernetes
 sh -c '/opt/configuration/scripts/upgrade/005-kubernetes.sh'
 

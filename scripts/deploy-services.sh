@@ -9,9 +9,6 @@ echo
 source /opt/configuration/scripts/include.sh
 source /opt/manager-vars.sh
 
-# pull images
-sh -c '/opt/configuration/scripts/pull-images.sh'
-
 # deploy helper services
 sh -c '/opt/configuration/scripts/deploy/001-helper-services.sh'
 

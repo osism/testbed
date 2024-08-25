@@ -3,9 +3,6 @@ set -e
 
 source /opt/configuration/scripts/include.sh
 
-# pull images
-sh -c '/opt/configuration/scripts/pull-images.sh'
-
 # prepare the ceph deployment
 sh -c '/opt/configuration/scripts/prepare-ceph-configuration.sh'
 
