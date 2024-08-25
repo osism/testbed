@@ -47,4 +47,5 @@ network_dispatcher_scripts:
 # kolla
 
 network_interface: "{{ ansible_local.testbed_network_devices.management }}"
-flannel_iface: vxlan1
+k3s_interface: vxlan1
+flannel_iface: "{{ k3s_interface }}"
