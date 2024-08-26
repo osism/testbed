@@ -42,9 +42,6 @@
         group: root
         mode: 0755
 
-    - name: Gathers facts about remote hosts
-      ansible.builtin.setup:
-
 - name: Copy custom ceph devices facts
   hosts: ceph-resource
   gather_facts: false
@@ -102,5 +99,14 @@
         - testbed_ceph_osd_devices
         - testbed_ceph_osd_devices_all
 
-    - name: Gathers facts about remote hosts
+- name: Gather facts for all hosts
+  ignore_unreachable: true
+  hosts: "{{ hosts_gather_facts|default(hosts_default_group|default('generic')) }}"
+  gather_facts: false
+  strategy: "{{ osism_strategy | default('linear') }}"
+
+  tasks:
+    - name: Gathers facts about hosts
       ansible.builtin.setup:
+        filter: "{{ osism_setup_filter | default('') }}"
+        gather_subset: "{{ osism_setup_gather_subset | default('all') }}"
