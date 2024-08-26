@@ -77,6 +77,11 @@
             msg: "Ubuntu version is {{ ansible_distribution_version }}, see https://osism.tech/docs/advanced-guides/testbed#software for required version."
           when: ansible_distribution == "Ubuntu" and ansible_distribution_version < "22.04"
 
+        - name: Fail if Debian version is lower than 12
+          ansible.builtin.fail:
+            msg: "Debian version is {{ ansible_distribution_version }}, see https://osism.tech/docs/advanced-guides/testbed#software for required version."
+          when: ansible_distribution == "Debian" and ansible_distribution_version < "12"
+
         - name: Set APT options on manager
           become: true
           ansible.builtin.shell: |
