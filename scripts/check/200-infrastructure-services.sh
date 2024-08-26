@@ -4,9 +4,22 @@ set -e
 
 source /opt/manager-vars.sh
 
-packages='libmonitoring-plugin-perl libwww-perl libjson-perl monitoring-plugins-basic mysql-client'
-if ! dpkg -s $packages >/dev/null 2>&1; then
-  sudo apt-get install -y $packages >/dev/null 2>&1
+# CentOS
+if [[ -e /etc/redhat-release ]]; then
+    exit 0
+else
+    # Ubuntu
+    source /etc/os-release
+    if [[ "$ID" == "ubuntu" ]]; then
+      packages='libmonitoring-plugin-perl libwww-perl libjson-perl monitoring-plugins-basic mysql-client'
+    # Debian
+    elif [[ "$ID" == "debian" ]]; then
+      packages='libmonitoring-plugin-perl libwww-perl libjson-perl monitoring-plugins-basic mariadb-client'
+    fi
+
+    if ! dpkg -s $packages >/dev/null 2>&1; then
+      sudo apt-get install -y $packages >/dev/null 2>&1
+    fi
 fi
 
 pushd /opt/configuration/contrib > /dev/null
