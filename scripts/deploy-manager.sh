@@ -67,6 +67,9 @@ fi
 wait_for_container_healthy 60 kolla-ansible
 wait_for_container_healthy 60 osism-ansible
 
+# gather facts
+osism apply gather-facts
+
 # create symlinks for deploy scripts
 sudo ln -sf /opt/configuration/scripts/deploy/001-helper-services.sh /usr/local/bin/deploy-helper
 sudo ln -sf /opt/configuration/scripts/deploy/005-kubernetes.sh /usr/local/bin/deploy-kubernetes
