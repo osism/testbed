@@ -189,10 +189,8 @@ def cleanup_floating_ips(conn, prefix):
 
 def main():
     PREFIX = os.environ.get("PREFIX", "testbed")
-    OSENV = os.environ.get["OS_CLOUD"]
+    OSENV = os.environ.get("OS_CLOUD") or os.environ.get("ENVIRONMENT")
     if not OSENV:
-        OSENV = os.environ.get["ENVIRONMENT"]
-        if not OSENV:
             logging.error("Need to have OS_CLOUD or ENVIRONMENT set!")
             raise KeyError("Lacking both OS_CLOUD and ENVIRONMENT")
     PORTFILTER = os.environ.get("IPADDR").split(",")
