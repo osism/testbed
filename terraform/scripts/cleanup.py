@@ -86,7 +86,7 @@ def port_filter(port, prefix, ipfilter):
         ip_addr = fixed_addr["ip_address"]
         for ipmatch in ipfilter:
             if ip_addr.startswith(ipmatch):
-                logger.debug(f"{ip_addr} matches {ipmatch}")
+                logging.debug(f"{ip_addr} matches {ipmatch}")
                 return True
     return False
 
