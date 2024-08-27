@@ -42,13 +42,17 @@ echo
 
 ceph df
 
-# osism validate is only available since 5.0.0. To enable the
-# testbed to be used with < 5.0.0, here is this check.
+# The 'osism validate' command is only available since 5.0.0.
 if [[ $MANAGER_VERSION =~ ^4\.[0-9]\.[0-9]$ ]]; then
     echo "ceph validate not possible with OSISM 4"
 else
-    osism apply facts
-    osism validate ceph-mons
-    osism validate ceph-mgrs
-    osism validate ceph-osds
+    # The Ceph validate plays are only usable with Docker at the moment.
+    # On CentOS we use Podman for the Ceph deployment and cannot use the
+    # Ceph validate plays at the moment.
+    if [[ ! -e /etc/redhat-release ]]; then
+        osism apply facts
+        osism validate ceph-mons
+        osism validate ceph-mgrs
+        osism validate ceph-osds
+    fi
 fi
