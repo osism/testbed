@@ -191,8 +191,10 @@ def main():
     PREFIX = os.environ.get("PREFIX", "testbed")
     OSENV = os.environ.get("OS_CLOUD") or os.environ.get("ENVIRONMENT")
     if not OSENV:
-            logging.error("Need to have OS_CLOUD or ENVIRONMENT set!")
-            raise KeyError("Lacking both OS_CLOUD and ENVIRONMENT")
+        logging.error("Need to have OS_CLOUD or ENVIRONMENT set!")
+        raise KeyError("Lacking both OS_CLOUD and ENVIRONMENT")
+    # You can pass a comma-separated list of strings to filter IP addrs
+    # for ports to be deleted
     portfilter_str = os.environ.get("IPADDR")
     PORTFILTER = portfilter_str.split(",") if portfilter_str else None
     conn = openstack.connect(cloud=OSENV)
