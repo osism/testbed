@@ -31,7 +31,7 @@ if [[ $CEPH_STACK == "rook" ]]; then
 fi
 
 # enable new kubernetes service
-if [[ $MANAGER_VERSION =~ ^7\.[0-9]\.[0-9]?$ || $MANAGER_VERSION == "latest" ]]; then
+if [[ $(semver $MANAGER_VERSION 7.0.0) -ge 0 || $MANAGER_VERSION == "latest" ]]; then
     echo "enable_osism_kubernetes: true" >> /opt/configuration/environments/manager/configuration.yml
 fi
 
@@ -66,7 +66,7 @@ docker compose --project-directory /opt/manager ps
 docker compose --project-directory /opt/netbox ps
 
 # use osism.commons.still_alive stdout callback
-if [[ $MANAGER_VERSION =~ ^7\.[0-9]\.[0-9]?$ || $MANAGER_VERSION == "latest" ]]; then
+if [[ $(semver $MANAGER_VERSION 7.0.0) -ge 0 || $MANAGER_VERSION == "latest" ]]; then
     # The plugin is available in OSISM >= 7.0.0 and higher. In future, the callback
     # plugin will be used by default.
     sed -i "s/community.general.yaml/osism.commons.still_alive/" /opt/configuration/environments/ansible.cfg
@@ -75,8 +75,7 @@ fi
 osism apply sshconfig
 osism apply known-hosts
 
-if [[ $MANAGER_VERSION =~ ^7\.[0-9]\.[0-9]?$ || $MANAGER_VERSION == "latest" ]]; then
-    # The Nexus service is only really operational again from OSISM 6.1.0.
+if [[ $(semver $MANAGER_VERSION 7.0.0) -ge 0 || $MANAGER_VERSION == "latest" ]]; then
     osism apply nexus
 
     if [[ -e /etc/osism-ci-image ]]; then

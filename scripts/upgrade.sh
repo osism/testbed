@@ -32,7 +32,7 @@ fi
 sh -c '/opt/configuration/scripts/sync-configuration-repository.sh'
 
 # enable new kubernetes service
-if [[ $OLD_MANAGER_VERSION =~ ^6\.[0-9]\.[0-9]?$ ]]; then
+if [[ $(semver $OLD_MANAGER_VERSION 6.0.0) -ge 0 ]]; then
     echo "enable_osism_kubernetes: true" >> /opt/configuration/environments/manager/configuration.yml
 fi
 

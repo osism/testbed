@@ -29,13 +29,13 @@ osism apply -a upgrade aodh
 # In OSISM >= 7.0.0 the persistence feature in Octavia was enabled by default.
 # This requires an additional database, which is only created when Octavia play
 # is run in bootstrap mode first.
-if [[ $MANAGER_VERSION =~ ^7\.[0-9]\.[0-9]?$ || $MANAGER_VERSION == "latest" ]]; then
+if [[ $(semver $MANAGER_VERSION 7.0.0) -ge 0 || $MANAGER_VERSION == "latest" ]]; then
     osism apply -a bootstrap octavia
 fi
 
 osism apply -a upgrade octavia
 
-if [[ $MANAGER_VERSION =~ ^7\.[0-9]\.[0-9]?$ || $MANAGER_VERSION == "latest" ]]; then
+if [[ $(semver $MANAGER_VERSION 7.0.0) -ge 0 || $MANAGER_VERSION == "latest" ]]; then
     osism apply clusterapi
 
     # In the testbed, the service was only added with OSISM 7.0.0. It is therefore necessary

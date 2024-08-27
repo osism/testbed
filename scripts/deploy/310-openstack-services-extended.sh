@@ -8,10 +8,4 @@ OPENSTACK_VERSION=$(docker inspect --format '{{ index .Config.Labels "de.osism.r
 
 osism apply gnocchi
 osism apply heat
-
-# NOTE: disabled because we have not yet deployed Senlin in the previous version of OSISM
-# if [[ $MANAGER_VERSION =~ ^7\.[0-9]\.[0-9]?$ || $MANAGER_VERSION == "latest" ]]; then
-#     osism apply senlin
-# fi
-
 osism apply manila

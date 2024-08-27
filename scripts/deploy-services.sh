@@ -16,7 +16,7 @@ sh -c '/opt/configuration/scripts/pull-images.sh'
 sh -c '/opt/configuration/scripts/deploy/001-helper-services.sh'
 
 # deploy kubernetes
-if [[ $MANAGER_VERSION =~ ^7\.[0-9]\.[0-9]?$ || $MANAGER_VERSION == "latest" ]]; then
+if [[ $(semver $MANAGER_VERSION 7.0.0) -ge 0 || $MANAGER_VERSION == "latest" ]]; then
   sh -c '/opt/configuration/scripts/deploy/005-kubernetes.sh'
 fi
 
