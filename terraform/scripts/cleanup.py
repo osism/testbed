@@ -165,14 +165,12 @@ def cleanup_floating_ips(conn, prefix):
 
 def main():
     PREFIX = os.environ.get("PREFIX", "testbed")
-    try:
-        OSENV = os.environ["OS_CLOUD"]
-    except KeyError:
-        try:
-            OSENV = os.environ["ENVIRONMENT"]
-        except KeyError as e:
+    OSENV = os.environ.get["OS_CLOUD"]
+    if not OSENV:
+        OSENV = os.environ.get["ENVIRONMENT"]
+        if not OSENV:
             logging.error("Need to have OS_CLOUD or ENVIRONMENT set!")
-            raise e
+            raise KeyError("Lacking both OS_CLOUD and ENVIRONMENT")
     conn = openstack.connect(cloud=OSENV)
     cleanup_servers(conn, PREFIX)
     cleanup_keypairs(conn, PREFIX)
