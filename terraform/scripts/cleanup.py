@@ -193,7 +193,8 @@ def main():
     if not OSENV:
             logging.error("Need to have OS_CLOUD or ENVIRONMENT set!")
             raise KeyError("Lacking both OS_CLOUD and ENVIRONMENT")
-    PORTFILTER = os.environ.get("IPADDR").split(",")
+    portfilter_str = os.environ.get("IPADDR")
+    PORTFILTER = portfilter_str.split(",") if portfilter_str else None
     conn = openstack.connect(cloud=OSENV)
     cleanup_servers(conn, PREFIX)
     cleanup_keypairs(conn, PREFIX)
