@@ -66,16 +66,39 @@ def cleanup_subnets(conn, prefix):
         conn.network.delete_subnet(subnet)
 
 
-def cleanup_ports(conn, prefix):
+def port_filter(port, prefix, ipfilter):
+    """Determine whether port is to be cleaned up:
+    - If it is connected to a VM/LB/...: False
+    - It it has a name that starts with the prefix: True
+    - If it has a name not matching the prefix filter: False
+    - If it has no name and we do not have IP range filters: True
+    - Otherwise see if one of the specified IP ranges matches
+    """
+    if port.device_owner:
+        return False
+    if port.name.startswith(prefix):
+        return True
+    if port.name:
+        return False
+    if not ipfilter:
+        return True
+    for fixed_addr in port.fixed_ips:
+        ip_addr = fixed_addr["ip_address"]
+        for ipmatch in ipfilter:
+            if ip_addr.startswith(ipmatch):
+                logging.debug(f"{ip_addr} matches {ipmatch}")
+                return True
+    return False
+
+
+def cleanup_ports(conn, prefix, ipfilter):
     logging.info("clean up ports")
     # FIXME: We can't filter for device_owner = '' unfortunately
     ports = list(conn.network.ports(status="DOWN"))
     for port in ports:
-        port_dict = port.to_dict()
-        if port_dict["device_owner"] != "":
+        if not port_filter(port, prefix, ipfilter):
             continue
-
-        logging.info(port_dict["id"])
+        logging.info(port.id)
         conn.network.delete_port(port)
 
 
@@ -157,27 +180,28 @@ def cleanup_floating_ips(conn, prefix):
     logging.info("clean up floating ips")
     floating_ips = list(conn.search_floating_ips(filters={"attached": False}))
     for floating_ip in floating_ips:
-        floating_ip_dict = dict(floating_ip)
-        floating_ip_name = floating_ip["floating_ip_address"]
-        logging.info(floating_ip_name)
-        conn.delete_floating_ip(floating_ip_dict["id"])
+        # Do not delete if it's attached (above filter does not work)
+        if floating_ip.fixed_ip_address:
+            continue
+        logging.info(floating_ip.name)
+        conn.delete_floating_ip(floating_ip.id)
 
 
 def main():
     PREFIX = os.environ.get("PREFIX", "testbed")
-    try:
-        OSENV = os.environ["OS_CLOUD"]
-    except KeyError:
-        try:
-            OSENV = os.environ["ENVIRONMENT"]
-        except KeyError as e:
-            logging.error("Need to have OS_CLOUD or ENVIRONMENT set!")
-            raise e
+    OSENV = os.environ.get("OS_CLOUD") or os.environ.get("ENVIRONMENT")
+    if not OSENV:
+        logging.error("Need to have OS_CLOUD or ENVIRONMENT set!")
+        raise KeyError("Lacking both OS_CLOUD and ENVIRONMENT")
+    # You can pass a comma-separated list of strings to filter IP addrs
+    # for ports to be deleted
+    portfilter_str = os.environ.get("IPADDR")
+    PORTFILTER = portfilter_str.split(",") if portfilter_str else None
     conn = openstack.connect(cloud=OSENV)
     cleanup_servers(conn, PREFIX)
     cleanup_keypairs(conn, PREFIX)
     wait_servers_gone(conn, PREFIX)
-    cleanup_ports(conn, PREFIX)
+    cleanup_ports(conn, PREFIX, PORTFILTER)
     cleanup_volumes(conn, PREFIX)
     disconnect_routers(conn, PREFIX)
     cleanup_subnets(conn, PREFIX)
