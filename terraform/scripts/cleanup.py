@@ -68,11 +68,11 @@ def cleanup_subnets(conn, prefix):
 
 def port_filter(port, prefix, ipfilter):
     """Determine whether port is to be cleaned up:
-       - If it is connected to a VM/LB/...: False
-       - It it has a name that starts with the prefix: True
-       - If it has a name not matching the prefix filter: False
-       - If it has no name and we do not have IP range filters: True
-       - Otherwise see if one of the specified IP ranges matches
+    - If it is connected to a VM/LB/...: False
+    - It it has a name that starts with the prefix: True
+    - If it has a name not matching the prefix filter: False
+    - If it has no name and we do not have IP range filters: True
+    - Otherwise see if one of the specified IP ranges matches
     """
     if port.device_owner:
         return False
