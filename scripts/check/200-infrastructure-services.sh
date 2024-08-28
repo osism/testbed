@@ -61,4 +61,5 @@ echo
 echo "# Create backup of MariaDB database"
 echo
 
-osism apply mariadb_backup
+osism apply mariadb_backup -e mariadb_backup_type=full
+osism apply mariadb_backup -e mariadb_backup_type=incremental
