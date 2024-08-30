@@ -32,7 +32,7 @@
 
     _ceph_stack: "{{ ceph_stack | default('ceph-ansible') }}"
 
-    _terraform_environment: "{{ terraform_environment | default('ubuntu-22.04') }}"
+    _terraform_environment: "{{ terraform_environment | default('ci-ubuntu-22.04') }}"
 
   tasks:
     - name: Set facts (Zuul deployment)
@@ -56,7 +56,7 @@
         chdir: "{{ terraform_path }}"
         cmd: |
           make
-            ENVIRONMENT=ci-{{ _terraform_environment }}
+            ENVIRONMENT={{ _terraform_environment }}
             CLOUD={{ cloud }}
             IMAGE_USERNAME={{ image_username }}
             TERRAFORM={{ terraform_binary }}
@@ -79,7 +79,7 @@
         chdir: "{{ terraform_path }}"
         cmd: |
           make \
-            ENVIRONMENT=ci-{{ _terraform_environment }}
+            ENVIRONMENT={{ _terraform_environment }}
             CLOUD={{ cloud }}
             IMAGE_USERNAME={{ image_username }}
             TERRAFORM={{ terraform_binary }}
