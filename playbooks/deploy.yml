@@ -39,7 +39,7 @@
       ansible.builtin.set_fact:
         _is_zuul: true
         cloud: "{{ cloud_envs[hostvars[groups['all'][0]]['nodepool']['label']] }}"
-        image_username: "{{ image_usernames[_terraform_environment] }}"
+        image_username: "{{ image_usernames[_terraform_environment] | default('ubuntu') }}"
         terragrunt_tfpath: "{{ ansible_user_dir }}/terraform"
       when: "'nodepool' in hostvars[groups['all'][0]]"
 
@@ -47,7 +47,7 @@
       ansible.builtin.set_fact:
         _is_zuul: false
         cloud: "{{ testbed_cloud | default('ci') }}"
-        image_username: "{{ image_usernames[_terraform_environment] }}"
+        image_username: "{{ image_usernames[_terraform_environment] | default('ubuntu') }}"
         terragrunt_tfpath: terraform
       when: "'nodepool' not in hostvars[groups['all'][0]]"
 
