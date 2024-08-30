@@ -86,25 +86,25 @@
     name: testbed-deploy-in-a-nutshell-ubuntu-22.04
     parent: abstract-testbed-deploy-in-a-nutshell
     vars:
-      terraform_environment: ubuntu-22.04
+      terraform_environment: ci-ubuntu-22.04
 
 - job:
     name: testbed-deploy-in-a-nutshell-ubuntu-24.04
     parent: abstract-testbed-deploy-in-a-nutshell
     vars:
-      terraform_environment: ubuntu-24.04
+      terraform_environment: ci-ubuntu-24.04
 
 - job:
     name: testbed-deploy-in-a-nutshell-debian-12
     parent: abstract-testbed-deploy-in-a-nutshell
     vars:
-      terraform_environment: debian-12
+      terraform_environment: ci-debian-12
 
 - job:
     name: testbed-deploy-in-a-nutshell-centos-stream-9
     parent: abstract-testbed-deploy-in-a-nutshell
     vars:
-      terraform_environment: centos-stream-9
+      terraform_environment: ci-centos-stream-9
 
 - job:
     name: testbed-upgrade
@@ -123,25 +123,25 @@
     name: testbed-deploy-stable-ubuntu-22.04
     parent: abstract-testbed-deploy-stable
     vars:
-      terraform_environment: ubuntu-22.04
+      terraform_environment: ci-ubuntu-22.04
 
 - job:
     name: testbed-deploy-stable-ubuntu-24.04
     parent: abstract-testbed-deploy-stable
     vars:
-      terraform_environment: ubuntu-24.04
+      terraform_environment: ci-ubuntu-24.04
 
 - job:
     name: testbed-deploy-stable-centos-stream-9
     parent: abstract-testbed-deploy-stable
     vars:
-      terraform_environment: centos-stream-9
+      terraform_environment: ci-centos-stream-9
 
 - job:
     name: testbed-deploy-stable-debian-12
     parent: abstract-testbed-deploy-stable
     vars:
-      terraform_environment: debian-12
+      terraform_environment: ci-debian-12
 
 - job:
     name: abstract-testbed-upgrade-stable
@@ -157,7 +157,7 @@
     name: testbed-upgrade-stable-ubuntu-22.04
     parent: abstract-testbed-upgrade-stable
     vars:
-      terraform_environment: ubuntu-22.04
+      terraform_environment: ci-ubuntu-22.04
 
 - project:
     merge-mode: squash-merge
