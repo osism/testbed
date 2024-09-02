@@ -19,7 +19,7 @@ fi
 osism apply --environment custom wipe-partitions
 osism apply facts
 
-if [[ $MANAGER_VERSION =~ ^7\.[0-9]\.[0-9]$ || $MANAGER_VERSION == "latest" ]]; then
+if [[ $(semver $MANAGER_VERSION 7.0.0) -ge 0 || $MANAGER_VERSION == "latest" ]]; then
     # In preparation for deployment with Rook, the pre-built LVM2 volumes are always used
     # from OSISM 7 onwards.
     sed -i "/^devices:/d" /opt/configuration/inventory/group_vars/testbed-nodes.yml

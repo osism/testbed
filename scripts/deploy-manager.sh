@@ -94,8 +94,9 @@ sudo ln -sf /opt/configuration/scripts/bootstrap/301-openstack-octavia-amhpora-i
 sudo ln -sf /opt/configuration/scripts/bootstrap/302-openstack-k8s-clusterapi-images.sh /usr/local/bin/bootstrap-clusterapi
 
 # create symlinks for other scripts
-sudo ln -sf /opt/configuration/scripts/pull-images.sh /usr/local/bin/pull-images
+sudo ln -sf /opt/configuration/contrim/semver2.sh /usr/local/bin/semver
 sudo ln -sf /opt/configuration/scripts/disable-local-registry.sh /usr/local/bin/disable-local-registry
+sudo ln -sf /opt/configuration/scripts/pull-images.sh /usr/local/bin/pull-images
 
 if [[ "$EXTERNAL_API" == "true" ]]; then
     sh -c '/opt/configuration/scripts/customisations/external-api.sh'

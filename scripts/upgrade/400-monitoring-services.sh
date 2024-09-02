@@ -8,6 +8,6 @@ MANAGER_VERSION=$(docker inspect --format '{{ index .Config.Labels "org.opencont
 osism apply -a upgrade prometheus
 osism apply -a upgrade grafana
 
-if [[ $MANAGER_VERSION =~ ^7\.[0-9]\.[0-9]?$ || $MANAGER_VERSION == "latest" ]]; then
+if [[ $(semver $MANAGER_VERSION 7.0.0) -ge 0 || $MANAGER_VERSION == "latest" ]]; then
     osism apply thanos_sidecar
 fi
