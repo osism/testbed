@@ -2,8 +2,7 @@
 set -e
 
 source /opt/configuration/scripts/include.sh
-
-MANAGER_VERSION=$(docker inspect --format '{{ index .Config.Labels "org.opencontainers.image.version"}}' osism-ansible)
+source /opt/configuration/scripts/manager-version.sh
 
 # osism manage flavors --recommended is only available since 7.0.2.
 if [[ $(semver $MANAGER_VERSION 7.0.2) -ge 0 || $MANAGER_VERSION == "latest" ]]; then

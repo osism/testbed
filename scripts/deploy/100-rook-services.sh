@@ -2,10 +2,7 @@
 set -e
 
 source /opt/configuration/scripts/include.sh
-
-MANAGER_VERSION=$(docker inspect --format '{{ index .Config.Labels "org.opencontainers.image.version"}}' osism-ansible)
-## currently not implemented
-# CEPH_VERSION=$(docker inspect --format '{{ index .Config.Labels "de.osism.release.ceph" }}' osism-ansible)
+source /opt/configuration/scripts/manager-version.sh
 
 # check/deploy kubernetes
 if command -v kubectl &> /dev/null; then

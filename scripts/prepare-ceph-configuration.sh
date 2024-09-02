@@ -2,8 +2,7 @@
 set -e
 
 source /opt/configuration/scripts/include.sh
-
-MANAGER_VERSION=$(docker inspect --format '{{ index .Config.Labels "org.opencontainers.image.version"}}' osism-ansible)
+source /opt/configuration/scripts/manager-version.sh
 
 if [[ $(docker exec ceph-ansible sh -c "test -f /ansible/ceph-configure-lvm-volumes.yml && echo OK") != "OK" ]]; then
     mkdir -p /opt/configuration/environments/custom/tasks /opt/configuration/environments/custom/templates
