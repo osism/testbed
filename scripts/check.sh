@@ -14,7 +14,7 @@ echo
 for node in testbed-manager testbed-node-0 testbed-node-1 testbed-node-2; do
     # osism container is only available since 5.0.0. To enable the
     # testbed to be used with < 5.0.0, here is this check.
-    if [[ $(semver $MANAGER_VERSION 5.0.0) -eq -1 ]]; then
+    if [[ $(semver $MANAGER_VERSION 5.0.0) -eq -1 && $MANAGER_VERSION != "latest" ]]; then
         echo
         echo "## Containers @ $node"
         echo

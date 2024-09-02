@@ -15,7 +15,7 @@ if [[ $MANAGER_VERSION == "latest" && $CEPH_VERSION == "pacific" ]]; then
     sed -i "s/osism.commons.still_alive/community.general.yaml/" /opt/configuration/environments/ansible.cfg
 fi
 
-if [[ $(semver $MANAGER_VERSION 5.0.0) -eq -1 ]]; then
+if [[ $(semver $MANAGER_VERSION 5.0.0) -eq -1 && || $MANAGER_VERSION != "latest" ]]; then
     osism apply ceph-base
     osism apply ceph-mdss
     osism apply ceph-rgws

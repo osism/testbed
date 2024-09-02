@@ -17,7 +17,7 @@ osism apply openvswitch
 osism apply ovn
 
 # In OSISM >= 5.0.0, the switch was made from Elasticsearch / Kibana to Opensearch.
-if [[ $(semver $MANAGER_VERSION 5.0.0) -eq -1 || $OPENSTACK_VERSION == "yoga" ]]; then
+if [[ ( $(semver $MANAGER_VERSION 5.0.0) -eq -1 && $MANAGER_VERSION != "latest" ) || $OPENSTACK_VERSION == "yoga" ]]; then
     osism apply elasticsearch
     if [[ "$TEMPEST" == "false" ]]; then
         osism apply kibana
