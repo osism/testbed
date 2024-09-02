@@ -18,7 +18,7 @@ STATE = errored.tfstate
 CEPH_STACK ?= ceph-ansible
 VERSION_CEPH ?= quincy
 VERSION_MANAGER ?= latest
-VERSION_OPENSTACK ?= 2023.2
+VERSION_OPENSTACK ?= 2024.1
 
 KOLLA_NAMESPACE ?= osism
 
