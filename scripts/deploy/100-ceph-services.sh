@@ -2,11 +2,11 @@
 set -e
 
 source /opt/configuration/scripts/include.sh
+source /opt/configuration/scripts/manager-version.sh
+
+CEPH_VERSION=$(docker inspect --format '{{ index .Config.Labels "de.osism.release.ceph" }}' ceph-ansible)
 
 sh -c '/opt/configuration/scripts/prepare-ceph-configuration.sh'
-
-MANAGER_VERSION=$(docker inspect --format '{{ index .Config.Labels "org.opencontainers.image.version"}}' osism-ansible)
-CEPH_VERSION=$(docker inspect --format '{{ index .Config.Labels "de.osism.release.ceph" }}' ceph-ansible)
 
 # The callback plugin is not included in the Pacific image. The plugin is no longer
 # added there because the builds for Pacific are disabled. This callback plugin will

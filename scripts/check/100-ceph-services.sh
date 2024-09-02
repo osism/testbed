@@ -3,8 +3,7 @@ set -x
 set -e
 
 source /opt/configuration/scripts/include.sh
-
-MANAGER_VERSION=$(docker inspect --format '{{ index .Config.Labels "org.opencontainers.image.version"}}' osism-ansible)
+source /opt/configuration/scripts/manager-version.sh
 
 echo
 echo "# Ceph status"

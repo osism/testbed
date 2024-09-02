@@ -2,8 +2,8 @@
 set -e
 
 source /opt/configuration/scripts/include.sh
+source /opt/configuration/scripts/manager-version.sh
 
-MANAGER_VERSION=$(docker inspect --format '{{ index .Config.Labels "org.opencontainers.image.version"}}' osism-ansible)
 OPENSTACK_VERSION=$(docker inspect --format '{{ index .Config.Labels "de.osism.release.openstack" }}' kolla-ansible)
 
 osism apply common
