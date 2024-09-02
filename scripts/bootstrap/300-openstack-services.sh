@@ -14,7 +14,7 @@ fi
 osism apply --environment openstack bootstrap-basic
 
 # osism manage images is only available since 5.0.0.
-if [[ $(semver $MANAGER_VERSION 5.0.0) -eq -1 ]]; then
+if [[ $(semver $MANAGER_VERSION 5.0.0) -eq -1 && $MANAGER_VERSION != "latest" ]]; then
     osism apply --environment openstack bootstrap-images
 else
     osism manage images --cloud admin --filter Cirros

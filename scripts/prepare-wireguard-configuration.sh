@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -e
 
+# On OSISM < 5.0.0 this file is not yet present.
 if [[ -e /home/dragon/wg0-dragon.conf ]]; then
-    # on OSISM < 5.0.0 this file is not yet present.
     mv /home/dragon/wg0-dragon.conf /home/dragon/wireguard-client.conf
 fi
 
