@@ -81,7 +81,7 @@
         virtualenv: "{{ venv_path }}"
         virtualenv_command: "{{ venv_command }}"
       loop:
-        - Jinja
+        - Jinja2
         - PyYAML
         - netifaces
         - packaging
