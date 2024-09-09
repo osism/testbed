@@ -81,7 +81,10 @@
         virtualenv: "{{ venv_path }}"
         virtualenv_command: "{{ venv_command }}"
       loop:
+        - Jinja
+        - PyYAML
         - netifaces
+        - packaging
         - "python-gilt==1.2.3"
         - "requests>=2.32.2"
         - "docker>=7.1.0"
