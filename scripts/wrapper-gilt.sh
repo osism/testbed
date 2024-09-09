@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+set -e
+set -x
 
 if [[ -e /opt/venv/bin/activate ]]; then
     source /opt/venv/bin/activate
