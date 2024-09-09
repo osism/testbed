@@ -204,3 +204,7 @@
         - flake8
         - python-black
         - yamllint
+    post:
+      jobs:
+        - testbed-deploy-stable-ubuntu-24.04:
+            branches: main
