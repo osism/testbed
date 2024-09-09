@@ -44,8 +44,6 @@ keycloak_host: keycloak.testbed.osism.xyz
 
 netbox_traefik: true
 netbox_host: netbox.testbed.osism.xyz
-netbox_plugins_extra:
-  - netbox_bgp
 
 ##########################
 # phpmyadmin
