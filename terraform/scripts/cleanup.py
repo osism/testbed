@@ -183,7 +183,7 @@ def cleanup_floating_ips(conn, prefix):
         # Do not delete if it's attached (above filter does not work)
         if floating_ip.fixed_ip_address:
             continue
-        logging.info(floating_ip.name)
+        logging.info(floating_ip.floating_ip_address)
         conn.delete_floating_ip(floating_ip.id)
 
 
