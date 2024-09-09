@@ -78,7 +78,7 @@
       ansible.builtin.command:
         chdir: "{{ terraform_path }}"
         cmd: |
-          make \
+          make
             ENVIRONMENT={{ _terraform_environment }}
             CLOUD={{ cloud }}
             IMAGE_USERNAME={{ image_username }}
