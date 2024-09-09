@@ -65,6 +65,20 @@ if [[ -e /etc/osism-ci-image || "$ARA" == "false" ]]; then
     sh -c '/opt/configuration/scripts/disable-ara.sh'
 fi
 
+# initialize netbox
+if [[ $(semver $MANAGER_VERSION 8.0.0) -ge 0 || $MANAGER_VERSION == "latest" ]]; then
+    wait_for_container_healthy 60 netbox-netbox-1
+
+    osism netbox import
+    osism netbox init
+    osism netbox manage 1000
+    osism netbox connect 1000 --state a
+
+    osism netbox disable --no-wait testbed-switch-0
+    osism netbox disable --no-wait testbed-switch-1
+    osism netbox disable --no-wait testbed-switch-2
+fi
+
 docker compose --project-directory /opt/manager ps
 docker compose --project-directory /opt/netbox ps
 
