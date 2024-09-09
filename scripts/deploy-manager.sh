@@ -12,6 +12,9 @@ echo
 source /opt/configuration/scripts/include.sh
 source /opt/manager-vars.sh
 
+# create symlink for semver script
+sudo ln -sf /opt/configuration/contrib/semver2.sh /usr/local/bin/semver
+
 # deploy manager service
 sh -c '/opt/configuration/scripts/deploy/000-manager-service.sh'
 
@@ -94,7 +97,6 @@ sudo ln -sf /opt/configuration/scripts/bootstrap/301-openstack-octavia-amhpora-i
 sudo ln -sf /opt/configuration/scripts/bootstrap/302-openstack-k8s-clusterapi-images.sh /usr/local/bin/bootstrap-clusterapi
 
 # create symlinks for other scripts
-sudo ln -sf /opt/configuration/contrib/semver2.sh /usr/local/bin/semver
 sudo ln -sf /opt/configuration/scripts/disable-local-registry.sh /usr/local/bin/disable-local-registry
 sudo ln -sf /opt/configuration/scripts/pull-images.sh /usr/local/bin/pull-images
 
