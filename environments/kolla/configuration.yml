@@ -43,6 +43,9 @@ openstack_logging_debug: "True"
 opensearch_soft_retention_period_days: 1
 opensearch_hard_retention_period_days: 1
 
+# rabbitmq
+om_enable_rabbitmq_quorum_queues: "yes"
+
 # keystone
 enable_keystone_federation: "no"
 keystone_enable_federation_openid: "no"
