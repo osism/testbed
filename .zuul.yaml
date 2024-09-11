@@ -107,6 +107,37 @@
       terraform_environment: ci-centos-stream-9
 
 - job:
+    name: abstract-testbed-deploy-stable-in-a-nutshell
+    abstract: true
+    parent: abstract-testbed-deploy-in-a-nutshell
+    vars:
+      manager_version: 8.0.0-rc.2
+
+- job:
+    name: testbed-deploy-stable-in-a-nutshell-ubuntu-22.04
+    parent: abstract-testbed-deploy-stable-in-a-nutshell
+    vars:
+      terraform_environment: ci-ubuntu-22.04
+
+- job:
+    name: testbed-deploy-stable-in-a-nutshell-ubuntu-24.04
+    parent: abstract-testbed-deploy-stable-in-a-nutshell
+    vars:
+      terraform_environment: ci-ubuntu-24.04
+
+- job:
+    name: testbed-deploy-stable-in-a-nutshell-debian-12
+    parent: abstract-testbed-deploy-stable-in-a-nutshell
+    vars:
+      terraform_environment: ci-debian-12
+
+- job:
+    name: testbed-deploy-stable-in-a-nutshell-centos-stream-9
+    parent: abstract-testbed-deploy-stable-in-a-nutshell
+    vars:
+      terraform_environment: ci-centos-stream-9
+
+- job:
     name: testbed-upgrade
     parent: abstract-testbed-deploy
     run: playbooks/upgrade.yml
@@ -199,12 +230,12 @@
         - python-black
     periodic-daily:
       jobs:
-        - testbed-deploy-stable-ubuntu-24.04
+        - testbed-deploy-stable-in-a-nutshell-ubuntu-24.04
         - ansible-lint
         - flake8
         - python-black
         - yamllint
     post:
       jobs:
-        - testbed-deploy-stable-ubuntu-24.04:
+        - testbed-deploy-stable-in-a-nutshell-ubuntu-24.04:
             branches: main
