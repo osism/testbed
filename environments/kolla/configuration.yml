@@ -96,17 +96,6 @@ enable_ceph_rgw_keystone: true
 ceph_rgw_swift_compatibility: false
 ceph_rgw_swift_account_in_url: true
 
-ceph_rgw_hosts:
-  - host: testbed-node-0
-    ip: 192.168.16.10
-    port: 8081
-  - host: testbed-node-1
-    ip: 192.168.16.11
-    port: 8081
-  - host: testbed-node-2
-    ip: 192.168.16.12
-    port: 8081
-
 ##########################################################
 # external ceph
 
