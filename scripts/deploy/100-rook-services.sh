@@ -20,3 +20,13 @@ osism apply rook-fetch-keys
 
 echo "cephclient_install_type: rook" >> /opt/configuration/environments/infrastructure/configuration.yml
 osism apply cephclient
+
+CEPH_FSID=$(ceph fsid)
+sed -i "s#ceph_cluster_fsid: .*#ceph_cluster_fsid: ${CEPH_FSID}#g" /opt/configuration/environments/configuration.yml
+sed -i "s#fsid: .*#fsid: ${CEPH_FSID}#g" /opt/configuration/environments/ceph/configuration.yml
+
+CEPH_MONS=$(kubectl --namespace rook-ceph get configmap rook-ceph-mon-endpoints -o jsonpath='{.data.data}' | sed 's/.=//g')
+for fp in $(find /opt/configuration -name ceph.conf); do
+    sed -i "s#fsid = .*#fsid = ${CEPH_FSID}#g" $fp
+    sed -i "s#mon host = .*#mon host = ${CEPH_MONS}#g" $fp
+done
