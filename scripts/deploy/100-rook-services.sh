@@ -30,3 +30,6 @@ for fp in $(find /opt/configuration -name ceph.conf); do
     sed -i "s#fsid = .*#fsid = ${CEPH_FSID}#g" $fp
     sed -i "s#mon host = .*#mon host = ${CEPH_MONS}#g" $fp
 done
+
+CEPH_RGW_ADDRESS=$(kubectl get services -n rook-ceph rook-ceph-rgw-rgw -o jsonpath='{.spec.clusterIP}')
+echo "ceph_rgw_hosts: [{host: rook, ip: $CEPH_RGW_ADDRESS, port: 8081}]" >> /opt/configuration/environments/kolla/configuration.yml
