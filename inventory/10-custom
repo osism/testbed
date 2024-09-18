@@ -4,12 +4,12 @@
 [testbed-managers]
 testbed-manager.testbed.osism.xyz
 
-[testbed-primary-nodes]
+[testbed-control-nodes]
 testbed-node-0.testbed.osism.xyz
 testbed-node-1.testbed.osism.xyz
 testbed-node-2.testbed.osism.xyz
 
-[testbed-secondary-nodes]
+[testbed-resource-nodes]
 #testbed-node-3.testbed.osism.xyz
 #testbed-node-4.testbed.osism.xyz
 #testbed-node-5.testbed.osism.xyz
@@ -19,5 +19,5 @@ testbed-node-2.testbed.osism.xyz
 #testbed-node-9.testbed.osism.xyz
 
 [testbed-nodes:children]
-testbed-primary-nodes
-testbed-secondary-nodes
+testbed-control-nodes
+testbed-resource-nodes

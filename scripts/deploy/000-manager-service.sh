@@ -35,6 +35,9 @@ if [[ $(semver $MANAGER_VERSION 7.0.0) -ge 0 || $MANAGER_VERSION == "latest" ]];
     echo "enable_osism_kubernetes: true" >> /opt/configuration/environments/manager/configuration.yml
 fi
 
+# enable resource nodes
+/opt/configuration/scripts/enable-resource-nodes.sh
+
 if [[ -e /opt/venv/bin/activate ]]; then
     source /opt/venv/bin/activate
 fi
