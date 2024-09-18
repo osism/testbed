@@ -230,12 +230,14 @@
         - python-black
     periodic-daily:
       jobs:
-        - testbed-deploy-stable-in-a-nutshell-ubuntu-24.04
+        - testbed-deploy-in-a-nutshell-ubuntu-24.04
         - ansible-lint
         - flake8
         - python-black
         - yamllint
     post:
       jobs:
+        - testbed-deploy-in-a-nutshell-ubuntu-24.04:
+            branches: main
         - testbed-deploy-stable-in-a-nutshell-ubuntu-24.04:
             branches: main
