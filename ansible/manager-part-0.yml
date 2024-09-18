@@ -8,6 +8,13 @@
     - name: Check /var/lib/cloud/instance/boot-finished
       ansible.builtin.raw: timeout 600 /bin/bash -c 'until stat /var/lib/cloud/instance/boot-finished 2>/dev/null; do echo Wait for cloud-init to finish; sleep 1; done'
       changed_when: false
+      register: result
+      # Required to resolve "System is booting up. Unprivileged users are not
+      # permitted to log in yet. Please come back later. For technical details,
+      # see pam_nologin(8)"
+      until: result.rc == 0
+      retries: 10
+      delay: 30
 
 - name: Run manager part 0
   hosts: testbed-manager.testbed.osism.xyz
