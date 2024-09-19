@@ -15,4 +15,4 @@ availability_zone         = "chur"
 volume_availability_zone  = "chur"
 network_availability_zone = "nova"
 volume_size_storage       = 100
-number_of_nodes		        = 6
+number_of_nodes           = 6
