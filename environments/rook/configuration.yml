@@ -2,9 +2,9 @@
 rook_network_public: 192.168.128.0/20
 rook_storage_devicefilter: "^sd[b-c]"
 rook_storage_nodes:
-  - name: testbed-node-0
-  - name: testbed-node-1
-  - name: testbed-node-2
+  - name: testbed-node-3
+  - name: testbed-node-4
+  - name: testbed-node-5
 
 ## reduce resources to fit into testbed
 rook_resources_cephfilesystem:
