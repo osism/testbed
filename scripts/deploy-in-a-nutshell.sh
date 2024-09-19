@@ -1,9 +1,6 @@
 #!/usr/bin/env bash
 set -e
 
-# do not use the local registry
-sh -c '/opt/configuration/scripts/set-docker-registry.sh'
-
 # pull images
 sh -c '/opt/configuration/scripts/pull-images.sh'
 
