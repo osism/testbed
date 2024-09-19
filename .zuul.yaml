@@ -79,6 +79,7 @@
     name: abstract-testbed-deploy-in-a-nutshell
     abstract: true
     parent: abstract-testbed-deploy
+    timeout: 7200
     vars:
       nutshell: true
 
