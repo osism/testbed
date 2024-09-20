@@ -36,3 +36,7 @@ echo "ceph_rgw_hosts: [{host: rook, ip: $CEPH_RGW_ADDRESS, port: 8081}]" >> /opt
 
 CEPH_DASHBOARD_ADDRESS=$(kubectl get services -n rook-ceph rook-ceph-mgr-dashboard -o jsonpath='{.spec.clusterIP}')
 echo "ceph_dashboard_address: $CEPH_DASHBOARD_ADDRESS" >> /opt/configuration/environments/kolla/configuration.yml
+
+# workaround for https://github.com/osism/issues/issues/1141
+ceph mgr module enable rook
+ceph orch set backend rook
