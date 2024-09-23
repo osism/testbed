@@ -10,6 +10,9 @@ testbed-node-1.testbed.osism.xyz
 testbed-node-2.testbed.osism.xyz
 
 [testbed-resource-nodes]
+#testbed-node-0.testbed.osism.xyz
+#testbed-node-1.testbed.osism.xyz
+#testbed-node-2.testbed.osism.xyz
 #testbed-node-3.testbed.osism.xyz
 #testbed-node-4.testbed.osism.xyz
 #testbed-node-5.testbed.osism.xyz
