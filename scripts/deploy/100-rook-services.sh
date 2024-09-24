@@ -14,6 +14,10 @@ else
     /opt/configuration/scripts/deploy/005-kubernetes.sh
 fi
 
+# Make sure that no partitions are present
+osism apply --environment custom wipe-partitions
+osism apply facts
+
 osism apply rook-operator
 osism apply rook
 osism apply rook-fetch-keys

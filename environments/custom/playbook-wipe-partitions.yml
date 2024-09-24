@@ -4,18 +4,35 @@
   gather_facts: false
 
   tasks:
+    - name: Find all logical devices owned by UID 167
+      ansible.builtin.command: find /dev/mapper -uid 167
+      register: result
+      changed_when: true
+
+    # Rook sometimes leaves entries in /dev/mapper that cannot be removed with dmsetup.
+    # These are ignored.
+    - name: Remove all rook related logical devices
+      become: true
+      ansible.builtin.shell:
+        dmsetup remove -f {{ item }} || exit 0
+      loop: "{{ result.stdout_lines }}"
+      changed_when: true
+
     - name: Find all logical devices with prefix ceph
       ansible.builtin.find:
         paths: /dev/mapper
         recurse: false
-        file_type: link
+        file_type: any
         patterns: "ceph*"
       register: result
 
     # https://github.com/rook/rook/issues/6865#issuecomment-756698522
+    # Rook sometimes leaves entries in /dev/mapper that cannot be removed with dmsetup.
+    # These are ignored.
     - name: Remove all ceph related logical devices
       become: true
-      ansible.builtin.command: "dmsetup remove {{ item.path }}"
+      ansible.builtin.shell:
+        dmsetup remove -f {{ item.path }} || exit 0
       loop: "{{ result.files }}"
       changed_when: true
 
@@ -44,3 +61,15 @@
       loop: "{{ result_lsblk.results }}"
       loop_control:
         label: "{{ item.item }}"
+
+    # https://github.com/rook/rook/issues/6865#issuecomment-1098242814
+    - name: Reload udev rules
+      become: true
+      ansible.builtin.command: udevadm control --reload-rules
+      changed_when: true
+
+    # https://github.com/rook/rook/issues/6865#issuecomment-1098242814
+    - name: Request device events from the kernel
+      become: true
+      ansible.builtin.command: udevadm trigger
+      changed_when: true
