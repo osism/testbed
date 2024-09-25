@@ -109,4 +109,8 @@ thanos_sidecar_prometheus_url: "https://api-int.testbed.osism.xyz:9091/"
 ##########################
 # k3s
 
-metal_lb_ip_range: "192.168.129.1-192.168.129.254"
+cilium_bgp: true
+cilium_bgp_my_asn: "64513"
+cilium_bgp_peer_asn: "64512"
+cilium_bgp_peer_address: "192.168.128.5"
+cilium_bgp_lb_cidr: "172.31.252.0/23"

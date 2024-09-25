@@ -27,7 +27,6 @@ testbed-control-nodes
 testbed-resource-nodes
 
 [k3s_node:children]
-testbed-managers
 #testbed-resource-nodes
 
 # NOTE: After the initial import of the inventory in the netbox,
