@@ -47,11 +47,24 @@ network_dispatcher_scripts:
 # kolla
 
 network_interface: "{{ internal_interface }}"
-k3s_interface: vxlan1
-flannel_iface: "{{ k3s_interface }}"
 
 ##########################################################
 # netbird
 #
 # netbird_management_url: https://netbird.regio.digital:33073
 # netbird_setup_key:
+
+##########################################################
+# k3s
+
+k3s_interface: vxlan1
+cilium_iface: "{{ k3s_interface }}"
+
+##########################################################
+# frr
+
+frr_uplinks_groups:
+  k3s_all
+frr_local_as: 64512
+frr_loopback_v4: "192.168.128.{{ node_id }}"
+frr_type: k3s_cilium

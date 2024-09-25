@@ -84,8 +84,6 @@ network_dispatcher_scripts:
 # kolla
 
 network_interface: "{{ internal_interface }}"
-k3s_interface: vxlan1
-flannel_iface: "{{ k3s_interface }}"
 neutron_external_interface: vxlan0
 octavia_network_interface: ohm0
 
@@ -104,3 +102,23 @@ devices: "{{ ansible_local.testbed_ceph_devices }}"
 # NOTE: to use the third block device for Ceph change this parameter as follows
 # ceph_osd_devices: "{{ ansible_local.testbed_ceph_osd_devices_all }}"
 # devices: "{{ ansible_local.testbed_ceph_devices }}"
+
+##########################################################
+# k3s
+
+k3s_interface: vxlan1
+cilium_iface: "{{ k3s_interface }}"
+
+# k3s -> frr
+cilium_bgp_neighbors:
+  - peer_address: "192.168.128.5"
+    peer_asn: 64512
+
+##########################################################
+# frr
+
+# frr -> k3s
+frr_uplinks__k3s_node:
+  - interface: vxlan1
+    address: "192.168.128.{{ node_id }}"
+    remote_as: 64513
