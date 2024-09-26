@@ -19,6 +19,7 @@
           name: "{{ rack }}"
           site: "{{ site }}"
           location: "{{ location }}"
+          u_height: 47
         state: present
 
     - name: Manage testbed-switch-0
@@ -32,7 +33,7 @@
           location: "{{ location }}"
           rack: "{{ rack }}"
           device_type: DCS-7050TX3-48C8
-          device_role: Mixed
+          device_role: Leaf
           face: rear
           position: 1
           tags:
@@ -53,7 +54,7 @@
           location: "{{ location }}"
           rack: "{{ rack }}"
           device_type: DCS-7050TX3-48C8
-          device_role: Mixed
+          device_role: Leaf
           face: rear
           position: 2
           tags:
@@ -74,7 +75,7 @@
           location: "{{ location }}"
           rack: "{{ rack }}"
           device_type: DCS-7050TX3-48C8
-          device_role: Mixed
+          device_role: Leaf
           face: rear
           position: 3
           tags:
@@ -119,7 +120,7 @@
           location: "{{ location }}"
           rack: "{{ rack }}"
           device_type: Node
-          device_role: Mixed
+          device_role: Control
           face: front
           position: 10
           custom_fields:
@@ -129,10 +130,8 @@
             - managed-by-osism
             - generic
             - control
-            - compute
             - network
             - ceph-control
-            - ceph-resource
         state: present
 
     - name: Manage testbed-node-1
@@ -146,7 +145,7 @@
           location: "{{ location }}"
           rack: "{{ rack }}"
           device_type: Node
-          device_role: Mixed
+          device_role: Control
           face: front
           position: 11
           custom_fields:
@@ -156,10 +155,8 @@
             - managed-by-osism
             - generic
             - control
-            - compute
             - network
             - ceph-control
-            - ceph-resource
         state: present
 
     - name: Manage testbed-node-2
@@ -173,7 +170,7 @@
           location: "{{ location }}"
           rack: "{{ rack }}"
           device_type: Node
-          device_role: Mixed
+          device_role: Control
           face: front
           position: 12
           custom_fields:
@@ -183,10 +180,8 @@
             - managed-by-osism
             - generic
             - control
-            - compute
             - network
             - ceph-control
-            - ceph-resource
         state: present
 
     - name: Manage testbed-node-3
@@ -282,7 +277,7 @@
             - managed-by-osism
             - managed-by-ironic
             - generic
-            - ceph-storage
+            - ceph-resource
         state: present
 
     - name: Manage testbed-node-7
@@ -306,7 +301,7 @@
             - managed-by-osism
             - managed-by-ironic
             - generic
-            - ceph-storage
+            - ceph-resource
         state: present
 
     - name: Manage testbed-node-8
@@ -330,5 +325,29 @@
             - managed-by-osism
             - managed-by-ironic
             - generic
-            - ceph-storage
+            - ceph-resource
+        state: present
+
+    - name: Manage testbed-node-9
+      netbox.netbox.netbox_device:
+        netbox_url: "{{ netbox_url }}"
+        netbox_token: "{{ netbox_token }}"
+        validate_certs: false
+        data:
+          name: testbed-node-9
+          site: "{{ site }}"
+          location: "{{ location }}"
+          rack: "{{ rack }}"
+          device_type: Node
+          device_role: Storage
+          face: front
+          position: 19
+          custom_fields:
+            device_type: server
+            ironic_enabled: false
+          tags:
+            - managed-by-osism
+            - managed-by-ironic
+            - generic
+            - ceph-resource
         state: present
