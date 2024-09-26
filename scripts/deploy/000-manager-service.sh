@@ -68,15 +68,7 @@ fi
 # initialize netbox
 if [[ $(semver $MANAGER_VERSION 8.0.0) -ge 0 || $MANAGER_VERSION == "latest" ]]; then
     wait_for_container_healthy 60 netbox-netbox-1
-
-    osism netbox import
-    osism netbox init
-    osism netbox manage 1000
-    osism netbox connect 1000 --state a
-
-    osism netbox disable --no-wait testbed-switch-0
-    osism netbox disable --no-wait testbed-switch-1
-    osism netbox disable --no-wait testbed-switch-2
+    /opt/configuration/scripts/bootstrap/000-netbox.sh
 fi
 
 docker compose --project-directory /opt/manager ps
