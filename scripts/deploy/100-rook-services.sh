@@ -36,7 +36,7 @@ for fp in $(find /opt/configuration -name ceph.conf); do
 done
 
 CEPH_RGW_ADDRESS=$(kubectl get services -n rook-ceph rook-ceph-loadbalancer-rgw -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
-echo "ceph_rgw_hosts: [{host: rook, ip: $CEPH_RGW_ADDRESS, port: 8081}]" >> /opt/configuration/environments/kolla/configuration.yml
+echo "ceph_rgw_hosts: [{host: rook, ip: $CEPH_RGW_ADDRESS, port: 80}]" >> /opt/configuration/environments/kolla/configuration.yml
 
 CEPH_DASHBOARD_ADDRESS=$(kubectl get services -n rook-ceph rook-ceph-loadbalancer-dashboard -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
 echo "ceph_dashboard_address: $CEPH_DASHBOARD_ADDRESS" >> /opt/configuration/environments/kolla/configuration.yml
