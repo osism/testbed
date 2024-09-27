@@ -24,7 +24,6 @@ KOLLA_NAMESPACE ?= osism
 
 RALLY ?= false
 TEMPEST ?= false
-IS_ZUUL ?= false
 
 APPLY_PARAMS = -auto-approve -parallelism=$(PARALLELISM)
 
@@ -70,7 +69,6 @@ init:
 	@echo "cloud_provider = \"$(OS_CLOUD)\"" >> $(CLOUD).auto.tfvars
 	@echo "image_node_user = \"$(IMAGE_USERNAME)\"" >> $(CLOUD).auto.tfvars
 	@echo "image_user = \"$(IMAGE_USERNAME)\"" >> $(CLOUD).auto.tfvars
-	@echo "is_zuul = \"$(IS_ZUUL)\"" >> $(CLOUD).auto.tfvars
 	@echo "manager_version = \"$(VERSION_MANAGER)\"" >> $(CLOUD).auto.tfvars
 	@echo "openstack_version = \"$(VERSION_OPENSTACK)\"" >> $(CLOUD).auto.tfvars
 	@echo "tempest = \"$(TEMPEST)\"" >> $(CLOUD).auto.tfvars
