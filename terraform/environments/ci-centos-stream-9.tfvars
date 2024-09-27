@@ -16,3 +16,4 @@ volume_availability_zone  = "nova"
 public                    = "public"
 number_of_nodes           = 6
 ara                       = false
+is_zuul                   = true

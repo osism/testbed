@@ -5,10 +5,6 @@ set -e
 source /opt/manager-vars.sh
 source /opt/configuration/scripts/include.sh
 
-if [[ $IS_ZUUL == "true" ]]; then
-    sudo touch /etc/osism-ci-image
-fi
-
 # The latest version of the Manager is used by default. If a different
 # version is to be used, it must be used accordingly.
 
@@ -61,7 +57,7 @@ wait_for_container_healthy 60 kolla-ansible
 wait_for_container_healthy 60 osism-ansible
 
 # disable ara service
-if [[ -e /etc/osism-ci-image || "$ARA" == "false" ]]; then
+if [[ "$IS_ZUUL" == "true" || "$ARA" == "false" ]]; then
     sh -c '/opt/configuration/scripts/disable-ara.sh'
 fi
 
@@ -87,9 +83,13 @@ osism apply known-hosts
 if [[ $(semver $MANAGER_VERSION 7.0.0) -ge 0 || $MANAGER_VERSION == "latest" ]]; then
     osism apply nexus
 
-    if [[ -e /etc/osism-ci-image ]]; then
+    if [[ "$IS_ZUUL" == "true" ]]; then
         sh -c '/opt/configuration/scripts/set-docker-registry.sh nexus.testbed.osism.xyz:8193'
-	sed -i "s/docker_namespace: osism/docker_namespace: kolla/" /opt/configuration/environments/kolla/configuration.yml
+	if [[ $MANAGER_VERSION == "latest" ]]; then
+	    sed -i "s/docker_namespace: osism/docker_namespace: kolla/" /opt/configuration/environments/kolla/configuration.yml
+	else
+	    sed -i "s#docker_namespace: osism#docker_namespace: kolla/release#" /opt/configuration/environments/kolla/configuration.yml
+	fi
     else
         sh -c '/opt/configuration/scripts/set-docker-registry.sh nexus.testbed.osism.xyz:8192'
     fi

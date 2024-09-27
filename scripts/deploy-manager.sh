@@ -73,7 +73,7 @@ wait_for_container_healthy 60 kolla-ansible
 wait_for_container_healthy 60 osism-ansible
 
 # disable ara service
-if [[ -e /etc/osism-ci-image || "$ARA" == "false" ]]; then
+if [[ "$IS_ZUUL" == "true" || "$ARA" == "false" ]]; then
     sh -c '/opt/configuration/scripts/disable-ara.sh'
 fi
 

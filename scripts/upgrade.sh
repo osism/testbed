@@ -50,7 +50,7 @@ docker compose --project-directory /opt/manager ps
 docker compose --project-directory /opt/netbox ps
 
 # disable ara service
-if [[ -e /etc/osism-ci-image || "$ARA" == "false" ]]; then
+if [[ "$IS_ZUUL" == "true" || "$ARA" == "false" ]]; then
     sh -c '/opt/configuration/scripts/disable-ara.sh'
 fi
 
