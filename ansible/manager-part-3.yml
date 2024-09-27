@@ -79,31 +79,21 @@
       retries: 120
       delay: 10
 
-    - name: Check if /etc/osism-ci-image exist
-      ansible.builtin.stat:
-        path: /etc/osism-ci-image
-      register: result
-
-    - name: "Check if /opt/manager-vars.sh contains 'export IS_ZUUL=true'"
-      ansible.builtin.lineinfile:
-        name: /opt/manager-vars.sh
-        line: "export IS_ZUUL=true"
-        state: present
-      check_mode: yes
-      changed_when: false
-      register: result
+    - name: Get /opt/manager-vars.sh
+      ansible.builtin.set_fact:
+        manager_vars: "{{ lookup('file', '/opt/manager-vars.sh') }}"
 
     - name: Add ara_server_mariadb_volume_type parameter
       ansible.builtin.lineinfile:
         path: /opt/configuration/environments/manager/configuration.yml
         line: "ara_server_mariadb_volume_type: tmpfs"
-      when: result.found
+      when: "'export IS_ZUUL=true' in manager_vars"
 
     - name: Add netbox_postgres_volume_type parameter
       ansible.builtin.lineinfile:
         path: /opt/configuration/environments/infrastructure/configuration.yml
         line: "netbox_postgres_volume_type: tmpfs"
-      when: result.found
+      when: "'export IS_ZUUL=true' in manager_vars"
 
     # The correct package name is linux-generic-hwe-22.04 on Ubuntu 22.04
     # and linux-generic-hwe-24.04 on Ubuntu 24.04.
