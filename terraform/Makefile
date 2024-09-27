@@ -22,7 +22,6 @@ VERSION_OPENSTACK ?= 2024.1
 
 KOLLA_NAMESPACE ?= osism
 
-RALLY ?= false
 TEMPEST ?= false
 
 APPLY_PARAMS = -auto-approve -parallelism=$(PARALLELISM)
@@ -145,11 +144,6 @@ upgrade-ceph: .MANAGER_ADDRESS.$(CLOUD) .id_rsa.$(CLOUD)
 check: .MANAGER_ADDRESS.$(CLOUD) .id_rsa.$(CLOUD)
 	@. ./.MANAGER_ADDRESS.$(CLOUD); \
 	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(CLOUD) $(USERNAME)@$$MANAGER_ADDRESS /opt/configuration/scripts/check.sh
-
-.PHONY: rally
-rally: .MANAGER_ADDRESS.$(CLOUD) .id_rsa.$(CLOUD)
-	@. ./.MANAGER_ADDRESS.$(CLOUD); \
-	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(CLOUD) $(USERNAME)@$$MANAGER_ADDRESS /opt/configuration/contrib/rally/rally.sh
 
 .PHONY: tempest
 tempest: .MANAGER_ADDRESS.$(CLOUD) .id_rsa.$(CLOUD)
