@@ -4,7 +4,9 @@
 
   vars:
     images:
+      - aodh
       - barbican
+      - ceilometer
       - cinder
       - common
       - designate
@@ -12,8 +14,9 @@
       - grafana
       - heat
       - horizon
-      - keystone
+      - ironic
       - loadbalancer
+      - magnum
       - mariadb
       - memcached
       - neutron
@@ -25,11 +28,19 @@
       - placement
       - rabbitmq
       - redis
+      - skyline
 
   tasks:
-    - name: Pull images
+    - name: Pull keystone image
       ansible.builtin.command:
-        cmd: "osism apply -a pull {{ item }}"
+        cmd: "osism apply -a pull keystone -l {{ groups['control'] | first }}"
+      environment:
+        INTERACTIVE: "false"
+      changed_when: true
+
+    - name: Pull other images
+      ansible.builtin.command:
+        cmd: "osism apply --no-wait -a pull {{ item }} -l {{ groups['control'] | first }}"
       environment:
         INTERACTIVE: "false"
       loop: "{{ images }}"
