@@ -104,11 +104,11 @@
       ansible.builtin.command: openstack --os-cloud test network auto allocated topology create
       changed_when: true
 
-    - name: Create test instance
+    - name: Create test instances
       openstack.cloud.server:
         cloud: test
         state: present
-        name: test
+        name: "{{ item }}"
         image: "Cirros 0.6.2"
         flavor: "SCS-1L-1-5"
         delete_fip: true
@@ -117,6 +117,12 @@
         security_groups:
           - icmp
           - ssh
+      loop:
+        - test
+        - test-1
+        - test-2
+        - test-3
+        - test-4
 
     - name: Create test volume
       openstack.cloud.volume:
