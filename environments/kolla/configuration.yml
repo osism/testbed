@@ -99,8 +99,6 @@ ceph_rgw_swift_account_in_url: true
 ##########################################################
 # external ceph
 
-enable_ceph: "no"
-
 cinder_backend_ceph: "yes"
 glance_backend_ceph: "yes"
 gnocchi_backend_storage: "ceph"
