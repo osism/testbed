@@ -9,3 +9,6 @@ ceph-resource
 
 [ceph-rgw:children]
 ceph-resource
+
+[storage:children]
+compute
