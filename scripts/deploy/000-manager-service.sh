@@ -86,9 +86,9 @@ if [[ $(semver $MANAGER_VERSION 7.0.0) -ge 0 || $MANAGER_VERSION == "latest" ]];
     if [[ "$IS_ZUUL" == "true" ]]; then
         sh -c '/opt/configuration/scripts/set-docker-registry.sh nexus.testbed.osism.xyz:8193'
 	if [[ $MANAGER_VERSION == "latest" ]]; then
-	    sed -i "s/docker_namespace: osism/docker_namespace: kolla/" /opt/configuration/environments/kolla/configuration.yml
+	    sed -i "s/docker_namespace: osism/docker_namespace: kolla/" /opt/configuration/inventory/group_vars/all/kolla.yml
 	else
-	    sed -i "s#docker_namespace: osism#docker_namespace: kolla/release#" /opt/configuration/environments/kolla/configuration.yml
+	    sed -i "s#docker_namespace: osism#docker_namespace: kolla/release#" /opt/configuration/inventory/group_vars/all/kolla.yml
 	fi
     else
         sh -c '/opt/configuration/scripts/set-docker-registry.sh nexus.testbed.osism.xyz:8192'
