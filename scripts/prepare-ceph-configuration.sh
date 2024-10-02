@@ -39,6 +39,6 @@ if [[ $(semver $MANAGER_VERSION 7.0.0) -ge 0 || $MANAGER_VERSION == "latest" ]];
 
     # Looks like it is not possible to use Nexus with authentication with Podman.
     if [[ -e /etc/redhat-release ]]; then
-        sed -i "/^ceph_docker_registry:/d" /opt/configuration/environments/configuration.yml
+        sed -i "/^ceph_docker_registry:/d" /opt/configuration/inventory/group_vars/all/registries.yml
     fi
 fi
