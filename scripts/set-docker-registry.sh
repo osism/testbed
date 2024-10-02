@@ -13,8 +13,8 @@ sed -i "s#docker_registry_netbox: .*#docker_registry_netbox: ${DOCKER_REGISTRY}#
 
 if [[ "$DOCKER_REGISTRY" == "osism.harbor.regio.digital" ]]; then
     if [[ "$MANAGER_VERSION" == "latest" ]]; then
-        sed -i "s#docker_namespace: osism#docker_namespace: kolla#" /opt/configuration/environments/kolla/configuration.yml
+        sed -i "s#docker_namespace: osism#docker_namespace: kolla#" /opt/configuration/inventory/group_vars/all/kolla.yml
     else
-        sed -i "s#docker_namespace: osism#docker_namespace: kolla/release#" /opt/configuration/environments/kolla/configuration.yml
+        sed -i "s#docker_namespace: osism#docker_namespace: kolla/release#" /opt/configuration/inventory/group_vars/all/kolla.yml
     fi
 fi
