@@ -7,14 +7,14 @@
       become: true
       ansible.builtin.iptables:
         chain: FORWARD
-        in_interface: "{{ ansible_local.testbed_network_devices.management }}"
+        in_interface: "{{ internal_interface }}"
         jump: ACCEPT
 
     - name: Accept FORWARD on the management interface (outgoing)
       become: true
       ansible.builtin.iptables:
         chain: FORWARD
-        out_interface: "{{ ansible_local.testbed_network_devices.management }}"
+        out_interface: "{{ internal_interface }}"
         jump: ACCEPT
 
     - name: Masquerade traffic on the management interface
@@ -22,7 +22,7 @@
       ansible.builtin.iptables:
         table: nat
         chain: POSTROUTING
-        out_interface: "{{ ansible_local.testbed_network_devices.management }}"
+        out_interface: "{{ internal_interface }}"
         jump: MASQUERADE
 
 - name: Bootstrap basic OpenStack services

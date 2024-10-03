@@ -34,7 +34,7 @@ netdata_host_type: server
 
 network_type: netplan
 network_ethernets:
-  "{{ ansible_local.testbed_network_devices.management }}":
+  "{{ internal_interface }}":
     dhcp4: true
     mtu: "{{ testbed_mtu_manager }}"
 network_dispatcher_scripts:
@@ -46,6 +46,6 @@ network_dispatcher_scripts:
 ##########################################################
 # kolla
 
-network_interface: "{{ ansible_local.testbed_network_devices.management }}"
+network_interface: "{{ internal_interface }}"
 k3s_interface: vxlan1
 flannel_iface: "{{ k3s_interface }}"
