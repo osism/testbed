@@ -21,6 +21,9 @@ testbed-node-2.testbed.osism.xyz
 #testbed-node-8.testbed.osism.xyz
 #testbed-node-9.testbed.osism.xyz
 
+[testbed-external-nodes]
+
 [testbed-nodes:children]
+testbed-external-nodes
 testbed-control-nodes
 testbed-resource-nodes

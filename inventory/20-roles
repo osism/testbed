@@ -15,6 +15,7 @@ testbed-managers
 testbed-control-nodes
 
 [compute:children]
+testbed-external-nodes
 testbed-resource-nodes
 
 [network:children]
