@@ -49,3 +49,9 @@ network_dispatcher_scripts:
 network_interface: "{{ internal_interface }}"
 k3s_interface: vxlan1
 flannel_iface: "{{ k3s_interface }}"
+
+##########################################################
+# netbird
+#
+# netbird_management_url: https://netbird.regio.digital:33073
+# netbird_setup_key:

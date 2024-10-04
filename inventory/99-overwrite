@@ -9,3 +9,7 @@ ceph-resource
 
 [ceph-rgw:children]
 ceph-resource
+
+[netbird:children]
+testbed-external-nodes
+testbed-managers
