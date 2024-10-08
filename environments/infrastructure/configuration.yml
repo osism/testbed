@@ -45,6 +45,9 @@ keycloak_host: keycloak.testbed.osism.xyz
 netbox_traefik: true
 netbox_host: netbox.testbed.osism.xyz
 
+# NOTE: netbox-1 takes some time to start on first run
+netbox_service_netbox_start_period: 300s
+
 ##########################
 # phpmyadmin
 
