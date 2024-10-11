@@ -31,3 +31,17 @@ rook_dashboard:
 
 # set to true to enable cleanup
 # rook_cleanup: true
+## keystone
+rook_cephobjectstore_keystone_acceptedRoles:
+  - admin
+  - member
+rook_cephobjectstore_keystone_implicitTenants: "service"
+rook_cephobjectstore_keystone_url: "https://api-int.testbed.osism.xyz:5000"
+rook_cephobjectstore_swift_urlPrefix: "/swift"
+## keystone user
+rook_cephobjectstore_keystone_auth_type: "password"
+rook_cephobjectstore_keystone_project_domain_name: "service"
+rook_cephobjectstore_keystone_project_name: "service"
+rook_cephobjectstore_keystone_user_domain_name: "default"
+rook_cephobjectstore_keystone_username: "ceph_rgw"
+rook_cephobjectstore_ingress_host_name: "rgw.testbed.osism.xyz"
