@@ -10,10 +10,10 @@ ara_server_image: "{{ docker_registry_ansible|default('quay.io') }}/osism/ara-se
 ara_server_mariadb_tag: "11.5.2"
 ara_server_mariadb_image: "{{ docker_registry }}/library/mariadb:{{ ara_server_mariadb_tag }}"
 
-netbox_tag: "v4.1.1"
+netbox_tag: "v4.1.3"
 netbox_image: "{{ docker_registry_netbox|default('quay.io') }}/osism/netbox:{{ netbox_tag }}"
 
-nginx_tag: "1.27.1-alpine"
+nginx_tag: "1.27.2-alpine"
 nginx_image: "{{ docker_registry }}/library/nginx:{{ nginx_tag }}"
 
 pgautoupgrade_tag: "16-alpine"
@@ -25,7 +25,7 @@ phpmyadmin_image: "{{ docker_registry }}/phpmyadmin/phpmyadmin:{{ phpmyadmin_tag
 postgres_tag: "16.4-alpine"
 postgres_image: "{{ docker_registry }}/library/postgres:{{ postgres_tag }}"
 
-manager_redis_tag: "7.4.0-alpine"
+manager_redis_tag: "7.4.1-alpine"
 manager_redis_image: "{{ docker_registry }}/library/redis:{{ manager_redis_tag }}"
 
 registry_tag: "2.8"
@@ -46,10 +46,10 @@ osism_image: "{{ docker_registry_ansible }}/osism/osism:{{ osism_tag }}"
 osism_netbox_tag: "{{ osism_version|default('latest') }}"
 osism_netbox_image: "{{ docker_registry_ansible }}/osism/osism-netbox:{{ osism_netbox_tag }}"
 
-vault_tag: "1.17.6"
+vault_tag: "1.18.0"
 vault_image: "{{ docker_registry }}/hashicorp/vault:{{ vault_tag }}"
 
-traefik_tag: "v3.1.4"
+traefik_tag: "v3.1.6"
 traefik_image: "{{ docker_registry }}/library/traefik:{{ traefik_tag }}"
 
 # image tag depends on CEPH_VERSION or OPENSTACK_VERSION
