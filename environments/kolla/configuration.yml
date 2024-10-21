@@ -118,8 +118,5 @@ prometheus_external_labels:
 ##########################################################
 # other
 
-# This is a workaround for the missings in the defaults of the 4.2.0 release.
-# The parameter is required at this point so that the 4.2.0 release can be used
-# with the testbed.
-om_enable_rabbitmq_high_availability: false
-external_ceph_always_copy_cinder_keyring: "no"
+om_enable_rabbitmq_high_availability: true
+om_enable_rabbitmq_quorum_queues: false
