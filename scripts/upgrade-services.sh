@@ -8,7 +8,7 @@ source /opt/manager-vars.sh
 sh -c '/opt/configuration/scripts/pull-images.sh'
 
 # upgrade kubernetes
-sh -c '/opt/configuration/scripts/upgrade/005-kubernetes.sh'
+sh -c '/opt/configuration/scripts/upgrade/500-kubernetes.sh'
 
 # upgrade infrastructure services
 sh -c '/opt/configuration/scripts/upgrade/200-infrastructure-services.sh'
@@ -26,3 +26,6 @@ sh -c '/opt/configuration/scripts/upgrade/310-openstack-services-extended.sh'
 
 # upgrade monitoring services
 sh -c '/opt/configuration/scripts/upgrade/400-monitoring-services.sh'
+
+# upgrade clusterapi
+sh -c '/opt/configuration/scripts/upgrade/510-clusterapi.sh'
