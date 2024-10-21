@@ -35,17 +35,3 @@ if [[ $(semver $MANAGER_VERSION 7.0.0) -ge 0 || $MANAGER_VERSION == "latest" ]];
 fi
 
 osism apply -a upgrade octavia
-
-if [[ $(semver $MANAGER_VERSION 7.0.0) -ge 0 || $MANAGER_VERSION == "latest" ]]; then
-    osism apply clusterapi
-
-    # In the testbed, the service was only added with OSISM 7.0.0. It is therefore necessary
-    # to check in advance whether the service is already available. If not, a deployment must
-    # be carried out instead of an upgrade.
-
-    if [[ -z $(openstack --os-cloud admin service list -f value -c Name | grep magnum) ]]; then
-        osism apply magnum
-    else
-        osism apply -a upgrade magnum
-    fi
-fi

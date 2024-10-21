@@ -8,10 +8,10 @@ source /opt/configuration/scripts/manager-version.sh
 if command -v kubectl &> /dev/null; then
     K8S_READY_COUNT=$(kubectl get nodes | grep -c Ready)
     if [[ $K8S_READY_COUNT == 0 ]]; then
-        /opt/configuration/scripts/deploy/005-kubernetes.sh
+        /opt/configuration/scripts/deploy/500-kubernetes.sh
     fi
 else
-    /opt/configuration/scripts/deploy/005-kubernetes.sh
+    /opt/configuration/scripts/deploy/500-kubernetes.sh
 fi
 
 # Make sure that no partitions are present
