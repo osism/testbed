@@ -21,8 +21,3 @@ osism apply ceilometer
 osism apply aodh
 
 osism apply kolla-ceph-rgw
-
-if [[ $(semver $MANAGER_VERSION 7.0.0) -ge 0 || $MANAGER_VERSION == "latest" ]]; then
-    osism apply clusterapi
-    osism apply magnum
-fi

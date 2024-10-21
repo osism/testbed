@@ -16,9 +16,7 @@ sh -c '/opt/configuration/scripts/pull-images.sh'
 sh -c '/opt/configuration/scripts/deploy/001-helper-services.sh'
 
 # deploy kubernetes
-if [[ $(semver $MANAGER_VERSION 7.0.0) -ge 0 || $MANAGER_VERSION == "latest" ]]; then
-  sh -c '/opt/configuration/scripts/deploy/005-kubernetes.sh'
-fi
+sh -c '/opt/configuration/scripts/deploy/500-kubernetes.sh'
 
 # deploy infrastructure services
 sh -c '/opt/configuration/scripts/deploy/200-infrastructure-services.sh'
@@ -40,3 +38,6 @@ fi
 
 # deploy monitoring services
 sh -c '/opt/configuration/scripts/deploy/400-monitoring-services.sh'
+
+# deploy clusterapi
+sh -c '/opt/configuration/scripts/deploy/510-clusterapi.sh'
