@@ -77,6 +77,7 @@ if [[ $(semver $MANAGER_VERSION 7.0.0) -ge 0 || $MANAGER_VERSION == "latest" ]];
     sed -i "s/community.general.yaml/osism.commons.still_alive/" /opt/configuration/environments/ansible.cfg
 fi
 
+osism apply resolvconf -l testbed-manager
 osism apply sshconfig
 osism apply known-hosts
 
