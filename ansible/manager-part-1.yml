@@ -1,6 +1,6 @@
 ---
 - name: Run manager part 1
-  hosts: testbed-manager.testbed.osism.xyz
+  hosts: testbed-manager
 
   vars:
     ansible_ssh_user: dragon
@@ -119,5 +119,5 @@
       when: ansible_os_family == "RedHat"
 
     - name: Run manager part 2
-      ansible.builtin.command: "{{ ansible_playbook }} -i testbed-manager.testbed.osism.xyz, -e version_manager={{ version_manager }} /opt/configuration/ansible/manager-part-2.yml"
+      ansible.builtin.command: "{{ ansible_playbook }} -i testbed-manager, -e version_manager={{ version_manager }} /opt/configuration/ansible/manager-part-2.yml"
       changed_when: true

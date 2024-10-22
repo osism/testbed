@@ -1,6 +1,6 @@
 ---
 - name: Copy custom facts
-  hosts: testbed-manager.testbed.osism.xyz
+  hosts: testbed-manager
   connection: local
   gather_facts: false
 
@@ -31,7 +31,7 @@
 # subsequent roles (traefik, manager, netbox). This makes problems resulting
 # from image pulls more visible in the CI.
 - name: Before the deployment of the manager
-  hosts: testbed-manager.testbed.osism.xyz
+  hosts: testbed-manager
   connection: local
 
   vars:
@@ -144,7 +144,7 @@
         - result.stat.exists | bool
 
 - name: Apply role traefik & netbox
-  hosts: testbed-manager.testbed.osism.xyz
+  hosts: testbed-manager
   connection: local
 
   vars:
@@ -154,7 +154,7 @@
   vars_files:
     - /opt/configuration/inventory/group_vars/all/registries.yml
     - /opt/configuration/inventory/group_vars/testbed-managers.yml
-    - /opt/configuration/inventory/host_vars/testbed-manager.testbed.osism.xyz/vars.yml
+    - /opt/configuration/inventory/host_vars/testbed-manager/vars.yml
     - /opt/configuration/environments/manager/configuration.yml
     - /opt/configuration/environments/manager/images.yml
     - /opt/configuration/environments/manager/secrets.yml
@@ -183,7 +183,7 @@
           changed_when: true
 
 - name: Deploy manager service
-  hosts: testbed-manager.testbed.osism.xyz
+  hosts: testbed-manager
   connection: local
 
   vars:
@@ -195,7 +195,7 @@
   vars_files:
     - /opt/configuration/inventory/group_vars/all/registries.yml
     - /opt/configuration/inventory/group_vars/testbed-managers.yml
-    - /opt/configuration/inventory/host_vars/testbed-manager.testbed.osism.xyz/vars.yml
+    - /opt/configuration/inventory/host_vars/testbed-manager/vars.yml
     - /opt/configuration/environments/manager/configuration.yml
     - /opt/configuration/environments/manager/images.yml
     - /opt/configuration/environments/manager/secrets.yml

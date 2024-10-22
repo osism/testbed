@@ -39,7 +39,7 @@ if [[ -e /opt/venv/bin/activate ]]; then
 fi
 
 ansible-playbook \
-  -i testbed-manager.testbed.osism.xyz, \
+  -i testbed-manager, \
   --vault-password-file /opt/configuration/environments/.vault_pass \
   /opt/configuration/ansible/manager-part-3.yml
 
