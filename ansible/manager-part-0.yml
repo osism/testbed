@@ -1,6 +1,6 @@
 ---
 - name: Wait for cloud-init to finish
-  hosts: testbed-manager.testbed.osism.xyz
+  hosts: testbed-manager
   gather_facts: false
 
   tasks:
@@ -17,7 +17,7 @@
       delay: 30
 
 - name: Run manager part 0
-  hosts: testbed-manager.testbed.osism.xyz
+  hosts: testbed-manager
 
   vars:
     apt_lock_timeout: 300
@@ -232,7 +232,7 @@
         - ansible-collection-services
 
 - name: Create operator user
-  hosts: testbed-manager.testbed.osism.xyz
+  hosts: testbed-manager
 
   vars:
     operator_user: dragon
@@ -246,7 +246,7 @@
     - role: osism.commons.operator
 
 - name: Run manager part 0
-  hosts: testbed-manager.testbed.osism.xyz
+  hosts: testbed-manager
 
   vars:
     operator_user: dragon

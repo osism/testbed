@@ -79,8 +79,8 @@ ironic_cleaning_network: "public"
 
 # ceilometer
 enable_ceilometer_prometheus_pushgateway: "yes"
-ceilometer_prometheus_pushgateway_host: "testbed-manager.testbed.osism.xyz"
-ceilometer_metering_pushgateway_host: "testbed-manager.testbed.osism.xyz"
+ceilometer_prometheus_pushgateway_host: "testbed-manager"
+ceilometer_metering_pushgateway_host: "testbed-manager"
 ceilometer_metering_pushgateway_port: 8088
 
 # rgw integration

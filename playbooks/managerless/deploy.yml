@@ -28,14 +28,14 @@
       ansible.builtin.command: |
         ansible-playbook \
           -e @/opt/configuration/inventory/group_vars/testbed-managers.yml \
-          -e @/opt/configuration/inventory/host_vars/testbed-manager.testbed.osism.xyz/vars.yml \
+          -e @/opt/configuration/inventory/host_vars/testbed-manager/vars.yml \
           -e @/opt/configuration/environments/manager/images.yml \
           -e @/opt/configuration/environments/manager/configuration.yml \
           -e @/opt/configuration/environments/manager/secrets.yml \
           -e @/opt/configuration/environments/images.yml \
           -e @/opt/configuration/environments/configuration.yml \
           -e @/opt/configuration/environments/secrets.yml \
-          -i testbed-manager.testbed.osism.xyz, \
+          -i testbed-manager, \
           --vault-password-file /opt/configuration/environments/.vault_pass \
           /tmp/managerless-part-3.yml
       changed_when: true
@@ -46,14 +46,14 @@
       ansible.builtin.command: |
         ansible-playbook \
           -e @/opt/configuration/inventory/group_vars/testbed-managers.yml \
-          -e @/opt/configuration/inventory/host_vars/testbed-manager.testbed.osism.xyz/vars.yml \
+          -e @/opt/configuration/inventory/host_vars/testbed-manager/vars.yml \
           -e @/opt/configuration/environments/manager/images.yml \
           -e @/opt/configuration/environments/manager/configuration.yml \
           -e @/opt/configuration/environments/manager/secrets.yml \
           -e @/opt/configuration/environments/images.yml \
           -e @/opt/configuration/environments/configuration.yml \
           -e @/opt/configuration/environments/secrets.yml \
-          -i testbed-manager.testbed.osism.xyz, \
+          -i testbed-manager, \
           --vault-password-file /opt/configuration/environments/.vault_pass \
           /tmp/managerless-part-4.yml
       changed_when: true
@@ -140,14 +140,14 @@
       ansible.builtin.command: |
         ansible-playbook \
           -e @/opt/configuration/inventory/group_vars/testbed-managers.yml \
-          -e @/opt/configuration/inventory/host_vars/testbed-manager.testbed.osism.xyz/vars.yml \
+          -e @/opt/configuration/inventory/host_vars/testbed-manager/vars.yml \
           -e @/opt/configuration/environments/manager/images.yml \
           -e @/opt/configuration/environments/manager/configuration.yml \
           -e @/opt/configuration/environments/manager/secrets.yml \
           -e @/opt/configuration/environments/images.yml \
           -e @/opt/configuration/environments/configuration.yml \
           -e @/opt/configuration/environments/secrets.yml \
-          -i testbed-manager.testbed.osism.xyz, \
+          -i testbed-manager, \
           --vault-password-file /opt/configuration/environments/.vault_pass \
           /tmp/managerless-part-5.yml
       changed_when: true

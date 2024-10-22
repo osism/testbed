@@ -1,6 +1,6 @@
 ---
 - name: Prepare manager part 2
-  hosts: testbed-manager.testbed.osism.xyz
+  hosts: testbed-manager
   connection: local
 
   vars:
@@ -40,7 +40,7 @@
         - version_manager == "latest"
 
 - name: Run manager part 2
-  hosts: testbed-manager.testbed.osism.xyz
+  hosts: testbed-manager
   connection: local
 
   vars:

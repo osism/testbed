@@ -17,7 +17,7 @@
   tasks:
     - name: Remove testbed-manager from the inventory
       ansible.builtin.command:  # noqa: command-instead-of-module
-        cmd: "sed -i '/^testbed-manager.testbed.osism.xyz$/d' /opt/configuration/inventory/10-custom"
+        cmd: "sed -i '/^testbed-manager$/d' /opt/configuration/inventory/10-custom"
       changed_when: true
 
     - name: Do not use squid
@@ -72,21 +72,21 @@
 
     - name: Set ansible_host for testbed-node-0
       ansible.builtin.command:  # noqa: command-instead-of-module
-        cmd: "sed -i 's/ansible_host: .*/ansible_host: {{ node_0_host }}/g' /opt/configuration/inventory/host_vars/testbed-node-0.testbed.osism.xyz/vars.yml"
+        cmd: "sed -i 's/ansible_host: .*/ansible_host: {{ node_0_host }}/g' /opt/configuration/inventory/host_vars/testbed-node-0/vars.yml"
       changed_when: true
       when:
         - create_infrastructure | bool
 
     - name: Set ansible_host for testbed-node-1
       ansible.builtin.command:  # noqa: command-instead-of-module
-        cmd: "sed -i 's/ansible_host: .*/ansible_host: {{ node_1_host }}/g' /opt/configuration/inventory/host_vars/testbed-node-1.testbed.osism.xyz/vars.yml"
+        cmd: "sed -i 's/ansible_host: .*/ansible_host: {{ node_1_host }}/g' /opt/configuration/inventory/host_vars/testbed-node-1/vars.yml"
       changed_when: true
       when:
         - create_infrastructure | bool
 
     - name: Set ansible_host for testbed-node-2
       ansible.builtin.command:  # noqa: command-instead-of-module
-        cmd: "sed -i 's/ansible_host: .*/ansible_host: {{ node_2_host }}/g' /opt/configuration/inventory/host_vars/testbed-node-2.testbed.osism.xyz/vars.yml"
+        cmd: "sed -i 's/ansible_host: .*/ansible_host: {{ node_2_host }}/g' /opt/configuration/inventory/host_vars/testbed-node-2/vars.yml"
       changed_when: true
       when:
         - create_infrastructure | bool

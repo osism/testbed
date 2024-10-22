@@ -32,7 +32,6 @@ docker_proxy_no_proxy_extra:
   - keycloak.testbed.osism.xyz
   - nexus.testbed.osism.xyz
   - testbed-manager
-  - testbed-manager.testbed.osism.xyz
 
 ##########################################################
 # proxy
@@ -52,7 +51,6 @@ proxy_no_proxy_extra:
   - keycloak.testbed.osism.xyz
   - nexus.testbed.osism.xyz
   - testbed-manager
-  - testbed-manager.testbed.osism.xyz
 
 ##########################################################
 # generic
