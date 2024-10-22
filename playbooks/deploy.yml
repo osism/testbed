@@ -98,7 +98,7 @@
 
     - name: Set manager_host address
       ansible.builtin.set_fact:
-        manager_host: "{{ manager_address['content'] | b64decode | trim | split('=') | last }}"
+        manager_host: "{{ manager_address['content'] | b64decode | trim | split('=') | last | replace('\"', '') }}"
 
     - name: Update ansible collections
       ansible.builtin.command:
