@@ -97,7 +97,3 @@ if [[ $(semver $MANAGER_VERSION 7.0.0) -ge 0 || $MANAGER_VERSION == "latest" ]];
 fi
 
 osism apply squid
-
-# Ensure that the squid service is up and running.
-# This is also added to the osism.services.squid role.
-docker compose --project-directory /opt/squid up -d
