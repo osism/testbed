@@ -119,4 +119,4 @@ prometheus_external_labels:
 # other
 
 om_enable_rabbitmq_high_availability: false
-om_enable_rabbitmq_quorum_queues: false
+om_enable_rabbitmq_quorum_queues: true
