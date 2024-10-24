@@ -13,3 +13,6 @@ ceph-resource
 [netbird:children]
 testbed-external-nodes
 testbed-managers
+
+[frr:children]
+testbed-managers
