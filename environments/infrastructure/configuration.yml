@@ -60,28 +60,6 @@ phpmyadmin_database_host: 192.168.16.9
 
 squid_host: "{{ hostvars[inventory_hostname]['ansible_' + internal_interface]['ipv4']['address'] }}"
 
-# NOTE: This can be removed in the future if the list of shared sources is
-#       in sync with the osism.services.squid role (or the ansible-defaults)
-#       used in the last stable release tested in the CI.
-squid_allowed_addresses:
-  - .archive.ubuntu.com
-  - .cloudfront.net
-  - .opendev.org
-  - .quay.io
-  - auth.docker.io
-  - download.docker.com
-  - galaxy.ansible.com
-  - github.com
-  - harbor.services.osism.tech
-  - index.docker.io
-  - minio.services.osism.tech
-  - osism.harbor.regio.digital
-  - packagecloud.io
-  - production.cloudflare.docker.com
-  - pypi.org
-  - registry-1.docker.io
-  - swift.services.a.regiocloud.tech
-
 ##########################
 # traefik
 
