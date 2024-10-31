@@ -114,3 +114,4 @@ thanos_sidecar_prometheus_url: "https://api-int.testbed.osism.xyz:9091/"
 
 cilium_bgp: true
 cilium_bgp_lb_cidr: "172.31.252.0/23"
+cilium_hubble: true
