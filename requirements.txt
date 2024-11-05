@@ -1,2 +1,2 @@
-ansible==10.5.0
+ansible==10.6.0
 python-gilt==1.2.3
