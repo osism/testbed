@@ -233,8 +233,10 @@
         - yamllint
     label:
       jobs:
-        - testbed-deploy-in-a-nutshell-ubuntu-22.04
         - testbed-deploy-in-a-nutshell-ubuntu-24.04
+    label-additional:
+      jobs:
+        - testbed-deploy-in-a-nutshell-ubuntu-22.04
         - testbed-deploy-in-a-nutshell-debian-12
         - testbed-deploy-in-a-nutshell-centos-stream-9
     gate:
@@ -243,6 +245,9 @@
         - yamllint
         - flake8
         - python-black
+    periodic-midnight:
+      jobs:
+        - testbed-deploy-stable-in-a-nutshell-ubuntu-24.04
     periodic-daily:
       jobs:
         - testbed-deploy-in-a-nutshell-with-tempest-ubuntu-24.04
