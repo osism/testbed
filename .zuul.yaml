@@ -108,6 +108,13 @@
       terraform_environment: ci-centos-stream-9
 
 - job:
+    name: testbed-deploy-in-a-nutshell-with-tempest-ubuntu-24.04
+    parent: testbed-deploy-in-a-nutshell-ubuntu-24.04
+    timeout: 14400
+    vars:
+      tempest: true
+
+- job:
     name: abstract-testbed-deploy-stable-in-a-nutshell
     abstract: true
     parent: abstract-testbed-deploy-in-a-nutshell
@@ -137,6 +144,13 @@
     parent: abstract-testbed-deploy-stable-in-a-nutshell
     vars:
       terraform_environment: ci-centos-stream-9
+
+- job:
+    name: testbed-deploy-stable-in-a-nutshell-with-tempest-ubuntu-24.04
+    parent: testbed-deploy-stable-in-a-nutshell-ubuntu-24.04
+    timeout: 14400
+    vars:
+      tempest: true
 
 - job:
     name: testbed-upgrade
@@ -231,7 +245,7 @@
         - python-black
     periodic-daily:
       jobs:
-        - testbed-deploy-in-a-nutshell-ubuntu-24.04
+        - testbed-deploy-in-a-nutshell-with-tempest-ubuntu-24.04
         - ansible-lint
         - flake8
         - python-black
