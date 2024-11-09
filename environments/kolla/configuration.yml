@@ -112,6 +112,11 @@ prometheus_external_labels:
   infrastructure: testbed
 
 ##########################################################
+# deploy dashboards and alerts from
+# https://github.com/osism/kolla-operations
+enable_kolla_operations: true
+
+##########################################################
 # other
 
 om_enable_rabbitmq_high_availability: false
