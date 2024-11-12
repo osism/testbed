@@ -16,3 +16,6 @@ testbed-managers
 
 [frr:children]
 testbed-managers
+
+[storage:children]
+compute
