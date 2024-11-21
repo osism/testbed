@@ -4,6 +4,7 @@ exclude_paths:
   - environments/kolla/files/overlays/ceilometer/event_pipeline.yaml
   - environments/kolla/files/overlays/ceilometer/pipeline.yaml
   - environments/kolla/files/overlays/prometheus/prometheus.yml.d/50-ceph.yml
+  - netbox/playbooks
 mock_modules:
   - netbox.netbox.netbox_device
   - netbox.netbox.netbox_ip_address
