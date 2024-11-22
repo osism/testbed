@@ -10,7 +10,7 @@
     create_infrastructure: true
     terraform_path: "{{ zuul.project.src_dir }}/terraform"
     terraformbase_path: "{{ ansible_user_dir }}/src/{{ repositories['terraform-base']['path'] }}"
-    opentofu_version: v1.8.5 # renovate: datasource=github-releases depName=opentofu/opentofu
+    opentofu_version: v1.8.6 # renovate: datasource=github-releases depName=opentofu/opentofu
     opentofu_download_url: "https://github.com/opentofu/opentofu/releases/download/{{ opentofu_version }}/tofu_{{ opentofu_version[1:] }}_linux_amd64.zip"
 
   tasks:
