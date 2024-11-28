@@ -3,6 +3,14 @@
   hosts: localhost
   connection: local
 
+  vars:
+    test_instances:
+      - test
+      - test-1
+      - test-2
+      - test-3
+      - test-4
+
   tasks:
     - name: Create test domain
       openstack.cloud.identity_domain:
@@ -63,6 +71,14 @@
         - creator
       ignore_errors: true  # NOTE: necessary when we have not deployed Barbican
 
+    - name: Create test server group
+      openstack.cloud.server_group:
+        cloud: test
+        state: present
+        name: test
+        policy: soft-anti-affinity
+      register: result_server_group
+
     - name: Create ssh security group
       openstack.cloud.security_group:
         cloud: test
@@ -117,12 +133,23 @@
         security_groups:
           - icmp
           - ssh
-      loop:
-        - test
-        - test-1
-        - test-2
-        - test-3
-        - test-4
+        scheduler_hints:
+          group: "{{ result_server_group.server_group.id }}"
+      loop: "{{ test_instances }}"
+
+    - name: Add metadata to instances
+      openstack.cloud.server_metadata:
+        cloud: test
+        state: present
+        name: "{{ item }}"
+        metadata:
+          hostname: "{{ item }}"
+      loop: "{{ test_instances }}"
+
+    - name: Add tag to instances
+      ansible.builtin.command: "openstack --os-cloud test --os-compute-api-version 2.26 server set --tag test {{ item }}"
+      changed_when: true
+      loop: "{{ test_instances }}"
 
     - name: Create test volume
       openstack.cloud.volume:
