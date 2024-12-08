@@ -72,6 +72,7 @@ ironic_dnsmasq_dhcp_range: "192.168.112.50,192.168.112.60"
 ironic_dnsmasq_dhcp_ranges:
   - range: "192.168.112.50,192.168.112.60"
 ironic_cleaning_network: "public"
+enable_ironic_prometheus_exporter: false
 
 # ceilometer
 enable_ceilometer_prometheus_pushgateway: "yes"
