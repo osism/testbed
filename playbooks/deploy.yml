@@ -29,6 +29,7 @@
 
     _nutshell: "{{ nutshell | default(false) | bool }}"
     _tempest: "{{ tempest | default(false) | bool }}"
+    _prometheus_alert_status: "{{ prometheus_alert_status | default(false) | bool }}"
 
     _ceph_stack: "{{ ceph_stack | default('ceph-ansible') }}"
 
@@ -234,4 +235,12 @@
       when:
         - not manual_deploy | bool
         - _tempest | bool
+      changed_when: true
+
+    - name: Check prometheus alert status
+      ansible.builtin.command:
+        cmd: "ssh -i {{ terraform_path }}/.id_rsa.{{ cloud_env }} dragon@{{ manager_host }} /opt/configuration/scripts/check/303-prometheus-alert-status.sh"
+      when:
+        - not manual_deploy | bool
+        - run_prometheus_alert_status | bool
       changed_when: true
