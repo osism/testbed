@@ -242,5 +242,5 @@
         cmd: "ssh -i {{ terraform_path }}/.id_rsa.{{ cloud_env }} dragon@{{ manager_host }} /opt/configuration/scripts/check/303-prometheus-alert-status.sh"
       when:
         - not manual_deploy | bool
-        - run_prometheus_alert_status | bool
+        - _prometheus_alert_status | bool
       changed_when: true
