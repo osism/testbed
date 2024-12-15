@@ -117,7 +117,7 @@
     - name: Install python3-docker
       become: true
       ansible.builtin.apt:
-        deb: http://ftp.de.debian.org/debian/pool/main/p/python-docker/python3-docker_7.1.0-1_all.deb
+        deb: https://github.com/osism/deb-packaging/raw/refs/heads/main/python3-docker/python3-docker_7.1.0-2_all.deb
       when:
         - "ansible_distribution == 'Ubuntu'"
         - "ansible_distribution_version is version('24.04', '>=')"
