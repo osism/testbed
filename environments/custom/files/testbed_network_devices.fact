@@ -1,18 +1,65 @@
 #!/usr/bin/env python3
 
+import array
+import fcntl
+import ipaddress
 import json
-import netifaces
-import subprocess
+import socket
+import struct
+
+
 
 NETWORKS = {
-    "external": "192.168.96",
-    "management": "192.168.16",
-    "provider": "192.168.112",
+    "external": "192.168.96.0/20",
+    "management": "192.168.16.0/20",
+    "provider": "192.168.112.0/20",
 }
 
 result = {}
 
-for interface in netifaces.interfaces():
+# get all IPv4 addresses and interfaces
+# https://man7.org/linux/man-pages/man7/netdevice.7.html
+
+# https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/include/uapi/linux/sockios.h
+SIOCGIFCONF = 0x8912
+IFREQ_STRUCT_SIZE = 40
+
+with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
+    buffer_size = 0
+    while True:
+        # first call gets the required buffer size
+        # second call gets the actual content
+        # if buffer size changes between calls, try again
+        ifconf = array.array('B', b'\x00' * buffer_size)
+        ifconf_addr, _ = ifconf.buffer_info()
+        actual_buffer_size, _ = struct.unpack(
+            'iL',
+            fcntl.ioctl(
+                s.fileno(),
+                SIOCGIFCONF,
+                struct.pack('iL', buffer_size, ifconf_addr)
+            )
+        )
+        if actual_buffer_size != buffer_size:
+            buffer_size = actual_buffer_size
+        else:
+            break
+
+# transform into a more pythonic structure
+# [(interface, address), ...]
+ifconf = [
+    (
+        ifconf[i:i+16].tobytes().split(b'\x00', 1)[0].decode('utf-8'),
+        ipaddress.IPv4Address(
+            ifconf[i+20:i+24].tobytes()
+        )
+    )
+    for i in range(0, buffer_size, IFREQ_STRUCT_SIZE)
+]
+
+# reverse entries, so we can save the first usable interface
+ifconf.reverse()
+for interface, address in ifconf:
     if interface in ["lo", "docker0", "ohm0", "o-hm0"]:
         continue
     elif interface.startswith("br"):
@@ -29,30 +76,18 @@ for interface in netifaces.interfaces():
         continue
     elif interface.startswith("genev"):
         continue
-
-    addrs = netifaces.ifaddresses(interface)
-    if netifaces.AF_INET in addrs:
-        for addr in addrs[netifaces.AF_INET]:
-            for network in NETWORKS:
-                if addr["addr"].startswith(NETWORKS[network]):
-                    result[network] = interface
-
-# NOTE: vxlan is always used as provider network.
-result["provider"] = "vxlan0"
-
+    # save first usable interface so we can fallback in case "management" is not found
+    interface_1 = interface
+    for network_name, network_cidr in NETWORKS.items():
+        if address in ipaddress.IPv4Network(network_cidr):
+            result[network_name] = interface
 
 # If result is empty, we are probably on the managerless deployment path
 # and use the IP address of the 1st interface accordingly.
 if "management" not in result:
-    r = subprocess.check_output(
-        "hostname --all-ip-addresses | awk '{print $1}'", shell=True
-    )
-    firstip_address = r.decode().strip()
+    result["management"] = interface_1
 
-    r = subprocess.check_output(
-        "ip -br -4 a sh | grep %s | awk '{print $1}'" % firstip_address, shell=True
-    )
-    first_network_interface = r.decode().strip()
-    result["management"] = first_network_interface
+# NOTE: vxlan is always used as provider network.
+result["provider"] = "vxlan0"
 
 print(json.dumps(result))
