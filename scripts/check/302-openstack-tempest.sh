@@ -6,6 +6,8 @@ echo
 echo "# Tempest"
 echo
 
+sh -c '/opt/configuration/scripts/bootstrap/301-openstack-octavia-amhpora-image.sh'
+
 osism apply tempest --skip-tags run-tempest
 
 sed -i "/log_dir =/d" /opt/tempest/etc/tempest.conf
