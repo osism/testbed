@@ -34,12 +34,6 @@ osism apply bootstrap
 # On CentOS the Ceph deployment only works with podman.
 if [[ -e /etc/redhat-release ]]; then
     osism apply podman
-
-    # There is currently some kind of race condition that prevents the custom network
-    # facts from being executed because the netifaces module is not found although it
-    # is actually installed. Therefore the facts are updated here again.
-    osism apply --environment custom facts
-    osism apply gather-facts
 fi
 
 # copy network configuration

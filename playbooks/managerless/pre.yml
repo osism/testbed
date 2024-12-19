@@ -27,7 +27,6 @@
       ansible.builtin.package:
         name: "{{ item }}"
       loop:
-        - python3-netifaces
         - sshuttle
         - unzip
 

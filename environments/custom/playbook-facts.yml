@@ -8,22 +8,6 @@
     dnf_lock_timeout: 300
 
   tasks:
-    - name: Install required packages (RedHat)
-      become: true
-      ansible.builtin.dnf:
-        name: python3-netifaces
-        state: present
-        lock_timeout: "{{ dnf_lock_timeout }}"
-      when: ansible_os_family == "RedHat"
-
-    - name: Install required packages (Debian)
-      become: true
-      ansible.builtin.apt:
-        name: python3-netifaces
-        state: present
-        lock_timeout: "{{ apt_lock_timeout }}"
-      when: ansible_os_family == "Debian"
-
     - name: Create custom facts directory
       become: true
       ansible.builtin.file:
