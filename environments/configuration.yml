@@ -9,9 +9,6 @@ testbed_mtu_node: "{{ testbed_mtu }}"
 ##########################
 # docker
 
-docker_version: "5:26.1.4"
-docker_cli_version: "5:26.1.4"
-
 docker_user: "{{ operator_user }}"
 docker_opts:
   max-concurrent-downloads: 20
