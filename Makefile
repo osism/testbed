@@ -14,7 +14,7 @@ VERSION_OPENSTACK ?= 2024.1
 CEPH_STACK ?= ceph-ansible
 
 # renovate: datasource=github-releases depName=opentofu/opentofu
-TOFU_VERSION ?= 1.8.7
+TOFU_VERSION ?= 1.8.8
 TERRAFORM ?= tofu
 TERRAFORM_BLUEPRINT ?= testbed-default
 
