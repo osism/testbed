@@ -1,7 +1,0 @@
----
-- name: Create operator user
-  hosts: localhost
-  connection: local
-
-  roles:
-    - osism.commons.operator

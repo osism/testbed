@@ -1,9 +1,0 @@
----
-- name: Post output play
-  hosts: all
-
-  vars:
-    stage_dir: "{{ ansible_user_dir }}/zuul-output"
-
-  roles:
-    - stage-output

@@ -1,23 +1,4 @@
 ---
-- secret:
-    name: SECRET_TESTBED
-    data:
-      MANAGERLESS_CREDENTIALS: !encrypted/pkcs1-oaep
-        - Ft2GWr5BtY9XZ8Kr66GsyB1/PvBiT3COz9NnLFqg0Rp/zRInou7FXx4qNaK48p88EyZQ8
-          c3QV49MNgzNYy11ZK2NjWkSQd6kWZ3x2Bvhu/vYfYjRCLWH34LL+36lDbITcpYt7tiQFH
-          IaaBfXc/lwBBEZMlpAhEDfcDXLRoSSdtcyP8SX8BtSCH4tlh/KYVkqJ/a2nNMtJF7l2Wj
-          PF7qe17WI6NsYCb6QD33bfEX+qe9JOmkwAKxHFd6ucTZJe1D6JiYvXAlJR+FhGDOOurKX
-          DRX6H48WB2L0qp/UQgY9mwR2eWqbfdAJg1AGJ3M+Y0j/Xi0do07h7cX2RCG6MC0HHRSIG
-          wXSvIYN8m50AT0c3ofnMQ1Vtf7V60cctV4em5sLxyWacz/lHzHPzstjmnFB5BVOh5vbh6
-          ygRlLMTUQTQzUlAJHhDlYc+ea2njSbq79RzQSto1buN0lNRQNp3VGTnbZyhp/B671NlVZ
-          cC5o6qs8j7LyLKOo9lNnYi8CQw2KjRzv2rBMuUaRqIaGXu4U/R8sswy3j6YhA7BT4vUxv
-          zUyw/6Ql1IhZo3X0jEE3WtfeUQvsWB0AXDX+xf2WoEVL5dObYP8X5RVsJj5qQ7Y8BK2qa
-          HflOaQYaKWZSf+5kfBUByzQghil4tH4QQQUHszDs0Qtzop7yTp0AB1cqefAyY8=
-
-- semaphore:
-    name: semaphore-testbed-managerless
-    max: 1
-
 # Regiocloud
 - nodeset:
     name: testbed-orchestrator
@@ -48,26 +29,6 @@
     timeout: 16200
     vars:
       terraform_blueprint: testbed-default
-
-- job:
-    name: testbed-deploy-managerless
-    parent: base-extra-logs
-    nodeset: ubuntu-jammy-large
-    pre-run: playbooks/managerless/pre.yml
-    run: playbooks/managerless/deploy.yml
-    post-run: playbooks/managerless/post.yml
-    cleanup-run: playbooks/managerless/cleanup.yml
-    required-projects:
-      - osism/terraform-base
-    timeout: 10800
-    vars:
-      cloud: managerless
-      terraform_blueprint: testbed-managerless
-    secrets:
-      - name: secret
-        secret: SECRET_TESTBED
-    semaphores:
-      - name: semaphore-testbed-managerless
 
 - job:
     name: testbed-deploy
