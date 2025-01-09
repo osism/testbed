@@ -1,13 +1,4 @@
 ---
-##########################
-# dotfiles
-
-dotfiles_repo: "https://github.com/osism/dotfiles.git"
-dotfiles_repo_version: main
-dotfiles_repo_local_destination: "~/dotfiles"
-dotfiles_files:
-  - .tmux.conf
-
 prometheus_alert_status_filter:
   alertname:
     - PrometheusAlertmanagerE2eDeadManSwitch
