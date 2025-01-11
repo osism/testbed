@@ -57,6 +57,8 @@ octavia_network_type: tenant
 
 # designate
 designate_ns_record: openstack.testbed.osism.xyz
+designate_forwarders_addresses: ""
+designate_recursion: "yes"
 
 # horizon
 horizon_keystone_multidomain: true

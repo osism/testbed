@@ -74,6 +74,7 @@ wireguard_users:
     key: LDweUZxqy/0AieSVw3baZmbRMPBqhfDUcuLAwSYyQkE=
     ip: 192.168.48.4
 wireguard_create_client_config: true
+wireguard_dns: 192.168.16.10
 
 ##########################
 # nexus
