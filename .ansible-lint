@@ -15,11 +15,5 @@ mock_modules:
 mock_roles:
   - manager
   - stage-output
-use_default_rules: true
-rulesdir:
-  - ./.ansible-lint-rules/
 skip_list:
   - run-once[task]
-  - yaml
-warn_list:
-  - dummy
