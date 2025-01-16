@@ -15,6 +15,9 @@ source /opt/manager-vars.sh
 # create symlink for semver script
 sudo ln -sf /opt/configuration/contrib/semver2.sh /usr/local/bin/semver
 
+# print docker version on manager after seed stage
+docker version
+
 # deploy manager service
 sh -c '/opt/configuration/scripts/deploy/000-manager-service.sh'
 
