@@ -10,6 +10,8 @@
 .tox
 .venv
 Pipfile.lock
+ansible-manager-part-0.log
+ansible-manager-part-1.log
 backend.env
 backend.tf
 clouds.yaml
