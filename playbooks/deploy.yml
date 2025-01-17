@@ -36,6 +36,18 @@
     _terraform_environment: "{{ terraform_environment | default('ci-ubuntu-22.04') }}"
 
   tasks:
+    - name: Print used ceph version
+      ansible.builtin.debug:
+        var: _ceph_version
+
+    - name: Print used openstack version
+      ansible.builtin.debug:
+        var: _openstack_version
+
+    - name: Print used manager version
+      ansible.builtin.debug:
+        var: _manager_version
+
     - name: Set facts (Zuul deployment)
       ansible.builtin.set_fact:
         cloud: "{{ cloud_envs[hostvars[groups['all'][0]]['nodepool']['label']] }}"
@@ -173,7 +185,7 @@
             -e cloud={{ cloud }} \
             -e terraform_environment={{ _terraform_environment }} \
             -e repo_path={{ repo_path }} \
-            -e version_manager={{ _manager_version }} \
+            -e manager_version={{ _manager_version }} \
             manager-part-1.yml | tee -a ansible-manager-part-1.log
       args:
         executable: /bin/bash

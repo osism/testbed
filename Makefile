@@ -99,9 +99,9 @@ bootstrap: setup create ## Bootstrap everything.
 	  -e repo_path="$(PWD)/.src/$(shell contrib/setup-testbed.py --query "repository_server")" \
 	  -e manual_create=true \
 	  -e manual_deploy=true \
-	  -e version_ceph=$(VERSION_CEPH) \
-	  -e version_manager=$(VERSION_MANAGER) \
-	  -e version_openstack=$(VERSION_OPENSTACK) \
+	  -e ceph_version=$(VERSION_CEPH) \
+	  -e manager_version=$(VERSION_MANAGER) \
+	  -e openstack_version=$(VERSION_OPENSTACK) \
 	  -e ceph_stack=$(CEPH_STACK)
 
 .PHONY: manager

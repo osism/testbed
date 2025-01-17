@@ -4,7 +4,7 @@
   connection: local
 
   vars:
-    version_manager: latest
+    manager_version: latest
 
   tasks:
     - name: Set docker version facts for OSISM 6
@@ -12,39 +12,47 @@
         __docker_version: "5:20.10.24"
         __docker_cli_version: "5:20.10.24"
       when:
-        - version_manager != "latest"
-        - version_manager is ansible.builtin.version("7.0.0", '<')
+        - manager_version != "latest"
+        - manager_version is ansible.builtin.version("7.0.0", '<')
 
     - name: Set docker version facts for OSISM 7 (<= 7.1.0)
       ansible.builtin.set_fact:
         __docker_version: "5:24.0.9"
         __docker_cli_version: "5:24.0.9"
       when:
-        - version_manager != "latest"
-        - version_manager is ansible.builtin.version("7.0.0", '>=')
-        - version_manager is ansible.builtin.version("7.1.0", '<=')
+        - manager_version != "latest"
+        - manager_version is ansible.builtin.version("7.0.0", '>=')
+        - manager_version is ansible.builtin.version("7.1.0", '<=')
 
     - name: Set docker version facts for OSISM 7 (>= 7.1.1)
       ansible.builtin.set_fact:
         __docker_version: "5:26.1.4"
         __docker_cli_version: "5:26.1.4"
       when:
-        - version_manager != "latest"
-        - version_manager is ansible.builtin.version("7.1.1", '>=')
+        - manager_version != "latest"
+        - manager_version is ansible.builtin.version("7.1.1", '>=')
 
     - name: Set docker version facts for OSISM latest
       ansible.builtin.set_fact:
         __docker_version: "5:27.4.1"
         __docker_cli_version: "5:27.4.1"
       when:
-        - version_manager == "latest"
+        - manager_version == "latest"
+
+    - name: Print used docker version
+      ansible.buitin.debug:
+        var: __docker_version
+
+    - name: Print used docker cli version
+      ansible.buitin.debug:
+        var: __docker_cli_version
 
 - name: Run manager part 2
   hosts: testbed-manager
   connection: local
 
   vars:
-    version_manager: latest
+    manager_version: latest
 
     docker_configure_repository: true
     docker_configure_storage_driver: true
