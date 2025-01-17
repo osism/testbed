@@ -40,11 +40,11 @@
         - manager_version == "latest"
 
     - name: Print used docker version
-      ansible.buitin.debug:
+      ansible.builtin.debug:
         var: __docker_version
 
     - name: Print used docker cli version
-      ansible.buitin.debug:
+      ansible.builtin.debug:
         var: __docker_cli_version
 
 - name: Run manager part 2
