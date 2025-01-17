@@ -6,7 +6,7 @@
     ansible_ssh_user: dragon
     operator_user: dragon
     repo: osism/testbed
-    version_manager: latest
+    manager_version: latest
 
     venv_path: /opt/venv
 
@@ -120,7 +120,7 @@
     - name: Run manager part 2
       ansible.builtin.shell: |
         set -o pipefail
-        {{ ansible_playbook }} -i testbed-manager, -e version_manager={{ version_manager }} /opt/configuration/ansible/manager-part-2.yml | tee -a /opt/configuration/ansible/ansible-manager-part-2.log
+        {{ ansible_playbook }} -i testbed-manager, -e manager_version={{ manager_version }} /opt/configuration/ansible/manager-part-2.yml | tee -a /opt/configuration/ansible/ansible-manager-part-2.log
       args:
         executable: /bin/bash
       changed_when: true
