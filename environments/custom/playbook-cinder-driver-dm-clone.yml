@@ -5,10 +5,10 @@
 
   tasks:
     - name: Create physical volumes and volume group on empty disks
-      become: True
+      become: true
       community.general.lvg:
         vg: local
-        pvresize: True
+        pvresize: true
         pvs: >-
           {{
             ['/dev']
