@@ -118,7 +118,7 @@ deploy: .MANAGER_ADDRESS.$(CLOUD) .id_rsa.$(CLOUD)
 .PHONY: deploy-ceph
 deploy-ceph: .MANAGER_ADDRESS.$(CLOUD) .id_rsa.$(CLOUD)
 	@. ./.MANAGER_ADDRESS.$(CLOUD); \
-	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(CLOUD) $(USERNAME)@$$MANAGER_ADDRESS "/opt/configuration/scripts/deploy-ceph-services.sh"
+	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(CLOUD) $(USERNAME)@$$MANAGER_ADDRESS "/opt/configuration/scripts/deploy-ceph.sh"
 
 .PHONY: deploy-manager
 deploy-manager: .MANAGER_ADDRESS.$(CLOUD) .id_rsa.$(CLOUD)
@@ -128,7 +128,7 @@ deploy-manager: .MANAGER_ADDRESS.$(CLOUD) .id_rsa.$(CLOUD)
 .PHONY: deploy-identity
 deploy-identity: .MANAGER_ADDRESS.$(CLOUD) .id_rsa.$(CLOUD)
 	@. ./.MANAGER_ADDRESS.$(CLOUD); \
-	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(CLOUD) $(USERNAME)@$$MANAGER_ADDRESS "/opt/configuration/scripts/deploy-identity-services.sh"
+	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(CLOUD) $(USERNAME)@$$MANAGER_ADDRESS "/opt/configuration/scripts/deploy-identity.sh"
 
 .PHONY: upgrade
 upgrade: .MANAGER_ADDRESS.$(CLOUD) .id_rsa.$(CLOUD)
@@ -138,7 +138,7 @@ upgrade: .MANAGER_ADDRESS.$(CLOUD) .id_rsa.$(CLOUD)
 .PHONY: upgrade-ceph
 upgrade-ceph: .MANAGER_ADDRESS.$(CLOUD) .id_rsa.$(CLOUD)
 	@. ./.MANAGER_ADDRESS.$(CLOUD); \
-	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(CLOUD) $(USERNAME)@$$MANAGER_ADDRESS "/opt/configuration/scripts/upgrade-ceph-services.sh $(VERSION_MANAGER) $(VERSION_CEPH)"
+	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(CLOUD) $(USERNAME)@$$MANAGER_ADDRESS "/opt/configuration/scripts/upgrade-ceph.sh $(VERSION_MANAGER) $(VERSION_CEPH)"
 
 .PHONY: check
 check: .MANAGER_ADDRESS.$(CLOUD) .id_rsa.$(CLOUD)
@@ -148,7 +148,7 @@ check: .MANAGER_ADDRESS.$(CLOUD) .id_rsa.$(CLOUD)
 .PHONY: tempest
 tempest: .MANAGER_ADDRESS.$(CLOUD) .id_rsa.$(CLOUD)
 	@. ./.MANAGER_ADDRESS.$(CLOUD); \
-	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(CLOUD) $(USERNAME)@$$MANAGER_ADDRESS /opt/configuration/scripts/check/302-openstack-tempest.sh
+	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(CLOUD) $(USERNAME)@$$MANAGER_ADDRESS /opt/configuration/scripts/check/302-openstack-with-tempest.sh
 
 .PHONY: bootstrap
 bootstrap: .MANAGER_ADDRESS.$(CLOUD) .id_rsa.$(CLOUD)
