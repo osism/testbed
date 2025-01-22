@@ -18,8 +18,8 @@ sudo ln -sf /opt/configuration/contrib/semver2.sh /usr/local/bin/semver
 # print docker version on manager after seed stage
 docker version
 
-# deploy manager service
-sh -c '/opt/configuration/scripts/deploy/000-manager-service.sh'
+# deploy manager ervice
+sh -c '/opt/configuration/scripts/deploy/000-manager.sh'
 
 # Do not use the Keystone/Keycloak integration by default. We only use this integration
 # in a special identity testbed.
