@@ -249,7 +249,7 @@
 
     - name: Run tempest
       ansible.builtin.command:
-        cmd: "ssh -i {{ terraform_path }}/.id_rsa.{{ cloud }} dragon@{{ manager_host }} /opt/configuration/scripts/check/302-openstack-tempest.sh"
+        cmd: "ssh -i {{ terraform_path }}/.id_rsa.{{ cloud }} dragon@{{ manager_host }} /opt/configuration/scripts/check/302-openstack-with-tempest.sh"
       when:
         - not manual_deploy | bool
         - _tempest | bool
