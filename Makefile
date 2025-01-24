@@ -112,6 +112,14 @@ manager: setup bootstrap ## Deploy only the manager service.
 	  TERRAFORM=$(TERRAFORM) \
 	  deploy-manager
 
+.PHONY: baremetal
+baremetal: setup manager ## Deploy only baremetal services.
+	make -C terraform \
+	  CLOUD=$(CLOUD) \
+	  ENVIRONMENT=$(ENVIRONMENT) \
+	  TERRAFORM=$(TERRAFORM) \
+	  deploy-baremetal
+
 .PHONY: identity
 identity: setup manager ## Deploy only identity services.
 	make -C terraform \

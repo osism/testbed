@@ -125,6 +125,11 @@ deploy-manager: .MANAGER_ADDRESS.$(CLOUD) .id_rsa.$(CLOUD)
 	@. ./.MANAGER_ADDRESS.$(CLOUD); \
 	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(CLOUD) $(USERNAME)@$$MANAGER_ADDRESS "/opt/configuration/scripts/deploy-manager.sh"
 
+.PHONY: deploy-baremetal
+deploy-baremetal: .MANAGER_ADDRESS.$(CLOUD) .id_rsa.$(CLOUD)
+	@. ./.MANAGER_ADDRESS.$(CLOUD); \
+	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(CLOUD) $(USERNAME)@$$MANAGER_ADDRESS "/opt/configuration/scripts/deploy-baremetal.sh"
+
 .PHONY: deploy-identity
 deploy-identity: .MANAGER_ADDRESS.$(CLOUD) .id_rsa.$(CLOUD)
 	@. ./.MANAGER_ADDRESS.$(CLOUD); \
@@ -224,7 +229,7 @@ log: .deploy.$(CLOUD)
 
 .deploy.$(CLOUD): init
 	@STAT=$$($(TERRAFORM) state list); \
-	if test -n "$$STAT"; then touch .deploy.$(CLOUD); else echo "use make deploy or deploy-identity"; exit 1; fi
+	if test -n "$$STAT"; then touch .deploy.$(CLOUD); else echo "use make deploy or deploy-identity or deploy-baremetal"; exit 1; fi
 
 .MANAGER_ADDRESS.$(CLOUD): .deploy.$(CLOUD)
 	@MANAGER_ADDRESS=$$($(TERRAFORM) output manager_address); \
