@@ -1,0 +1,20 @@
+[Unit]
+Description=Ironic Interface Creator
+Requires=docker.service
+After=docker.service
+
+[Service]
+Type=oneshot
+User=root
+Group=root
+Restart=on-failure
+{% if ironic_interface_wait_timeout is defined %}
+TimeoutStartSec={{ ironic_interface_wait_timeout }}
+{% endif %}
+RemainAfterExit=true
+ExecStartPre=/sbin/ip link set dev {{ ironic_network_interface }} address {{ ironic_port.port.mac_address }}
+ExecStart=/sbin/dhclient -v {{ ironic_network_interface }} -cf /etc/dhcp/ironic-dhclient.conf
+ExecStop=/sbin/dhclient -r {{ ironic_network_interface }}
+
+[Install]
+WantedBy=multi-user.target
