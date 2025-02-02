@@ -120,14 +120,6 @@ baremetal: setup manager ## Deploy only baremetal services.
 	  TERRAFORM=$(TERRAFORM) \
 	  deploy-baremetal
 
-.PHONY: identity
-identity: setup manager ## Deploy only identity services.
-	make -C terraform \
-	  CLOUD=$(CLOUD) \
-	  ENVIRONMENT=$(ENVIRONMENT) \
-	  TERRAFORM=$(TERRAFORM) \
-	  deploy-identity
-
 .PHONY: ceph
 ceph: setup manager ## Deploy only ceph services.
 	make -C terraform \

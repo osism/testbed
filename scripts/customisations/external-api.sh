@@ -36,9 +36,6 @@ sed -i "s/auth_url: .*/auth_url: https:\/\/${api_fqdn}:5000\/v3/g" /opt/configur
 # overwrite fqdn for internal use
 sed -i "s/api.testbed.osism.xyz: .*/${api_fqdn}: 192.168.16.254/g" /opt/configuration/environments/configuration.yml
 
-# do not use keystone logout url
-sed -i "/keystone_logout_url: .*/d" /opt/configuration/environments/kolla/configuration.yml
-
 # add traefik ports + services + routers
 cat >> /opt/configuration/environments/infrastructure/configuration.yml <<%EOF
 

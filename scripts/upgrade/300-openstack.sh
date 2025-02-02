@@ -5,14 +5,6 @@ set -e
 source /opt/configuration/scripts/include.sh
 source /opt/configuration/scripts/manager-version.sh
 
-# Do not use the Keystone/Keycloak integration by default. We only use this integration
-# in a special identity testbed.
-rm -f /opt/configuration/environments/kolla/files/overlays/horizon/_9999-custom-settings.py
-rm -f /opt/configuration/environments/kolla/files/overlays/horizon/custom_local_settings
-rm -f /opt/configuration/environments/kolla/files/overlays/keystone/wsgi-keystone.conf
-rm -f /opt/configuration/environments/kolla/group_vars/keystone.yml
-rm -rf /opt/configuration/environments/kolla/files/overlays/keystone/federation
-
 osism apply -a upgrade keystone
 osism apply -a upgrade placement
 osism apply -a upgrade neutron

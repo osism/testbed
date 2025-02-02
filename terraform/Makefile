@@ -130,11 +130,6 @@ deploy-baremetal: .MANAGER_ADDRESS.$(CLOUD) .id_rsa.$(CLOUD)
 	@. ./.MANAGER_ADDRESS.$(CLOUD); \
 	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(CLOUD) $(USERNAME)@$$MANAGER_ADDRESS "/opt/configuration/scripts/deploy-baremetal.sh"
 
-.PHONY: deploy-identity
-deploy-identity: .MANAGER_ADDRESS.$(CLOUD) .id_rsa.$(CLOUD)
-	@. ./.MANAGER_ADDRESS.$(CLOUD); \
-	ssh -o StrictHostKeyChecking=no -i .id_rsa.$(CLOUD) $(USERNAME)@$$MANAGER_ADDRESS "/opt/configuration/scripts/deploy-identity.sh"
-
 .PHONY: upgrade
 upgrade: .MANAGER_ADDRESS.$(CLOUD) .id_rsa.$(CLOUD)
 	@. ./.MANAGER_ADDRESS.$(CLOUD); \

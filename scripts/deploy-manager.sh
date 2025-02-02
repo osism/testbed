@@ -21,14 +21,6 @@ docker version
 # deploy manager ervice
 sh -c '/opt/configuration/scripts/deploy/000-manager.sh'
 
-# Do not use the Keystone/Keycloak integration by default. We only use this integration
-# in a special identity testbed.
-rm -f /opt/configuration/environments/kolla/files/overlays/horizon/_9999-custom-settings.py
-rm -f /opt/configuration/environments/kolla/files/overlays/horizon/custom_local_settings
-rm -f /opt/configuration/environments/kolla/files/overlays/keystone/wsgi-keystone.conf
-rm -f /opt/configuration/environments/kolla/group_vars/keystone.yml
-rm -rf /opt/configuration/environments/kolla/files/overlays/keystone/federation
-
 # bootstrap nodes
 osism apply operator -u $IMAGE_NODE_USER -l testbed-nodes
 osism apply --environment custom facts
