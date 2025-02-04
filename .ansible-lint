@@ -5,6 +5,12 @@ exclude_paths:
   - environments/kolla/files/overlays/ceilometer/pipeline.yaml
   - environments/kolla/files/overlays/prometheus/prometheus.yml.d/50-ceph.yml
   - netbox/playbooks
+  - .ansible/collections/ansible_collections/netbox/netbox/plugins/modules/netbox_device.py
+  - .ansible/collections/ansible_collections/netbox/netbox/plugins/modules/netbox_ip_address.py
+  - .ansible/collections/ansible_collections/netbox/netbox/plugins/modules/netbox_location.py
+  - .ansible/collections/ansible_collections/netbox/netbox/plugins/modules/netbox_prefix.py
+  - .ansible/collections/ansible_collections/netbox/netbox/plugins/modules/netbox_rack.py
+  - .ansible/collections/ansible_collections/netbox/netbox/plugins/modules/netbox_site.py
 mock_modules:
   - netbox.netbox.netbox_device
   - netbox.netbox.netbox_ip_address
