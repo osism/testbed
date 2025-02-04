@@ -6,10 +6,16 @@
       - name: orchestrator
         label: testbed-orchestrator
 
+- semaphore:
+    name: semaphore-testbed
+    max: 2
+
 - job:
     name: abstract-testbed-deploy
     abstract: true
     parent: base-extra-logs
+    semaphores:
+      - name: semaphore-testbed
     pre-run: playbooks/pre.yml
     nodeset: testbed-orchestrator
     run: playbooks/deploy.yml
