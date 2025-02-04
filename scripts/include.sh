@@ -14,3 +14,7 @@ wait_for_container_healthy() {
         fi
     done
 }
+
+get_default_dns_servers() {
+    resolvectl dns | grep Global | awk -F': ' '{ print $2 }' | sed 's/ /; /g'
+}
