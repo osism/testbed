@@ -22,8 +22,3 @@ clouds:
       project_name: test
       project_domain_name: default
       user_domain_name: default
-  testbed-alice:
-    profile: testbed-keycloak
-    auth:
-      username: alice
-      project_name: test
