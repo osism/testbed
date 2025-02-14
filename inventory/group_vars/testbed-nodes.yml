@@ -74,9 +74,10 @@ network_ethernets:
     dhcp4: true
     mtu: "{{ testbed_mtu_node }}"
 
-network_dispatcher_scripts:
-  - src: /opt/configuration/network/vxlan.sh
-    dest: routable.d/vxlan.sh
+# NOTE: Only add vxlan.sh for osism < 9.0.0 or latest
+# network_dispatcher_scripts:
+#   - src: /opt/configuration/network/vxlan.sh
+#     dest: routable.d/vxlan.sh
 
 ##########################################################
 # kolla
