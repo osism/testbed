@@ -97,3 +97,15 @@ if [[ $(semver $MANAGER_VERSION 7.0.0) -ge 0 || $MANAGER_VERSION == "latest" ]];
 fi
 
 osism apply squid
+
+# Enable vxlan.sh networkd-dispatcher script for OSISM <= 9.0.0
+if [[ $MANAGER_VERSION != "latest" && $(semver $MANAGER_VERSION 9.0.0) -lt 0 ]]; then
+	sed -i 's|^# \(network_dispatcher_scripts:\)$|\1|g' \
+		inventory/group_vars/testbed-nodes.yml
+	sed -i 's|^# \(  - src: /opt/configuration/network/vxlan.sh\)$|\1|g' \
+		inventory/group_vars/testbed-nodes.yml \
+		inventory/group_vars/testbed-managers.yml
+	sed -i 's|^# \(    dest: routable.d/vxlan.sh\)$|\1|g' \
+		inventory/group_vars/testbed-nodes.yml \
+		inventory/group_vars/testbed-managers.yml
+fi

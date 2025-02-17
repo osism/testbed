@@ -37,11 +37,15 @@ network_ethernets:
   "{{ internal_interface }}":
     dhcp4: true
     mtu: "{{ testbed_mtu_manager }}"
+
+# NOTE: Only add vxlan.sh for osism < 9.0.0 or latest
 network_dispatcher_scripts:
-  - src: /opt/configuration/network/vxlan.sh
-    dest: routable.d/vxlan.sh
+#   - src: /opt/configuration/network/vxlan.sh
+#     dest: routable.d/vxlan.sh
   - src: /opt/configuration/network/iptables.sh
     dest: routable.d/iptables.sh
+
+network_vxlan_interfaces: "{{ _network_vxlan_interfaces }}"
 
 ##########################################################
 # kolla
