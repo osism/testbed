@@ -80,32 +80,20 @@ fi
 osism apply resolvconf -l testbed-manager
 osism apply sshconfig
 osism apply known-hosts
-
-if [[ $(semver $MANAGER_VERSION 7.0.0) -ge 0 || $MANAGER_VERSION == "latest" ]]; then
-    osism apply nexus
-
-    if [[ "$IS_ZUUL" == "true" ]]; then
-        sh -c '/opt/configuration/scripts/set-docker-registry.sh nexus.testbed.osism.xyz:8193'
-	if [[ $MANAGER_VERSION == "latest" ]]; then
-	    sed -i "s/docker_namespace: osism/docker_namespace: kolla/" /opt/configuration/inventory/group_vars/all/kolla.yml
-	else
-	    sed -i "s#docker_namespace: osism#docker_namespace: kolla/release#" /opt/configuration/inventory/group_vars/all/kolla.yml
-	fi
-    else
-        sh -c '/opt/configuration/scripts/set-docker-registry.sh nexus.testbed.osism.xyz:8192'
-    fi
-fi
-
 osism apply squid
+
+if [[ $MANAGER_VERSION != "latest" ]]; then
+  sed -i "s#docker_namespace: kolla#docker_namespace: kolla/release#" /opt/configuration/inventory/group_vars/all/kolla.yml
+fi
 
 # Enable vxlan.sh networkd-dispatcher script for OSISM <= 9.0.0
 if [[ $MANAGER_VERSION != "latest" && $(semver $MANAGER_VERSION 9.0.0) -lt 0 ]]; then
-	sed -i 's|^# \(network_dispatcher_scripts:\)$|\1|g' \
-		inventory/group_vars/testbed-nodes.yml
-	sed -i 's|^# \(  - src: /opt/configuration/network/vxlan.sh\)$|\1|g' \
-		inventory/group_vars/testbed-nodes.yml \
-		inventory/group_vars/testbed-managers.yml
-	sed -i 's|^# \(    dest: routable.d/vxlan.sh\)$|\1|g' \
-		inventory/group_vars/testbed-nodes.yml \
-		inventory/group_vars/testbed-managers.yml
+    sed -i 's|^# \(network_dispatcher_scripts:\)$|\1|g' \
+      /opt/configuration/inventory/group_vars/testbed-nodes.yml
+    sed -i 's|^# \(  - src: /opt/configuration/network/vxlan.sh\)$|\1|g' \
+      /opt/configuration/inventory/group_vars/testbed-nodes.yml \
+      /opt/configuration/inventory/group_vars/testbed-managers.yml
+    sed -i 's|^# \(    dest: routable.d/vxlan.sh\)$|\1|g' \
+      /opt/configuration/inventory/group_vars/testbed-nodes.yml \
+      /opt/configuration/inventory/group_vars/testbed-managers.yml
 fi

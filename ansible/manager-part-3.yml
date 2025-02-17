@@ -104,14 +104,6 @@
         line: "required_packages_extra: ['linux-generic-hwe-{{ ansible_distribution_version }}']"
       when: ansible_distribution == "Ubuntu"
 
-    # Looks like it is not possible to use Nexus with authentication with Podman.
-    - name: Do not use Nexus for Ceph on CentOS
-      ansible.builtin.lineinfile:
-        path: /opt/configuration/inventory/group_vars/all/registries.yml
-        line: "ceph_docker_registry: nexus.testbed.osism.xyz:8192"
-        state: absent
-      when: ansible_os_family == "RedHat"
-
     # The use of these paraemters in production is not recommended. Further details in OSSN-0090.
     # https://wiki.openstack.org/wiki/OSSN/OSSN-0090
     - name: Use insecure glance configuration
