@@ -69,12 +69,6 @@ wireguard_users:
 wireguard_create_client_config: true
 
 ##########################
-# nexus
-
-nexus_traefik: true
-nexus_host: nexus.testbed.osism.xyz
-
-##########################
 # thanos_sidecar
 
 thanos_sidecar_host: "{{ hostvars[inventory_hostname]['ansible_' + internal_interface]['ipv4']['address'] }}"
