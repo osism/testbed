@@ -1,0 +1,63 @@
+---
+# node_types is a dict that defines different sets of node specifications,
+# keyed by a 'node type name' to associate with each set of specifications.
+node_types:
+  # The type name.
+  type0:
+    # The amount of RAM, in mebibytes.
+    memory_mb: 4096
+    # The number of virtual CPUs.
+    vcpus: 2
+    # A list of volumes, each with a capacity.
+    volumes:
+      - capacity: 5GB
+    # A list of physical network names to connect to. These physical network
+    # names should be keyed in `physnet_mappings` in each hypervisor's host
+    # vars.
+    physical_networks:
+      - physnet0
+
+# specs is a list of configurations of nodes to be created. Each configuration
+# can specify the number of nodes to be created, the type (from `node_types`)
+# of these nodes, and optionally configuration for the Ironic nodes to be
+# enroled from these nodes. If `ironic_config` is not set, Ironic enrolment
+# will be skipped for that spec.
+specs:
+    # The type in `node_types` that this spec refers to. Required.
+  - type: type0
+    # The number of nodes to create of this spec. Required.
+    count: 6
+    # The Ironic configuration for nodes of this spec. Optional.
+    # ironic_config:
+    #   # The resource class that nodes of this spec should use in Ironic.
+    #   # Required if `ironic_config` has been specified.
+    #   resource_class: my_rc
+
+# Map physical network names to their source device. This can be either an
+# existing interface or an existing bridge.
+# Remember that if the mappings are specified in this file, they will apply to
+# all hosts unless specific mappings are specified in individual host_vars
+# files.
+physnet_mappings:
+  physnet0: vxlan0
+
+# Maps Ironic drivers to the BMC emulation tool they support.
+bmc_emulators:
+  agent_ipmitool: virtualbmc
+  agent_ipmitool_socat: virtualbmc
+  ipmi: virtualbmc
+  pxe_ipmitool: virtualbmc
+  pxe_ipmitool_socat: virtualbmc
+  pxe_snmp: virtualpdu
+  redfish: sushy-tools
+  snmp: virtualpdu
+
+# The address on which VBMC will listen for node IPMI communication.
+ipmi_address: "{{ hostvars[inventory_hostname].ansible_facts['vxlan_oob']['ipv4']['address'] }}"
+# The range of ports available for use for node IPMI communication.
+ipmi_port_range_start: 6230
+ipmi_port_range_end: 6240
+# The username to use for node IPMI communication.
+ipmi_username: admin
+# The password to use for node IPMI communication.
+ipmi_password: password
