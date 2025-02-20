@@ -49,11 +49,8 @@ osism apply tenks -e ireallymeanit=yes -e tenks_override_file=/opt/configuration
 osism apply designate
 osism apply kolla-ceph-rgw
 osism apply horizon
-osism apply skyline
 osism apply cinder
 osism apply barbican
 osism apply octavia
-osism apply ceilometer
-osism apply aodh
 
 osism apply homer
