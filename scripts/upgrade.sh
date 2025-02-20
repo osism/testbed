@@ -54,8 +54,8 @@ if [[ "$IS_ZUUL" == "true" || "$ARA" == "false" ]]; then
     sh -c '/opt/configuration/scripts/disable-ara.sh'
 fi
 
-# refresh facts & reconcile the inventory
-osism reconciler sync
+# refresh facts & sync the inventory
+sync_inventory
 osism apply facts
 
 # upgrade services

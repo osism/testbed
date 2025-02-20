@@ -29,7 +29,8 @@ sh -c '/opt/configuration/scripts/sync-configuration-repository.sh'
 osism update manager
 docker compose --project-directory /opt/manager ps
 
-osism reconciler sync
+# refresh facts & sync the inventory
+sync_inventory
 osism apply facts
 
 # upgrade services
