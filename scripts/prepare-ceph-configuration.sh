@@ -28,7 +28,10 @@ if [[ $(semver $MANAGER_VERSION 7.0.0) -ge 0 || $MANAGER_VERSION == "latest" ]];
             cp /tmp/$(basename $node)-ceph-lvm-configuration.yml /opt/configuration/inventory/host_vars/$(basename $node)/ceph-lvm-configuration.yml
         fi
     done
-    osism reconciler sync
+
+    # sync the inventory
+    sync_inventory
+
     osism apply ceph-create-lvm-devices
     osism apply facts
 

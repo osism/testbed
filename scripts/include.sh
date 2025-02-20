@@ -14,3 +14,13 @@ wait_for_container_healthy() {
         fi
     done
 }
+
+sync_inventory() {
+    # avoid overlaps with run_on_change
+    sleep 10
+    if [[ $(semver $MANAGER_VERSION 8.0.0) -ge 0 || $MANAGER_VERSION == "latest" ]]; then
+        osism sync inventory
+    else
+        osism reconciler sync
+    fi
+}
