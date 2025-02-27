@@ -9,6 +9,8 @@ echo
 source /opt/configuration/scripts/include.sh
 source /opt/manager-vars.sh
 
+sed -i 's/enable_ironic: "no"/enable_ironic: "yes"/' /opt/configuration/environments/kolla/configuration.yml
+
 osism apply -e custom baremetal-prepare
 osism sync inventory
 osism apply network -e network_allow_service_restart=true
