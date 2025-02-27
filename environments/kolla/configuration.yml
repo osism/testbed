@@ -21,11 +21,12 @@ openstack_cacert: /etc/ssl/certs/ca-certificates.crt
 enable_aodh: "yes"
 enable_barbican: "yes"
 enable_ceilometer: "yes"
-enable_ironic: "yes"
 enable_magnum: "yes"
 enable_manila: "yes"
-enable_senlin: "yes"
 enable_skyline: "yes"
+
+# optional services
+enable_ironic: "no"
 
 # generic
 openstack_service_workers: 2
