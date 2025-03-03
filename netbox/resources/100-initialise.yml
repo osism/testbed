@@ -1,0 +1,27 @@
+---
+- site:
+    name: Discworld
+    slug: discworld
+
+- location:
+    name: Ankh-Morpork
+    slug: ankh-morpork
+    site: discworld
+
+- prefix:
+    family: 4
+    prefix: 192.168.16.0/20
+    prefix_role: Management
+
+- prefix:
+    family: 4
+    prefix: 192.168.112.0/20
+    prefix_role: External
+
+- ip_address:
+    address: 192.168.16.254
+    dns_name: api.testbed.osism.xyz
+
+- ip_address:
+    address: 192.168.16.9
+    dns_name: api-int.testbed.osism.xyz
