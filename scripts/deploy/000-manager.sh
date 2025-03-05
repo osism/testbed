@@ -87,7 +87,7 @@ if [[ $MANAGER_VERSION != "latest" ]]; then
 fi
 
 # use vxlan.sh networkd-dispatcher script for OSISM <= 9.0.0
-if [[ $(semver $MANAGER_VERSION 9.0.0) -lt 0 || $MANAGER_VERSION == "latest" ]]; then
+if [[ $(semver $MANAGER_VERSION 9.0.0) -lt 0 && $MANAGER_VERSION != "latest" ]]; then
     sed -i 's|^# \(network_dispatcher_scripts:\)$|\1|g' \
       /opt/configuration/inventory/group_vars/testbed-nodes.yml
     sed -i 's|^# \(  - src: /opt/configuration/network/vxlan.sh\)$|\1|g' \
