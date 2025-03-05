@@ -86,8 +86,8 @@ if [[ $MANAGER_VERSION != "latest" ]]; then
   sed -i "s#docker_namespace: kolla#docker_namespace: kolla/release#" /opt/configuration/inventory/group_vars/all/kolla.yml
 fi
 
-# Enable vxlan.sh networkd-dispatcher script for OSISM <= 9.0.0
-if [[ $MANAGER_VERSION != "latest" && $(semver $MANAGER_VERSION 9.0.0) -lt 0 ]]; then
+# use vxlan.sh networkd-dispatcher script for OSISM <= 9.0.0
+if [[ $(semver $MANAGER_VERSION 9.0.0) -lt 0 || $MANAGER_VERSION == "latest" ]]; then
     sed -i 's|^# \(network_dispatcher_scripts:\)$|\1|g' \
       /opt/configuration/inventory/group_vars/testbed-nodes.yml
     sed -i 's|^# \(  - src: /opt/configuration/network/vxlan.sh\)$|\1|g' \

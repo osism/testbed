@@ -38,12 +38,12 @@ network_ethernets:
     dhcp4: true
     mtu: "{{ testbed_mtu_manager }}"
 
-# NOTE: Only add vxlan.sh for osism < 9.0.0 or latest
 network_dispatcher_scripts:
-#   - src: /opt/configuration/network/vxlan.sh
-#     dest: routable.d/vxlan.sh
   - src: /opt/configuration/network/iptables.sh
     dest: routable.d/iptables.sh
+# Only use vxlan.sh networkd-dispatcher script for OSISM < 9.0.0
+#   - src: /opt/configuration/network/vxlan.sh
+#     dest: routable.d/vxlan.sh
 
 network_vxlan_interfaces: "{{ _network_vxlan_interfaces }}"
 
