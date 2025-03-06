@@ -1,2 +1,0 @@
----
-network_vxlan_interfaces: "{{ _network_vxlan_interfaces }}"
