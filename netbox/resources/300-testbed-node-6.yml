@@ -1,0 +1,39 @@
+---
+- cable:
+    type: cat6a
+    termination_a_type: dcim.interface
+    termination_a:
+      device: testbed-switch-0
+      name: Ethernet16
+    termination_b_type: dcim.interface
+    termination_b:
+      device: testbed-node-6
+      name: Ethernet1
+
+- cable:
+    type: cat6a
+    termination_a_type: dcim.interface
+    termination_a:
+      device: testbed-switch-1
+      name: Ethernet16
+    termination_b_type: dcim.interface
+    termination_b:
+      device: testbed-node-6
+      name: Ethernet2
+
+- cable:
+    type: cat6a
+    termination_a_type: dcim.interface
+    termination_a:
+      device: testbed-switch-2
+      name: Ethernet16
+    termination_b_type: dcim.interface
+    termination_b:
+      device: testbed-node-6
+      name: Ethernet3
+
+- ip_address:
+    address: 192.168.16.16/20
+    assigned_object:
+      name: Ethernet1
+      device: testbed-node-6
