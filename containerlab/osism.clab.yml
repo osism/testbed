@@ -1,0 +1,83 @@
+---
+name: osism
+
+topology:
+  kinds:
+    sonic-vs:
+      image: quay.io/osism/sonic-vs:202411
+    linux:
+      image: quay.io/frrouting/frr:10.2.1
+  nodes:
+    spine01:
+      kind: sonic-vs
+    spine02:
+      kind: sonic-vs
+    leaf01:
+      kind: sonic-vs
+    leaf02:
+      kind: sonic-vs
+    border01:
+      kind: sonic-vs
+    border02:
+      kind: sonic-vs
+    frr01:
+      kind: linux
+      binds:
+        - files/daemons:/etc/frr/daemons
+        - files/frr01.conf:/etc/frr/frr.conf
+        - files/vtysh.conf:/etc/frr/vtysh.conf
+    frr02:
+      kind: linux
+      binds:
+        - files/daemons:/etc/frr/daemons
+        - files/frr02.conf:/etc/frr/frr.conf
+        - files/vtysh.conf:/etc/frr/vtysh.conf
+    frr03:
+      kind: linux
+      binds:
+        - files/daemons:/etc/frr/daemons
+        - files/frr03.conf:/etc/frr/frr.conf
+        - files/vtysh.conf:/etc/frr/vtysh.conf
+    frr04:
+      kind: linux
+      binds:
+        - files/daemons:/etc/frr/daemons
+        - files/frr04.conf:/etc/frr/frr.conf
+        - files/vtysh.conf:/etc/frr/vtysh.conf
+
+  links:
+    # frr01 -> leaf
+    - endpoints: ["leaf01:Ethernet0", "frr01:eth1"]
+    - endpoints: ["leaf02:Ethernet0", "frr01:eth2"]
+
+    # frr02 -> leaf
+    - endpoints: ["leaf01:Ethernet4", "frr02:eth1"]
+    - endpoints: ["leaf02:Ethernet4", "frr02:eth2"]
+
+    # frr03 -> leaf
+    - endpoints: ["border01:Ethernet0", "frr03:eth1"]
+    - endpoints: ["border02:Ethernet0", "frr03:eth2"]
+
+    # frr04 -> leaf
+    - endpoints: ["border01:Ethernet4", "frr04:eth1"]
+    - endpoints: ["border02:Ethernet4", "frr04:eth2"]
+
+    # leaf01 -> spine
+    - endpoints: ["leaf01:Ethernet120", "spine01:Ethernet0"]
+    - endpoints: ["leaf01:Ethernet124", "spine02:Ethernet0"]
+
+    # leaf02 -> spine
+    - endpoints: ["leaf02:Ethernet120", "spine01:Ethernet4"]
+    - endpoints: ["leaf02:Ethernet124", "spine02:Ethernet4"]
+
+    # border01 -> spine
+    - endpoints: ["border01:Ethernet120", "spine01:Ethernet8"]
+    - endpoints: ["border01:Ethernet124", "spine02:Ethernet8"]
+
+    # border02 -> spine
+    - endpoints: ["border02:Ethernet120", "spine01:Ethernet12"]
+    - endpoints: ["border02:Ethernet124", "spine02:Ethernet12"]
+
+    # spine01 / spine02
+    - endpoints: ["spine01:Ethernet120", "spine02:Ethernet120"]
+    - endpoints: ["spine01:Ethernet124", "spine02:Ethernet124"]
