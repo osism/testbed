@@ -2,6 +2,7 @@
 _network_vxlan_interfaces:
   vxlan0:
     vni: 42
+    mtu: 1350
     local_ip: "{{ [inventory_hostname] | map('extract', hostvars, 'ansible_facts') | map(attribute=internal_interface) | map(attribute='ipv4') | map(attribute='address') | first }}"
     dests: "{{ groups['testbed-nodes'] | reject('equalto', inventory_hostname) | map('extract', hostvars, 'ansible_facts') | map(attribute=internal_interface) | map(attribute='ipv4') | map(attribute='address') | list }}"
     addresses: >-
@@ -15,6 +16,7 @@ _network_vxlan_interfaces:
       }}
   vxlan1:
     vni: 23
+    mtu: 1350
     local_ip: "{{ [inventory_hostname] | map('extract', hostvars, 'ansible_facts') | map(attribute=internal_interface) | map(attribute='ipv4') | map(attribute='address') | first }}"
     dests: "{{ groups['testbed-nodes'] | reject('equalto', inventory_hostname) | map('extract', hostvars, 'ansible_facts') | map(attribute=internal_interface) | map(attribute='ipv4') | map(attribute='address') | list }}"
     addresses:
