@@ -85,3 +85,15 @@ osism apply squid
 if [[ $MANAGER_VERSION != "latest" ]]; then
   sed -i "s#docker_namespace: kolla#docker_namespace: kolla/release#" /opt/configuration/inventory/group_vars/all/kolla.yml
 fi
+
+# use vxlan.sh networkd-dispatcher script for OSISM <= 9.0.0
+if [[ $(semver $MANAGER_VERSION 9.0.0) -lt 0 && $MANAGER_VERSION != "latest" ]]; then
+    sed -i 's|^# \(network_dispatcher_scripts:\)$|\1|g' \
+      /opt/configuration/inventory/group_vars/testbed-nodes.yml
+    sed -i 's|^# \(  - src: /opt/configuration/network/vxlan.sh\)$|\1|g' \
+      /opt/configuration/inventory/group_vars/testbed-nodes.yml \
+      /opt/configuration/inventory/group_vars/testbed-managers.yml
+    sed -i 's|^# \(    dest: routable.d/vxlan.sh\)$|\1|g' \
+      /opt/configuration/inventory/group_vars/testbed-nodes.yml \
+      /opt/configuration/inventory/group_vars/testbed-managers.yml
+fi
