@@ -11,7 +11,6 @@ osism apply -e custom cinder-driver-dm-clone
 osism apply keystone
 osism apply placement
 osism apply neutron
-osism apply ironic
 osism apply nova
 
 osism apply horizon
