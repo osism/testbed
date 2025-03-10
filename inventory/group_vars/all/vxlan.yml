@@ -4,7 +4,7 @@ _network_vxlan_interfaces:
     vni: 42
     mtu: 1350
     local_ip: "{{ [inventory_hostname] | map('extract', hostvars, 'ansible_facts') | map(attribute=internal_interface) | map(attribute='ipv4') | map(attribute='address') | first }}"
-    dests: "{{ groups['testbed-nodes'] | reject('equalto', inventory_hostname) | map('extract', hostvars, 'ansible_facts') | map(attribute=internal_interface) | map(attribute='ipv4') | map(attribute='address') | list }}"
+    dests: "{{ (groups['testbed-nodes'] + groups['testbed-managers']) | reject('equalto', inventory_hostname) | map('extract', hostvars, 'ansible_facts') | map(attribute=internal_interface) | map(attribute='ipv4') | map(attribute='address') | list }}"
     addresses: >-
       {{
         [
@@ -18,6 +18,6 @@ _network_vxlan_interfaces:
     vni: 23
     mtu: 1350
     local_ip: "{{ [inventory_hostname] | map('extract', hostvars, 'ansible_facts') | map(attribute=internal_interface) | map(attribute='ipv4') | map(attribute='address') | first }}"
-    dests: "{{ groups['testbed-nodes'] | reject('equalto', inventory_hostname) | map('extract', hostvars, 'ansible_facts') | map(attribute=internal_interface) | map(attribute='ipv4') | map(attribute='address') | list }}"
+    dests: "{{ (groups['testbed-nodes'] + groups['testbed-managers']) | reject('equalto', inventory_hostname) | map('extract', hostvars, 'ansible_facts') | map(attribute=internal_interface) | map(attribute='ipv4') | map(attribute='address') | list }}"
     addresses:
       - "{{ '192.168.128.0/20' | ansible.utils.ipaddr('net') | ansible.utils.ipaddr(node_id) | ansible.utils.ipaddr('address') }}/20"
