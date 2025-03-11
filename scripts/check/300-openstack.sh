@@ -2,6 +2,12 @@
 set -x
 set -e
 
+server_ping() {
+    for address in $(openstack --os-cloud test floating ip list --status ACTIVE -f value -c "Floating IP Address" | tr -d '\r'); do
+        ping -c3 $address
+    done
+}
+
 server_list() {
     openstack --os-cloud test server list
     openstack --os-cloud test server show test
@@ -54,6 +60,7 @@ echo
 
 osism apply --environment openstack test
 server_list
+server_ping
 
 if [[ $MANAGER_VERSION == "latest" ]]; then
     compute_list
@@ -61,16 +68,20 @@ if [[ $MANAGER_VERSION == "latest" ]]; then
     # testbed-node-3 -> testbed-node-4
     osism manage compute migrate --yes --target testbed-node-3 testbed-node-4
     compute_list
+    server_ping
 
     # testbed-node-3 -> testbed-node-5
     osism manage compute migrate --yes --target testbed-node-3 testbed-node-5
     compute_list
+    server_ping
 
     # testbed-node-4 -> testbed-node-3
     osism manage compute migrate --yes --target testbed-node-4 testbed-node-3
     compute_list
+    server_ping
 
     # testbed-node-5 -> testbed-node-4
     osism manage compute migrate --yes --target testbed-node-5 testbed-node-4
     compute_list
+    server_ping
 fi
