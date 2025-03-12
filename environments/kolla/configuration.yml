@@ -23,6 +23,7 @@ enable_barbican: "yes"
 enable_ceilometer: "yes"
 enable_magnum: "yes"
 enable_manila: "yes"
+enable_proxysql: "yes"
 enable_skyline: "yes"
 
 # optional services
