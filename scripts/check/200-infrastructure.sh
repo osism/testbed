@@ -11,14 +11,14 @@ else
     # Ubuntu
     source /etc/os-release
     if [[ "$ID" == "ubuntu" ]]; then
-      packages='libmonitoring-plugin-perl libwww-perl libjson-perl monitoring-plugins-basic mysql-client'
+        packages='libmonitoring-plugin-perl libwww-perl libjson-perl monitoring-plugins-basic mysql-client'
     # Debian
     elif [[ "$ID" == "debian" ]]; then
-      packages='libmonitoring-plugin-perl libwww-perl libjson-perl monitoring-plugins-basic mariadb-client'
+        packages='libmonitoring-plugin-perl libwww-perl libjson-perl monitoring-plugins-basic mariadb-client'
     fi
 
     if ! dpkg -s $packages >/dev/null 2>&1; then
-      sudo apt-get install -y $packages >/dev/null 2>&1
+        sudo apt-get install -y $packages >/dev/null 2>&1
     fi
 fi
 
@@ -34,7 +34,8 @@ echo
 echo "# Status of MariaDB"
 echo
 
-bash nagios-plugins/check_galera_cluster -u root -p password -H api-int.testbed.osism.xyz -c 1
+MARIADB_USER=root_shard_0
+bash nagios-plugins/check_galera_cluster -u $MARIADB_USER -p password -H api-int.testbed.osism.xyz -c 1
 
 echo
 echo "# Status of Prometheus"
