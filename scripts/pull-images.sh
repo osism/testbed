@@ -21,7 +21,6 @@ else
     designate
     glance
     grafana
-    heat
     horizon
     keystone
     loadbalancer
