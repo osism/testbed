@@ -12,7 +12,6 @@
       - designate
       - glance
       - grafana
-      - heat
       - horizon
       - ironic
       - loadbalancer

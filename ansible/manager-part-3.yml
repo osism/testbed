@@ -48,7 +48,6 @@
       - "{{ netbox_image }}"
       - "{{ osism_ansible_image }}"
       - "{{ osism_image }}"
-      - "{{ osism_netbox_image }}"
       - "{{ postgres_image }}"
       - "{{ traefik_image }}"
       - "{{ vault_image }}"
