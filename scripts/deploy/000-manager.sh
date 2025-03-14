@@ -62,7 +62,7 @@ if [[ "$IS_ZUUL" == "true" || "$ARA" == "false" ]]; then
 fi
 
 # initialize netbox
-if [[ $(semver $MANAGER_VERSION 8.0.0) -ge 0 || $MANAGER_VERSION == "latest" ]]; then
+if [[ $(semver $MANAGER_VERSION 9.0.0) -ge 0 || $MANAGER_VERSION == "latest" ]]; then
     wait_for_container_healthy 60 netbox-netbox-1
     /opt/configuration/scripts/bootstrap/000-netbox.sh
 fi
