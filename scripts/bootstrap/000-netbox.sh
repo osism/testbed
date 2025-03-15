@@ -2,4 +2,4 @@
 set -x
 set -e
 
-osism manage netbox
+osism manage netbox --parallel 4
