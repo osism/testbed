@@ -56,6 +56,21 @@
       deployment_type: napalm
 
 - device:
+    name: testbed-switch-oob
+    site: "{{ site }}"
+    location: "{{ location }}"
+    rack: "{{ rack }}"
+    device_type: DCS-7050TX3-48C8
+    device_role: Oob
+    face: rear
+    position: 4
+    tags:
+      - managed-by-osism
+    custom_fields:
+      device_type: switch
+      deployment_type: napalm
+
+- device:
     name: testbed-manager
     site: "{{ site }}"
     location: "{{ location }}"
@@ -144,9 +159,7 @@
       ironic_enabled: false
     tags:
       - managed-by-osism
-      - managed-by-ironic
       - generic
-      - compute
 
 - device:
     name: testbed-node-4
@@ -162,9 +175,7 @@
       ironic_enabled: false
     tags:
       - managed-by-osism
-      - managed-by-ironic
       - generic
-      - compute
 
 - device:
     name: testbed-node-5
@@ -180,9 +191,7 @@
       ironic_enabled: false
     tags:
       - managed-by-osism
-      - managed-by-ironic
       - generic
-      - compute
 
 - device:
     name: testbed-node-6
@@ -198,7 +207,6 @@
       ironic_enabled: false
     tags:
       - managed-by-osism
-      - managed-by-ironic
       - generic
       - ceph-resource
 
@@ -216,7 +224,6 @@
       ironic_enabled: false
     tags:
       - managed-by-osism
-      - managed-by-ironic
       - generic
       - ceph-resource
 
@@ -234,7 +241,6 @@
       ironic_enabled: false
     tags:
       - managed-by-osism
-      - managed-by-ironic
       - generic
       - ceph-resource
 
@@ -252,6 +258,5 @@
       ironic_enabled: false
     tags:
       - managed-by-osism
-      - managed-by-ironic
       - generic
       - ceph-resource

@@ -1,7 +1,8 @@
 ---
 manufacturer: Other
-model: Manager
-slug: manager
+model: Baremetal-Housing
+slug: baremetal-housing
+subdevice_role: parent
 u_height: 1
 is_full_depth: true
 console-ports: []
