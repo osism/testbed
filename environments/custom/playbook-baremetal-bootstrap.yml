@@ -126,6 +126,23 @@
         mode: 0664
       notify: Restart ironic-interface.service
 
+    # NOTE: The subnet has a default gateway which is used for all nodes deployed in it
+    # It may break connectivity on control nodes though and is therefore removed
+    - name: Create ironic dhclient hook
+      become: true
+      ansible.builtin.copy:
+        content: |
+          #!/bin/bash
+          if [ "${interface}" = "{{ ironic_network_interface }}" ]; then
+          case "${reason}" in BOUND|RENEW|REBIND|REBOOT)
+                      ip route delete default via {{ public_subnet.subnet.gateway_ip }} dev {{ ironic_network_interface }}
+                 ;;
+                 esac
+          fi
+        dest: /etc/dhcp/dhclient-exit-hooks.d/ironic-boot-delete-default-route
+        mode: 0755
+      notify: Restart ironic-interface.service
+
     - name: Create ironic-interface service
       become: True
       ansible.builtin.template:
