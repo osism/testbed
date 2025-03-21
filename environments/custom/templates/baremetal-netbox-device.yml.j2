@@ -1,0 +1,30 @@
+---
+{% set node = item.item.0.key -%}
+{% set name = item.item.1['Domain name'] -%}
+{% set macs = item.stdout_lines[2:] | map('split', ' ') | map('last') | list -%}
+- device:
+    name: {{ node }}-{{ name }}
+    site: Discworld
+    location: Ankh-Morpork
+    rack: "1000"
+    device_type: Baremetal-Device
+    device_role: Generic
+    custom_fields:
+      device_type: server
+      ironic_enabled: false
+    tags:
+      - managed-by-osism
+      - managed-by-ironic
+      - generic
+
+- device_bay:
+    device: {{ node }}
+    name: {{ name }}
+    installed_device: {{ node }}-{{ name }}
+
+{% for mac in macs -%}
+- device_interface:
+    name: Ethernet{{ loop.index }}
+    device: {{ node }}-{{ name }}
+    mac_address: {{ mac }}
+{% endfor %}

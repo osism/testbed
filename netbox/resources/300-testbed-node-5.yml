@@ -32,8 +32,30 @@
       device: testbed-node-5
       name: Ethernet3
 
+- cable:
+    type: cat6a
+    termination_a_type: dcim.interface
+    termination_a:
+      device: testbed-switch-oob
+      name: Ethernet15
+    termination_b_type: dcim.interface
+    termination_b:
+      device: testbed-node-5
+      name: Ethernet0
+
+- ip_address:
+    address: 172.16.0.15/20
+    assigned_object:
+      name: Ethernet0
+      device: testbed-node-5
+
 - ip_address:
     address: 192.168.16.15/20
     assigned_object:
       name: Ethernet1
       device: testbed-node-5
+
+- device:
+    name: testbed-node-5
+    oob_ip: 172.16.0.15/20
+    primary_ip4: 192.168.16.15/20

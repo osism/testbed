@@ -1,0 +1,57 @@
+---
+- name: Update netbox definitions
+  hosts: testbed-managers
+  tasks:
+    - name: Modify netbox resources for testbed-resource-nodes device_type
+      ansible.builtin.replace:
+        path: /opt/configuration/netbox/resources/200-rack-1000.yml
+        after: '(?m)^    name: {{ item }}$'
+        before: '^- '
+        regexp: '^    device_type: .*$'
+        replace: '    device_type: Baremetal-Housing'
+      loop: "{{ groups['testbed-resource-nodes'] }}"
+
+    - name: Modify netbox resources for testbed-resource-nodes device_role
+      ansible.builtin.replace:
+        path: /opt/configuration/netbox/resources/200-rack-1000.yml
+        after: '(?m)^    name: {{ item }}$'
+        before: '^- '
+        regexp: '^    device_role: .*$'
+        replace: '    device_role: Housing'
+      loop: "{{ groups['testbed-resource-nodes'] }}"
+
+    - name: Gather information about virtual baremetal devices created by tenks
+      changed_when: false
+      delegate_to: "{{ item }}"
+      register: virtual_baremetal
+      ansible.builtin.command:
+        argv:
+          - /home/dragon/tenks-venv/bin/vbmc
+          - list
+          - -f
+          - json
+      loop: "{{ groups['testbed-resource-nodes'] }}"
+
+    - name: Gather information about virtual baremetal device interfaces created by tenks
+      changed_when: false
+      vars:
+        nodes: "{{ virtual_baremetal.results | map(attribute='item') | list }}"
+        vms: "{{ virtual_baremetal.results | map(attribute='stdout') | map('from_json') | list }}"
+      delegate_to: "{{ item.0.key }}"
+      become: true
+      register: virtual_baremetal_interfaces
+      ansible.builtin.command:
+        argv:
+          - /usr/bin/virsh
+          - domiflist
+          - "{{ item.1['Domain name'] }}"
+      loop: "{{ dict(nodes | zip(vms)) | dict2items | subelements('value') }}"
+
+    - name: Add netbox resources for virtualized baremetal nodes
+      ansible.builtin.template:
+        src: templates/baremetal-netbox-device.yml.j2
+        dest: "/opt/configuration/netbox/resources/400-rack-1000-{{ item.item.0.key }}-{{ item.item.1['Domain name']}}.yml"
+        mode: 0644
+        owner: dragon
+        group: dragon
+      loop: "{{ virtual_baremetal_interfaces.results }}"

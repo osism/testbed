@@ -1,20 +1,16 @@
 ---
 manufacturer: Other
-model: Manager
-slug: manager
-u_height: 1
+model: Baremetal-Device
+slug: baremetal-device
+subdevice_role: child
+u_height: 0
 is_full_depth: true
 console-ports: []
 power-ports:
   - name: PS1
     type: iec-60320-c14
 interfaces:
-  - name: Ethernet0
-    type: 1000base-t
-    mgmt_only: true
   - name: Ethernet1
     type: 10gbase-t
   - name: Ethernet2
-    type: 10gbase-t
-  - name: Ethernet3
     type: 10gbase-t
