@@ -34,8 +34,8 @@
 
     - name: Set docker version facts for OSISM latest
       ansible.builtin.set_fact:
-        __docker_version: "5:27.4.1"
-        __docker_cli_version: "5:27.4.1"
+        __docker_version: "5:27.5.1"
+        __docker_cli_version: "5:27.5.1"
       when:
         - manager_version == "latest"
 
