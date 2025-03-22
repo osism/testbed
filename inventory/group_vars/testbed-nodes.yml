@@ -104,8 +104,16 @@ devices: "{{ ansible_local.testbed_ceph_devices }}"
 k3s_interface: vxlan1
 cilium_iface: "{{ k3s_interface }}"
 
-# k3s -> frr
+kube_vip_bgp: true
+kube_vip_arp: false
+
+# cilium -> frr
 cilium_bgp_neighbors:
+  - peer_address: "192.168.128.5"
+    peer_asn: 64512
+
+# kubevip -> frr
+kube_vip_bgp_peers:
   - peer_address: "192.168.128.5"
     peer_asn: 64512
 
