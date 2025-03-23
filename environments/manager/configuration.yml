@@ -22,6 +22,11 @@ manager_listener_broker_username: openstack
 manager_listener_broker_uri: "{% for host in manager_listener_broker_hosts %}amqp://{{ manager_listener_broker_username }}:{{ manager_listener_broker_password }}@{{ host }}:5672/{% if not loop.last %};{% endif %}{% endfor %}"
 
 ##########################
+# openstack
+
+manager_openstack_os_auth_url: https://api.testbed.osism.xyz:5000/v3
+
+##########################
 # celery
 
 celery_enable: true
