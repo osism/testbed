@@ -16,7 +16,7 @@ docker run --rm \
   -v /etc/ssl/certs:/etc/ssl/certs:ro \
   --network host  \
   --name tempest \
-  quay.io/osism/tempest:latest \
+  registry.osism.tech/osism/tempest:latest \
   run \
   --workspace-path /tempest/workspace.yaml \
   --workspace tempest  \
