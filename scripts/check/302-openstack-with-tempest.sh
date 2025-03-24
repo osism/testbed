@@ -6,7 +6,17 @@ echo
 echo "# Tempest"
 echo
 
-osism apply tempest --skip-tags run-tempest
+osism apply tempest \
+  --skip-tags run-tempest \
+  -e tempest_enable_barbican=${TEMPEST_BARBICAN:-false} \
+  -e tempest_enable_cinder=${TEMPEST_CINDER:-false} \
+  -e tempest_enable_designate=${TEMPEST_DESIGNATE:-false} \
+  -e tempest_enable_glance=${TEMPEST_GLANCE:-false} \
+  -e tempest_enable_horizon=${TEMPEST_HORIZON:-false} \
+  -e tempest_enable_neutron=${TEMPEST_NEUTRON:-false} \
+  -e tempest_enable_nova=${TEMPEST_NOVA:-false} \
+  -e tempest_enable_octavia=${TEMPEST_OCTAVIA:-false} \
+  -e tempest_enable_swift=${TEMPEST_SWIFT:-false}
 
 sed -i "/log_dir =/d" /opt/tempest/etc/tempest.conf
 sed -i "/log_file =/d" /opt/tempest/etc/tempest.conf
