@@ -54,8 +54,6 @@
   vars:
     manager_version: latest
 
-    docker_configure_repository: true
-    docker_storage_containerd_snapshotter: true
     docker_user: dragon
     docker_opts:
       max-concurrent-downloads: 20

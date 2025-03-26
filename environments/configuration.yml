@@ -12,7 +12,6 @@ testbed_mtu_node: "{{ testbed_mtu }}"
 docker_user: "{{ operator_user }}"
 docker_opts:
   max-concurrent-downloads: 20
-docker_storage_containerd_snapshotter: true
 
 ##########################
 # operator
