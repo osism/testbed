@@ -29,8 +29,6 @@ manager_openstack_os_auth_url: https://api.testbed.osism.xyz:5000/v3
 ##########################
 # celery
 
-celery_enable: true
-
 flower_enable: true
 flower_traefik: true
 flower_host: flower.testbed.osism.xyz
@@ -39,8 +37,6 @@ osism_api_host: "{{ hostvars[inventory_hostname]['ansible_' + internal_interface
 
 ##########################
 # ara
-
-ara_enable: true
 
 ara_server_host: ara.testbed.osism.xyz
 ara_server_traefik: true
