@@ -11,7 +11,7 @@
 - prefix:
     family: 4
     prefix: 172.16.0.0/20
-    prefix_role: out-of-band
+    prefix_role: OOB
 
 - prefix:
     family: 4
