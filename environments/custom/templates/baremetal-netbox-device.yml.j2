@@ -1,6 +1,8 @@
 ---
 {% set node = item.item.0.key -%}
 {% set name = item.item.1['Domain name'] -%}
+{% set oob_address = item.item.1['Address'] -%}
+{% set oob_port = item.item.1['Port'] -%}
 {% set macs = item.stdout_lines[2:] | map('split', ' ') | map('last') | list -%}
 - device:
     name: {{ node }}-{{ name }}
@@ -10,8 +12,8 @@
     device_type: Baremetal-Device
     device_role: Generic
     custom_fields:
-      device_type: server
-      ironic_enabled: false
+      oob_address: {{ oob_address }}
+      oob_port: {{ oob_port }}
     tags:
       - managed-by-osism
       - managed-by-ironic
