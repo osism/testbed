@@ -31,10 +31,10 @@ manager_redis_image: "{{ docker_registry }}/library/redis:{{ manager_redis_tag }
 registry_tag: "3.0"
 registry_image: "{{ docker_registry }}/library/registry:{{ registry_tag }}"
 
-osism_ansible_tag: "{{ manager_version|default('latest') }}"
+osism_ansible_tag: "{{ osism_ansible_version|default('latest') }}"
 osism_ansible_image: "{{ docker_registry_ansible|default('quay.io') }}/osism/osism-ansible:{{ osism_ansible_tag }}"
 
-osism_kubernetes_tag: "{{ manager_version|default('latest') }}"
+osism_kubernetes_tag: "{{ osism_kubernetes_version|default('latest') }}"
 osism_kubernetes_image: "{{ docker_registry_ansible|default('quay.io') }}/osism/osism-kubernetes:{{ osism_kubernetes_tag }}"
 
 inventory_reconciler_tag: "{{ inventory_reconciler_version|default('latest') }}"
