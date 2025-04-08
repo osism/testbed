@@ -40,10 +40,12 @@ osism_kubernetes_image: "{{ docker_registry_ansible|default('quay.io') }}/osism/
 inventory_reconciler_tag: "{{ inventory_reconciler_version|default('latest') }}"
 inventory_reconciler_image: "{{ docker_registry_ansible }}/osism/inventory-reconciler:{{ inventory_reconciler_tag }}"
 
-osism_tag: "{{ osism_version|default('latest') }}"
+osism_tag: "0.20250407.0"
+
 osism_image: "{{ docker_registry_ansible }}/osism/osism:{{ osism_tag }}"
 
-osism_netbox_tag: "{{ osism_version|default('latest') }}"
+osism_netbox_tag: "0.20250407.0"
+
 osism_netbox_image: "{{ docker_registry_ansible }}/osism/osism-netbox:{{ osism_netbox_tag }}"
 
 vault_tag: "1.19.1"
