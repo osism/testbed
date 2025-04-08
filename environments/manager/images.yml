@@ -42,7 +42,7 @@ inventory_reconciler_image: "{{ docker_registry_ansible }}/osism/inventory-recon
 
 osism_tag: "0.20250407.0"
 
-osism_image: "{{ docker_registry_ansible }}/latest:{{ osism_tag }}"
+osism_image: "{{ docker_registry_ansible }}/osism/osism:{{ osism_tag }}"
 
 osism_netbox_tag: "0.20250407.0"
 
