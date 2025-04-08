@@ -28,7 +28,7 @@ postgres_image: "{{ docker_registry }}/library/postgres:{{ postgres_tag }}"
 manager_redis_tag: "7.4.2-alpine"
 manager_redis_image: "{{ docker_registry }}/library/redis:{{ manager_redis_tag }}"
 
-registry_tag: "2.8"
+registry_tag: "3.0"
 registry_image: "{{ docker_registry }}/library/registry:{{ registry_tag }}"
 
 osism_ansible_tag: "{{ manager_version|default('latest') }}"
@@ -46,7 +46,7 @@ osism_image: "{{ docker_registry_ansible }}/osism/osism:{{ osism_tag }}"
 osism_netbox_tag: "{{ osism_version|default('latest') }}"
 osism_netbox_image: "{{ docker_registry_ansible }}/osism/osism-netbox:{{ osism_netbox_tag }}"
 
-vault_tag: "1.19.0"
+vault_tag: "1.19.1"
 vault_image: "{{ docker_registry }}/hashicorp/vault:{{ vault_tag }}"
 
 traefik_tag: "v3.3.5"
