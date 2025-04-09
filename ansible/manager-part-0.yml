@@ -60,6 +60,7 @@
               - python3.11
               - python3.11-devel
               - python3.11-pip
+              - yq
             state: present
             lock_timeout: "{{ dnf_lock_timeout }}"
 
@@ -123,6 +124,7 @@
               - python3-netaddr
               - python3-venv
               - rsync
+              - yq
 
         - name: Remove some python packages
           become: true
