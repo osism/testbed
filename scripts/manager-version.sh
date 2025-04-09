@@ -1,1 +1,1 @@
-export MANAGER_VERSION=$(docker inspect --format '{{ index .Config.Labels "org.opencontainers.image.version"}}' osism-ansible)
+export MANAGER_VERSION=$(yq -M -r .manager_version "/opt/configuration/environments/manager/configuration.yml")
