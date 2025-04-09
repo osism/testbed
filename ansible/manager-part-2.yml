@@ -24,13 +24,22 @@
         - manager_version is ansible.builtin.version("7.0.0", '>=')
         - manager_version is ansible.builtin.version("7.1.0", '<=')
 
-    - name: Set docker version facts for OSISM 7 (>= 7.1.1)
+    - name: Set docker version facts for OSISM 7 and OSISM 8 (>= 7.1.1, <= 8.1.0)
       ansible.builtin.set_fact:
         __docker_version: "5:26.1.4"
         __docker_cli_version: "5:26.1.4"
       when:
         - manager_version != "latest"
         - manager_version is ansible.builtin.version("7.1.1", '>=')
+        - manager_version is ansible.builtin.version("8.1.0", '<=')
+
+    - name: Set docker version facts for OSISM 9 (>= 9.0.0)
+      ansible.builtin.set_fact:
+        __docker_version: "5:27.5.1"
+        __docker_cli_version: "5:27.5.1"
+      when:
+        - manager_version != "latest"
+        - manager_version is ansible.builtin.version("9.0.0", '>=')
 
     - name: Set docker version facts for OSISM latest
       ansible.builtin.set_fact:
