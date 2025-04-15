@@ -163,7 +163,7 @@
     - name: Install ansible-core in venv
       ansible.builtin.pip:
         umask: "0022"
-        name: "ansible-core>=2.16.0,<2.17.0"
+        name: "ansible-core>=2.18.0,<2.19.0"
         state: present
         virtualenv: "{{ venv_path }}"
         virtualenv_command: "{{ venv_command }}"
