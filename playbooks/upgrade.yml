@@ -23,7 +23,7 @@
     run_bootstrap: false
     run_checks: true
 
-    _ceph_version_next: "{{ ceph_version_next | default('quincy') }}"
+    _ceph_version_next: "{{ ceph_version_next | default('reef') }}"
     _manager_version_next: "{{ manager_version_next | default('latest') }}"
     _openstack_version_next: "{{ openstack_version_next | default('2024.2') }}"
 

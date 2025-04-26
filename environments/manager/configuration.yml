@@ -2,7 +2,7 @@
 ##########################
 # versions
 
-ceph_version: quincy
+ceph_version: reef
 manager_version: latest
 openstack_version: 2024.2
 
