@@ -16,7 +16,7 @@ RESOURCE = openstack_networking_floatingip_v2.manager_floating_ip
 STATE = errored.tfstate
 
 CEPH_STACK ?= ceph-ansible
-VERSION_CEPH ?= quincy
+VERSION_CEPH ?= reef
 VERSION_MANAGER ?= latest
 VERSION_OPENSTACK ?= 2024.2
 

@@ -11,7 +11,7 @@ echo "# UPGRADE"
 echo
 
 export MANAGER_VERSION=${1:-latest}
-CEPH_VERSION=${2:-quincy}
+CEPH_VERSION=${2:-reef}
 OPENSTACK_VERSION=${3:-2024.2}
 KOLLA_NAMESPACE=${4:-osism}
 

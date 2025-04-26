@@ -8,7 +8,7 @@ if [[ $(docker exec ceph-ansible sh -c "test -f /ansible/ceph-configure-lvm-volu
     mkdir -p /opt/configuration/environments/custom/tasks /opt/configuration/environments/custom/templates
     curl -o /opt/configuration/environments/custom/playbook-ceph-configure-lvm-volumes.yml https://raw.githubusercontent.com/osism/container-image-ceph-ansible/main/files/playbooks/ceph-configure-lvm-volumes.yml
     curl -o /opt/configuration/environments/custom/playbook-ceph-create-lvm-devices.yml https://raw.githubusercontent.com/osism/container-image-ceph-ansible/main/files/playbooks/ceph-create-lvm-devices.yml
-    curl -o /opt/configuration/environments/custom/playbook-ceph-pools.yml https://raw.githubusercontent.com/osism/container-image-ceph-ansible/main/files/playbooks/quincy/ceph-pools.yml
+    curl -o /opt/configuration/environments/custom/playbook-ceph-pools.yml https://raw.githubusercontent.com/osism/container-image-ceph-ansible/main/files/playbooks/reef/ceph-pools.yml
     curl -o /opt/configuration/environments/custom/tasks/_add-device-links.yml https://raw.githubusercontent.com/osism/container-image-ceph-ansible/main/files/playbooks/tasks/_add-device-links.yml
     curl -o /opt/configuration/environments/custom/tasks/_add-device-partitions.yml https://raw.githubusercontent.com/osism/container-image-ceph-ansible/main/files/playbooks/tasks/_add-device-partitions.yml
     curl -o /opt/configuration/environments/custom/templates/ceph-configure-lvm-volumes.yml.j2 https://raw.githubusercontent.com/osism/container-image-ceph-ansible/main/files/playbooks/templates/ceph-configure-lvm-volumes.yml.j2
