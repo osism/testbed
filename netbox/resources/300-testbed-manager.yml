@@ -68,7 +68,6 @@
     mode: access
     untagged_vlan:
       name: OOB Testbed
-      site: ankh-morpork
 
 - mac_address:
     mac_address: "9F:E3:52:D8:C7:A1"
