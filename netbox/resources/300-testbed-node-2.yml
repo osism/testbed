@@ -57,18 +57,6 @@
       name: Ethernet1
       device: testbed-node-2
 
-- device:
-    name: testbed-node-2
-    oob_ip: 172.16.0.12/20
-    primary_ip4: 192.168.16.12/20
-
-- device_interface:
-    device: testbed-node-2
-    name: Ethernet0
-    mode: access
-    untagged_vlan:
-      name: OOB Testbed
-
 - mac_address:
     mac_address: "C7:4E:8B:2A:D5:F9"
     assigned_object:
@@ -80,3 +68,18 @@
     assigned_object:
       device: testbed-node-2
       name: Ethernet1
+
+- device:
+    name: testbed-node-2
+    oob_ip: 172.16.0.12/20
+    primary_ip4: 192.168.16.12/20
+
+- device_interface:
+    device: testbed-node-2
+    name: Ethernet0
+    mode: access
+    untagged_vlan:
+      name: OOB Testbed
+    tags:
+      - managed-by-osism
+    primary_mac_address: "C7:4E:8B:2A:D5:F9"

@@ -68,6 +68,9 @@
     mode: access
     untagged_vlan:
       name: OOB Testbed
+    tags:
+      - managed-by-osism
+    primary_mac_address: "52:8F:1C:A3:D7:E9"
 
 - mac_address:
     mac_address: "52:8F:1C:A3:D7:E9"
