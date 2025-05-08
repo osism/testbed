@@ -12,12 +12,13 @@
 
 - device_interface:
     device: testbed-switch-1
-    name: Ethernet0
+    name: Management1
     mode: access
     untagged_vlan:
       name: OOB Testbed
 
 - ip_address:
+    tenant: Testbed
     address: 172.16.0.3/20
     assigned_object:
       name: Management1

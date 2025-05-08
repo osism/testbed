@@ -29,6 +29,7 @@
       name: OOB Testbed
 
 - ip_address:
+    tenant: Testbed
     address: 172.16.0.4/20
     assigned_object:
       name: Management1
