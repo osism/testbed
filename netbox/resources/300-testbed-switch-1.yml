@@ -16,7 +16,6 @@
     mode: access
     untagged_vlan:
       name: OOB Testbed
-      site: ankh-morpork
 
 - ip_address:
     address: 172.16.0.3/20

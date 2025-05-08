@@ -22,12 +22,11 @@
       name: Ethernet55/1
 
 - device_interface:
-    device: testbed-switch-20
+    device: testbed-switch-2
     name: Management1
     mode: access
     untagged_vlan:
       name: OOB Testbed
-      site: ankh-morpork
 
 - ip_address:
     address: 172.16.0.4/20
