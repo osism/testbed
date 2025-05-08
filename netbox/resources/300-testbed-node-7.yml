@@ -44,12 +44,14 @@
       name: Ethernet0
 
 - ip_address:
+    tenant: Testbed
     address: 172.16.0.17/20
     assigned_object:
       name: Ethernet0
       device: testbed-node-7
 
 - ip_address:
+    tenant: Testbed
     address: 192.168.16.17/20
     assigned_object:
       name: Ethernet1
@@ -59,3 +61,23 @@
     name: testbed-node-7
     oob_ip: 172.16.0.17/20
     primary_ip4: 192.168.16.17/20
+
+- device_interface:
+    device: testbed-node-7
+    name: Ethernet0
+    mode: access
+    untagged_vlan:
+      name: OOB Testbed
+      site: ankh-morpork
+
+- mac_address:
+    mac_address: "3D:F9:B2:7A:E4:C6"
+    assigned_object:
+      device: testbed-node-7
+      name: Ethernet0
+
+- mac_address:
+    mac_address: "8E:C5:A7:1F:D6:B2"
+    assigned_object:
+      device: testbed-node-7
+      name: Ethernet1

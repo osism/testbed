@@ -1,4 +1,8 @@
 ---
+- tenant:
+    name: Testbed
+    slug: testbed
+
 - site:
     name: Discworld
     slug: discworld
@@ -8,25 +12,46 @@
     slug: ankh-morpork
     site: discworld
 
+- vlan:
+    name: OOB Testbed
+    tenant: Testbed
+    vid: 100
+    site: Discworld
+    vlan_role: OOB
+
 - prefix:
+    tenant: Testbed
     family: 4
     prefix: 172.16.0.0/20
     prefix_role: OOB
+    scope_type: dcim.location
+    scope: ankh-morpork
+    vlan:
+      name: OOB Testbed
+      site: discworld
 
 - prefix:
+    tenant: Testbed
     family: 4
     prefix: 192.168.16.0/20
     prefix_role: Management
+    scope_type: dcim.location
+    scope: ankh-morpork
 
 - prefix:
+    tenant: Testbed
     family: 4
     prefix: 192.168.112.0/20
     prefix_role: External
+    scope_type: dcim.location
+    scope: ankh-morpork
 
 - ip_address:
+    tenant: Testbed
     address: 192.168.16.254
     dns_name: api.testbed.osism.xyz
 
 - ip_address:
+    tenant: Testbed
     address: 192.168.16.9
     dns_name: api-int.testbed.osism.xyz

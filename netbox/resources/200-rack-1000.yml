@@ -3,15 +3,18 @@
     site: Discworld
     location: Ankh-Morpork
     rack: "1000"
+    tenant: Testbed
 
 - rack:
     name: "{{ rack }}"
+    tenant: "{{ tenant }}"
     site: "{{ site }}"
     location: "{{ location }}"
     u_height: 47
 
 - device:
     name: testbed-switch-0
+    tenant: "{{ tenant }}"
     site: "{{ site }}"
     location: "{{ location }}"
     rack: "{{ rack }}"
@@ -24,6 +27,7 @@
 
 - device:
     name: testbed-switch-1
+    tenant: "{{ tenant }}"
     site: "{{ site }}"
     location: "{{ location }}"
     rack: "{{ rack }}"
@@ -36,6 +40,7 @@
 
 - device:
     name: testbed-switch-2
+    tenant: "{{ tenant }}"
     site: "{{ site }}"
     location: "{{ location }}"
     rack: "{{ rack }}"
@@ -48,11 +53,12 @@
 
 - device:
     name: testbed-switch-oob
+    tenant: "{{ tenant }}"
     site: "{{ site }}"
     location: "{{ location }}"
     rack: "{{ rack }}"
     device_type: DCS-7050TX3-48C8
-    device_role: Oob
+    device_role: OOB
     face: rear
     position: 4
     tags:
@@ -60,6 +66,7 @@
 
 - device:
     name: testbed-manager
+    tenant: "{{ tenant }}"
     site: "{{ site }}"
     location: "{{ location }}"
     rack: "{{ rack }}"
@@ -75,6 +82,7 @@
 
 - device:
     name: testbed-node-0
+    tenant: "{{ tenant }}"
     site: "{{ site }}"
     location: "{{ location }}"
     rack: "{{ rack }}"
@@ -91,6 +99,7 @@
 
 - device:
     name: testbed-node-1
+    tenant: "{{ tenant }}"
     site: "{{ site }}"
     location: "{{ location }}"
     rack: "{{ rack }}"
@@ -107,6 +116,7 @@
 
 - device:
     name: testbed-node-2
+    tenant: "{{ tenant }}"
     site: "{{ site }}"
     location: "{{ location }}"
     rack: "{{ rack }}"
@@ -123,6 +133,7 @@
 
 - device:
     name: testbed-node-3
+    tenant: "{{ tenant }}"
     site: "{{ site }}"
     location: "{{ location }}"
     rack: "{{ rack }}"
@@ -136,6 +147,7 @@
 
 - device:
     name: testbed-node-4
+    tenant: "{{ tenant }}"
     site: "{{ site }}"
     location: "{{ location }}"
     rack: "{{ rack }}"
@@ -149,6 +161,7 @@
 
 - device:
     name: testbed-node-5
+    tenant: "{{ tenant }}"
     site: "{{ site }}"
     location: "{{ location }}"
     rack: "{{ rack }}"
@@ -162,6 +175,7 @@
 
 - device:
     name: testbed-node-6
+    tenant: "{{ tenant }}"
     site: "{{ site }}"
     location: "{{ location }}"
     rack: "{{ rack }}"
@@ -176,6 +190,7 @@
 
 - device:
     name: testbed-node-7
+    tenant: "{{ tenant }}"
     site: "{{ site }}"
     location: "{{ location }}"
     rack: "{{ rack }}"
@@ -190,6 +205,7 @@
 
 - device:
     name: testbed-node-8
+    tenant: "{{ tenant }}"
     site: "{{ site }}"
     location: "{{ location }}"
     rack: "{{ rack }}"
@@ -204,6 +220,7 @@
 
 - device:
     name: testbed-node-9
+    tenant: "{{ tenant }}"
     site: "{{ site }}"
     location: "{{ location }}"
     rack: "{{ rack }}"
