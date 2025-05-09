@@ -15,7 +15,6 @@ sed -i 's/glance_backend_file: "no"/glance_backend_file: "yes"/' /opt/configurat
 
 echo 'enable_cinder: "no"' >> /opt/configuration/environments/kolla/configuration.yml
 echo 'enable_horizon: "no"' >> /opt/configuration/environments/kolla/configuration.yml
-echo 'enable_neutron: "no"' >> /opt/configuration/environments/kolla/configuration.yml
 echo 'enable_nova: "no"' >> /opt/configuration/environments/kolla/configuration.yml
 
 osism apply -e custom baremetal-prepare
@@ -32,9 +31,12 @@ osism apply memcached
 osism apply redis
 osism apply mariadb
 osism apply rabbitmq
+osism apply openvswitch --limit testbed-control-nodes
+osism apply ovn --limit testbed-control-nodes
 
 osism apply keystone
 osism apply glance
+osism apply neutron
 
 osism apply -e custom baremetal-bootstrap
 osism sync facts
