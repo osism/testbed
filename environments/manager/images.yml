@@ -22,7 +22,7 @@ pgautoupgrade_image: "{{ docker_registry }}/pgautoupgrade/pgautoupgrade:{{ pgaut
 phpmyadmin_tag: "5.2.2"
 phpmyadmin_image: "{{ docker_registry }}/phpmyadmin/phpmyadmin:{{ phpmyadmin_tag }}"
 
-postgres_tag: "16.8-alpine"
+postgres_tag: "16.9-alpine"
 postgres_image: "{{ docker_registry }}/library/postgres:{{ postgres_tag }}"
 
 manager_redis_tag: "7.4.3-alpine"
