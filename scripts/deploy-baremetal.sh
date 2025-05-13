@@ -45,5 +45,3 @@ osism apply ironic
 osism apply tenks -e ireallymeanit=yes -e tenks_override_file=/opt/configuration/environments/custom/files/baremetal-tenks-override.yml
 osism apply -e custom baremetal-netbox
 sh -c '/opt/configuration/scripts/bootstrap/000-netbox.sh'
-
-osism apply homer
