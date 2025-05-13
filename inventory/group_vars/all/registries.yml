@@ -14,3 +14,4 @@ docker_registry_kolla: registry.osism.tech
 docker_registry_netbox: registry.osism.tech
 docker_registry_nexus: registry.osism.tech
 docker_registry_openstackclient: registry.osism.tech
+docker_registry_squid: registry.osism.tech/dockerhub
