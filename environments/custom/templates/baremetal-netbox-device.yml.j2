@@ -12,8 +12,9 @@
     device_type: Baremetal-Device
     device_role: Generic
     custom_fields:
-      oob_address: {{ oob_address }}
-      oob_port: {{ oob_port }}
+      ironic_parameters:
+        ipmi_address: {{ oob_address }}
+        ipmi_port: {{ oob_port }}
     tags:
       - managed-by-osism
       - managed-by-ironic
