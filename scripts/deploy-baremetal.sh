@@ -22,7 +22,7 @@ osism sync inventory
 osism apply network -e network_allow_service_restart=true
 
 # pull images
-sh -c '/opt/configuration/scripts/pull-images.sh'
+osism apply -r 2 -e custom baremetal-pull-images
 
 osism apply common
 osism apply loadbalancer
