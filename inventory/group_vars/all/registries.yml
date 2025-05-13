@@ -4,7 +4,7 @@
 
 ceph_docker_registry: registry.osism.tech
 dnsmasq_docker_registry: registry.osism.tech
-docker_registry: index.docker.io
+docker_registry: registry.osism.tech/dockerhub
 docker_registry_ansible: registry.osism.tech
 docker_registry_cephclient: registry.osism.tech
 docker_registry_cgit: registry.osism.tech
