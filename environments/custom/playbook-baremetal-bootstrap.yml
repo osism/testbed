@@ -3,7 +3,32 @@
   hosts: testbed-control-nodes
   vars:
     ironic_network_interface: ironic-boot
+
   tasks:
+    - name: Create ironic-agent-kernel image
+      delegate_to: localhost
+      run_once: true
+      openstack.cloud.image:
+        cloud: admin
+        state: present
+        name: ironic-agent-kernel
+        container_format: aki
+        disk_format: aki
+        is_public: true
+        filename: /share/ironic/ironic/ironic-agent.kernel
+
+    - name: Create ironic-agent-initramfs image
+      delegate_to: localhost
+      run_once: true
+      openstack.cloud.image:
+        cloud: admin
+        state: present
+        name: ironic-agent-initramfs
+        container_format: ari
+        disk_format: ari
+        is_public: true
+        filename: /share/ironic/ironic/ironic-agent.initramfs
+
     - name: Create public network
       delegate_to: localhost
       run_once: true

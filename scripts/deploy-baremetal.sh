@@ -38,9 +38,10 @@ osism apply keystone
 osism apply glance
 osism apply neutron
 
+osism apply ironic-download-ipa-images
 osism apply -e custom baremetal-bootstrap
 osism sync facts
-osism apply ironic
+osism apply ironic -e enable_ironic_agent_download_images=false
 
 osism apply tenks -e ireallymeanit=yes -e tenks_override_file=/opt/configuration/environments/custom/files/baremetal-tenks-override.yml
 osism apply -e custom baremetal-netbox
