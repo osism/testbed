@@ -6,5 +6,5 @@ ironic_parameters:
     ipmi_password: password
     ipmi_address: "{{ remote_board_address }}"
     ipmi_port: 6230
-    deploy_kernel: ipa.vmlinuz
-    deploy_ramdisk: ipa.initramfs
+    deploy_kernel: ironic-agent-kernel
+    deploy_ramdisk: ironic-agent-initramfs
