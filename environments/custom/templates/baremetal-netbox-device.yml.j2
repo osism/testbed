@@ -13,8 +13,9 @@
     device_role: Generic
     custom_fields:
       ironic_parameters:
-        ipmi_address: {{ oob_address }}
-        ipmi_port: {{ oob_port }}
+        driver_info:
+          ipmi_address: {{ oob_address }}
+          ipmi_port: {{ oob_port }}
     tags:
       - managed-by-osism
       - managed-by-ironic
