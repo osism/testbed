@@ -43,14 +43,22 @@
       ansible.builtin.command:
         argv:
           - /usr/bin/virsh
+          - --quiet
           - domiflist
           - "{{ item.1['Domain name'] }}"
       loop: "{{ dict(nodes | zip(vms)) | dict2items | subelements('value') }}"
 
     - name: Add netbox resources for virtualized baremetal nodes
+      vars:
+        node: "{{ item.item.0.key }}"
+        bay: "{{ item.item.1['Domain name'] }}"
+        device_name: "housing-{{ node | split('-') | last }}-{{ bay }}"
+        oob_address: "{{ item.item.1['Address'] }}"
+        oob_port: "{{ item.item.1['Port'] }}"
+        macs: "{{ item.stdout_lines | map('split', ' ') | map('last') | list }}"
       ansible.builtin.template:
         src: templates/baremetal-netbox-device.yml.j2
-        dest: "/opt/configuration/netbox/resources/400-rack-1000-{{ item.item.0.key }}-{{ item.item.1['Domain name']}}.yml"
+        dest: "/opt/configuration/netbox/resources/400-rack-1000-{{ device_name }}.yml"
         mode: 0644
         owner: dragon
         group: dragon

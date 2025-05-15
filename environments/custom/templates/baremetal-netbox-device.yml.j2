@@ -1,11 +1,6 @@
 ---
-{% set node = item.item.0.key -%}
-{% set name = item.item.1['Domain name'] -%}
-{% set oob_address = item.item.1['Address'] -%}
-{% set oob_port = item.item.1['Port'] -%}
-{% set macs = item.stdout_lines[2:] | map('split', ' ') | map('last') | list -%}
 - device:
-    name: {{ node }}-{{ name }}
+    name: {{ device_name }}
     site: Discworld
     location: Ankh-Morpork
     rack: "1000"
@@ -23,12 +18,18 @@
 
 - device_bay:
     device: {{ node }}
-    name: {{ name }}
-    installed_device: {{ node }}-{{ name }}
+    name: {{ bay }}
+    installed_device: {{ device_name }}
 
 {% for mac in macs -%}
+- mac_address:
+    mac_address: {{ mac }}
+    assigned_object:
+      name: Ethernet{{ loop.index }}
+      device: {{ device_name }}
+
 - device_interface:
     name: Ethernet{{ loop.index }}
-    device: {{ node }}-{{ name }}
-    mac_address: {{ mac }}
+    device: {{ device_name }}
+    primary_mac_address: {{ mac }}
 {% endfor %}
