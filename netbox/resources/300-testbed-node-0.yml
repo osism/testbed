@@ -57,6 +57,18 @@
       name: Ethernet1
       device: testbed-node-0
 
+- mac_address:
+    mac_address: "52:8F:1C:A3:D7:E9"
+    assigned_object:
+      device: testbed-node-0
+      name: Ethernet0
+
+- mac_address:
+    mac_address: "76:2D:E4:9B:F5:C1"
+    assigned_object:
+      device: testbed-node-0
+      name: Ethernet1
+
 - device:
     name: testbed-node-0
     oob_ip: 172.16.0.10/20
@@ -71,15 +83,3 @@
     tags:
       - managed-by-osism
     primary_mac_address: "52:8F:1C:A3:D7:E9"
-
-- mac_address:
-    mac_address: "52:8F:1C:A3:D7:E9"
-    assigned_object:
-      device: testbed-node-0
-      name: Ethernet0
-
-- mac_address:
-    mac_address: "76:2D:E4:9B:F5:C1"
-    assigned_object:
-      device: testbed-node-0
-      name: Ethernet1
