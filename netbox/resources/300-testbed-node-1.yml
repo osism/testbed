@@ -53,16 +53,34 @@
       device: testbed-node-1
 
 - mac_address:
-    mac_address: "3A:F8:C5:1E:B7:D2"
+    mac_address: "18:C0:86:A5:F2:1B"
     assigned_object:
       device: testbed-node-1
       name: Ethernet0
 
 - mac_address:
-    mac_address: "9D:64:B1:E2:8A:F3"
+    mac_address: "18:C0:86:7C:3E:92"
     assigned_object:
       device: testbed-node-1
       name: Ethernet1
+
+- mac_address:
+    mac_address: "18:C0:86:D3:89:47"
+    assigned_object:
+      device: testbed-node-1
+      name: Ethernet2
+
+- mac_address:
+    mac_address: "18:C0:86:2A:B5:E1"
+    assigned_object:
+      device: testbed-node-1
+      name: Ethernet3
+
+- mac_address:
+    mac_address: "18:C0:86:6F:4D:C8"
+    assigned_object:
+      device: testbed-node-1
+      name: Ethernet4
 
 - ip_address:
     tenant: Testbed
@@ -85,4 +103,24 @@
       name: OOB Testbed
     tags:
       - managed-by-osism
-    primary_mac_address: "3A:F8:C5:1E:B7:D2"
+    primary_mac_address: "18:C0:86:A5:F2:1B"
+
+- device_interface:
+    device: testbed-node-1
+    name: Ethernet1
+    primary_mac_address: "18:C0:86:7C:3E:92"
+
+- device_interface:
+    device: testbed-node-1
+    name: Ethernet2
+    primary_mac_address: "18:C0:86:D3:89:47"
+
+- device_interface:
+    device: testbed-node-1
+    name: Ethernet3
+    primary_mac_address: "18:C0:86:2A:B5:E1"
+
+- device_interface:
+    device: testbed-node-1
+    name: Ethernet4
+    primary_mac_address: "18:C0:86:6F:4D:C8"
