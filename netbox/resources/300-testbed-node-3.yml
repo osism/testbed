@@ -1,4 +1,10 @@
 ---
+- device_interface:
+    device: testbed-node-3
+    name: Dummy0
+    type: virtual
+    enabled: true
+
 - cable:
     type: mmf-om4
     termination_a_type: dcim.interface
@@ -41,9 +47,9 @@
 
 - ip_address:
     tenant: Testbed
-    address: 192.168.16.13/20
+    address: 192.168.16.13/32
     assigned_object:
-      name: Ethernet1
+      name: Dummy0
       device: testbed-node-3
 
 - mac_address:
@@ -58,10 +64,18 @@
       device: testbed-node-3
       name: Ethernet1
 
+- ip_address:
+    tenant: Testbed
+    address: "fda6:f659:8c2b::192:168:16:13/128"
+    assigned_object:
+      name: Dummy0
+      device: testbed-node-3
+
 - device:
     name: testbed-node-3
     oob_ip: 172.16.0.13/20
-    primary_ip4: 192.168.16.13/20
+    primary_ip4: 192.168.16.13/32
+    primary_ip6: "fda6:f659:8c2b::192:168:16:13/128"
 
 - device_interface:
     device: testbed-node-3
