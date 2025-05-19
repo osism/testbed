@@ -24,6 +24,9 @@
     position: 27
     tags:
       - managed-by-osism
+    custom_fields:
+      dnsmasq_dhcp_tag: edgecore
+
 
 - device:
     name: testbed-switch-1
@@ -37,6 +40,8 @@
     position: 28
     tags:
       - managed-by-osism
+    custom_fields:
+      dnsmasq_dhcp_tag: edgecore
 
 - device:
     name: testbed-switch-2
@@ -50,6 +55,8 @@
     position: 29
     tags:
       - managed-by-osism
+    custom_fields:
+      dnsmasq_dhcp_tag: edgecore
 
 - device:
     name: testbed-switch-3
@@ -63,6 +70,8 @@
     position: 30
     tags:
       - managed-by-osism
+    custom_fields:
+      dnsmasq_dhcp_tag: edgecore
 
 - device:
     name: testbed-switch-oob
@@ -76,6 +85,8 @@
     position: 31
     tags:
       - managed-by-osism
+    custom_fields:
+      dnsmasq_dhcp_tag: edgecore
 
 - device:
     name: testbed-manager
