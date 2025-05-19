@@ -17,4 +17,6 @@ interfaces:
   - name: Ethernet2
     type: 10gbase-t
   - name: Ethernet3
-    type: 10gbase-t
+    type: 100gbase-x-qsfp28
+  - name: Ethernet4
+    type: 100gbase-x-qsfp28

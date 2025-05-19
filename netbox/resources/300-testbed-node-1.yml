@@ -1,6 +1,6 @@
 ---
 - cable:
-    type: cat6a
+    type: mmf-om4
     termination_a_type: dcim.interface
     termination_a:
       device: testbed-switch-0
@@ -8,10 +8,10 @@
     termination_b_type: dcim.interface
     termination_b:
       device: testbed-node-1
-      name: Ethernet1
+      name: Ethernet3
 
 - cable:
-    type: cat6a
+    type: mmf-om4
     termination_a_type: dcim.interface
     termination_a:
       device: testbed-switch-1
@@ -19,18 +19,7 @@
     termination_b_type: dcim.interface
     termination_b:
       device: testbed-node-1
-      name: Ethernet2
-
-- cable:
-    type: cat6a
-    termination_a_type: dcim.interface
-    termination_a:
-      device: testbed-switch-2
-      name: Ethernet11
-    termination_b_type: dcim.interface
-    termination_b:
-      device: testbed-node-1
-      name: Ethernet3
+      name: Ethernet4
 
 - cable:
     type: cat6a

@@ -3,7 +3,7 @@
     type: cat6a
     termination_a_type: dcim.interface
     termination_a:
-      device: testbed-switch-0
+      device: testbed-switch-oob
       name: Ethernet1
     termination_b_type: dcim.interface
     termination_b:
