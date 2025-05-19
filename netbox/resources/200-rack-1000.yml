@@ -18,7 +18,7 @@
     site: "{{ site }}"
     location: "{{ location }}"
     rack: "{{ rack }}"
-    device_type: DCS-7050TX3-48C8
+    device_type: 7726-32X-O-AC-B
     device_role: Leaf
     face: rear
     position: 1
@@ -31,7 +31,7 @@
     site: "{{ site }}"
     location: "{{ location }}"
     rack: "{{ rack }}"
-    device_type: DCS-7050TX3-48C8
+    device_type: 7726-32X-O-AC-B
     device_role: Leaf
     face: rear
     position: 2
@@ -44,10 +44,23 @@
     site: "{{ site }}"
     location: "{{ location }}"
     rack: "{{ rack }}"
-    device_type: DCS-7050TX3-48C8
-    device_role: Leaf
+    device_type: 7726-32X-O-AC-B
+    device_role: Spine
     face: rear
-    position: 3
+    position: 29
+    tags:
+      - managed-by-osism
+
+- device:
+    name: testbed-switch-3
+    tenant: "{{ tenant }}"
+    site: "{{ site }}"
+    location: "{{ location }}"
+    rack: "{{ rack }}"
+    device_type: 7726-32X-O-AC-B
+    device_role: Spine
+    face: rear
+    position: 30
     tags:
       - managed-by-osism
 
@@ -57,7 +70,7 @@
     site: "{{ site }}"
     location: "{{ location }}"
     rack: "{{ rack }}"
-    device_type: DCS-7050TX3-48C8
+    device_type: 5835-54T-O-AC-F
     device_role: OOB
     face: rear
     position: 4
