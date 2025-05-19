@@ -32,6 +32,7 @@
       - ^LICENSE$
       - ^README.md$
       - ^\.github/.*$
+      - ^netbox/.*$
     # NOTE(frickler): Default zuul maximum timeout is 3h, this needs to
     # be explicitly bumped in the tenant configuration
     timeout: 16200

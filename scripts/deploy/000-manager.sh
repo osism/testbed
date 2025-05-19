@@ -61,12 +61,6 @@ if [[ "$IS_ZUUL" == "true" || "$ARA" == "false" ]]; then
     sh -c '/opt/configuration/scripts/disable-ara.sh'
 fi
 
-# initialize netbox
-if [[ $(semver $MANAGER_VERSION 9.0.0) -ge 0 || $MANAGER_VERSION == "latest" ]]; then
-    wait_for_container_healthy 60 netbox-netbox-1
-    /opt/configuration/scripts/bootstrap/000-netbox.sh
-fi
-
 docker compose --project-directory /opt/manager ps
 docker compose --project-directory /opt/netbox ps
 
