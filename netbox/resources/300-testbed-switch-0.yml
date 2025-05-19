@@ -8,28 +8,31 @@
     termination_b_type: dcim.interface
     termination_b:
       device: testbed-switch-0
-      name: Management1
-
-- device_interface:
-    device: testbed-switch-0
-    name: Management1
-    mode: access
-    untagged_vlan:
-      name: OOB Testbed
+      name: eth0
 
 - ip_address:
     tenant: Testbed
-    address: 172.16.0.2/20
+    address: 172.16.0.27/20
     assigned_object:
-      name: Management1
+      name: eth0
       device: testbed-switch-0
 
 - device:
     name: testbed-switch-0
-    oob_ip: 172.16.0.2/20
+    oob_ip: 172.16.0.27/20
 
 - mac_address:
     mac_address: "4E:A2:D7:B8:F3:C6"
     assigned_object:
       device: testbed-switch-0
-      name: Management1
+      name: eth0
+
+- device_interface:
+    device: testbed-switch-0
+    name: eth0
+    mode: access
+    untagged_vlan:
+      name: OOB Testbed
+    tags:
+      - managed-by-osism
+    primary_mac_address: "4E:A2:D7:B8:F3:C6"

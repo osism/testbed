@@ -18,10 +18,10 @@
     site: "{{ site }}"
     location: "{{ location }}"
     rack: "{{ rack }}"
-    device_type: 7726-32X-O-AC-B
+    device_type: edgecore-7726-32x-o-ac-b
     device_role: Leaf
     face: rear
-    position: 1
+    position: 27
     tags:
       - managed-by-osism
 
@@ -31,10 +31,10 @@
     site: "{{ site }}"
     location: "{{ location }}"
     rack: "{{ rack }}"
-    device_type: 7726-32X-O-AC-B
+    device_type: edgecore-7726-32x-o-ac-b
     device_role: Leaf
     face: rear
-    position: 2
+    position: 28
     tags:
       - managed-by-osism
 
@@ -44,7 +44,7 @@
     site: "{{ site }}"
     location: "{{ location }}"
     rack: "{{ rack }}"
-    device_type: 7726-32X-O-AC-B
+    device_type: edgecore-7726-32x-o-ac-b
     device_role: Spine
     face: rear
     position: 29
@@ -57,7 +57,7 @@
     site: "{{ site }}"
     location: "{{ location }}"
     rack: "{{ rack }}"
-    device_type: 7726-32X-O-AC-B
+    device_type: edgecore-7726-32x-o-ac-b
     device_role: Spine
     face: rear
     position: 30
@@ -70,10 +70,10 @@
     site: "{{ site }}"
     location: "{{ location }}"
     rack: "{{ rack }}"
-    device_type: 5835-54T-O-AC-F
+    device_type: edgecore-5835-54t-o-ac-f
     device_role: OOB
     face: rear
-    position: 4
+    position: 31
     tags:
       - managed-by-osism
 

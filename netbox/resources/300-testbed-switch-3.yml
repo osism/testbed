@@ -8,7 +8,40 @@
     termination_b_type: dcim.interface
     termination_b:
       device: testbed-switch-3
-      name: Management1
+      name: eth0
+
+- cable:
+    type: mmf-om4
+    termination_a_type: dcim.interface
+    termination_a:
+      device: testbed-switch-3
+      name: Ethernet120
+    termination_b_type: dcim.interface
+    termination_b:
+      device: testbed-switch-2
+      name: Ethernet120
+
+- cable:
+    type: mmf-om4
+    termination_a_type: dcim.interface
+    termination_a:
+      device: testbed-switch-3
+      name: Ethernet124
+    termination_b_type: dcim.interface
+    termination_b:
+      device: testbed-switch-2
+      name: Ethernet124
+
+- cable:
+    type: mmf-om4
+    termination_a_type: dcim.interface
+    termination_a:
+      device: testbed-switch-3
+      name: Ethernet4
+    termination_b_type: dcim.interface
+    termination_b:
+      device: testbed-switch-1
+      name: Ethernet124
 
 - cable:
     type: mmf-om4
@@ -32,26 +65,29 @@
       device: testbed-switch-1
       name: Ethernet124
 
-- device_interface:
-    device: testbed-switch-3
-    name: Management1
-    mode: access
-    untagged_vlan:
-      name: OOB Testbed
-
 - ip_address:
     tenant: Testbed
     address: 172.16.0.30/20
     assigned_object:
-      name: Management1
+      name: eth0
       device: testbed-switch-3
-
-- device:
-    name: testbed-switch-3
-    oob_ip: 172.16.0.30/20
 
 - mac_address:
     mac_address: "C3:4F:A2:B8:E5:D7"
     assigned_object:
       device: testbed-switch-3
-      name: Management1
+      name: eth0
+
+- device:
+    name: testbed-switch-3
+    oob_ip: 172.16.0.30/20
+
+- device_interface:
+    device: testbed-switch-3
+    name: eth0
+    mode: access
+    untagged_vlan:
+      name: OOB Testbed
+    tags:
+      - managed-by-osism
+    primary_mac_address: "C3:4F:A2:B8:E5:D7"

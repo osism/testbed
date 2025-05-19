@@ -4,7 +4,7 @@
     termination_a_type: dcim.interface
     termination_a:
       device: testbed-switch-0
-      name: Ethernet13
+      name: Ethernet32
     termination_b_type: dcim.interface
     termination_b:
       device: testbed-node-3
@@ -15,7 +15,7 @@
     termination_a_type: dcim.interface
     termination_a:
       device: testbed-switch-1
-      name: Ethernet13
+      name: Ethernet32
     termination_b_type: dcim.interface
     termination_b:
       device: testbed-node-3
