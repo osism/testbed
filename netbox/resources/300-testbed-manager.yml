@@ -1,4 +1,10 @@
 ---
+- device_interface:
+    device: testbed-manager
+    name: Dummy0
+    type: virtual
+    enabled: true
+
 - cable:
     type: mmf-om4
     termination_a_type: dcim.interface
@@ -41,9 +47,16 @@
 
 - ip_address:
     tenant: Testbed
-    address: 192.168.16.5/20
+    address: 192.168.16.5/32
     assigned_object:
-      name: Ethernet1
+      name: Dummy0
+      device: testbed-manager
+
+- ip_address:
+    tenant: Testbed
+    address: "fda6:f659:8c2b::192:168:16:5/128"
+    assigned_object:
+      name: Dummy0
       device: testbed-manager
 
 - mac_address:
@@ -61,7 +74,8 @@
 - device:
     name: testbed-manager
     oob_ip: 172.16.0.5/20
-    primary_ip4: 192.168.16.5/20
+    primary_ip4: 192.168.16.5/32
+    primary_ip6: "fda6:f659:8c2b::192:168:16:5/128"
 
 - device_interface:
     device: testbed-manager
