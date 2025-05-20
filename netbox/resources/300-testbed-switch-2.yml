@@ -1,4 +1,10 @@
 ---
+- device_interface:
+    device: testbed-switch-2
+    name: Dummy0
+    type: virtual
+    enabled: true
+
 - cable:
     type: cat6a
     termination_a_type: dcim.interface
@@ -45,9 +51,25 @@
       name: eth0
       device: testbed-switch-2
 
+- ip_address:
+    tenant: Testbed
+    address: 192.168.16.29/32
+    assigned_object:
+      name: Dummy0
+      device: testbed-switch-2
+
+- ip_address:
+    tenant: Testbed
+    address: "fda6:f659:8c2b::192:168:16:29/128"
+    assigned_object:
+      name: Dummy0
+      device: testbed-switch-2
+
 - device:
     name: testbed-switch-2
     oob_ip: 172.16.0.29/20
+    primary_ip4: 192.168.16.29/32
+    primary_ip6: "fda6:f659:8c2b::192:168:16:29/128"
 
 - device_interface:
     device: testbed-switch-2
