@@ -1,4 +1,10 @@
 ---
+- device_interface:
+    device: testbed-switch-oob
+    name: Dummy0
+    type: virtual
+    enabled: true
+
 - ip_address:
     tenant: Testbed
     address: 172.16.0.31/20
@@ -12,9 +18,25 @@
       device: testbed-switch-oob
       name: eth0
 
+- ip_address:
+    tenant: Testbed
+    address: 192.168.16.31/32
+    assigned_object:
+      name: Dummy0
+      device: testbed-switch-oob
+
+- ip_address:
+    tenant: Testbed
+    address: "fda6:f659:8c2b::192:168:16:31/128"
+    assigned_object:
+      name: Dummy0
+      device: testbed-switch-oob
+
 - device:
     name: testbed-switch-oob
     oob_ip: 172.16.0.31/20
+    primary_ip4: 192.168.16.31/32
+    primary_ip6: "fda6:f659:8c2b::192:168:16:31/128"
 
 - device_interface:
     device: testbed-switch-oob
