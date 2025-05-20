@@ -95,7 +95,7 @@
     location: "{{ location }}"
     rack: "{{ rack }}"
     device_type: Manager
-    device_role: Management
+    device_role: Manager
     face: front
     position: 5
     tags:
