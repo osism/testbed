@@ -100,9 +100,6 @@
     position: 5
     tags:
       - managed-by-osism
-      - generic
-      - manager
-      - monitoring
 
 - device:
     name: testbed-node-0
@@ -116,10 +113,6 @@
     position: 10
     tags:
       - managed-by-osism
-      - generic
-      - control
-      - network
-      - ceph-control
 
 - device:
     name: testbed-node-1
@@ -133,10 +126,6 @@
     position: 11
     tags:
       - managed-by-osism
-      - generic
-      - control
-      - network
-      - ceph-control
 
 - device:
     name: testbed-node-2
@@ -150,10 +139,6 @@
     position: 12
     tags:
       - managed-by-osism
-      - generic
-      - control
-      - network
-      - ceph-control
 
 - device:
     name: testbed-node-3
@@ -167,7 +152,6 @@
     position: 13
     tags:
       - managed-by-osism
-      - generic
 
 - device:
     name: testbed-node-4
@@ -181,7 +165,6 @@
     position: 14
     tags:
       - managed-by-osism
-      - generic
 
 - device:
     name: testbed-node-5
@@ -195,7 +178,6 @@
     position: 15
     tags:
       - managed-by-osism
-      - generic
 
 - device:
     name: testbed-node-6
@@ -209,8 +191,6 @@
     position: 16
     tags:
       - managed-by-osism
-      - generic
-      - ceph-resource
 
 - device:
     name: testbed-node-7
@@ -224,8 +204,6 @@
     position: 17
     tags:
       - managed-by-osism
-      - generic
-      - ceph-resource
 
 - device:
     name: testbed-node-8
@@ -239,8 +217,6 @@
     position: 18
     tags:
       - managed-by-osism
-      - generic
-      - ceph-resource
 
 - device:
     name: testbed-node-9
@@ -254,5 +230,3 @@
     position: 19
     tags:
       - managed-by-osism
-      - generic
-      - ceph-resource
