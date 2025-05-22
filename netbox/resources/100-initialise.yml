@@ -30,7 +30,7 @@
       name: OOB Testbed
       site: discworld
     tags:
-      managed-by-osism
+      - managed-by-osism
 
 - prefix:
     tenant: Testbed
