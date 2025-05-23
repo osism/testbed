@@ -4,6 +4,8 @@
     name: Dummy0
     type: virtual
     enabled: true
+    tags:
+      - managed-by-osism
 
 - cable:
     type: mmf-om4
@@ -120,9 +122,13 @@
     name: Ethernet3
     primary_mac_address: "18:C0:86:F2:14:87"
     label: leaf1
+    tags:
+      - managed-by-osism
 
 - device_interface:
     device: testbed-node-8
     name: Ethernet4
     primary_mac_address: "18:C0:86:7A:DF:C9"
     label: leaf2
+    tags:
+      - managed-by-osism
