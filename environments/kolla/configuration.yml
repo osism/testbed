@@ -64,14 +64,13 @@ enable_manila_backend_cephfs_native: "yes"
 
 # ironic
 ironic_dnsmasq_interface: "vxlan0"
-# NOTE: The ironic_dnsmasq_dhcp_range parameter was replaced with ironic_dnsmasq_dhcp_ranges
-#       in Zed. The ironic_dnsmasq_dhcp_range parameter can be removed in the future.
-ironic_dnsmasq_dhcp_range: "192.168.112.50,192.168.112.60"
+ironic_tftp_interface: "vxlan0"
+ironic_http_interface: "vxlan0"
+ironic_dnsmasq_dns_port: 53
 ironic_dnsmasq_dhcp_ranges:
-  - range: "192.168.112.50,192.168.112.60"
-ironic_cleaning_network: "public"
-ironic_tftp_interface: ironic-boot
-ironic_http_interface: ironic-boot
+  - range: "192.168.112.50,192.168.112.254"
+    routers: "{{ groups['testbed-managers'] | map('extract', hostvars, 'ansible_facts') | map(attribute=ironic_dnsmasq_interface) | map(attribute='ipv4') | map(attribute='address') | list | join(',') }}"
+    dns_server: "{{ groups['testbed-control-nodes'] | map('extract', hostvars, 'ansible_facts') | map(attribute=ironic_dnsmasq_interface) | map(attribute='ipv4') | map(attribute='address') | list | join(',') }}"
 
 # ceilometer
 enable_ceilometer_prometheus_pushgateway: "yes"
