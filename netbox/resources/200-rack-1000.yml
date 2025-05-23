@@ -19,7 +19,7 @@
     location: "{{ location }}"
     rack: "{{ rack }}"
     device_type: edgecore-7726-32x-o-ac-b
-    device_role: Leaf
+    device_role: leaf
     face: rear
     position: 27
     tags:
@@ -35,7 +35,7 @@
     location: "{{ location }}"
     rack: "{{ rack }}"
     device_type: edgecore-7726-32x-o-ac-b
-    device_role: Leaf
+    device_role: leaf
     face: rear
     position: 28
     tags:
@@ -50,7 +50,7 @@
     location: "{{ location }}"
     rack: "{{ rack }}"
     device_type: edgecore-7726-32x-o-ac-b
-    device_role: Spine
+    device_role: spine
     face: rear
     position: 29
     tags:
@@ -65,7 +65,7 @@
     location: "{{ location }}"
     rack: "{{ rack }}"
     device_type: edgecore-7726-32x-o-ac-b
-    device_role: Spine
+    device_role: spine
     face: rear
     position: 30
     tags:
@@ -80,11 +80,12 @@
     location: "{{ location }}"
     rack: "{{ rack }}"
     device_type: edgecore-5835-54t-o-ac-f
-    device_role: OOB
+    device_role: accessleaf
     face: rear
     position: 31
     tags:
       - managed-by-osism
+      - out-of-band
     custom_fields:
       dnsmasq_dhcp_tag: edgecore
 
