@@ -119,8 +119,10 @@
     device: testbed-node-1
     name: Ethernet3
     primary_mac_address: "18:C0:86:2A:B5:E1"
+    label: leaf1
 
 - device_interface:
     device: testbed-node-1
     name: Ethernet4
     primary_mac_address: "18:C0:86:6F:4D:C8"
+    label: leaf2
