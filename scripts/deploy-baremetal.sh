@@ -13,9 +13,12 @@ sed -i 's/enable_ironic: "no"/enable_ironic: "yes"/' /opt/configuration/environm
 sed -i 's/glance_backend_ceph: "yes"/glance_backend_ceph: "no"/' /opt/configuration/environments/kolla/configuration.yml
 sed -i 's/glance_backend_file: "no"/glance_backend_file: "yes"/' /opt/configuration/environments/kolla/configuration.yml
 
+echo 'enable_ironic_dnsmasq: "yes"' >> /opt/configuration/environments/kolla/configuration.yml
 echo 'enable_cinder: "no"' >> /opt/configuration/environments/kolla/configuration.yml
 echo 'enable_horizon: "no"' >> /opt/configuration/environments/kolla/configuration.yml
 echo 'enable_nova: "no"' >> /opt/configuration/environments/kolla/configuration.yml
+echo 'enable_neutron: "no"' >> /opt/configuration/environments/kolla/configuration.yml
+echo 'testbed_baremetal_scenario: True' >> /opt/configuration/environments/configuration.yml
 
 osism apply -e custom baremetal-prepare
 osism sync inventory
@@ -31,12 +34,9 @@ osism apply memcached
 osism apply redis
 osism apply mariadb
 osism apply rabbitmq
-osism apply openvswitch --limit testbed-control-nodes
-osism apply ovn --limit testbed-control-nodes
 
 osism apply keystone
 osism apply glance
-osism apply neutron
 
 osism apply ironic-download-ipa-images
 osism apply -e custom baremetal-bootstrap
