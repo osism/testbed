@@ -129,10 +129,12 @@
     device: testbed-manager
     name: Ethernet1
     label: oob1
-    primary_mac_address: "18:C0:86:91:A3:B5"
     mode: tagged
     tagged_vlans:
       - name: OOB Testbed
+    tags:
+      - managed-by-osism
+    primary_mac_address: "18:C0:86:91:A3:B5"
 
 - device_interface:
     device: testbed-manager
