@@ -7,6 +7,17 @@
     tags:
       - managed-by-osism
 
+- device_interface:
+    device: testbed-manager
+    name: vlan100
+    type: virtual
+    parent_interface: Ethernet1
+    mode: access
+    untagged_vlan:
+      name: OOB Testbed
+    tags:
+      - managed-by-osism
+
 - cable:
     type: mmf-om4
     termination_a_type: dcim.interface
@@ -45,6 +56,13 @@
     address: 172.16.0.5/20
     assigned_object:
       name: Ethernet0
+      device: testbed-manager
+
+- ip_address:
+    tenant: Testbed
+    address: 172.16.10.5/20
+    assigned_object:
+      name: vlan100
       device: testbed-manager
 
 - ip_address:
@@ -110,7 +128,11 @@
 - device_interface:
     device: testbed-manager
     name: Ethernet1
+    label: oob1
     primary_mac_address: "18:C0:86:91:A3:B5"
+    mode: tagged
+    tagged_vlans:
+      - name: OOB Testbed
 
 - device_interface:
     device: testbed-manager
