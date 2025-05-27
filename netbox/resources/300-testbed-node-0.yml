@@ -1,7 +1,7 @@
 ---
 - device_interface:
     device: testbed-node-0
-    name: Dummy0
+    name: Loopback0
     type: virtual
     enabled: true
     tags:
@@ -51,7 +51,7 @@
     tenant: Testbed
     address: 192.168.16.10/32
     assigned_object:
-      name: Dummy0
+      name: Loopback0
       device: testbed-node-0
 
 - mac_address:
@@ -88,7 +88,7 @@
     tenant: Testbed
     address: "fda6:f659:8c2b::192:168:16:10/128"
     assigned_object:
-      name: Dummy0
+      name: Loopback0
       device: testbed-node-0
 
 - device:
