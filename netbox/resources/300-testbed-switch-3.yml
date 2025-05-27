@@ -1,7 +1,7 @@
 ---
 - device_interface:
     device: testbed-switch-3
-    name: Dummy0
+    name: Loopback0
     type: virtual
     enabled: true
 
@@ -88,14 +88,14 @@
     tenant: Testbed
     address: 192.168.16.30/32
     assigned_object:
-      name: Dummy0
+      name: Loopback0
       device: testbed-switch-3
 
 - ip_address:
     tenant: Testbed
     address: "fda6:f659:8c2b::192:168:16:30/128"
     assigned_object:
-      name: Dummy0
+      name: Loopback0
       device: testbed-switch-3
 
 - device:
