@@ -5,7 +5,7 @@
     location: Ankh-Morpork
     rack: "1000"
     device_type: Baremetal-Device
-    device_role: Generic
+    device_role: Compute
     custom_fields:
       ironic_parameters:
         driver_info:
@@ -14,7 +14,6 @@
     tags:
       - managed-by-osism
       - managed-by-ironic
-      - generic
 
 - device_bay:
     device: {{ node }}
