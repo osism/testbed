@@ -1,15 +1,5 @@
 ---
 ##########################################################
-# netbox
-
-netbox_inventory_status: Active
-netbox_inventory_device_role: manager-node
-netbox_inventory_tags:
-  - generic
-  - manager
-  - monitoring
-
-##########################################################
 # generic
 
 internal_address: "192.168.16.{{ node_id }}"

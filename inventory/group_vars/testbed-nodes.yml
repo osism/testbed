@@ -1,18 +1,5 @@
 ---
 ##########################################################
-# netbox
-
-netbox_inventory_status: Active
-netbox_inventory_device_role: generic-node
-netbox_inventory_tags:
-  - generic
-  - control
-  - compute
-  - network
-  - ceph-control
-  - ceph-resource
-
-##########################################################
 # docker
 
 docker_network_mtu: "{{ testbed_mtu_node }}"
