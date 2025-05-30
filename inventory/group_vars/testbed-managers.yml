@@ -35,8 +35,6 @@ network_dispatcher_scripts:
 #   - src: /opt/configuration/network/vxlan.sh
 #     dest: routable.d/vxlan.sh
 
-network_vxlan_interfaces: "{{ _network_vxlan_interfaces }}"
-
 ##########################################################
 # kolla
 
