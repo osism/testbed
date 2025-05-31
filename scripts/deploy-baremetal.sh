@@ -17,6 +17,7 @@ echo 'enable_cinder: "no"' >> /opt/configuration/environments/kolla/configuratio
 echo 'enable_horizon: "no"' >> /opt/configuration/environments/kolla/configuration.yml
 echo 'enable_nova: "no"' >> /opt/configuration/environments/kolla/configuration.yml
 
+osism apply netbox
 osism apply -e custom baremetal-prepare
 osism sync inventory
 osism apply network -e network_allow_service_restart=true
