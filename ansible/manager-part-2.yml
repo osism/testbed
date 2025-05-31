@@ -6,6 +6,9 @@
   vars:
     manager_version: latest
 
+    venv_path: /opt/venv
+    gilt: "{{ venv_path }}/bin/gilt"
+
   tasks:
     - name: Set docker version facts for OSISM 6
       ansible.builtin.set_fact:
@@ -57,8 +60,7 @@
         var: __docker_cli_version
 
     - name: Sync environments/manager/images.yml
-      ansible.builtin.command:
-        gilt overlay
+      ansible.builtin.command: "{{ gilt }} overlay"
       environment:
         MANAGER_VERSION: "{{ manager_version }}"
       args:

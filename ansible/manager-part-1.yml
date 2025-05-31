@@ -9,7 +9,6 @@
     manager_version: latest
 
     venv_path: /opt/venv
-
     ansible_playbook: "{{ venv_path }}/bin/ansible-playbook"
 
   tasks:
