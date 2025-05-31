@@ -28,8 +28,8 @@
         mode: 0755
 
 # With this play, we can decouple the pull of the required images from the
-# subsequent roles (traefik, manager, netbox). This makes problems resulting
-# from image pulls more visible in the CI.
+# subsequent roles (traefik, manager). This makes problems resulting from
+# image pulls more visible in the CI.
 - name: Before the deployment of the manager
   hosts: testbed-manager
   connection: local
@@ -45,7 +45,6 @@
       - "{{ inventory_reconciler_image }}"
       - "{{ kolla_ansible_image }}"
       - "{{ manager_redis_image }}"
-      - "{{ netbox_image }}"
       - "{{ osism_ansible_image }}"
       - "{{ osism_image }}"
       - "{{ postgres_image }}"
@@ -89,12 +88,6 @@
         line: "ara_server_mariadb_volume_type: tmpfs"
       when: "'export IS_ZUUL=true' in manager_vars"
 
-    - name: Add netbox_postgres_volume_type parameter
-      ansible.builtin.lineinfile:
-        path: /opt/configuration/environments/infrastructure/configuration.yml
-        line: "netbox_postgres_volume_type: tmpfs"
-      when: "'export IS_ZUUL=true' in manager_vars"
-
     # The correct package name is linux-generic-hwe-22.04 on Ubuntu 22.04
     # and linux-generic-hwe-24.04 on Ubuntu 24.04.
     - name: Install HWE kernel package on Ubuntu
@@ -134,7 +127,7 @@
         - result.stat.exists is defined
         - result.stat.exists | bool
 
-- name: Apply role traefik & netbox
+- name: Apply role traefik
   hosts: testbed-manager
   connection: local
 
@@ -159,19 +152,6 @@
     - name: Apply traefik role
       ansible.builtin.include_role:
         name: osism.services.traefik
-
-    - name: Try to apply the netbox role
-      block:  # noqa osism-fqcn
-        - name: Apply netbox role
-          ansible.builtin.include_role:
-            name: osism.services.netbox
-      rescue:
-        - name: Collect debug logs
-          ansible.builtin.shell: |
-            docker images
-            docker ps -a
-            docker logs netbox-netbox-1
-          changed_when: true
 
 - name: Deploy manager service
   hosts: testbed-manager

@@ -47,7 +47,6 @@ wait_for_container_healthy 60 kolla-ansible
 wait_for_container_healthy 60 osism-ansible
 
 docker compose --project-directory /opt/manager ps
-docker compose --project-directory /opt/netbox ps
 
 # disable ara service
 if [[ "$IS_ZUUL" == "true" || "$ARA" == "false" ]]; then

@@ -62,7 +62,6 @@ if [[ "$IS_ZUUL" == "true" || "$ARA" == "false" ]]; then
 fi
 
 docker compose --project-directory /opt/manager ps
-docker compose --project-directory /opt/netbox ps
 
 # use osism.commons.still_alive stdout callback
 if [[ $(semver $MANAGER_VERSION 7.0.0) -ge 0 || $MANAGER_VERSION == "latest" ]]; then

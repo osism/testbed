@@ -30,23 +30,3 @@ testbed-resource-nodes
 [k3s_node:children]
 #testbed-managers
 testbed-resource-nodes
-
-# NOTE: After the initial import of the inventory in the netbox,
-#       the groups in this file can be emptied. The systems are
-#       then assigned to their roles via tags in the netbox.
-
-# [generic]
-#
-# [manager]
-#
-# [monitoring]
-#
-# [control]
-#
-# [compute]
-#
-# [network]
-#
-# [ceph-control]
-#
-# [ceph-resource]
