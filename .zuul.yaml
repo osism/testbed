@@ -90,7 +90,7 @@
     abstract: true
     parent: abstract-testbed-deploy-in-a-nutshell
     vars:
-      manager_version: 8.1.0
+      manager_version: 9.1.0
 
 - job:
     name: testbed-deploy-stable-in-a-nutshell-ubuntu-22.04
@@ -133,7 +133,7 @@
     name: abstract-testbed-deploy-stable
     parent: abstract-testbed-deploy
     vars:
-      manager_version: 8.1.0
+      manager_version: 9.1.0
       tempst: true
       prometheus_alert_status: false
 
@@ -166,8 +166,8 @@
     parent: abstract-testbed-deploy
     run: playbooks/upgrade-stable.yml
     vars:
-      manager_version: 7.1.3
-      manager_version_next: 8.1.0
+      manager_version: 8.1.0
+      manager_version_next: 9.1.0
     nodeset: testbed-orchestrator
     timeout: 25200
 
