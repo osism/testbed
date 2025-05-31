@@ -56,6 +56,17 @@
       ansible.builtin.debug:
         var: __docker_cli_version
 
+    - name: Sync environments/manager/images.yml
+      ansible.builtin.command:
+        gilt overlay
+      environment:
+        MANAGER_VERSION: "{{ manager_version }}"
+      args:
+        chdir: /opt/configuration
+      when:
+        - manager_version != "latest"
+      changed_when: false
+
 - name: Run manager part 2
   hosts: testbed-manager
   connection: local
