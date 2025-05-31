@@ -7,11 +7,12 @@ CLOUD ?= $(ENVIRONMENT)
 
 IMAGE_USERNAME ?= ubuntu
 
+CEPH_STACK ?= ceph-ansible
+DEPLOY_MODE ?= manager
+
 VERSION_CEPH ?= reef
 VERSION_MANAGER ?= latest
 VERSION_OPENSTACK ?= 2024.2
-
-CEPH_STACK ?= ceph-ansible
 
 # renovate: datasource=github-releases depName=opentofu/opentofu
 TOFU_VERSION ?= 1.9.0
@@ -102,7 +103,8 @@ bootstrap: setup create ## Bootstrap everything.
 	  -e ceph_version=$(VERSION_CEPH) \
 	  -e manager_version=$(VERSION_MANAGER) \
 	  -e openstack_version=$(VERSION_OPENSTACK) \
-	  -e ceph_stack=$(CEPH_STACK)
+	  -e ceph_stack=$(CEPH_STACK) \
+	  -e deploy_mode=$(DEPLOY_MODE)
 
 .PHONY: manager
 manager: setup bootstrap ## Deploy only the manager service.
@@ -113,6 +115,7 @@ manager: setup bootstrap ## Deploy only the manager service.
 	  deploy-manager
 
 .PHONY: baremetal
+baremetal: DEPLOY_MODE = baremetal
 baremetal: setup manager ## Deploy only baremetal services.
 	make -C terraform \
 	  CLOUD=$(CLOUD) \

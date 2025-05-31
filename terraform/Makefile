@@ -16,13 +16,13 @@ RESOURCE = openstack_networking_floatingip_v2.manager_floating_ip
 STATE = errored.tfstate
 
 CEPH_STACK ?= ceph-ansible
+DEPLOY_MODE ?= manager
+KOLLA_NAMESPACE ?= osism
+TEMPEST ?= false
+
 VERSION_CEPH ?= reef
 VERSION_MANAGER ?= latest
 VERSION_OPENSTACK ?= 2024.2
-
-KOLLA_NAMESPACE ?= osism
-
-TEMPEST ?= false
 
 APPLY_PARAMS = -auto-approve -parallelism=$(PARALLELISM)
 
@@ -66,6 +66,7 @@ init:
 	@echo "ceph_stack = \"$(CEPH_STACK)\"" >> $(CLOUD).auto.tfvars
 	@echo "ceph_version = \"$(VERSION_CEPH)\"" >> $(CLOUD).auto.tfvars
 	@echo "cloud_provider = \"$(OS_CLOUD)\"" >> $(CLOUD).auto.tfvars
+	@echo "deploy_mode= \"$(DEPLOY_MODE)\"" >> $(CLOUD).auto.tfvars
 	@echo "image_node_user = \"$(IMAGE_USERNAME)\"" >> $(CLOUD).auto.tfvars
 	@echo "image_user = \"$(IMAGE_USERNAME)\"" >> $(CLOUD).auto.tfvars
 	@echo "manager_version = \"$(VERSION_MANAGER)\"" >> $(CLOUD).auto.tfvars

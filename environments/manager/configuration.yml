@@ -44,8 +44,6 @@ ara_server_traefik: true
 ##########################
 # netbox
 
-netbox_enable: true
-
 netbox_host: netbox.testbed.osism.xyz
 netbox_traefik: true
 netbox_api_url: "https://{{ netbox_host }}"
