@@ -63,4 +63,9 @@ echo "# Create backup of MariaDB database"
 echo
 
 osism apply mariadb_backup -e mariadb_backup_type=full
-osism apply mariadb_backup -e mariadb_backup_type=incremental
+
+# Disabled because of https://bugs.launchpad.net/kolla/+bug/2111620
+# Can be re-enabled after backport of https://review.opendev.org/c/openstack/kolla/+/950948
+# and the release of OSISM 9.1.1.
+#
+# osism apply mariadb_backup -e mariadb_backup_type=incremental
