@@ -52,7 +52,11 @@ osism apply wait-for-connection -l testbed-nodes -e ireallymeanit=yes
 osism apply hddtemp
 
 # restart the manager services to update the /etc/hosts file
-sudo systemctl restart docker-compose@manager
+if [[ $(semver $MANAGER_VERSION 7.1.1) -ge 0 || $MANAGER_VERSION == "latest" ]]; then
+    sudo systemctl restart manager.service
+else
+    sudo systemctl restart docker-compose@manager
+fi
 
 # wait for manager service
 if [[ $CEPH_STACK == "ceph-ansible" ]]; then
