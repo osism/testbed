@@ -30,31 +30,37 @@ _tempest() {
 }
 
 echo
-echo "## IDENTITY"
+echo "## IDENTITY (API)"
 echo
 
 _tempest "tempest.api.identity.v3"
 
 echo
-echo "## IMAGE"
+echo "## IMAGE (API)"
 echo
 
 _tempest "tempest.api.image.v2"
 
 echo
-echo "## NETWORK"
+echo "## NETWORK (API)"
 echo
 
 _tempest "tempest.api.network"
 
 echo
-echo "## VOLUME"
+echo "## VOLUME (API)"
 echo
 
 _tempest "tempest.api.volume"
 
 echo
-echo "## COMPUTE"
+echo "## COMPUTE (API)"
 echo
 
 _tempest "tempest.api.compute"
+
+echo
+echo "## DNS (API)"
+echo
+
+_tempest "designate_tempest_plugin.tests.api.v2"
