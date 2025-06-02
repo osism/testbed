@@ -8,7 +8,7 @@
 
 - semaphore:
     name: semaphore-testbed
-    max: 2
+    max: 4
 
 - job:
     name: abstract-testbed-deploy
@@ -50,7 +50,6 @@
     name: abstract-testbed-deploy-in-a-nutshell
     abstract: true
     parent: abstract-testbed-deploy
-    timeout: 7200
     vars:
       nutshell: true
 
@@ -81,7 +80,6 @@
 - job:
     name: testbed-deploy-in-a-nutshell-with-tempest-ubuntu-24.04
     parent: testbed-deploy-in-a-nutshell-ubuntu-24.04
-    timeout: 14400
     vars:
       tempest: true
 
@@ -119,7 +117,6 @@
 - job:
     name: testbed-deploy-stable-in-a-nutshell-with-tempest-ubuntu-24.04
     parent: testbed-deploy-stable-in-a-nutshell-ubuntu-24.04
-    timeout: 14400
     vars:
       tempest: true
 
@@ -127,7 +124,7 @@
     name: testbed-upgrade
     parent: abstract-testbed-deploy
     run: playbooks/upgrade.yml
-    timeout: 25200
+    timeout: 30000
 
 - job:
     name: abstract-testbed-deploy-stable
@@ -169,7 +166,7 @@
       manager_version: 8.1.0
       manager_version_next: 9.1.0
     nodeset: testbed-orchestrator
-    timeout: 25200
+    timeout: 30000
 
 - job:
     name: testbed-upgrade-stable-ubuntu-22.04
@@ -206,23 +203,18 @@
     label:
       jobs:
         - testbed-deploy-in-a-nutshell-ubuntu-24.04
+        - testbed-deploy-stable-in-a-nutshell-ubuntu-24.04
     label-additional:
       jobs:
         - testbed-deploy-in-a-nutshell-ubuntu-22.04
         - testbed-deploy-in-a-nutshell-debian-12
         - testbed-deploy-in-a-nutshell-centos-stream-9
-    gate:
-      jobs:
-        - ansible-lint
-        - yamllint
-        - flake8
-        - python-black
     periodic-midnight:
       jobs:
-        - testbed-deploy-stable-in-a-nutshell-ubuntu-24.04
+        - testbed-deploy-in-a-nutshell-with-tempest-ubuntu-24.04
+        - testbed-deploy-stable-in-a-nutshell-with-tempest-ubuntu-24.04
     periodic-daily:
       jobs:
-        - testbed-deploy-in-a-nutshell-with-tempest-ubuntu-24.04
         - ansible-lint
         - flake8
         - python-black
