@@ -169,7 +169,7 @@
       notify: Restart ironic-interface.service
 
     - name: Create ironic-interface service
-      become: True
+      become: true
       ansible.builtin.template:
         src: ironic-interface.service.j2
         dest: /etc/systemd/system/ironic-interface.service
@@ -198,9 +198,9 @@
 
   handlers:
     - name: Restart ironic-interface.service
-      become: True
+      become: true
       ansible.builtin.systemd_service:
         name: ironic-interface.service
-        daemon_reload: yes
+        daemon_reload: true
         state: restarted
-        enabled: yes
+        enabled: true
