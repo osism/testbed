@@ -55,7 +55,6 @@ vault_image: "{{ docker_registry }}/hashicorp/vault:{{ vault_tag }}"
 traefik_tag: "v3.4.1"
 traefik_image: "{{ docker_registry }}/library/traefik:{{ traefik_tag }}"
 
-# image tag depends on CEPH_VERSION or OPENSTACK_VERSION
 ceph_ansible_tag: "{{ ceph_version|default('quincy') }}"
 ceph_ansible_image: "{{ docker_registry_ansible|default('quay.io') }}/osism/ceph-ansible:{{ ceph_ansible_tag }}"
 
