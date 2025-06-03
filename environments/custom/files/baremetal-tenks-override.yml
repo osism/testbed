@@ -23,7 +23,7 @@ node_types:
 # enroled from these nodes. If `ironic_config` is not set, Ironic enrolment
 # will be skipped for that spec.
 specs:
-    # The type in `node_types` that this spec refers to. Required.
+  # The type in `node_types` that this spec refers to. Required.
   - type: type0
     # The number of nodes to create of this spec. Required.
     count: 6

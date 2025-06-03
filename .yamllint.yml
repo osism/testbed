@@ -9,6 +9,7 @@ ignore: |
   .git
   .tox
   environments/infrastructure/secrets.yml
+  environments/kubernetes/secrets.yml
   environments/kolla/files/overlays/ceilometer/event_definitions.yaml
   environments/kolla/files/overlays/ceilometer/event_pipeline.yaml
   environments/kolla/files/overlays/ceilometer/pipeline.yaml
