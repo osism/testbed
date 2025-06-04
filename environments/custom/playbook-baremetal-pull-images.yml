@@ -10,9 +10,6 @@
       - loadbalancer
       - mariadb
       - memcached
-      - neutron
-      - openvswitch
-      - ovn
       - rabbitmq
       - redis
 

@@ -59,8 +59,6 @@ network_ethernets:
     dhcp4: true
     mtu: "{{ testbed_mtu_node }}"
 
-network_vxlan_interfaces: "{{ _network_vxlan_interfaces }}"
-
 # Only use vxlan.sh networkd-dispatcher script for OSISM < 9.0.0
 # network_dispatcher_scripts:
 #   - src: /opt/configuration/network/vxlan.sh

@@ -5,6 +5,7 @@
 testbed_mtu: 1400
 testbed_mtu_manager: "{{ testbed_mtu }}"
 testbed_mtu_node: "{{ testbed_mtu }}"
+testbed_baremetal_scenario: "no"
 
 ##########################
 # docker
