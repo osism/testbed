@@ -8,3 +8,5 @@ ironic_parameters:
     ipmi_port: 6230
     deploy_kernel: ironic-agent-kernel
     deploy_ramdisk: ironic-agent-initramfs
+  instance_info:
+    image_source: Cirros 0.6.3
