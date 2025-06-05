@@ -2,8 +2,8 @@
 ironic_parameters:
   driver: ipmi
   driver_info:
-    ipmi_username: admin
-    ipmi_password: password
+    ipmi_username: "{{ remote_board_username }}"
+    ipmi_password: "{{ remote_board_password }}"
     ipmi_address: "{{ remote_board_address }}"
     ipmi_port: 6230
     deploy_kernel: ironic-agent-kernel
