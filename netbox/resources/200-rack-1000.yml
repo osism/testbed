@@ -26,6 +26,9 @@
       - managed-by-osism
     custom_fields:
       dnsmasq_dhcp_tag: edgecore
+      sonic_parameters:
+        hwsku: Accton-AS7726-32X
+        version: 4.5.0
 
 
 - device:
@@ -42,6 +45,9 @@
       - managed-by-osism
     custom_fields:
       dnsmasq_dhcp_tag: edgecore
+      sonic_parameters:
+        hwsku: Accton-AS7726-32X
+        version: 4.5.0
 
 - device:
     name: testbed-switch-2
@@ -57,6 +63,9 @@
       - managed-by-osism
     custom_fields:
       dnsmasq_dhcp_tag: edgecore
+      sonic_parameters:
+        hwsku: Accton-AS7726-32X
+        version: 4.5.0
 
 - device:
     name: testbed-switch-3
@@ -72,6 +81,9 @@
       - managed-by-osism
     custom_fields:
       dnsmasq_dhcp_tag: edgecore
+      sonic_parameters:
+        hwsku: Accton-AS7726-32X
+        version: 4.5.0
 
 - device:
     name: testbed-switch-oob
@@ -88,6 +100,9 @@
       - out-of-band
     custom_fields:
       dnsmasq_dhcp_tag: edgecore
+      sonic_parameters:
+        hwsku: Accton-AS5835-54T
+        version: 4.5.0
 
 - device:
     name: testbed-manager
