@@ -7,7 +7,7 @@ adminer_image: "{{ docker_registry }}/library/adminer:{{ adminer_tag }}"
 ara_server_tag: "1.7.2"
 ara_server_image: "{{ docker_registry_ansible|default('quay.io') }}/osism/ara-server:{{ ara_server_tag }}"
 
-ara_server_mariadb_tag: "11.7.2"
+ara_server_mariadb_tag: "11.8.2"
 ara_server_mariadb_image: "{{ docker_registry }}/library/mariadb:{{ ara_server_mariadb_tag }}"
 
 netbox_tag: "v4.2.2"
@@ -54,8 +54,6 @@ vault_image: "{{ docker_registry }}/hashicorp/vault:{{ vault_tag }}"
 
 traefik_tag: "v3.4.1"
 traefik_image: "{{ docker_registry }}/library/traefik:{{ traefik_tag }}"
-
-# image tag depends on CEPH_VERSION or OPENSTACK_VERSION
 
 ceph_ansible_tag: "{{ ceph_version|default('quincy') }}"
 ceph_ansible_image: "{{ docker_registry_ansible|default('quay.io') }}/osism/ceph-ansible:{{ ceph_ansible_tag }}"
