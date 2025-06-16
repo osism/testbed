@@ -23,6 +23,7 @@
     face: rear
     position: 27
     tags:
+      - managed-by-metalbox
       - managed-by-osism
     custom_fields:
       dnsmasq_dhcp_tag: edgecore
@@ -42,6 +43,7 @@
     face: rear
     position: 28
     tags:
+      - managed-by-metalbox
       - managed-by-osism
     custom_fields:
       dnsmasq_dhcp_tag: edgecore
@@ -60,6 +62,7 @@
     face: rear
     position: 29
     tags:
+      - managed-by-metalbox
       - managed-by-osism
     custom_fields:
       dnsmasq_dhcp_tag: edgecore
@@ -78,6 +81,7 @@
     face: rear
     position: 30
     tags:
+      - managed-by-metalbox
       - managed-by-osism
     custom_fields:
       dnsmasq_dhcp_tag: edgecore
@@ -96,6 +100,7 @@
     face: rear
     position: 31
     tags:
+      - managed-by-metalbox
       - managed-by-osism
       - out-of-band
     custom_fields:
