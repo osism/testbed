@@ -28,5 +28,5 @@ _network_vxlan_interface_vxlan_oob:
     local_ip: "{{ [inventory_hostname] | map('extract', hostvars, 'ansible_facts') | map(attribute=internal_interface) | map(attribute='ipv4') | map(attribute='address') | first }}"
     dests: "{{ (groups['testbed-nodes'] + groups['testbed-managers']) | reject('equalto', inventory_hostname) | map('extract', hostvars, 'ansible_facts') | map(attribute=internal_interface) | map(attribute='ipv4') | map(attribute='address') | list }}"
     addresses:
-      - "{{ '172.16.0.0/20' | ansible.utils.ipaddr('net') | ansible.utils.ipaddr(node_id) | ansible.utils.ipaddr('address') }}/20"
+      - "{{ '172.29.0.0/24' | ansible.utils.ipaddr('net') | ansible.utils.ipaddr(node_id) | ansible.utils.ipaddr('address') }}/24"
 network_vxlan_interfaces: "{{ _network_vxlan_interfaces | combine(_network_vxlan_interface_vxlan_oob if testbed_baremetal_scenario | bool else {}) }}"

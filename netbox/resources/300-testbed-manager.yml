@@ -53,14 +53,14 @@
 
 - ip_address:
     tenant: Testbed
-    address: 172.16.0.5/20
+    address: 172.29.0.5/24
     assigned_object:
       name: Ethernet0
       device: testbed-manager
 
 - ip_address:
     tenant: Testbed
-    address: 172.16.10.5/20
+    address: 172.29.10.5/24
     assigned_object:
       name: vlan100
       device: testbed-manager
@@ -111,7 +111,7 @@
 
 - device:
     name: testbed-manager
-    oob_ip: 172.16.0.5/20
+    oob_ip: 172.29.0.5/24
     primary_ip4: 192.168.16.5/32
     primary_ip6: "fda6:f659:8c2b::192:168:16:5/128"
 

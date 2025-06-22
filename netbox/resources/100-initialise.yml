@@ -22,7 +22,7 @@
 - prefix:
     tenant: Testbed
     family: 4
-    prefix: 172.16.0.0/20
+    prefix: 172.29.0.0/24
     prefix_role: OOB
     scope_type: dcim.location
     scope: ankh-morpork
