@@ -1,115 +1,92 @@
 ---
 manufacturer: Edgecore
-model: 7726-32X-O-AC-B
-slug: edgecore-7726-32x-o-ac-b
-part_number: 7726-32X-O-AC-B
-u_height: 1
+model: 7726-32X-O-AC-F
+slug: edgecore-7726-32x-o-ac-f
+part_number: FP3ZZ7632xxxx
+u_height: 1.0
 is_full_depth: true
+front_image: true
+rear_image: true
+weight: 10.87
+weight_unit: kg
+comments: https://www.edge-core.com/_upload/images/2021-151-DCS204_AS7726-32X-DS-R06-20211215.pdf
 console-ports:
   - name: Console
     type: rj-45
-power-ports:
-  - name: PS1
-    type: iec-60320-c14
-  - name: PS2
-    type: iec-60320-c14
 interfaces:
-  - name: Ethernet0
-    type: 100gbase-x-qsfp28
-    label: 1
-  - name: Ethernet4
-    type: 100gbase-x-qsfp28
-    label: 2
-  - name: Ethernet8
-    type: 100gbase-x-qsfp28
-    label: 3
-  - name: Ethernet12
-    type: 100gbase-x-qsfp28
-    label: 4
-  - name: Ethernet16
-    type: 100gbase-x-qsfp28
-    label: 5
-  - name: Ethernet20
-    type: 100gbase-x-qsfp28
-    label: 6
-  - name: Ethernet24
-    type: 100gbase-x-qsfp28
-    label: 7
-  - name: Ethernet28
-    type: 100gbase-x-qsfp28
-    label: 8
-  - name: Ethernet32
-    type: 100gbase-x-qsfp28
-    label: 9
-  - name: Ethernet36
-    type: 100gbase-x-qsfp28
-    label: 10
-  - name: Ethernet40
-    type: 100gbase-x-qsfp28
-    label: 11
-  - name: Ethernet44
-    type: 100gbase-x-qsfp28
-    label: 12
-  - name: Ethernet48
-    type: 100gbase-x-qsfp28
-    label: 13
-  - name: Ethernet52
-    type: 100gbase-x-qsfp28
-    label: 14
-  - name: Ethernet56
-    type: 100gbase-x-qsfp28
-    label: 15
-  - name: Ethernet60
-    type: 100gbase-x-qsfp28
-    label: 16
-  - name: Ethernet64
-    type: 100gbase-x-qsfp28
-    label: 17
-  - name: Ethernet68
-    type: 100gbase-x-qsfp28
-    label: 18
-  - name: Ethernet72
-    type: 100gbase-x-qsfp28
-    label: 19
-  - name: Ethernet76
-    type: 100gbase-x-qsfp28
-    label: 20
-  - name: Ethernet80
-    type: 100gbase-x-qsfp28
-    label: 21
-  - name: Ethernet84
-    type: 100gbase-x-qsfp28
-    label: 22
-  - name: Ethernet88
-    type: 100gbase-x-qsfp28
-    label: 23
-  - name: Ethernet92
-    type: 100gbase-x-qsfp28
-    label: 24
-  - name: Ethernet96
-    type: 100gbase-x-qsfp28
-    label: 25
-  - name: Ethernet100
-    type: 100gbase-x-qsfp28
-    label: 26
-  - name: Ethernet104
-    type: 100gbase-x-qsfp28
-    label: 27
-  - name: Ethernet108
-    type: 100gbase-x-qsfp28
-    label: 28
-  - name: Ethernet112
-    type: 100gbase-x-qsfp28
-    label: 29
-  - name: Ethernet116
-    type: 100gbase-x-qsfp28
-    label: 30
-  - name: Ethernet120
-    type: 100gbase-x-qsfp28
-    label: 31
-  - name: Ethernet124
-    type: 100gbase-x-qsfp28
-    label: 32
   - name: eth0
     type: 1000base-t
     mgmt_only: true
+  - name: Ethernet0
+    type: 100gbase-x-qsfp28
+  - name: Ethernet4
+    type: 100gbase-x-qsfp28
+  - name: Ethernet8
+    type: 100gbase-x-qsfp28
+  - name: Ethernet12
+    type: 100gbase-x-qsfp28
+  - name: Ethernet16
+    type: 100gbase-x-qsfp28
+  - name: Ethernet20
+    type: 100gbase-x-qsfp28
+  - name: Ethernet24
+    type: 100gbase-x-qsfp28
+  - name: Ethernet28
+    type: 100gbase-x-qsfp28
+  - name: Ethernet32
+    type: 100gbase-x-qsfp28
+  - name: Ethernet36
+    type: 100gbase-x-qsfp28
+  - name: Ethernet40
+    type: 100gbase-x-qsfp28
+  - name: Ethernet44
+    type: 100gbase-x-qsfp28
+  - name: Ethernet48
+    type: 100gbase-x-qsfp28
+  - name: Ethernet52
+    type: 100gbase-x-qsfp28
+  - name: Ethernet56
+    type: 100gbase-x-qsfp28
+  - name: Ethernet60
+    type: 100gbase-x-qsfp28
+  - name: Ethernet64
+    type: 100gbase-x-qsfp28
+  - name: Ethernet68
+    type: 100gbase-x-qsfp28
+  - name: Ethernet72
+    type: 100gbase-x-qsfp28
+  - name: Ethernet76
+    type: 100gbase-x-qsfp28
+  - name: Ethernet80
+    type: 100gbase-x-qsfp28
+  - name: Ethernet84
+    type: 100gbase-x-qsfp28
+  - name: Ethernet88
+    type: 100gbase-x-qsfp28
+  - name: Ethernet92
+    type: 100gbase-x-qsfp28
+  - name: Ethernet96
+    type: 100gbase-x-qsfp28
+  - name: Ethernet100
+    type: 100gbase-x-qsfp28
+  - name: Ethernet104
+    type: 100gbase-x-qsfp28
+  - name: Ethernet108
+    type: 100gbase-x-qsfp28
+  - name: Ethernet112
+    type: 100gbase-x-qsfp28
+  - name: Ethernet116
+    type: 100gbase-x-qsfp28
+  - name: Ethernet120
+    type: 100gbase-x-qsfp28
+  - name: Ethernet124
+    type: 100gbase-x-qsfp28
+  - name: Ethernet125
+    type: 10gbase-x-sfpp
+  - name: Ethernet126
+    type: 10gbase-x-sfpp
+module-bays:
+  - name: PSU 1
+    position: '1'
+  - name: PSU 2
+    position: '2'
