@@ -18,7 +18,7 @@
     site: "{{ site }}"
     location: "{{ location }}"
     rack: "{{ rack }}"
-    device_type: edgecore-7726-32x-o-ac-b
+    device_type: edgecore-7726-32x-o-ac-f
     device_role: leaf
     face: rear
     position: 27
@@ -38,7 +38,7 @@
     site: "{{ site }}"
     location: "{{ location }}"
     rack: "{{ rack }}"
-    device_type: edgecore-7726-32x-o-ac-b
+    device_type: edgecore-7726-32x-o-ac-f
     device_role: leaf
     face: rear
     position: 28
@@ -57,7 +57,7 @@
     site: "{{ site }}"
     location: "{{ location }}"
     rack: "{{ rack }}"
-    device_type: edgecore-7726-32x-o-ac-b
+    device_type: edgecore-7726-32x-o-ac-f
     device_role: spine
     face: rear
     position: 29
@@ -76,7 +76,7 @@
     site: "{{ site }}"
     location: "{{ location }}"
     rack: "{{ rack }}"
-    device_type: edgecore-7726-32x-o-ac-b
+    device_type: edgecore-7726-32x-o-ac-f
     device_role: spine
     face: rear
     position: 30
@@ -95,7 +95,7 @@
     site: "{{ site }}"
     location: "{{ location }}"
     rack: "{{ rack }}"
-    device_type: edgecore-5835-54t-o-ac-f
+    device_type: edgecore-5835-54x-o-ac-f
     device_role: accessleaf
     face: rear
     position: 31
