@@ -1,0 +1,51 @@
+---
+name: osism
+
+topology:
+  kinds:
+    sonic-vs:
+      image: registry.osism.tech/osism/sonic-vs:latest
+    linux:
+      image: quay.io/frrouting/frr:10.2.3
+  nodes:
+    spine01:
+      kind: sonic-vs
+    spine02:
+      kind: sonic-vs
+    leaf01:
+      kind: sonic-vs
+    leaf02:
+      kind: sonic-vs
+    frr01:
+      kind: linux
+      binds:
+        - files/daemons:/etc/frr/daemons
+        - files/frr01.conf:/etc/frr/frr.conf
+        - files/vtysh.conf:/etc/frr/vtysh.conf
+    frr02:
+      kind: linux
+      binds:
+        - files/daemons:/etc/frr/daemons
+        - files/frr02.conf:/etc/frr/frr.conf
+        - files/vtysh.conf:/etc/frr/vtysh.conf
+
+  links:
+    # frr01 -> leaf
+    - endpoints: ["leaf01:Ethernet0", "frr01:eth1"]
+    - endpoints: ["leaf02:Ethernet0", "frr01:eth2"]
+
+    # frr02 -> leaf
+    - endpoints: ["leaf01:Ethernet4", "frr02:eth1"]
+    - endpoints: ["leaf02:Ethernet4", "frr02:eth2"]
+
+    # leaf01 -> spine
+    - endpoints: ["leaf01:Ethernet120", "spine01:Ethernet0"]
+    - endpoints: ["leaf01:Ethernet124", "spine02:Ethernet0"]
+
+    # leaf02 -> spine
+    - endpoints: ["leaf02:Ethernet120", "spine01:Ethernet4"]
+    - endpoints: ["leaf02:Ethernet124", "spine02:Ethernet4"]
+
+    # spine01 <-> spine02
+    - endpoints: ["spine01:Ethernet120", "spine02:Ethernet120"]
+    - endpoints: ["spine01:Ethernet124", "spine02:Ethernet124"]
