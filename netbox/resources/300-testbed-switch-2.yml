@@ -46,7 +46,7 @@
 
 - ip_address:
     tenant: Testbed
-    address: 172.16.0.29/20
+    address: 172.29.0.29/24
     assigned_object:
       name: eth0
       device: testbed-switch-2
@@ -67,7 +67,7 @@
 
 - device:
     name: testbed-switch-2
-    oob_ip: 172.16.0.29/20
+    oob_ip: 172.29.0.29/24
     primary_ip4: 192.168.16.29/32
     primary_ip6: "fda6:f659:8c2b::192:168:16:29/128"
 

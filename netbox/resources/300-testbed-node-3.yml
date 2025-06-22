@@ -42,7 +42,7 @@
 
 - ip_address:
     tenant: Testbed
-    address: 172.16.0.13/20
+    address: 172.29.0.13/24
     assigned_object:
       name: Ethernet0
       device: testbed-node-3
@@ -93,7 +93,7 @@
 
 - device:
     name: testbed-node-3
-    oob_ip: 172.16.0.13/20
+    oob_ip: 172.29.0.13/24
     primary_ip4: 192.168.16.13/32
     primary_ip6: "fda6:f659:8c2b::192:168:16:13/128"
 

@@ -1,6 +1,10 @@
 ---
 name: osism
 
+mgmt:
+  network: fixedips
+  ipv4-subnet: 172.29.0.0/24
+
 topology:
   kinds:
     sonic-vs:
@@ -10,20 +14,26 @@ topology:
   nodes:
     spine01:
       kind: sonic-vs
+      mgmt-ipv4: 172.29.0.27
     spine02:
       kind: sonic-vs
+      mgmt-ipv4: 172.29.0.29
     leaf01:
       kind: sonic-vs
+      mgmt-ipv4: 172.29.0.30
     leaf02:
       kind: sonic-vs
+      mgmt-ipv4: 172.29.0.31
     frr01:
       kind: linux
+      mgmt-ipv4: 172.29.0.50
       binds:
         - files/daemons:/etc/frr/daemons
         - files/frr01.conf:/etc/frr/frr.conf
         - files/vtysh.conf:/etc/frr/vtysh.conf
     frr02:
       kind: linux
+      mgmt-ipv4: 172.29.0.51
       binds:
         - files/daemons:/etc/frr/daemons
         - files/frr02.conf:/etc/frr/frr.conf
