@@ -5,8 +5,8 @@
 # override:nodes_boot_from_image
 flavor_node               = "XL.mem+"
 flavor_manager            = "XL.mem+"
-image                     = "Ubuntu 22.04 LTS x64"
-image_node                = "Ubuntu 22.04 LTS x64"
+image                     = "Ubuntu 24.04 LTS x64"
+image_node                = "Ubuntu 24.04 LTS x64"
 availability_zone         = "AZ2"
 volume_availability_zone  = "nova"
 network_availability_zone = "nova"
