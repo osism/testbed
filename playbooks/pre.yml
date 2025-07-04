@@ -10,7 +10,7 @@
     basepath: "{{ ansible_user_dir }}/src/{{ repositories['testbed']['path'] }}"
     terraformbase_path: "{{ ansible_user_dir }}/src/{{ repositories['terraform-base']['path'] }}"
     terraform_path: "{{ basepath }}/terraform"
-    terragrunt_version: v0.81.3 # renovate: datasource=github-releases depName=gruntwork-io/terragrunt
+    terragrunt_version: v0.83.0 # renovate: datasource=github-releases depName=gruntwork-io/terragrunt
     terragrunt_download_url: "https://github.com/gruntwork-io/terragrunt/releases/download/{{ terragrunt_version }}/terragrunt_linux_amd64"
     opentofu_version: v1.9.0  # renovate: datasource=github-releases depName=opentofu/opentofu
     opentofu_download_url: "https://github.com/opentofu/opentofu/releases/download/{{ opentofu_version }}/tofu_{{ opentofu_version[1:] }}_linux_amd64.zip"
