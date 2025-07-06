@@ -6,6 +6,11 @@ cilium_bgp: true
 cilium_bgp_lb_cidr: "172.31.252.0/23"
 cilium_hubble: true
 
+k3s_resolvconf_nameserver:
+  - 8.8.8.8
+  - 9.9.9.9
+k3s_resolvconf_search: testbed.osism.xyz
+
 ##########################
 # rook
 
