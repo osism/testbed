@@ -12,7 +12,7 @@ echo
 if [[ $(semver $MANAGER_VERSION 7.0.0) -ge 0 || $MANAGER_VERSION == "latest" ]]; then
     # Only works as with OSISM >= 7.0.0 as the osism.common.still_alive
     # callback plugin can then be used.
-    osism apply -r 2 -e custom pull-images
+    osism apply --no-wait -r 2 -e custom pull-images
 else
     kolla_services=(
     barbican
@@ -39,6 +39,6 @@ else
 
     for kolla_service in ${kolla_services[*]}; do
         echo "+ osism apply -a pull $kolla_service"
-        osism apply -a pull $kolla_service
+        osism apply --no-wait -a pull $kolla_service
     done
 fi
