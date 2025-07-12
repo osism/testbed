@@ -9,6 +9,9 @@ sh -c '/opt/configuration/scripts/prepare-ceph-configuration.sh'
 
 # deploy everything
 
+# required by k3s, not handled by nutshell
+osism apply frr
+
 echo
 echo "--> DEPLOY IN A NUTSHELL -- START -- $(date)"
 echo
