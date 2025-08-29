@@ -9,6 +9,8 @@ echo
 source /opt/configuration/scripts/include.sh
 source /opt/manager-vars.sh
 
+sh -c '/opt/configuration/scripts/disable-ara.sh'
+
 # Reconfigure for a standalone ironic on the manager node
 sed -n '/\[testbed-control-nodes\]/,/^$/{/^testbed-manager$/q 1}' /opt/configuration/inventory/10-custom && sed -i '/\[testbed-control-nodes\]/a testbed-manager' /opt/configuration/inventory/10-custom
 sed -i '/\[testbed-control-nodes\]/, /^$/{s/^\(testbed-node-[012]\)/#\1/g}' /opt/configuration/inventory/10-custom
