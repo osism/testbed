@@ -43,3 +43,12 @@ clouds:
       user_domain_name: default
     cacert: /etc/ssl/certs/ca-certificates.crt
     identity_api_version: 3
+  openstack:
+    auth:
+      username: admin
+      project_name: admin
+      auth_url: https://api.testbed.osism.xyz:5000/v3
+      project_domain_name: default
+      user_domain_name: default
+    cacert: /etc/ssl/certs/ca-certificates.crt
+    identity_api_version: 3
