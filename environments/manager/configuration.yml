@@ -29,7 +29,7 @@ manager_enable_watchdog: false
 ##########################
 # frontend
 
-enable_fronted: true
+enable_frontend: true
 frontend_osism_api_url: http://192.168.16.5:8000
 
 ##########################
