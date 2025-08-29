@@ -1,4 +1,7 @@
 ---
+python_upper_constraints_url: >-
+  https://raw.githubusercontent.com/openstack/requirements/refs/heads/master/upper-constraints.txt
+
 # node_types is a dict that defines different sets of node specifications,
 # keyed by a 'node type name' to associate with each set of specifications.
 node_types:
