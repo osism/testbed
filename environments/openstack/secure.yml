@@ -15,6 +15,6 @@ clouds:
   octavia:
     auth:
       password: FhXdWbXyVk63hLdeGhJ6oq48tj4FAE6v71w6VLF9
-  openstack_health_monitor:
+  openstack:
     auth:
-      password: test
+      password: password
