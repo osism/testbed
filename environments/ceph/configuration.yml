@@ -47,7 +47,7 @@ ceph_conf_overrides:
   mon:
     mon allow pool delete: true
 
-  "client.rgw.{{ hostvars[inventory_hostname]['ansible_hostname'] }}.rgw0":
+  "client.rgw.{{ rgw_zone }}.{{ hostvars[inventory_hostname]['ansible_hostname'] }}.rgw0":
     "rgw content length compat": "true"
     "rgw enable apis": "swift, s3, admin"
     "rgw keystone accepted admin roles": "admin"
@@ -65,3 +65,11 @@ ceph_conf_overrides:
     "rgw swift account in url": "true"
     "rgw swift versioning enabled": "true"
     "rgw verify ssl": "false"
+    ######################################################################################################
+    # https://opendev.org/openstack/tripleo-heat-templates/commit/632afe18c061061fb1f69d8fe522bfdcc2724d4d
+    # NOTE(fpantano) swift defaults
+    # https://github.com/openstack/swift/blob/master/swift/common/constraints.py
+    "rgw max attr name len": 128
+    "rgw max attrs num in req": 90
+    "rgw max attr size": 256
+    ######################################################################################################
