@@ -15,6 +15,11 @@ if [[ $MANAGER_VERSION == "latest" && $CEPH_VERSION == "pacific" ]]; then
     sed -i "s/osism.commons.still_alive/community.general.yaml/" /opt/configuration/environments/ansible.cfg
 fi
 
+if [[ $(semver $MANAGER_VERSION 9.0.0) -lt 0 && $MANAGER_VERSION != "latest" && && $CEPH_VERSION == "reef" ]]; then
+    # The rgw zone was added in Ceph Reef in OSISM 9 and later
+    sed -i '/  "client\.rgw\./{s#{{ rgw_zone }}\.##g}' environments/ceph/configuration.yml
+fi
+
 if [[ $(semver $MANAGER_VERSION 5.0.0) -eq -1 && $MANAGER_VERSION != "latest" ]]; then
     osism apply ceph-base
     osism apply ceph-mdss

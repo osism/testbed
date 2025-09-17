@@ -64,3 +64,9 @@ echo "## DNS (API)"
 echo
 
 _tempest "designate_tempest_plugin.tests.api.v2"
+
+echo
+echo "## OBJECT-STORE (API)"
+echo
+
+_tempest "tempest.api.object_storage"
