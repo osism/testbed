@@ -46,6 +46,9 @@ inventory_reconciler_image: "{{ docker_registry_ansible }}/osism/inventory-recon
 osism_tag: "{{ osism_version|default('latest') }}"
 osism_image: "{{ docker_registry_ansible }}/osism/osism:{{ osism_tag }}"
 
+osism_frontend_tag: "{{ osism_version|default('latest') }}"
+osism_frontend_image: "{{ docker_registry_ansible }}/:{{ osism_frontend_tag }}"
+
 osism_netbox_tag: "{{ osism_version|default('latest') }}"
 osism_netbox_image: "{{ docker_registry_ansible }}/osism/osism-netbox:{{ osism_netbox_tag }}"
 
