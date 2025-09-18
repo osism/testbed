@@ -4,9 +4,9 @@ set -e
 source /opt/configuration/scripts/include.sh
 source /opt/configuration/scripts/manager-version.sh
 
-# osism manage flavors --recommended is only available since 7.0.2.
+# osism manage flavors is only available since 7.0.2.
 if [[ $(semver $MANAGER_VERSION 7.0.2) -ge 0 || $MANAGER_VERSION == "latest" ]]; then
-    osism manage flavors --recommended
+    osism manage flavors
 else
     osism apply --environment openstack bootstrap-flavors
 fi
