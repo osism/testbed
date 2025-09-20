@@ -126,7 +126,10 @@
         state: present
         name: "{{ item }}"
         image: "Cirros 0.6.2"
-        flavor: "SCS-1L-1-5"
+        boot_from_volume: true
+        terminate_volume: true
+        volume_size: 5
+        flavor: "SCS-1L-1"
         delete_fip: true
         key_name: test
         network: auto_allocated_network
