@@ -14,6 +14,9 @@ kolla_enable_tls_internal: "yes"
 kolla_copy_ca_into_containers: "yes"
 openstack_cacert: /etc/ssl/certs/ca-certificates.crt
 
+# Can be removed after generating and adding the proxysql certs
+database_enable_tls_internal: "no"
+
 ##########################################################
 # openstack
 
