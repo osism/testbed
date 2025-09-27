@@ -67,7 +67,7 @@
         cmd: "ssh -i {{ terraform_path }}/.id_rsa.{{ cloud }} dragon@{{ manager_host }} /opt/configuration/scripts/upgrade.sh {{ _manager_version_next }} {{ _ceph_version_next }} {{ _openstack_version_next }} {{ kolla_namespace | default('osism') }}"
       changed_when: true
       environment:
-        TERRAGRUNT_TFPATH: "{{ terragrunt_tfpath }}"
+        TG_TF_PATH: "{{ terragrunt_tfpath }}"
 
     - name: Bootstrap services
       ansible.builtin.command:

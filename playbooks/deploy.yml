@@ -82,7 +82,7 @@
         - _manager_version == "latest"
       changed_when: true
       environment:
-        TERRAGRUNT_TFPATH: "{{ terragrunt_tfpath }}"
+        TG_TF_PATH: "{{ terragrunt_tfpath }}"
 
     - name: Create infrastructure (stable)
       ansible.builtin.command:
@@ -102,7 +102,7 @@
         - _manager_version != "latest"
       changed_when: true
       environment:
-        TERRAGRUNT_TFPATH: "{{ terragrunt_tfpath }}"
+        TG_TF_PATH: "{{ terragrunt_tfpath }}"
 
     - name: Fetch manager address
       ansible.builtin.slurp:

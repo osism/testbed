@@ -58,7 +58,11 @@ init:
 	@if [ ! -d .terraform/providers ]; then $(TERRAFORM) init -upgrade; fi
 
 	@if [ ! -f backend.tf ]; then \
-		$(TERRAFORM) workspace select -or-create ${CLOUD}; \
+		if [ "$(TERRAFORM)" = "terragrunt" ]; then \
+			$(TERRAFORM) run -- workspace select -or-create ${CLOUD}; \
+		else \
+			$(TERRAFORM) workspace select -or-create ${CLOUD}; \
+		fi; \
 	fi
 
 	@rm -f *.auto.tfvars
@@ -171,8 +175,13 @@ clean: init
 	@rm -f .id_rsa.$(CLOUD)
 
 	@if [ ! -f backend.tf ]; then \
-		$(TERRAFORM) workspace select default; \
-		$(TERRAFORM) workspace delete $(CLOUD) || true; \
+		if [ "$(TERRAFORM)" = "terragrunt" ]; then \
+			$(TERRAFORM) run -- workspace select default; \
+			$(TERRAFORM) run -- workspace delete $(CLOUD) || true; \
+		else \
+			$(TERRAFORM) workspace select default; \
+			$(TERRAFORM) workspace delete $(CLOUD) || true; \
+		fi; \
 	fi
 	@rm -f wg-*.conf
 	@rm -rf .terraform .terraform.lock.hcl
