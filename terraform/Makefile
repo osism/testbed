@@ -87,7 +87,11 @@ init:
 		cp -p overrides/$${over}_override.tf .; \
 	done
 
-	@$(TERRAFORM) fmt
+	@if echo "$(TERRAFORM)" | grep -q terragrunt; then \
+		$(TERRAFORM) run -- fmt; \
+	else \
+		$(TERRAFORM) fmt; \
+	fi
 
 .PHONY: validate
 validate: init
