@@ -58,7 +58,7 @@ init:
 	@if [ ! -d .terraform/providers ]; then $(TERRAFORM) init -upgrade; fi
 
 	@if [ ! -f backend.tf ]; then \
-		if [ "$(TERRAFORM)" = "terragrunt" ]; then \
+		if echo "$(TERRAFORM)" | grep -q terragrunt; then \
 			$(TERRAFORM) run -- workspace select -or-create ${CLOUD}; \
 		else \
 			$(TERRAFORM) workspace select -or-create ${CLOUD}; \
@@ -175,7 +175,7 @@ clean: init
 	@rm -f .id_rsa.$(CLOUD)
 
 	@if [ ! -f backend.tf ]; then \
-		if [ "$(TERRAFORM)" = "terragrunt" ]; then \
+		if echo "$(TERRAFORM)" | grep -q terragrunt; then \
 			$(TERRAFORM) run -- workspace select default; \
 			$(TERRAFORM) run -- workspace delete $(CLOUD) || true; \
 		else \
