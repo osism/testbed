@@ -13,7 +13,7 @@ ara_server_mariadb_image: "{{ docker_registry }}/library/mariadb:{{ ara_server_m
 netbox_tag: "v4.3.5"
 netbox_image: "{{ docker_registry_netbox|default('quay.io') }}/osism/netbox:{{ netbox_tag }}"
 
-netbox_redis_tag: "7.4.5-alpine"
+netbox_redis_tag: "7.4.6-alpine"
 netbox_redis_image: "{{ docker_registry }}/library/redis:{{ netbox_redis_tag }}"
 
 nginx_tag: "1.29.1-alpine"
@@ -28,7 +28,7 @@ phpmyadmin_image: "{{ docker_registry }}/phpmyadmin/phpmyadmin:{{ phpmyadmin_tag
 postgres_tag: "16.10-alpine"
 postgres_image: "{{ docker_registry }}/library/postgres:{{ postgres_tag }}"
 
-manager_redis_tag: "7.4.5-alpine"
+manager_redis_tag: "7.4.6-alpine"
 manager_redis_image: "{{ docker_registry }}/library/redis:{{ manager_redis_tag }}"
 
 registry_tag: "3.0"
