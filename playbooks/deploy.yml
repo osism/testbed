@@ -33,7 +33,7 @@
 
     _ceph_stack: "{{ ceph_stack | default('ceph-ansible') }}"
 
-    _terraform_environment: "{{ terraform_environment | default('ci-ubuntu-22.04') }}"
+    _terraform_environment: "{{ terraform_environment | default('ci-ubuntu-24.04') }}"
 
   tasks:
     - name: Print used ceph version
