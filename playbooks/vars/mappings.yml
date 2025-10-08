@@ -7,7 +7,6 @@ cloud_envs:
 # Mapping of the terraform environments to the image
 # username to be used.
 image_usernames:
-  ci-ubuntu-22.04: ubuntu
   ci-ubuntu-24.04: ubuntu
   ci-debian-12: debian
   ci-centos-stream-9: cloud-user
