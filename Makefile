@@ -28,7 +28,7 @@ help:  ## Display this help.
 
 .PHONY: setup
 setup: ## Prepare the repository.
-	@contrib/setup-testbed.py \
+	@${venv}; contrib/setup-testbed.py \
 	  --environment $(ENVIRONMENT) \
 	  --cloud $(CLOUD) \
 
@@ -46,7 +46,7 @@ wipe-local-install: ## Wipe the software dependencies in `venv`.
 
 .PHONY: create
 create: prepare ## Create required infrastructure with OpenTofu.
-	@contrib/setup-testbed.py \
+	@${venv}; contrib/setup-testbed.py \
 	  --environment $(ENVIRONMENT) \
 	  --cloud $(CLOUD)
 	make -C terraform \
@@ -97,7 +97,7 @@ bootstrap: setup create ## Bootstrap everything.
 	  -e ansible_playbook=ansible-playbook \
 	  -e basepath="$(PWD)" \
 	  -e testbed_cloud=$(CLOUD) \
-	  -e repo_path="$(PWD)/.src/$(shell contrib/setup-testbed.py --query "repository_server")" \
+	  -e repo_path="$(PWD)/.src/$(shell . venv/bin/activate && contrib/setup-testbed.py --query "repository_server")" \
 	  -e manual_create=true \
 	  -e manual_deploy=true \
 	  -e ceph_version=$(VERSION_CEPH) \
@@ -151,7 +151,7 @@ deploy: setup bootstrap ## Deploy everything and then check it.
 .PHONY: prepare
 prepare: deps ## Run local preperations.
 	${venv}; ansible-playbook -i localhost, ansible/check-local-versions.yml
-	@contrib/setup-testbed.py --prepare
+	@${venv}; contrib/setup-testbed.py --prepare
 
 .PHONY: sync
 sync: venv/bin/activate
