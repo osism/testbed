@@ -79,10 +79,10 @@
     - name: Debian/Ubuntu specific tasks  # noqa: osism-fqcn
       when: ansible_os_family == "Debian"
       block:
-        - name: Fail if Ubuntu version is lower than 22.04
+        - name: Fail if Ubuntu version is lower than 24.04
           ansible.builtin.fail:
             msg: "Ubuntu version is {{ ansible_distribution_version }}, see https://osism.tech/docs/advanced-guides/testbed#software for required version."
-          when: ansible_distribution == "Ubuntu" and ansible_distribution_version < "22.04"
+          when: ansible_distribution == "Ubuntu" and ansible_distribution_version < "24.04"
 
         - name: Fail if Debian version is lower than 12
           ansible.builtin.fail:
