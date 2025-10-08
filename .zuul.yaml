@@ -54,12 +54,6 @@
       nutshell: true
 
 - job:
-    name: testbed-deploy-in-a-nutshell-ubuntu-22.04
-    parent: abstract-testbed-deploy-in-a-nutshell
-    vars:
-      terraform_environment: ci-ubuntu-22.04
-
-- job:
     name: testbed-deploy-in-a-nutshell-ubuntu-24.04
     parent: abstract-testbed-deploy-in-a-nutshell
     vars:
@@ -89,12 +83,6 @@
     parent: abstract-testbed-deploy-in-a-nutshell
     vars:
       manager_version: 9.4.0
-
-- job:
-    name: testbed-deploy-stable-in-a-nutshell-ubuntu-22.04
-    parent: abstract-testbed-deploy-stable-in-a-nutshell
-    vars:
-      terraform_environment: ci-ubuntu-22.04
 
 - job:
     name: testbed-deploy-stable-in-a-nutshell-ubuntu-24.04
@@ -135,12 +123,6 @@
       prometheus_alert_status: false
 
 - job:
-    name: testbed-deploy-stable-ubuntu-22.04
-    parent: abstract-testbed-deploy-stable
-    vars:
-      terraform_environment: ci-ubuntu-22.04
-
-- job:
     name: testbed-deploy-stable-ubuntu-24.04
     parent: abstract-testbed-deploy-stable
     vars:
@@ -167,12 +149,6 @@
       manager_version_next: 9.4.0
     nodeset: testbed-orchestrator
     timeout: 30000
-
-- job:
-    name: testbed-upgrade-stable-ubuntu-22.04
-    parent: abstract-testbed-upgrade-stable
-    vars:
-      terraform_environment: ci-ubuntu-22.04
 
 - job:
     name: testbed-upgrade-stable-ubuntu-24.04
@@ -206,7 +182,6 @@
         - testbed-deploy-stable-in-a-nutshell-ubuntu-24.04
     label-additional:
       jobs:
-        - testbed-deploy-in-a-nutshell-ubuntu-22.04
         - testbed-deploy-in-a-nutshell-debian-12
         - testbed-deploy-in-a-nutshell-centos-stream-9
     periodic-midnight:
