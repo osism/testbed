@@ -61,8 +61,7 @@
         line: "netbox_enable: true"
       when: "'export DEPLOY_MODE=baremetal' in manager_vars"
 
-    # The correct package name is linux-generic-hwe-22.04 on Ubuntu 22.04
-    # and linux-generic-hwe-24.04 on Ubuntu 24.04.
+    # The correct package name is linux-generic-hwe-24.04 on Ubuntu 24.04.
     - name: Install HWE kernel package on Ubuntu
       ansible.builtin.lineinfile:
         path: /opt/configuration/environments/configuration.yml
