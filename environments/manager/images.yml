@@ -16,13 +16,13 @@ netbox_image: "{{ docker_registry_netbox|default('quay.io') }}/osism/netbox:{{ n
 netbox_redis_tag: "7.4.6-alpine"
 netbox_redis_image: "{{ docker_registry }}/library/redis:{{ netbox_redis_tag }}"
 
-nginx_tag: "1.29.1-alpine"
+nginx_tag: "1.29.2-alpine"
 nginx_image: "{{ docker_registry }}/library/nginx:{{ nginx_tag }}"
 
 pgautoupgrade_tag: "16-alpine"
 pgautoupgrade_image: "{{ docker_registry }}/pgautoupgrade/pgautoupgrade:{{ pgautoupgrade_tag }}"
 
-phpmyadmin_tag: "5.2.2"
+phpmyadmin_tag: "5.2.3"
 phpmyadmin_image: "{{ docker_registry }}/phpmyadmin/phpmyadmin:{{ phpmyadmin_tag }}"
 
 postgres_tag: "16.10-alpine"
