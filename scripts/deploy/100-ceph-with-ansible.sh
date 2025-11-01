@@ -18,6 +18,7 @@ fi
 if [[ $CEPH_VERSION == "octopus" || $CEPH_VERSION == "pacific" || $CEPH_VERSION == "quincy" ]]; then
     # The rgw zone was added in ceph-ansible Reef
     sed -i '/  "client\.rgw\./{s#{{ rgw_zone }}\.##g}' environments/ceph/configuration.yml
+    sed -i '/  "client\.rgw\./{s#{{ rgw_zone }}\.##g}' environments/ceph.test/configuration.yml
 fi
 
 if [[ $(semver $MANAGER_VERSION 5.0.0) -eq -1 && $MANAGER_VERSION != "latest" ]]; then

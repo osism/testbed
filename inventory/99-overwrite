@@ -19,3 +19,26 @@ testbed-managers
 
 [storage:children]
 compute
+
+# groups for Ceph sub environment test
+
+[ceph.test:children]
+testbed-control-nodes
+testbed-resource-nodes
+
+[ceph.test.mon:children]
+testbed-control-nodes
+
+[ceph.test.mgr:children]
+testbed-control-nodes
+
+[ceph.test.mds:children]
+testbed-resource-nodes
+
+[ceph.test.rgw:children]
+testbed-resource-nodes
+
+[ceph.test.osd:children]
+testbed-resource-nodes
+
+[ceph.test.empty]

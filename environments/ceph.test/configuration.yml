@@ -1,0 +1,95 @@
+---
+##########################
+# Overwriting the groups for Ceph sub environment test
+
+ceph_group_name: ceph.test
+
+mds_group_name: ceph.test.mds
+mgr_group_name: ceph.test.mgr
+mon_group_name: ceph.test.mon
+osd_group_name: ceph.test.osd
+rgw_group_name: ceph.test.rgw
+
+client_group_name: ceph.test.empty
+grafana_server_group_name: ceph.test.empty
+iscsi_gw_group_name: ceph.test.empty
+nfs_group_name: ceph.test.empty
+rbdmirror_group_name: ceph.test.empty
+restapi_group_name: ceph.test.empty
+test_group_name: ceph.test.empty
+testloadbalancer_group_name: ceph.test.empty
+
+##########################
+# generic
+
+fsid: 11111111-1111-1111-1111-111111111111
+
+##########################
+# services
+
+enable_ceph_crash: true
+enable_ceph_mds: true
+enable_ceph_rgw: true
+
+##########################
+# osd
+
+dmcrypt: true
+openstack_pool_default_pg_num: 32
+
+##########################
+# network
+
+public_network: 192.168.16.0/20
+cluster_network: 192.168.16.0/20
+
+##########################
+# openstack
+
+openstack_config: true
+
+##########################
+# dashboard
+
+ceph_dashboard_standby_behaviour: error
+ceph_dashboard_standby_error_status_code: 404
+
+##########################
+# custom
+
+ceph_conf_overrides:
+  global:
+    auth allow insecure global id reclaim: false
+    # NOTE: default size of 2 because by default there are only 2 nodes
+    osd pool default size: 2
+    osd pool default min size: 0
+
+  mon:
+    mon allow pool delete: true
+
+  "client.rgw.{{ rgw_zone }}.{{ hostvars[inventory_hostname]['ansible_hostname'] }}.rgw0":
+    "rgw content length compat": "true"
+    "rgw enable apis": "swift, s3, admin"
+    "rgw keystone accepted admin roles": "admin"
+    "rgw keystone accepted roles": "member, admin"
+    "rgw keystone admin domain": "default"
+    "rgw keystone admin password": "{{ ceph_rgw_keystone_password }}"
+    "rgw keystone admin project": "service"
+    "rgw keystone admin tenant": "service"
+    "rgw keystone admin user": "ceph_rgw"
+    "rgw keystone api version": "3"
+    "rgw keystone implicit tenants": "true"
+    "rgw keystone url": "https://api-int.testbed.osism.xyz:5000"
+    "rgw keystone verify ssl": "false"
+    "rgw s3 auth use keystone": "true"
+    "rgw swift account in url": "true"
+    "rgw swift versioning enabled": "true"
+    "rgw verify ssl": "false"
+    ######################################################################################################
+    # https://opendev.org/openstack/tripleo-heat-templates/commit/632afe18c061061fb1f69d8fe522bfdcc2724d4d
+    # NOTE(fpantano) swift defaults
+    # https://github.com/openstack/swift/blob/master/swift/common/constraints.py
+    "rgw max attr name len": 128
+    "rgw max attrs num in req": 90
+    "rgw max attr size": 256
+    ######################################################################################################
