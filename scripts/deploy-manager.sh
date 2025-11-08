@@ -25,6 +25,7 @@ sh -c '/opt/configuration/scripts/deploy/000-manager.sh'
 osism apply operator -u $IMAGE_NODE_USER -l testbed-nodes
 osism apply --environment custom facts
 osism apply bootstrap
+osism apply fail2ban
 
 # On CentOS the Ceph deployment only works with podman.
 if [[ -e /etc/redhat-release ]]; then
