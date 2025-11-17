@@ -7,7 +7,7 @@ adminer_image: "{{ docker_registry|default('registry.osism.tech/dockerhub') }}/l
 ara_server_tag: "1.7.3"
 ara_server_image: "{{ docker_registry_ansible|default('registry.osism.tech') }}/osism/ara-server:{{ ara_server_tag }}"
 
-ara_server_mariadb_tag: "11.8.3"
+ara_server_mariadb_tag: "11.8.4"
 ara_server_mariadb_image: "{{ docker_registry|default('registry.osism.tech/dockerhub') }}/library/mariadb:{{ ara_server_mariadb_tag }}"
 
 netbox_tag: "v4.3.5"
@@ -25,7 +25,7 @@ pgautoupgrade_image: "{{ docker_registry|default('registry.osism.tech/dockerhub'
 phpmyadmin_tag: "5.2.3"
 phpmyadmin_image: "{{ docker_registry|default('registry.osism.tech/dockerhub') }}/phpmyadmin/phpmyadmin:{{ phpmyadmin_tag }}"
 
-postgres_tag: "16.10-alpine"
+postgres_tag: "16.11-alpine"
 postgres_image: "{{ docker_registry|default('registry.osism.tech/dockerhub') }}/library/postgres:{{ postgres_tag }}"
 
 manager_redis_tag: "7.4.7-alpine"
