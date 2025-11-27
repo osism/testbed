@@ -52,7 +52,7 @@ osism_frontend_image: "{{ docker_registry_ansible|default('registry.osism.tech')
 osism_netbox_tag: "{{ osism_version|default('latest') }}"
 osism_netbox_image: "{{ docker_registry_ansible|default('registry.osism.tech') }}/osism/osism-netbox:{{ osism_netbox_tag }}"
 
-vault_tag: "1.21.0"
+vault_tag: "1.21.1"
 vault_image: "{{ docker_registry|default('registry.osism.tech/dockerhub') }}/hashicorp/vault:{{ vault_tag }}"
 
 traefik_tag: "v3.5.0"
