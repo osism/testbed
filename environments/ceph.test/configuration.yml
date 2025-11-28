@@ -16,8 +16,7 @@ iscsi_gw_group_name: ceph.test.empty
 nfs_group_name: ceph.test.empty
 rbdmirror_group_name: ceph.test.empty
 restapi_group_name: ceph.test.empty
-test_group_name: ceph.test.empty
-testloadbalancer_group_name: ceph.test.empty
+rgwloadbalancer_group_name: ceph.test.empty
 
 ##########################
 # generic
