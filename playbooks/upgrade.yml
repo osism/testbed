@@ -2,9 +2,9 @@
 - name: Deploy testbed
   ansible.builtin.import_playbook: deploy.yml
   vars:
-    _ceph_version: "{{ ceph_version | default('pacific') }}"
+    _ceph_version: "{{ ceph_version | default('queens') }}"
     _manager_version: "{{ manager_version | default('latest') }}"
-    _openstack_version: "{{ openstack_version | default('2023.2') }}"
+    _openstack_version: "{{ openstack_version | default('2024.2') }}"
 
 - name: Upgrade testbed
   hosts: all
@@ -25,7 +25,7 @@
 
     _ceph_version_next: "{{ ceph_version_next | default('reef') }}"
     _manager_version_next: "{{ manager_version_next | default('latest') }}"
-    _openstack_version_next: "{{ openstack_version_next | default('2024.2') }}"
+    _openstack_version_next: "{{ openstack_version_next | default('2025.1') }}"
 
   tasks:
     - name: Print next ceph version

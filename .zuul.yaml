@@ -109,6 +109,32 @@
       tempest: true
 
 - job:
+    name: testbed-deploy-current-in-a-nutshell-ubuntu-24.04
+    parent: testbed-deploy-in-a-nutshell-ubuntu-24.04
+    vars:
+      ceph_version: reef
+      openstack_version: "2024.2"
+
+- job:
+    name: testbed-deploy-next-in-a-nutshell-ubuntu-24.04
+    parent: testbed-deploy-in-a-nutshell-ubuntu-24.04
+    vars:
+      ceph_version: reef
+      openstack_version: "2025.1"
+
+- job:
+    name: testbed-deploy-current-in-a-nutshell-with-tempest-ubuntu-24.04
+    parent: testbed-deploy-current-in-a-nutshell-ubuntu-24.04
+    vars:
+      tempest: true
+
+- job:
+    name: testbed-deploy-next-in-a-nutshell-with-tempest-ubuntu-24.04
+    parent: testbed-deploy-next-in-a-nutshell-ubuntu-24.04
+    vars:
+      tempest: true
+
+- job:
     name: testbed-upgrade
     parent: abstract-testbed-deploy
     run: playbooks/upgrade.yml
@@ -178,7 +204,8 @@
         - yamllint
     label:
       jobs:
-        - testbed-deploy-in-a-nutshell-ubuntu-24.04
+        - testbed-deploy-current-in-a-nutshell-ubuntu-24.04
+        - testbed-deploy-next-in-a-nutshell-ubuntu-24.04
         - testbed-deploy-stable-in-a-nutshell-ubuntu-24.04
     label-additional:
       jobs:
@@ -186,7 +213,8 @@
         - testbed-deploy-in-a-nutshell-centos-stream-9
     periodic-midnight:
       jobs:
-        - testbed-deploy-in-a-nutshell-with-tempest-ubuntu-24.04
+        - testbed-deploy-current-in-a-nutshell-with-tempest-ubuntu-24.04
+        - testbed-deploy-next-in-a-nutshell-with-tempest-ubuntu-24.04
         - testbed-deploy-stable-in-a-nutshell-with-tempest-ubuntu-24.04
     periodic-daily:
       jobs:
@@ -194,9 +222,3 @@
         - flake8
         - python-black
         - yamllint
-    post:
-      jobs:
-        - testbed-deploy-in-a-nutshell-ubuntu-24.04:
-            branches: main
-        - testbed-deploy-stable-in-a-nutshell-ubuntu-24.04:
-            branches: main
