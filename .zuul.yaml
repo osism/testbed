@@ -82,7 +82,7 @@
     abstract: true
     parent: abstract-testbed-deploy-in-a-nutshell
     vars:
-      manager_version: 9.4.0
+      manager_version: 9.5.0
 
 - job:
     name: testbed-deploy-stable-in-a-nutshell-ubuntu-24.04
@@ -144,7 +144,7 @@
     name: abstract-testbed-deploy-stable
     parent: abstract-testbed-deploy
     vars:
-      manager_version: 9.4.0
+      manager_version: 9.5.0
       tempst: true
       prometheus_alert_status: false
 
@@ -167,14 +167,30 @@
       terraform_environment: ci-debian-12
 
 - job:
+    name: abstract-testbed-update-stable
+    parent: abstract-testbed-deploy
+    run: playbooks/upgrade-stable.yml
+    vars:
+      manager_version: 9.4.0
+      manager_version_next: 9.5.0
+    nodeset: testbed-orchestrator
+    timeout: 30000
+
+- job:
     name: abstract-testbed-upgrade-stable
     parent: abstract-testbed-deploy
     run: playbooks/upgrade-stable.yml
     vars:
       manager_version: 8.1.0
-      manager_version_next: 9.4.0
+      manager_version_next: 9.5.0
     nodeset: testbed-orchestrator
     timeout: 30000
+
+- job:
+    name: testbed-update-stable-ubuntu-24.04
+    parent: abstract-testbed-update-stable
+    vars:
+      terraform_environment: ubuntu-24.04
 
 - job:
     name: testbed-upgrade-stable-ubuntu-24.04
@@ -209,8 +225,8 @@
         - testbed-deploy-stable-in-a-nutshell-ubuntu-24.04
     label-additional:
       jobs:
-        - testbed-deploy-in-a-nutshell-debian-12
-        - testbed-deploy-in-a-nutshell-centos-stream-9
+        - testbed-update-stable-ubuntu-24.04
+        - testbed-upgrade-stable-ubuntu-24.04
     periodic-midnight:
       jobs:
         - testbed-deploy-current-in-a-nutshell-with-tempest-ubuntu-24.04
