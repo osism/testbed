@@ -116,9 +116,33 @@
         name: test
         public_key_file: /opt/configuration/environments/openstack/id_rsa.test.pub
 
-    - name: Create test network topology
-      ansible.builtin.command: openstack --os-cloud test network auto allocated topology create
-      changed_when: true
+    - name: Create test network
+      openstack.cloud.network:
+        cloud: test
+        state: present
+        name: test
+        mtu: 1342  # NOTE: necessary because VxLAN in Geneve/VxLAN
+
+    - name: Create test subnet
+      openstack.cloud.subnet:
+        cloud: test
+        state: present
+        name: subnet-test
+        network_name: test
+        cidr: 192.168.200.0/24
+
+    - name: Create test router
+      openstack.cloud.router:
+        cloud: test
+        state: present
+        name: router-test
+        network: public
+        interfaces:
+          - subnet-test
+
+    # - name: Create test network topology
+    #   ansible.builtin.command: openstack --os-cloud test network auto allocated topology create
+    #   changed_when: true
 
     - name: Create test instances
       openstack.cloud.server:
@@ -132,7 +156,8 @@
         flavor: "SCS-1L-1"
         delete_fip: true
         key_name: test
-        network: auto_allocated_network
+        # network: auto_allocated_network
+        network: test
         security_groups:
           - icmp
           - ssh
