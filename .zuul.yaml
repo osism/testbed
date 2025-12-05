@@ -243,6 +243,7 @@
         - testbed-deploy-current-in-a-nutshell-with-tempest-ubuntu-24.04
         - testbed-deploy-next-in-a-nutshell-with-tempest-ubuntu-24.04
         - testbed-deploy-stable-in-a-nutshell-with-tempest-ubuntu-24.04
+        - testbed-update-stable-next-ubuntu-24.04
     periodic-daily:
       jobs:
         - ansible-lint
