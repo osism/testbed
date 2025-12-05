@@ -1,0 +1,80 @@
+---
+- name: Deploy testbed
+  ansible.builtin.import_playbook: deploy.yml
+  vars:
+    _manager_version: "{{ manager_version | default('latest') }}"
+
+- name: Upgrade testbed
+  hosts: all
+
+  vars_files:
+    - vars/mappings.yml
+    - vars/repositories.yml
+
+  vars:
+    basepath: "{{ ansible_user_dir }}/src/{{ repositories['testbed']['path'] }}"
+    terraform_path: "{{ basepath }}/terraform"
+    manager_address_file: "{{ terraform_path }}/.MANAGER_ADDRESS.{{ cloud }}"
+
+    terraform_binary: "{{ ansible_user_dir }}/terragrunt"
+
+    run_bootstrap: false
+    run_checks: true
+
+    _ceph_version_next: "{{ ceph_version_next | default('reef') }}"
+    _manager_version_next: "{{ manager_version_next | default('latest') }}"
+    _openstack_version_next: "{{ openstack_version_next | default('2025.1') }}"
+
+  tasks:
+    - name: Print next ceph version
+      ansible.builtin.debug:
+        var: _ceph_version_next
+
+    - name: Print next openstack version
+      ansible.builtin.debug:
+        var: _openstack_version_next
+
+    - name: Print next manager version
+      ansible.builtin.debug:
+        var: _manager_version_next
+
+    - name: Set facts (Zuul deployment)
+      ansible.builtin.set_fact:
+        cloud: "{{ cloud_envs[hostvars[groups['all'][0]]['nodepool']['label']] }}"
+        kolla_namespace: "kolla"
+        terragrunt_tfpath: "{{ ansible_user_dir }}/terraform"
+      when: "'nodepool' in hostvars[groups['all'][0]]"
+
+    - name: Set facts (local deployment)
+      ansible.builtin.set_fact:
+        cloud: "{{ testbed_cloud | default('ci') }}"
+        terragrunt_tfpath: terraform
+      when: "'nodepool' not in hostvars[groups['all'][0]]"
+
+    - name: Fetch manager address
+      ansible.builtin.slurp:
+        src: "{{ manager_address_file }}"
+      register: manager_address
+
+    - name: Set manager_host address
+      ansible.builtin.set_fact:
+        manager_host: "{{ manager_address['content'] | b64decode | trim | split('=') | last }}"
+
+    - name: Run upgrade
+      ansible.builtin.command:
+        cmd: "ssh -i {{ terraform_path }}/.id_rsa.{{ cloud }} dragon@{{ manager_host }} /opt/configuration/scripts/upgrade.sh {{ _manager_version_next }} {{ _ceph_version_next }} {{ _openstack_version_next }} {{ kolla_namespace | default('osism') }}"
+      changed_when: true
+      environment:
+        TG_TF_PATH: "{{ terragrunt_tfpath }}"
+
+    - name: Bootstrap services
+      ansible.builtin.command:
+        cmd: "ssh -i {{ terraform_path }}/.id_rsa.{{ cloud }} dragon@{{ manager_host }} /opt/configuration/scripts/bootstrap.sh"
+      when: run_bootstrap | bool
+      changed_when: true
+
+    - name: Run checks after the upgrade
+      ansible.builtin.command:
+        cmd: "ssh -i {{ terraform_path }}/.id_rsa.{{ cloud }} dragon@{{ manager_host }} /opt/configuration/scripts/check.sh"
+      when: run_checks | bool
+      changed_when: true
