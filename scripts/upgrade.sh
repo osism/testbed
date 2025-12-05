@@ -22,8 +22,18 @@ KOLLA_NAMESPACE=${4:-osism}
 #       manager_version parameter) and not by release names.
 
 if [[ $MANAGER_VERSION == "latest" ]]; then
-    /opt/configuration/scripts/set-ceph-version.sh $CEPH_VERSION
-    /opt/configuration/scripts/set-openstack-version.sh $OPENSTACK_VERSION
+    if [[ $CEPH_VERSION != "skip" ]]; then
+        /opt/configuration/scripts/set-ceph-version.sh $CEPH_VERSION
+        echo "export SKIP_CEPH_UPGRADE=false" | sudo tee -a /opt/manager-vars.sh
+    else
+        echo "export SKIP_CEPH_UPGRADE=true" | sudo tee -a /opt/manager-vars.sh
+    fi
+    if [[ $OPENSTACK_VERSION != "skip" ]]; then
+        /opt/configuration/scripts/set-openstack-version.sh $OPENSTACK_VERSION
+        echo "export SKIP_OPENSTACK_UPGRADE=false" | sudo tee -a /opt/manager-vars.sh
+    else
+        echo "export SKIP_OPENSTACK_UPGRADE=true" | sudo tee -a /opt/manager-vars.sh
+    fi
 fi
 
 /opt/configuration/scripts/set-kolla-namespace.sh $KOLLA_NAMESPACE

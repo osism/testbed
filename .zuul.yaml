@@ -198,6 +198,18 @@
     vars:
       terraform_environment: ubuntu-24.04
 
+- job:
+    name: testbed-update-stable-next-ubuntu-24.04
+    parent: abstract-testbed-deploy
+    run: playbooks/update-stable.yml
+    vars:
+      manager_version: 9.5.0
+      ceph_version_next: skip
+      manager_version_next: latest
+      openstack_version_next: "2024.2"
+    nodeset: testbed-orchestrator
+    timeout: 30000
+
 # - job:
 #     name: testbed-upgrade-stable-debian-12
 #     parent: abstract-testbed-upgrade-stable
@@ -225,8 +237,7 @@
         - testbed-deploy-stable-in-a-nutshell-ubuntu-24.04
     label-additional:
       jobs:
-        - testbed-update-stable-ubuntu-24.04
-        - testbed-upgrade-stable-ubuntu-24.04
+        - testbed-update-stable-next-ubuntu-24.04
     periodic-midnight:
       jobs:
         - testbed-deploy-current-in-a-nutshell-with-tempest-ubuntu-24.04
