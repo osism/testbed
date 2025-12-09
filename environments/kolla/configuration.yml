@@ -88,6 +88,8 @@ enable_ceph_rgw_keystone: true
 ceph_rgw_swift_compatibility: false
 ceph_rgw_swift_account_in_url: true
 
+ceph_rgw_default_port: 7480
+
 ##########################################################
 # external ceph
 
