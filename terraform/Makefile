@@ -68,14 +68,24 @@ init:
 	@rm -f *.auto.tfvars
 	@cp environments/$(ENVIRONMENT).tfvars $(CLOUD).auto.tfvars
 	@echo "ceph_stack = \"$(CEPH_STACK)\"" >> $(CLOUD).auto.tfvars
-	@echo "ceph_version = \"$(VERSION_CEPH)\"" >> $(CLOUD).auto.tfvars
 	@echo "cloud_provider = \"$(OS_CLOUD)\"" >> $(CLOUD).auto.tfvars
 	@echo "deploy_mode= \"$(DEPLOY_MODE)\"" >> $(CLOUD).auto.tfvars
 	@echo "image_node_user = \"$(IMAGE_USERNAME)\"" >> $(CLOUD).auto.tfvars
 	@echo "image_user = \"$(IMAGE_USERNAME)\"" >> $(CLOUD).auto.tfvars
 	@echo "manager_version = \"$(VERSION_MANAGER)\"" >> $(CLOUD).auto.tfvars
-	@echo "openstack_version = \"$(VERSION_OPENSTACK)\"" >> $(CLOUD).auto.tfvars
 	@echo "tempest = \"$(TEMPEST)\"" >> $(CLOUD).auto.tfvars
+	@if [ "$(VERSION_MANAGER)" != "latest" ] && \
+	   [ "$$(../contrib/semver2.sh $(VERSION_MANAGER) 10.0.0-0)" -ge 0 ]; then \
+	    BASE_URL="https://raw.githubusercontent.com/osism/release/main/$(VERSION_MANAGER)/base.yml"; \
+	    BASE_CONTENT=$$(curl -sf "$$BASE_URL") || { echo "ERROR: Failed to fetch $$BASE_URL - release $(VERSION_MANAGER) may not exist on osism/release"; exit 1; }; \
+	    RELEASE_CEPH=$$(echo "$$BASE_CONTENT" | grep "^ceph_version:" | sed 's/ceph_version:[[:space:]]*//;s/"//g'); \
+	    RELEASE_OS=$$(echo "$$BASE_CONTENT" | grep "^openstack_version:" | sed 's/openstack_version:[[:space:]]*//;s/"//g'); \
+	    echo "ceph_version = \"$$RELEASE_CEPH\"" >> $(CLOUD).auto.tfvars; \
+	    echo "openstack_version = \"$$RELEASE_OS\"" >> $(CLOUD).auto.tfvars; \
+	else \
+	    echo "ceph_version = \"$(VERSION_CEPH)\"" >> $(CLOUD).auto.tfvars; \
+	    echo "openstack_version = \"$(VERSION_OPENSTACK)\"" >> $(CLOUD).auto.tfvars; \
+	fi
 
 	@rm -f *_custom.tf
 	@for custom in `grep '^# *customisation:' "environments/${ENVIRONMENT}.tfvars" | sed 's/^# *customisation://'`; do \
