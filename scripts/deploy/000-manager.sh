@@ -81,7 +81,11 @@ osism apply known-hosts
 osism apply squid
 
 if [[ $MANAGER_VERSION != "latest" ]]; then
-  sed -i "s#docker_namespace: kolla#docker_namespace: kolla/release#" /opt/configuration/inventory/group_vars/all/kolla.yml
+  if [[ $(semver $MANAGER_VERSION 10.0.0-0) -ge 0 ]]; then
+    sed -i "s#docker_namespace: kolla#docker_namespace: kolla/release/$OPENSTACK_VERSION#" /opt/configuration/inventory/group_vars/all/kolla.yml
+  else
+    sed -i "s#docker_namespace: kolla#docker_namespace: kolla/release#" /opt/configuration/inventory/group_vars/all/kolla.yml
+  fi
 fi
 
 # use vxlan.sh networkd-dispatcher script for OSISM <= 9.0.0
