@@ -16,17 +16,6 @@
       when: volume_type_result.rc == 1
       changed_when: true
 
-    - name: Get volume type local
-      ansible.builtin.command: openstack --os-cloud admin volume type show local
-      register: volume_type_local_result
-      changed_when: false
-      failed_when: false
-
-    - name: Create volume type local
-      ansible.builtin.command: openstack --os-cloud admin volume type create --property volume_backend_name=local-volumes local
-      when: volume_type_local_result.rc == 1
-      changed_when: true
-
     - name: Create public network
       openstack.cloud.network:
         cloud: admin

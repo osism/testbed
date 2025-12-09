@@ -15,7 +15,6 @@ osism apply mariadb
 osism apply rabbitmq
 osism apply openvswitch
 osism apply ovn
-osism apply iscsi
 
 # In OSISM >= 5.0.0, the switch was made from Elasticsearch / Kibana to Opensearch.
 if [[ ( $(semver $MANAGER_VERSION 5.0.0) -eq -1 && $MANAGER_VERSION != "latest" ) || $OPENSTACK_VERSION == "yoga" ]]; then
