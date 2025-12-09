@@ -91,18 +91,28 @@ vpn-sshuttle: setup ## Establish a sshuttle vpn tunnel.
 
 .PHONY: bootstrap
 bootstrap: setup create ## Bootstrap everything.
-	${venv} ; ansible-playbook playbooks/deploy.yml \
+	@if [ "$(VERSION_MANAGER)" != "latest" ] && \
+	   [ "$$(contrib/semver2.sh $(VERSION_MANAGER) 10.0.0-0)" -ge 0 ]; then \
+	    BASE_URL="https://raw.githubusercontent.com/osism/release/main/$(VERSION_MANAGER)/base.yml"; \
+	    BASE_CONTENT=$$(curl -sf "$$BASE_URL") || { echo "ERROR: Failed to fetch $$BASE_URL - release $(VERSION_MANAGER) may not exist on osism/release"; exit 1; }; \
+	    RESOLVED_CEPH=$$(echo "$$BASE_CONTENT" | grep "^ceph_version:" | sed 's/ceph_version:[[:space:]]*//;s/"//g'); \
+	    RESOLVED_OS=$$(echo "$$BASE_CONTENT" | grep "^openstack_version:" | sed 's/openstack_version:[[:space:]]*//;s/"//g'); \
+	else \
+	    RESOLVED_CEPH="$(VERSION_CEPH)"; \
+	    RESOLVED_OS="$(VERSION_OPENSTACK)"; \
+	fi; \
+	. venv/bin/activate && ansible-playbook playbooks/deploy.yml \
 	  -i ansible/localhost_inventory.yaml \
 	  -e ansible_galaxy=ansible-galaxy \
 	  -e ansible_playbook=ansible-playbook \
 	  -e basepath="$(PWD)" \
 	  -e testbed_cloud=$(CLOUD) \
-	  -e repo_path="$(PWD)/.src/$(shell . venv/bin/activate && contrib/setup-testbed.py --query "repository_server")" \
+	  -e repo_path="$(PWD)/.src/$$(contrib/setup-testbed.py --query "repository_server")" \
 	  -e manual_create=true \
 	  -e manual_deploy=true \
-	  -e ceph_version=$(VERSION_CEPH) \
+	  -e ceph_version=$$RESOLVED_CEPH \
 	  -e manager_version=$(VERSION_MANAGER) \
-	  -e openstack_version=$(VERSION_OPENSTACK) \
+	  -e openstack_version=$$RESOLVED_OS \
 	  -e ceph_stack=$(CEPH_STACK) \
 	  -e deploy_mode=$(DEPLOY_MODE)
 
