@@ -81,11 +81,7 @@ ceilometer_prometheus_pushgateway_host: "testbed-manager"
 ceilometer_metering_pushgateway_host: "testbed-manager"
 ceilometer_metering_pushgateway_port: 8088
 
-# cinder
-enable_cinder_backend_lvm: "yes"
-
 # rgw integration
-
 enable_ceph_rgw: true
 enable_ceph_rgw_keystone: true
 
@@ -121,7 +117,3 @@ prometheus_external_labels:
 
 om_enable_rabbitmq_high_availability: false
 om_enable_rabbitmq_quorum_queues: false
-
-# cinder dm-clone driver
-cinder_volume_extra_volumes:
-  - "/opt/cinder-driver-dm-clone:/var/lib/kolla/venv/lib/python{{ distro_python_version }}/site-packages/cinder-driver-dm-clone"

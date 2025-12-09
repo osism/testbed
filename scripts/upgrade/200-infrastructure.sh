@@ -14,4 +14,3 @@ osism apply -a upgrade mariadb
 osism apply -a upgrade rabbitmq
 osism apply -a upgrade openvswitch
 osism apply -a upgrade ovn
-osism apply -a upgrade iscsi

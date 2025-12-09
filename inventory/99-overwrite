@@ -17,9 +17,6 @@ testbed-managers
 [frr:children]
 testbed-managers
 
-[storage:children]
-compute
-
 # groups for Ceph sub environment test
 
 [ceph.test:children]
