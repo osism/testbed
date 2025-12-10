@@ -26,7 +26,6 @@
           - "DNS:nexus.testbed.osism.xyz"
           - "DNS:phpmyadmin.testbed.osism.xyz"
           - "DNS:testbed-manager.testbed.osism.xyz"
-          - "DNS:thanos.testbed.osism.xyz"
           - "IP:192.168.16.5"
         subject_alt_name_critical: true
       run_once: true

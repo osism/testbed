@@ -69,12 +69,6 @@ wireguard_users:
 wireguard_create_client_config: true
 
 ##########################
-# thanos_sidecar
-
-thanos_sidecar_host: "{{ hostvars[inventory_hostname]['ansible_' + internal_interface]['ipv4']['address'] }}"
-thanos_sidecar_prometheus_url: "https://api-int.testbed.osism.xyz:9091/"
-
-##########################
 # k3s
 
 cilium_bgp: true
