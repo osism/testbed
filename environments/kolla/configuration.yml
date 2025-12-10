@@ -110,7 +110,6 @@ ceph_public_network: 192.168.16.0/20
 ##########################################################
 # prometheus
 
-# NOTE: external label is required by the thanos_sidecar
 prometheus_external_labels:
   infrastructure: testbed
 
