@@ -34,8 +34,12 @@ echo
 echo "# Status of MariaDB"
 echo
 
-MARIADB_USER=root_shard_0
-bash nagios-plugins/check_galera_cluster -u $MARIADB_USER -p password -H api-int.testbed.osism.xyz -c 1
+if [[ $(semver $MANAGER_VERSION 10.0.0-0) -ge 0 || $MANAGER_VERSION == "latest" ]]; then
+    osism status database
+else
+    MARIADB_USER=root_shard_0
+    bash nagios-plugins/check_galera_cluster -u $MARIADB_USER -p password -H api-int.testbed.osism.xyz -c 1
+fi
 
 echo
 echo "# Status of Prometheus"
@@ -48,7 +52,11 @@ echo
 echo "# Status of RabbitMQ"
 echo
 
-perl nagios-plugins/check_rabbitmq_cluster --ssl 1 -H api-int.testbed.osism.xyz -u openstack -p password
+if [[ $(semver $MANAGER_VERSION 10.0.0-0) -ge 0 || $MANAGER_VERSION == "latest" ]]; then
+    osism status messaging
+else
+    perl nagios-plugins/check_rabbitmq_cluster --ssl 1 -H api-int.testbed.osism.xyz -u openstack -p password
+fi
 
 echo
 echo "# Status of Redis"
