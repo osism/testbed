@@ -1,5 +1,28 @@
 ---
-# Regiocloud
+# =============================================================================
+# ZUUL CI CONFIGURATION - OSISM TESTBED
+# =============================================================================
+#
+# This file defines the Zuul CI jobs for the OSISM testbed project.
+#
+# Structure:
+#   1. Infrastructure (Nodesets, Semaphores)
+#   2. Abstract Base Jobs
+#   3. Deploy Jobs (grouped by type)
+#   4. Upgrade/Update Jobs
+#   5. Project Pipeline Definition
+#
+# Supported Operating Systems:
+#   - Ubuntu 24.04
+#   - Debian 12 (currently disabled)
+#   - CentOS Stream 9 (currently disabled)
+#
+# =============================================================================
+
+# =============================================================================
+# 1. INFRASTRUCTURE
+# =============================================================================
+
 - nodeset:
     name: testbed-orchestrator
     nodes:
@@ -10,14 +33,29 @@
     name: semaphore-testbed
     max: 4
 
+# =============================================================================
+# 2. ABSTRACT BASE JOBS
+# =============================================================================
+# These jobs serve as templates and cannot be run directly.
+# They define common configuration inherited by concrete jobs.
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# 2.1 Root Abstract Job
+# -----------------------------------------------------------------------------
+# Base configuration for all testbed deployment jobs
+
 - job:
     name: abstract-testbed-deploy
     abstract: true
     parent: base-extra-logs
     semaphores:
       - name: semaphore-testbed
-    pre-run: playbooks/pre.yml
     nodeset: testbed-orchestrator
+    # NOTE(frickler): Default zuul maximum timeout is 3h, this needs to
+    # be explicitly bumped in the tenant configuration
+    timeout: 16200
+    pre-run: playbooks/pre.yml
     run: playbooks/deploy.yml
     post-run:
       - playbooks/post.yml
@@ -33,18 +71,13 @@
       - ^README.md$
       - ^\.github/.*$
       - ^netbox/.*$
-    # NOTE(frickler): Default zuul maximum timeout is 3h, this needs to
-    # be explicitly bumped in the tenant configuration
-    timeout: 16200
     vars:
       terraform_blueprint: testbed-default
 
-- job:
-    name: testbed-deploy
-    parent: abstract-testbed-deploy
-    vars:
-      tempest: true
-      prometheus_alert_status: false
+# -----------------------------------------------------------------------------
+# 2.2 Abstract Job for "In a Nutshell" Deployments
+# -----------------------------------------------------------------------------
+# Lightweight deployments for faster CI feedback
 
 - job:
     name: abstract-testbed-deploy-in-a-nutshell
@@ -53,29 +86,28 @@
     vars:
       nutshell: true
 
-- job:
-    name: testbed-deploy-in-a-nutshell-ubuntu-24.04
-    parent: abstract-testbed-deploy-in-a-nutshell
-    vars:
-      terraform_environment: ci-ubuntu-24.04
+# -----------------------------------------------------------------------------
+# 2.3 Abstract Job for Stable Release Deployments
+# -----------------------------------------------------------------------------
+# Deployments using a specific stable release version
 
 - job:
-    name: testbed-deploy-in-a-nutshell-debian-12
-    parent: abstract-testbed-deploy-in-a-nutshell
+    name: abstract-testbed-deploy-stable
+    abstract: true
+    parent: abstract-testbed-deploy
     vars:
-      terraform_environment: ci-debian-12
-
-- job:
-    name: testbed-deploy-in-a-nutshell-centos-stream-9
-    parent: abstract-testbed-deploy-in-a-nutshell
-    vars:
-      terraform_environment: ci-centos-stream-9
-
-- job:
-    name: testbed-deploy-in-a-nutshell-with-tempest-ubuntu-24.04
-    parent: testbed-deploy-in-a-nutshell-ubuntu-24.04
-    vars:
+      manager_version: 9.5.0
       tempest: true
+      prometheus_alert_status: false
+
+- job:
+    name: abstract-testbed-deploy-rc
+    abstract: true
+    parent: abstract-testbed-deploy
+    vars:
+      manager_version: 10.0.0-rc.1
+      tempest: true
+      prometheus_alert_status: false
 
 - job:
     name: abstract-testbed-deploy-stable-in-a-nutshell
@@ -85,28 +117,136 @@
       manager_version: 9.5.0
 
 - job:
+    name: abstract-testbed-deploy-rc-in-a-nutshell
+    abstract: true
+    parent: abstract-testbed-deploy-in-a-nutshell
+    vars:
+      manager_version: 10.0.0-rc.1
+
+# -----------------------------------------------------------------------------
+# 2.4 Abstract Jobs for Upgrade/Update Operations
+# -----------------------------------------------------------------------------
+
+# Update: Minor version update (e.g., 9.4.0 -> 9.5.0)
+- job:
+    name: abstract-testbed-update-stable
+    abstract: true
+    parent: abstract-testbed-deploy
+    run: playbooks/upgrade-stable.yml
+    nodeset: testbed-orchestrator
+    timeout: 30000
+
+# Upgrade: Major version upgrade (e.g., 8.1.0 -> 9.5.0)
+- job:
+    name: abstract-testbed-upgrade-stable
+    abstract: true
+    parent: abstract-testbed-deploy
+    run: playbooks/upgrade-stable.yml
+    nodeset: testbed-orchestrator
+    timeout: 30000
+
+# Upgrade: Major version upgrade (e.g., 9.5.0 -> 10.0.0-rc.1)
+- job:
+    name: abstract-testbed-upgrade-rc
+    abstract: true
+    parent: abstract-testbed-deploy
+    run: playbooks/upgrade-stable.yml
+    nodeset: testbed-orchestrator
+    timeout: 30000
+
+# =============================================================================
+# 3. DEPLOY JOBS
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# 3.1 Standard Deploy Job
+# -----------------------------------------------------------------------------
+
+- job:
+    name: testbed-deploy
+    parent: abstract-testbed-deploy
+    vars:
+      tempest: true
+      prometheus_alert_status: false
+
+# -----------------------------------------------------------------------------
+# 3.2 "In a Nutshell" Deploy Jobs - Latest Version
+# -----------------------------------------------------------------------------
+# Fast deployments for CI validation using the latest development version
+
+- job:
+    name: testbed-deploy-in-a-nutshell-ubuntu-24.04
+    parent: abstract-testbed-deploy-in-a-nutshell
+    vars:
+      terraform_environment: ci-ubuntu-24.04
+
+# - job:
+#     name: testbed-deploy-in-a-nutshell-debian-12
+#     parent: abstract-testbed-deploy-in-a-nutshell
+#     vars:
+#       terraform_environment: ci-debian-12
+
+# - job:
+#     name: testbed-deploy-in-a-nutshell-centos-stream-9
+#     parent: abstract-testbed-deploy-in-a-nutshell
+#     vars:
+#       terraform_environment: ci-centos-stream-9
+
+- job:
+    name: testbed-deploy-in-a-nutshell-with-tempest-ubuntu-24.04
+    parent: testbed-deploy-in-a-nutshell-ubuntu-24.04
+    vars:
+      tempest: true
+
+# -----------------------------------------------------------------------------
+# 3.3 "In a Nutshell" Deploy Jobs - Stable Version
+# -----------------------------------------------------------------------------
+# Fast deployments using a stable release version
+
+- job:
     name: testbed-deploy-stable-in-a-nutshell-ubuntu-24.04
     parent: abstract-testbed-deploy-stable-in-a-nutshell
     vars:
       terraform_environment: ci-ubuntu-24.04
 
-- job:
-    name: testbed-deploy-stable-in-a-nutshell-debian-12
-    parent: abstract-testbed-deploy-stable-in-a-nutshell
-    vars:
-      terraform_environment: ci-debian-12
+# - job:
+#     name: testbed-deploy-stable-in-a-nutshell-debian-12
+#     parent: abstract-testbed-deploy-stable-in-a-nutshell
+#     vars:
+#       terraform_environment: ci-debian-12
 
-- job:
-    name: testbed-deploy-stable-in-a-nutshell-centos-stream-9
-    parent: abstract-testbed-deploy-stable-in-a-nutshell
-    vars:
-      terraform_environment: ci-centos-stream-9
+# - job:
+#     name: testbed-deploy-stable-in-a-nutshell-centos-stream-9
+#     parent: abstract-testbed-deploy-stable-in-a-nutshell
+#     vars:
+#       terraform_environment: ci-centos-stream-9
 
 - job:
     name: testbed-deploy-stable-in-a-nutshell-with-tempest-ubuntu-24.04
     parent: testbed-deploy-stable-in-a-nutshell-ubuntu-24.04
     vars:
       tempest: true
+
+# -----------------------------------------------------------------------------
+# 3.4 "In a Nutshell" Deploy Jobs - RC Version
+# -----------------------------------------------------------------------------
+# Fast deployments using a release candidate version
+
+- job:
+    name: testbed-deploy-rc-in-a-nutshell-ubuntu-24.04
+    parent: abstract-testbed-deploy-rc-in-a-nutshell
+    vars:
+      terraform_environment: ci-ubuntu-24.04
+
+- job:
+    name: testbed-deploy-rc-in-a-nutshell-with-tempest-ubuntu-24.04
+    parent: testbed-deploy-rc-in-a-nutshell-ubuntu-24.04
+    vars:
+      tempest: true
+
+# -----------------------------------------------------------------------------
+# 3.5 "In a Nutshell" Deploy Jobs - Current OpenStack Release (2024.2)
+# -----------------------------------------------------------------------------
 
 - job:
     name: testbed-deploy-current-in-a-nutshell-ubuntu-24.04
@@ -116,6 +256,16 @@
       openstack_version: "2024.2"
 
 - job:
+    name: testbed-deploy-current-in-a-nutshell-with-tempest-ubuntu-24.04
+    parent: testbed-deploy-current-in-a-nutshell-ubuntu-24.04
+    vars:
+      tempest: true
+
+# -----------------------------------------------------------------------------
+# 3.6 "In a Nutshell" Deploy Jobs - Next OpenStack Release (2025.1)
+# -----------------------------------------------------------------------------
+
+- job:
     name: testbed-deploy-next-in-a-nutshell-ubuntu-24.04
     parent: testbed-deploy-in-a-nutshell-ubuntu-24.04
     vars:
@@ -123,30 +273,15 @@
       openstack_version: "2025.1"
 
 - job:
-    name: testbed-deploy-current-in-a-nutshell-with-tempest-ubuntu-24.04
-    parent: testbed-deploy-current-in-a-nutshell-ubuntu-24.04
-    vars:
-      tempest: true
-
-- job:
     name: testbed-deploy-next-in-a-nutshell-with-tempest-ubuntu-24.04
     parent: testbed-deploy-next-in-a-nutshell-ubuntu-24.04
     vars:
       tempest: true
 
-- job:
-    name: testbed-upgrade
-    parent: abstract-testbed-deploy
-    run: playbooks/upgrade.yml
-    timeout: 30000
-
-- job:
-    name: abstract-testbed-deploy-stable
-    parent: abstract-testbed-deploy
-    vars:
-      manager_version: 9.5.0
-      tempst: true
-      prometheus_alert_status: false
+# -----------------------------------------------------------------------------
+# 3.7 Full Stable Deploy Jobs
+# -----------------------------------------------------------------------------
+# Complete deployments using stable release version
 
 - job:
     name: testbed-deploy-stable-ubuntu-24.04
@@ -154,96 +289,168 @@
     vars:
       terraform_environment: ci-ubuntu-24.04
 
-- job:
-    name: testbed-deploy-stable-centos-stream-9
-    parent: abstract-testbed-deploy-stable
-    vars:
-      terraform_environment: ci-centos-stream-9
+# - job:
+#     name: testbed-deploy-stable-debian-12
+#     parent: abstract-testbed-deploy-stable
+#     vars:
+#       terraform_environment: ci-debian-12
+
+# - job:
+#     name: testbed-deploy-stable-centos-stream-9
+#     parent: abstract-testbed-deploy-stable
+#     vars:
+#       terraform_environment: ci-centos-stream-9
 
 - job:
-    name: testbed-deploy-stable-debian-12
-    parent: abstract-testbed-deploy-stable
+    name: testbed-deploy-rc-ubuntu-24.04
+    parent: abstract-testbed-deploy-rc
     vars:
-      terraform_environment: ci-debian-12
+      terraform_environment: ci-ubuntu-24.04
+
+# =============================================================================
+# 4. UPGRADE/UPDATE JOBS
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# 4.1 Upgrade Job (uses main deploy.yml -> upgrade.yml)
+# -----------------------------------------------------------------------------
 
 - job:
-    name: abstract-testbed-update-stable
+    name: testbed-upgrade
     parent: abstract-testbed-deploy
-    run: playbooks/upgrade-stable.yml
-    vars:
-      manager_version: 9.4.0
-      manager_version_next: 9.5.0
-    nodeset: testbed-orchestrator
+    run: playbooks/upgrade.yml
     timeout: 30000
 
-- job:
-    name: abstract-testbed-upgrade-stable
-    parent: abstract-testbed-deploy
-    run: playbooks/upgrade-stable.yml
-    vars:
-      manager_version: 8.1.0
-      manager_version_next: 9.5.0
-    nodeset: testbed-orchestrator
-    timeout: 30000
+# -----------------------------------------------------------------------------
+# 4.2 Update Jobs (Minor Version: 9.4.0 -> 9.5.0)
+# -----------------------------------------------------------------------------
 
 - job:
     name: testbed-update-stable-ubuntu-24.04
     parent: abstract-testbed-update-stable
     vars:
       terraform_environment: ubuntu-24.04
+      manager_version: 9.4.0
+      manager_version_next: 9.5.0
+
+# -----------------------------------------------------------------------------
+# 4.3 Upgrade Jobs (Major Version: 8.1.0 -> 9.5.0)
+# -----------------------------------------------------------------------------
 
 - job:
     name: testbed-upgrade-stable-ubuntu-24.04
     parent: abstract-testbed-upgrade-stable
     vars:
       terraform_environment: ubuntu-24.04
+      manager_version: 8.1.0
+      manager_version_next: 9.5.0
 
-- job:
-    name: testbed-update-stable-next-ubuntu-24.04
-    parent: abstract-testbed-deploy
-    run: playbooks/update-stable.yml
-    vars:
-      manager_version: 9.5.0
-      ceph_version_next: skip
-      manager_version_next: latest
-      openstack_version_next: "2024.2"
-    nodeset: testbed-orchestrator
-    timeout: 30000
-
+# NOTE: The following upgrade jobs are currently disabled.
+# They can be enabled once the respective OS support is validated.
+#
 # - job:
 #     name: testbed-upgrade-stable-debian-12
 #     parent: abstract-testbed-upgrade-stable
 #     vars:
 #       terraform_environment: debian-12
-
+#
 # - job:
 #     name: testbed-upgrade-stable-centos-stream-9
 #     parent: abstract-testbed-upgrade-stable
 #     vars:
 #       terraform_environment: centos-stream-9
 
+# -----------------------------------------------------------------------------
+# 4.4 Upgrade Jobs (Stable to RC: 9.5.0 -> 10.0.0-rc.1)
+# -----------------------------------------------------------------------------
+
+- job:
+    name: testbed-upgrade-stable-rc-ubuntu-24.04
+    parent: abstract-testbed-upgrade-rc
+    vars:
+      terraform_environment: ubuntu-24.04
+      manager_version: 9.5.0
+      manager_version_next: 10.0.0-rc.1
+
+# -----------------------------------------------------------------------------
+# 4.5 Update/Upgrade to Next Development Version
+# -----------------------------------------------------------------------------
+# Updates from stable to latest development version
+
+- job:
+    name: testbed-update-stable-current-ubuntu-24.04
+    parent: abstract-testbed-deploy
+    run: playbooks/update-stable.yml
+    nodeset: testbed-orchestrator
+    timeout: 30000
+    vars:
+      manager_version: 9.5.0
+      ceph_version_next: skip
+      manager_version_next: latest
+      openstack_version_next: "2024.2"
+
+- job:
+    name: testbed-upgrade-stable-next-ubuntu-24.04
+    parent: abstract-testbed-deploy
+    run: playbooks/upgrade-stable.yml
+    nodeset: testbed-orchestrator
+    timeout: 30000
+    vars:
+      manager_version: 9.5.0
+      ceph_version_next: skip
+      manager_version_next: latest
+      openstack_version_next: "2025.1"
+
+# =============================================================================
+# 5. PROJECT PIPELINE DEFINITION
+# =============================================================================
+
 - project:
     merge-mode: squash-merge
+
+    # -------------------------------------------------------------------------
+    # Check Pipeline - Runs on every patch
+    # -------------------------------------------------------------------------
     check:
       jobs:
         - ansible-lint
         - flake8
         - python-black
         - yamllint
+
+    # -------------------------------------------------------------------------
+    # Label Pipeline - Triggered by labels on patches
+    # -------------------------------------------------------------------------
     label:
       jobs:
         - testbed-deploy-current-in-a-nutshell-ubuntu-24.04
         - testbed-deploy-next-in-a-nutshell-ubuntu-24.04
         - testbed-deploy-stable-in-a-nutshell-ubuntu-24.04
+
+    # -------------------------------------------------------------------------
+    # Label-Additional Pipeline - For additional testing on patches
+    # -------------------------------------------------------------------------
     label-additional:
       jobs:
-        - testbed-update-stable-next-ubuntu-24.04
+        - testbed-update-stable-current-ubuntu-24.04
+        - testbed-upgrade-stable-next-ubuntu-24.04
+        - testbed-upgrade-stable-rc-ubuntu-24.04
+
+    # -------------------------------------------------------------------------
+    # Periodic Midnight Pipeline - Nightly tests
+    # -------------------------------------------------------------------------
     periodic-midnight:
       jobs:
         - testbed-deploy-current-in-a-nutshell-with-tempest-ubuntu-24.04
         - testbed-deploy-next-in-a-nutshell-with-tempest-ubuntu-24.04
         - testbed-deploy-stable-in-a-nutshell-with-tempest-ubuntu-24.04
-        - testbed-update-stable-next-ubuntu-24.04
+        - testbed-update-stable-current-ubuntu-24.04
+        - testbed-upgrade-stable-next-ubuntu-24.04
+        - testbed-upgrade-stable-rc-ubuntu-24.04
+
+    # -------------------------------------------------------------------------
+    # Periodic Daily Pipeline - Daily lint checks
+    # -------------------------------------------------------------------------
     periodic-daily:
       jobs:
         - ansible-lint
