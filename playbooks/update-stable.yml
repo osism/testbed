@@ -16,7 +16,7 @@
     terraform_path: "{{ basepath }}/terraform"
     manager_address_file: "{{ terraform_path }}/.MANAGER_ADDRESS.{{ cloud }}"
 
-    terraform_binary: "{{ ansible_user_dir }}/terragrunt"
+    terraform_binary: "{{ ansible_user_dir }}/tofu"
 
     run_bootstrap: false
     run_checks: true
@@ -42,13 +42,11 @@
       ansible.builtin.set_fact:
         cloud: "{{ cloud_envs[hostvars[groups['all'][0]]['nodepool']['label']] }}"
         kolla_namespace: "kolla"
-        terragrunt_tfpath: "{{ ansible_user_dir }}/terraform"
       when: "'nodepool' in hostvars[groups['all'][0]]"
 
     - name: Set facts (local deployment)
       ansible.builtin.set_fact:
         cloud: "{{ testbed_cloud | default('ci') }}"
-        terragrunt_tfpath: terraform
       when: "'nodepool' not in hostvars[groups['all'][0]]"
 
     - name: Fetch manager address
@@ -64,8 +62,6 @@
       ansible.builtin.command:
         cmd: "ssh -i {{ terraform_path }}/.id_rsa.{{ cloud }} dragon@{{ manager_host }} /opt/configuration/scripts/upgrade.sh {{ _manager_version_next }} {{ _ceph_version_next }} {{ _openstack_version_next }} {{ kolla_namespace | default('osism') }}"
       changed_when: true
-      environment:
-        TG_TF_PATH: "{{ terragrunt_tfpath }}"
 
     - name: Bootstrap services
       ansible.builtin.command:

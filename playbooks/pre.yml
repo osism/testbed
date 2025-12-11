@@ -10,8 +10,6 @@
     basepath: "{{ ansible_user_dir }}/src/{{ repositories['testbed']['path'] }}"
     terraformbase_path: "{{ ansible_user_dir }}/src/{{ repositories['terraform-base']['path'] }}"
     terraform_path: "{{ basepath }}/terraform"
-    terragrunt_version: v0.94.0 # renovate: datasource=github-releases depName=gruntwork-io/terragrunt
-    terragrunt_download_url: "https://github.com/gruntwork-io/terragrunt/releases/download/{{ terragrunt_version }}/terragrunt_linux_amd64"
     opentofu_version: v1.11.1 # renovate: datasource=github-releases depName=opentofu/opentofu
     opentofu_download_url: "https://github.com/opentofu/opentofu/releases/download/{{ opentofu_version }}/tofu_{{ opentofu_version[1:] }}_linux_amd64.zip"
 
@@ -34,12 +32,6 @@
       failed_when: false
       changed_when: true
 
-    - name: Download terragrunt
-      ansible.builtin.get_url:
-        url: "{{ terragrunt_download_url }}"
-        dest: "{{ ansible_user_dir }}/terragrunt"
-        mode: "0755"
-
     - name: Extract tofu binary
       ansible.builtin.unarchive:
         src: "{{ opentofu_download_url }}"
@@ -47,13 +39,6 @@
         remote_src: true
         include:
           - tofu
-
-    - name: Copy tofu binary
-      ansible.builtin.copy:
-        src: "{{ ansible_user_dir }}/tofu"
-        dest: "{{ ansible_user_dir }}/terraform"
-        mode: preserve
-        remote_src: true
 
     # we run local synchronisation here
     - name: Sync terraform blueprint  # noqa: command-instead-of-module

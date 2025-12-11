@@ -58,11 +58,7 @@ init:
 	@if [ ! -d .terraform/providers ]; then $(TERRAFORM) init -upgrade; fi
 
 	@if [ ! -f backend.tf ]; then \
-		if echo "$(TERRAFORM)" | grep -q terragrunt; then \
-			$(TERRAFORM) run -- workspace select -or-create ${CLOUD}; \
-		else \
-			$(TERRAFORM) workspace select -or-create ${CLOUD}; \
-		fi; \
+		$(TERRAFORM) workspace select -or-create ${CLOUD}; \
 	fi
 
 	@rm -f *.auto.tfvars
@@ -97,11 +93,7 @@ init:
 		cp -p overrides/$${over}_override.tf .; \
 	done
 
-	@if echo "$(TERRAFORM)" | grep -q terragrunt; then \
-		$(TERRAFORM) run -- fmt; \
-	else \
-		$(TERRAFORM) fmt; \
-	fi
+	@$(TERRAFORM) fmt
 
 .PHONY: validate
 validate: init
@@ -189,13 +181,8 @@ clean: init
 	@rm -f .id_rsa.$(CLOUD)
 
 	@if [ ! -f backend.tf ]; then \
-		if echo "$(TERRAFORM)" | grep -q terragrunt; then \
-			$(TERRAFORM) run -- workspace select default; \
-			$(TERRAFORM) run -- workspace delete $(CLOUD) || true; \
-		else \
-			$(TERRAFORM) workspace select default; \
-			$(TERRAFORM) workspace delete $(CLOUD) || true; \
-		fi; \
+		$(TERRAFORM) workspace select default; \
+		$(TERRAFORM) workspace delete $(CLOUD) || true; \
 	fi
 	@rm -f wg-*.conf
 	@rm -rf .terraform .terraform.lock.hcl

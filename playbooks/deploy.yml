@@ -20,7 +20,7 @@
     run_bootstrap: true
     run_checks: true
 
-    terraform_binary: "{{ ansible_user_dir }}/terragrunt"
+    terraform_binary: "{{ ansible_user_dir }}/tofu"
     terraform_path: "{{ basepath }}/terraform"
 
     _ceph_version: "{{ ceph_version | default('reef') }}"
@@ -52,14 +52,12 @@
       ansible.builtin.set_fact:
         cloud: "{{ cloud_envs[hostvars[groups['all'][0]]['nodepool']['label']] }}"
         image_username: "{{ image_usernames[_terraform_environment] | default('ubuntu') }}"
-        terragrunt_tfpath: "{{ ansible_user_dir }}/terraform"
       when: "'nodepool' in hostvars[groups['all'][0]]"
 
     - name: Set facts (local deployment)
       ansible.builtin.set_fact:
         cloud: "{{ testbed_cloud | default('ci') }}"
         image_username: "{{ image_usernames[_terraform_environment] | default('ubuntu') }}"
-        terragrunt_tfpath: terraform
       when: "'nodepool' not in hostvars[groups['all'][0]]"
 
     - name: Create infrastructure (latest)
@@ -81,8 +79,6 @@
         - not manual_create | bool
         - _manager_version == "latest"
       changed_when: true
-      environment:
-        TG_TF_PATH: "{{ terragrunt_tfpath }}"
 
     - name: Create infrastructure (stable)
       ansible.builtin.command:
@@ -101,8 +97,6 @@
         - not manual_create | bool
         - _manager_version != "latest"
       changed_when: true
-      environment:
-        TG_TF_PATH: "{{ terragrunt_tfpath }}"
 
     - name: Fetch manager address
       ansible.builtin.slurp:
