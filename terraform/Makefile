@@ -17,7 +17,7 @@ STATE = errored.tfstate
 
 CEPH_STACK ?= ceph-ansible
 DEPLOY_MODE ?= manager
-KOLLA_NAMESPACE ?= osism
+KOLLA_NAMESPACE ?= kolla
 TEMPEST ?= false
 
 VERSION_CEPH ?= reef

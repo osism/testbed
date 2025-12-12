@@ -14,7 +14,7 @@ echo
 export MANAGER_VERSION=${1:-latest}
 CEPH_VERSION=${2:-reef}
 OPENSTACK_VERSION=${3:-2024.2}
-KOLLA_NAMESPACE=${4:-osism}
+KOLLA_NAMESPACE=${4:-kolla}
 
 /opt/configuration/scripts/set-manager-version.sh $MANAGER_VERSION
 
