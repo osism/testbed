@@ -368,7 +368,7 @@
     name: testbed-upgrade-stable-rc-ubuntu-24.04
     parent: abstract-testbed-upgrade-rc
     vars:
-      terraform_environment: ubuntu-24.04
+      terraform_environment: ci-ubuntu-24.04
       manager_version: 9.5.0
       manager_version_next: 10.0.0-rc.1
 
