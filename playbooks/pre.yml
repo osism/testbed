@@ -10,7 +10,7 @@
     basepath: "{{ ansible_user_dir }}/src/{{ repositories['testbed']['path'] }}"
     terraformbase_path: "{{ ansible_user_dir }}/src/{{ repositories['terraform-base']['path'] }}"
     terraform_path: "{{ basepath }}/terraform"
-    opentofu_version: v1.11.2 # renovate: datasource=github-releases depName=opentofu/opentofu
+    opentofu_version: v1.11.4 # renovate: datasource=github-releases depName=opentofu/opentofu
     opentofu_download_url: "https://github.com/opentofu/opentofu/releases/download/{{ opentofu_version }}/tofu_{{ opentofu_version[1:] }}_linux_amd64.zip"
 
   tasks:
