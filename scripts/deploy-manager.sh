@@ -82,6 +82,7 @@ sudo ln -sf /opt/configuration/scripts/deploy/100-ceph-with-ansible.sh /usr/loca
 sudo ln -sf /opt/configuration/scripts/deploy/100-ceph-with-rook.sh /usr/local/bin/deploy-ceph-with-rook
 sudo ln -sf /opt/configuration/scripts/deploy/200-infrastructure.sh /usr/local/bin/deploy-infrastructure
 sudo ln -sf /opt/configuration/scripts/deploy/300-openstack.sh /usr/local/bin/deploy-openstack
+sudo ln -sf /opt/configuration/scripts/deploy/320-openstack-minimal.sh /usr/local/bin/deploy-openstack-minimal
 sudo ln -sf /opt/configuration/scripts/deploy/400-monitoring.sh /usr/local/bin/deploy-monitoring
 
 # create symlinks for upgrade scripts
@@ -91,6 +92,7 @@ sudo ln -sf /opt/configuration/scripts/upgrade/100-ceph-with-ansible.sh /usr/loc
 sudo ln -sf /opt/configuration/scripts/upgrade/100-ceph-with-rook.sh /usr/local/bin/upgrade-ceph-with-rook
 sudo ln -sf /opt/configuration/scripts/upgrade/200-infrastructure.sh /usr/local/bin/upgrade-infrastructure
 sudo ln -sf /opt/configuration/scripts/upgrade/300-openstack.sh /usr/local/bin/upgrade-openstack
+sudo ln -sf /opt/configuration/scripts/upgrade/320-openstack-minimal.sh /usr/local/bin/upgrade-openstack-minimal
 sudo ln -sf /opt/configuration/scripts/upgrade/400-monitoring.sh /usr/local/bin/upgrade-monitoring
 
 # create symlinks for bootstrap scripts
