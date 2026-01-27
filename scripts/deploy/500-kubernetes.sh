@@ -9,5 +9,4 @@ if [[ $(semver $MANAGER_VERSION 8.0.3) -ge 0 || $MANAGER_VERSION == "latest" ]];
     osism apply frr
     osism apply kubernetes
     osism apply copy-kubeconfig
-    osism apply k8s-dashboard
 fi
