@@ -24,6 +24,7 @@ if [[ $SKIP_OPENSTACK_UPGRADE == "false" ]]; then
 
     if [[ $RABBITMQ3TO4 == "true" ]]; then
         osism migrate rabbitmq3to4 prepare
+	osism migrate rabbitmq3to4 list
     fi
 fi
 
@@ -46,6 +47,8 @@ if [[ $SKIP_OPENSTACK_UPGRADE == "false" ]]; then
 
     if [[ $RABBITMQ3TO4 == "true" ]]; then
         osism migrate rabbitmq3to4 delete
+	osism migrate rabbitmq3to4 list
+	osism migrate rabbitmq3to4 list --vhost openstack --quorum
     fi
 fi
 
