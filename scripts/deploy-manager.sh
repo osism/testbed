@@ -76,24 +76,25 @@ osism apply gather-facts
 
 # create symlinks for deploy scripts
 sudo ln -sf /opt/configuration/scripts/deploy/001-helpers.sh /usr/local/bin/deploy-helper
-sudo ln -sf /opt/configuration/scripts/deploy/500-kubernetes.sh /usr/local/bin/deploy-kubernetes
-sudo ln -sf /opt/configuration/scripts/deploy/510-clusterapi.sh /usr/local/bin/deploy-kubernetes-clusterapi
 sudo ln -sf /opt/configuration/scripts/deploy/100-ceph-with-ansible.sh /usr/local/bin/deploy-ceph-with-ansible
 sudo ln -sf /opt/configuration/scripts/deploy/100-ceph-with-rook.sh /usr/local/bin/deploy-ceph-with-rook
 sudo ln -sf /opt/configuration/scripts/deploy/200-infrastructure.sh /usr/local/bin/deploy-infrastructure
 sudo ln -sf /opt/configuration/scripts/deploy/300-openstack.sh /usr/local/bin/deploy-openstack
 sudo ln -sf /opt/configuration/scripts/deploy/320-openstack-minimal.sh /usr/local/bin/deploy-openstack-minimal
 sudo ln -sf /opt/configuration/scripts/deploy/400-monitoring.sh /usr/local/bin/deploy-monitoring
+sudo ln -sf /opt/configuration/scripts/deploy/500-kubernetes.sh /usr/local/bin/deploy-kubernetes
+sudo ln -sf /opt/configuration/scripts/deploy/510-clusterapi.sh /usr/local/bin/deploy-kubernetes-clusterapi
 
 # create symlinks for upgrade scripts
-sudo ln -sf /opt/configuration/scripts/upgrade/500-kubernetes.sh /usr/local/bin/upgrade-kubernetes
-sudo ln -sf /opt/configuration/scripts/upgrade/510-clusterapi.sh /usr/local/bin/upgrade-kubernetes-clusterapi
+sudo ln -sf /opt/configuration/scripts/upgrade-manager.sh /usr/local/bin/upgrade-manager
 sudo ln -sf /opt/configuration/scripts/upgrade/100-ceph-with-ansible.sh /usr/local/bin/upgrade-ceph-with-ansible
 sudo ln -sf /opt/configuration/scripts/upgrade/100-ceph-with-rook.sh /usr/local/bin/upgrade-ceph-with-rook
 sudo ln -sf /opt/configuration/scripts/upgrade/200-infrastructure.sh /usr/local/bin/upgrade-infrastructure
 sudo ln -sf /opt/configuration/scripts/upgrade/300-openstack.sh /usr/local/bin/upgrade-openstack
 sudo ln -sf /opt/configuration/scripts/upgrade/320-openstack-minimal.sh /usr/local/bin/upgrade-openstack-minimal
 sudo ln -sf /opt/configuration/scripts/upgrade/400-monitoring.sh /usr/local/bin/upgrade-monitoring
+sudo ln -sf /opt/configuration/scripts/upgrade/500-kubernetes.sh /usr/local/bin/upgrade-kubernetes
+sudo ln -sf /opt/configuration/scripts/upgrade/510-clusterapi.sh /usr/local/bin/upgrade-kubernetes-clusterapi
 
 # create symlinks for bootstrap scripts
 sudo ln -sf /opt/configuration/scripts/bootstrap/300-openstack.sh /usr/local/bin/bootstrap-openstack
