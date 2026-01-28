@@ -60,6 +60,7 @@ if [[ $MANAGER_UPGRADE_CROSSES_10 == "true" || $OPENSTACK_UPGRADE_CROSSES_2025 =
     echo 'om_rpc_vhost: openstack' >> /opt/configuration/environments/kolla/configuration.yml
     echo 'om_notify_vhost: openstack' >> /opt/configuration/environments/kolla/configuration.yml
     sed -i "s#manager_listener_broker_vhost: .*#manager_listener_broker_vhost: /openstack#g" /opt/configuration/environments/manager/configuration.yml
+    echo "export RABBITMQ3TO4=true" | sudo tee -a /opt/manager-vars.sh
 fi
 
 # upgrade manager

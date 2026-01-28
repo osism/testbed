@@ -21,6 +21,10 @@ sh -c '/opt/configuration/scripts/upgrade/500-kubernetes.sh'
 # upgrade infrastructure services
 if [[ $SKIP_OPENSTACK_UPGRADE == "false" ]]; then
     sh -c '/opt/configuration/scripts/upgrade/200-infrastructure.sh'
+
+    if [[ $RABBITMQ3TO4 == "true" ]]; then
+        osism migrate rabbitmq3to4 prepare
+    fi
 fi
 
 if [[ $SKIP_CEPH_UPGRADE == "false" ]]; then
@@ -35,10 +39,14 @@ fi
 # upgrade openstack services
 if [[ $SKIP_OPENSTACK_UPGRADE == "false" ]]; then
     sh -c '/opt/configuration/scripts/upgrade/300-openstack.sh'
-fi
 
-if [[ "$TEMPEST" == "false" ]]; then
-    sh -c '/opt/configuration/scripts/upgrade/310-openstack-extended.sh'
+    if [[ "$TEMPEST" == "false" ]]; then
+        sh -c '/opt/configuration/scripts/upgrade/310-openstack-extended.sh'
+    fi
+
+    if [[ $RABBITMQ3TO4 == "true" ]]; then
+        osism migrate rabbitmq3to4 delete
+    fi
 fi
 
 # upgrade monitoring services
