@@ -2,6 +2,10 @@
 set -x
 set -e
 
+echo
+echo "# UPGRADE SERVICES"
+echo
+
 source /opt/manager-vars.sh
 
 # Set default values if not already set
