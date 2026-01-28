@@ -80,8 +80,7 @@ if [[ "$IS_ZUUL" == "true" || "$ARA" == "false" ]]; then
     sh -c '/opt/configuration/scripts/disable-ara.sh'
 fi
 
-# refresh facts & sync the inventory
-sync_inventory
+# refresh facts
 osism apply facts
 
 if [[ $(semver $MANAGER_VERSION 10.0.0-0) -ge 0 ]]; then
