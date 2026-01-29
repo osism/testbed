@@ -31,11 +31,6 @@ fi
 # deploy openstack services
 sh -c '/opt/configuration/scripts/deploy/300-openstack.sh'
 
-if [[ "$TEMPEST" == "false" ]]; then
-    # deploy extended openstack services
-    sh -c '/opt/configuration/scripts/deploy/310-openstack-extended.sh'
-fi
-
 # deploy monitoring services
 sh -c '/opt/configuration/scripts/deploy/400-monitoring.sh'
 
