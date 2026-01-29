@@ -154,6 +154,15 @@
       - test-4
 
   tasks:
+    - name: Get test server group
+      openstack.cloud.server_group:
+        cloud: test
+        state: present
+        name: test
+        policy: soft-anti-affinity
+      register: result_server_group
+      when: test_state == "present"
+
     # === Cleanup (state=absent, reverse order) ===
     - name: Detach test volume
       openstack.cloud.server_volume:
