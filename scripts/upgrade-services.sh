@@ -25,7 +25,7 @@ if [[ $SKIP_OPENSTACK_UPGRADE == "false" ]]; then
     if [[ $RABBITMQ3TO4 == "true" ]]; then
         osism migrate rabbitmq3to4 prepare
 	osism migrate rabbitmq3to4 list
-	osism migrate rabbitmq3to4 list-exhanges
+	osism migrate rabbitmq3to4 list-exchanges
     fi
 fi
 
