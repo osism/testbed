@@ -6,6 +6,12 @@ source /opt/configuration/scripts/include.sh
 source /opt/manager-vars.sh
 source /opt/configuration/scripts/manager-version.sh
 
+if [[ $RABBITMQ3TO4 == "true" ]]; then
+    osism migrate rabbitmq3to4 prepare
+    osism migrate rabbitmq3to4 list
+    osism migrate rabbitmq3to4 list-exchanges
+fi
+
 osism apply -a upgrade keystone
 osism apply -a upgrade placement
 osism apply -a upgrade neutron
@@ -31,3 +37,12 @@ if [[ $(semver $MANAGER_VERSION 7.0.0) -ge 0 || $MANAGER_VERSION == "latest" ]];
 fi
 
 osism apply -a upgrade octavia
+
+if [[ $RABBITMQ3TO4 == "true" ]]; then
+    osism migrate rabbitmq3to4 delete
+    osism migrate rabbitmq3to4 list
+    osism migrate rabbitmq3to4 list --vhost openstack --quorum
+
+    osism migrate rabbitmq3to4 delete-exchanges
+    osism migrate rabbitmq3to4 list-exchanges
+fi

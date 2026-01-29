@@ -2,6 +2,7 @@
 set -e
 
 source /opt/configuration/scripts/include.sh
+source /opt/manager-vars.sh
 source /opt/configuration/scripts/manager-version.sh
 
 osism apply keystone
@@ -20,3 +21,7 @@ osism apply ceilometer
 osism apply aodh
 
 osism apply kolla-ceph-rgw
+
+if [[ "$TEMPEST" == "false" ]]; then
+    sh -c '/opt/configuration/scripts/deploy/310-openstack-extended.sh'
+fi
