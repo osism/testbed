@@ -210,7 +210,20 @@
         scheduler_hints:
           group: "{{ result_server_group.server_group.id }}"
       loop: "{{ test_instances }}"
+      async: 600
+      poll: 0
+      register: async_create
       when: test_state == "present"
+
+    - name: Wait for instance creation to complete
+      ansible.builtin.async_status:
+        jid: "{{ item.ansible_job_id }}"
+      loop: "{{ async_create.results | selectattr('ansible_job_id', 'defined') | list }}"
+      register: job_result
+      until: job_result.finished
+      retries: 60
+      delay: 10
+      when: test_state == "present" and async_create.results is defined
 
     - name: Add metadata to instances
       openstack.cloud.server_metadata:
@@ -220,13 +233,39 @@
         metadata:
           hostname: "{{ item }}"
       loop: "{{ test_instances }}"
+      async: 120
+      poll: 0
+      register: async_metadata
       when: test_state == "present"
+
+    - name: Wait for metadata to be added
+      ansible.builtin.async_status:
+        jid: "{{ item.ansible_job_id }}"
+      loop: "{{ async_metadata.results | selectattr('ansible_job_id', 'defined') | list }}"
+      register: job_result
+      until: job_result.finished
+      retries: 30
+      delay: 5
+      when: test_state == "present" and async_metadata.results is defined
 
     - name: Add tag to instances
       ansible.builtin.command: "openstack --os-cloud test --os-compute-api-version 2.26 server set --tag test {{ item }}"
       changed_when: true
       loop: "{{ test_instances }}"
+      async: 120
+      poll: 0
+      register: async_tags
       when: test_state == "present"
+
+    - name: Wait for tags to be added
+      ansible.builtin.async_status:
+        jid: "{{ item.ansible_job_id }}"
+      loop: "{{ async_tags.results | selectattr('ansible_job_id', 'defined') | list }}"
+      register: job_result
+      until: job_result.finished
+      retries: 30
+      delay: 5
+      when: test_state == "present" and async_tags.results is defined
 
     - name: Create test volume
       openstack.cloud.volume:
