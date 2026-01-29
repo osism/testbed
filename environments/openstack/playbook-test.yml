@@ -2,14 +2,8 @@
 - name: Create test project
   hosts: localhost
   connection: local
-
-  vars:
-    test_instances:
-      - test
-      - test-1
-      - test-2
-      - test-3
-      - test-4
+  tags:
+    - project
 
   tasks:
     - name: Create test domain
@@ -144,6 +138,49 @@
     #   ansible.builtin.command: openstack --os-cloud test network auto allocated topology create
     #   changed_when: true
 
+- name: Manage test instances and volumes
+  hosts: localhost
+  connection: local
+  tags:
+    - instances
+
+  vars:
+    test_state: present
+    test_instances:
+      - test
+      - test-1
+      - test-2
+      - test-3
+      - test-4
+
+  tasks:
+    # === Cleanup (state=absent, reverse order) ===
+    - name: Detach test volume
+      openstack.cloud.server_volume:
+        cloud: test
+        state: absent
+        server: test
+        volume: test
+      when: test_state == "absent"
+      ignore_errors: true  # noqa: ignore-errors
+
+    - name: Delete test volume
+      openstack.cloud.volume:
+        cloud: test
+        state: absent
+        name: test
+      when: test_state == "absent"
+
+    - name: Delete test instances
+      openstack.cloud.server:
+        cloud: test
+        state: absent
+        name: "{{ item }}"
+        delete_fip: true
+      loop: "{{ test_instances | reverse | list }}"
+      when: test_state == "absent"
+
+    # === Create (state=present) ===
     - name: Create test instances
       openstack.cloud.server:
         cloud: test
@@ -164,6 +201,7 @@
         scheduler_hints:
           group: "{{ result_server_group.server_group.id }}"
       loop: "{{ test_instances }}"
+      when: test_state == "present"
 
     - name: Add metadata to instances
       openstack.cloud.server_metadata:
@@ -173,11 +211,13 @@
         metadata:
           hostname: "{{ item }}"
       loop: "{{ test_instances }}"
+      when: test_state == "present"
 
     - name: Add tag to instances
       ansible.builtin.command: "openstack --os-cloud test --os-compute-api-version 2.26 server set --tag test {{ item }}"
       changed_when: true
       loop: "{{ test_instances }}"
+      when: test_state == "present"
 
     - name: Create test volume
       openstack.cloud.volume:
@@ -185,6 +225,7 @@
         state: present
         name: test
         size: 1
+      when: test_state == "present"
 
     - name: Attach test volume
       openstack.cloud.server_volume:
@@ -192,6 +233,7 @@
         state: present
         server: test
         volume: test
+      when: test_state == "present"
 
     - name: Create floating ip address
       openstack.cloud.floating_ip:
@@ -201,7 +243,9 @@
         network: public
         wait: true
       register: result
+      when: test_state == "present"
 
     - name: Print floating ip address
       ansible.builtin.debug:
         msg: "{{ result.floating_ip.floating_ip_address }}"
+      when: test_state == "present"
