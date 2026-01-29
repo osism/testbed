@@ -8,7 +8,15 @@ source /opt/configuration/scripts/manager-version.sh
 osism apply -a upgrade keystone
 osism apply -a upgrade placement
 osism apply -a upgrade neutron
-osism apply -a upgrade nova
+
+if [[ $RABBITMQ3TO4 == "true" ]]; then
+    osism apply -a reconfigure nova
+    osism apply nova-update-cell-mappings
+    osism apply -a upgrade nova
+else
+    osism apply -a upgrade nova
+fi
+
 osism apply -a upgrade horizon
 osism apply -a upgrade glance
 osism apply -a upgrade cinder
