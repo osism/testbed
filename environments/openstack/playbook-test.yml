@@ -187,7 +187,20 @@
         name: "{{ item }}"
         delete_fip: true
       loop: "{{ test_instances | reverse | list }}"
+      async: 600
+      poll: 0
+      register: async_delete
       when: test_state == "absent"
+
+    - name: Wait for instance deletion to complete
+      ansible.builtin.async_status:
+        jid: "{{ item.ansible_job_id }}"
+      loop: "{{ async_delete.results | selectattr('ansible_job_id', 'defined') | list }}"
+      register: job_result
+      until: job_result.finished
+      retries: 60
+      delay: 10
+      when: test_state == "absent" and async_delete.results is defined
 
     # === Create (state=present) ===
     - name: Create test instances
