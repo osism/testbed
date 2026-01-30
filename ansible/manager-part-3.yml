@@ -68,23 +68,6 @@
         line: "required_packages_extra: ['linux-generic-hwe-{{ ansible_distribution_version }}']"
       when: ansible_distribution == "Ubuntu"
 
-    # The use of these paraemters in production is not recommended. Further details in OSSN-0090.
-    # https://wiki.openstack.org/wiki/OSSN/OSSN-0090
-    - name: Use insecure glance configuration
-      ansible.builtin.blockinfile:
-        path: /opt/configuration/environments/kolla/files/overlays/glance/glance-api.conf
-        block: |
-          [DEFAULT]
-          show_image_direct_url = True
-          show_multiple_locations = True
-        prepend_newline: true
-        owner: dragon
-        group: dragon
-        mode: 0644
-      when:
-        - result.stat.exists is defined
-        - result.stat.exists | bool
-
     - name: Check if /etc/OTC_region exist
       ansible.builtin.stat:
         path: /etc/OTC_region
