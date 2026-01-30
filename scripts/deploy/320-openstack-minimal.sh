@@ -4,6 +4,8 @@ set -e
 source /opt/configuration/scripts/include.sh
 source /opt/configuration/scripts/manager-version.sh
 
+echo "export OPENSTACK_MINIMAL=true" | sudo tee -a /opt/manager-vars.sh
+
 osism apply keystone
 osism apply placement
 osism apply neutron

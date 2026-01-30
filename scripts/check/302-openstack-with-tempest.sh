@@ -2,14 +2,22 @@
 set -x
 set -e
 
+source /opt/manager-vars.sh
+
 echo
 echo "# Tempest"
 echo
 
-osism apply tempest --skip-tags run-tempest
+if [[ ! -e /opt/tempest ]]; then
+    osism apply tempest --skip-tags run-tempest
 
-sed -i "/log_dir =/d" /opt/tempest/etc/tempest.conf
-sed -i "/log_file =/d" /opt/tempest/etc/tempest.conf
+    sed -i "/log_dir =/d" /opt/tempest/etc/tempest.conf
+    sed -i "/log_file =/d" /opt/tempest/etc/tempest.conf
+
+    if [[ "${OPENSTACK_MINIMAL:-false}" == "true" ]]; then
+        sed -i 's/tempest_roles = creator,/tempest_roles = /' /opt/tempest/etc/tempest.conf
+    fi
+fi
 
 _tempest() {
     local regex="$1"
