@@ -18,7 +18,7 @@ if [[ ! -e /opt/tempest ]]; then
         sed -i 's/tempest_roles = creator,/tempest_roles = /' /opt/tempest/etc/tempest.conf
     fi
 
-    cp /opt/configuration/environments/openstack/files/tempest/include-scs-compatible-iaas.lst /opt/tempest/include-scs-compatible-iaas.lst
+    cp /opt/configuration/environments/openstack/files/tempest/include-scs-compatible.lst /opt/tempest/include-scs-compatible.lst
 fi
 
 docker run --rm \
@@ -31,5 +31,5 @@ docker run --rm \
   run \
   --workspace-path /tempest/workspace.yaml \
   --workspace tempest  \
-  --include-list /tempest/include-scs-compatible-iaas.lst \
+  --include-list /tempest/include-scs-compatible.lst \
   --concurrency 16 | tee -a /opt/tempest/$(date +%Y%m%d-%H%M).log
