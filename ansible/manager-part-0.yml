@@ -41,41 +41,6 @@
         repo_path: "{{ result_home.stdout }}/src/github.com"
       when: repo_path is not defined
 
-    - name: CentOS specific tasks  # noqa: osism-fqcn
-      when: ansible_os_family == "RedHat"
-      block:
-        - name: Update package cache
-          become: true
-          ansible.builtin.dnf:
-            update_cache: true
-            lock_timeout: "{{ dnf_lock_timeout }}"
-
-        - name: Install required packages
-          become: true
-          ansible.builtin.dnf:
-            name:
-              - gcc
-              - git
-              - python3-netaddr
-              - python3.11
-              - python3.11-devel
-              - python3.11-pip
-            state: present
-            lock_timeout: "{{ dnf_lock_timeout }}"
-
-        - name: Remove some python packages
-          become: true
-          ansible.builtin.dnf:
-            name:
-              - python3-docker
-              - python3-requests
-            state: absent
-            lock_timeout: "{{ dnf_lock_timeout }}"
-
-        - name: Set venv_command fact (RedHat)
-          ansible.builtin.set_fact:
-            venv_command: python3.11 -m venv
-
     - name: Debian/Ubuntu specific tasks  # noqa: osism-fqcn
       when: ansible_os_family == "Debian"
       block:
