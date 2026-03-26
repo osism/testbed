@@ -27,11 +27,6 @@ osism apply --environment custom facts
 osism apply bootstrap
 osism apply fail2ban
 
-# On CentOS the Ceph deployment only works with podman.
-if [[ -e /etc/redhat-release ]]; then
-    osism apply podman
-fi
-
 # copy network configuration
 osism apply network
 

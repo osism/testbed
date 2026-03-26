@@ -45,13 +45,8 @@ ceph df
 if [[ $(semver $MANAGER_VERSION 5.0.0) -eq -1 && $MANAGER_VERSION != "latest" ]]; then
     echo "osism validate ceph-* not possible with OSISM < 5.0.0"
 else
-    # The Ceph validate plays are only usable with Docker at the moment.
-    # On CentOS we use Podman for the Ceph deployment and cannot use the
-    # Ceph validate plays at the moment.
-    if [[ ! -e /etc/redhat-release ]]; then
-        osism apply facts
-        osism validate ceph-mons
-        osism validate ceph-mgrs
-        osism validate ceph-osds
-    fi
+    osism apply facts
+    osism validate ceph-mons
+    osism validate ceph-mgrs
+    osism validate ceph-osds
 fi

@@ -186,12 +186,6 @@
 #     vars:
 #       terraform_environment: ci-debian-12
 
-# - job:
-#     name: testbed-deploy-in-a-nutshell-centos-stream-9
-#     parent: abstract-testbed-deploy-in-a-nutshell
-#     vars:
-#       terraform_environment: ci-centos-stream-9
-
 - job:
     name: testbed-deploy-in-a-nutshell-with-tempest-ubuntu-24.04
     parent: testbed-deploy-in-a-nutshell-ubuntu-24.04
@@ -214,12 +208,6 @@
 #     parent: abstract-testbed-deploy-stable-in-a-nutshell
 #     vars:
 #       terraform_environment: ci-debian-12
-
-# - job:
-#     name: testbed-deploy-stable-in-a-nutshell-centos-stream-9
-#     parent: abstract-testbed-deploy-stable-in-a-nutshell
-#     vars:
-#       terraform_environment: ci-centos-stream-9
 
 - job:
     name: testbed-deploy-stable-in-a-nutshell-with-tempest-ubuntu-24.04
@@ -295,12 +283,6 @@
 #     vars:
 #       terraform_environment: ci-debian-12
 
-# - job:
-#     name: testbed-deploy-stable-centos-stream-9
-#     parent: abstract-testbed-deploy-stable
-#     vars:
-#       terraform_environment: ci-centos-stream-9
-
 - job:
     name: testbed-deploy-rc-ubuntu-24.04
     parent: abstract-testbed-deploy-rc
@@ -354,12 +336,6 @@
 #     vars:
 #       terraform_environment: debian-12
 #
-# - job:
-#     name: testbed-upgrade-stable-centos-stream-9
-#     parent: abstract-testbed-upgrade-stable
-#     vars:
-#       terraform_environment: centos-stream-9
-
 # -----------------------------------------------------------------------------
 # 4.4 Upgrade Jobs (Stable to RC: 9.5.0 -> 10.0.0-rc.1)
 # -----------------------------------------------------------------------------
