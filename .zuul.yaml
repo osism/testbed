@@ -96,16 +96,7 @@
     abstract: true
     parent: abstract-testbed-deploy
     vars:
-      manager_version: 9.5.0
-      tempest: true
-      prometheus_alert_status: false
-
-- job:
-    name: abstract-testbed-deploy-rc
-    abstract: true
-    parent: abstract-testbed-deploy
-    vars:
-      manager_version: 10.0.0-rc.1
+      manager_version: 10.0.0
       tempest: true
       prometheus_alert_status: false
 
@@ -114,14 +105,7 @@
     abstract: true
     parent: abstract-testbed-deploy-in-a-nutshell
     vars:
-      manager_version: 9.5.0
-
-- job:
-    name: abstract-testbed-deploy-rc-in-a-nutshell
-    abstract: true
-    parent: abstract-testbed-deploy-in-a-nutshell
-    vars:
-      manager_version: 10.0.0-rc.1
+      manager_version: 10.0.0
 
 # -----------------------------------------------------------------------------
 # 2.4 Abstract Jobs for Upgrade/Update Operations
@@ -136,18 +120,9 @@
     nodeset: testbed-orchestrator
     timeout: 30000
 
-# Upgrade: Major version upgrade (e.g., 8.1.0 -> 9.5.0)
+# Upgrade: Major version upgrade (e.g., 9.5.0 -> 10.0.0)
 - job:
     name: abstract-testbed-upgrade-stable
-    abstract: true
-    parent: abstract-testbed-deploy
-    run: playbooks/upgrade-stable.yml
-    nodeset: testbed-orchestrator
-    timeout: 30000
-
-# Upgrade: Major version upgrade (e.g., 9.5.0 -> 10.0.0-rc.1)
-- job:
-    name: abstract-testbed-upgrade-rc
     abstract: true
     parent: abstract-testbed-deploy
     run: playbooks/upgrade-stable.yml
@@ -216,24 +191,7 @@
       tempest: true
 
 # -----------------------------------------------------------------------------
-# 3.4 "In a Nutshell" Deploy Jobs - RC Version
-# -----------------------------------------------------------------------------
-# Fast deployments using a release candidate version
-
-- job:
-    name: testbed-deploy-rc-in-a-nutshell-ubuntu-24.04
-    parent: abstract-testbed-deploy-rc-in-a-nutshell
-    vars:
-      terraform_environment: ci-ubuntu-24.04
-
-- job:
-    name: testbed-deploy-rc-in-a-nutshell-with-tempest-ubuntu-24.04
-    parent: testbed-deploy-rc-in-a-nutshell-ubuntu-24.04
-    vars:
-      tempest: true
-
-# -----------------------------------------------------------------------------
-# 3.5 "In a Nutshell" Deploy Jobs - Current OpenStack Release (2024.2)
+# 3.4 "In a Nutshell" Deploy Jobs - Current OpenStack Release (2024.2)
 # -----------------------------------------------------------------------------
 
 - job:
@@ -250,7 +208,7 @@
       tempest: true
 
 # -----------------------------------------------------------------------------
-# 3.6 "In a Nutshell" Deploy Jobs - Next OpenStack Release (2025.1)
+# 3.5 "In a Nutshell" Deploy Jobs - Next OpenStack Release (2025.1)
 # -----------------------------------------------------------------------------
 
 - job:
@@ -267,7 +225,7 @@
       tempest: true
 
 # -----------------------------------------------------------------------------
-# 3.7 Full Stable Deploy Jobs
+# 3.6 Full Stable Deploy Jobs
 # -----------------------------------------------------------------------------
 # Complete deployments using stable release version
 
@@ -282,12 +240,6 @@
 #     parent: abstract-testbed-deploy-stable
 #     vars:
 #       terraform_environment: ci-debian-12
-
-- job:
-    name: testbed-deploy-rc-ubuntu-24.04
-    parent: abstract-testbed-deploy-rc
-    vars:
-      terraform_environment: ci-ubuntu-24.04
 
 # =============================================================================
 # 4. UPGRADE/UPDATE JOBS
@@ -316,16 +268,16 @@
       manager_version_next: 9.5.0
 
 # -----------------------------------------------------------------------------
-# 4.3 Upgrade Jobs (Major Version: 8.1.0 -> 9.5.0)
+# 4.3 Upgrade Jobs (Major Version: 9.5.0 -> 10.0.0)
 # -----------------------------------------------------------------------------
 
 - job:
     name: testbed-upgrade-stable-ubuntu-24.04
     parent: abstract-testbed-upgrade-stable
     vars:
-      terraform_environment: ubuntu-24.04
-      manager_version: 8.1.0
-      manager_version_next: 9.5.0
+      terraform_environment: ci-ubuntu-24.04
+      manager_version: 9.5.0
+      manager_version_next: 10.0.0
 
 # NOTE: The following upgrade jobs are currently disabled.
 # They can be enabled once the respective OS support is validated.
@@ -335,21 +287,9 @@
 #     parent: abstract-testbed-upgrade-stable
 #     vars:
 #       terraform_environment: debian-12
-#
-# -----------------------------------------------------------------------------
-# 4.4 Upgrade Jobs (Stable to RC: 9.5.0 -> 10.0.0-rc.1)
-# -----------------------------------------------------------------------------
-
-- job:
-    name: testbed-upgrade-stable-rc-ubuntu-24.04
-    parent: abstract-testbed-upgrade-rc
-    vars:
-      terraform_environment: ci-ubuntu-24.04
-      manager_version: 9.5.0
-      manager_version_next: 10.0.0-rc.1
 
 # -----------------------------------------------------------------------------
-# 4.5 Update/Upgrade to Next Development Version
+# 4.4 Update/Upgrade to Next Development Version
 # -----------------------------------------------------------------------------
 # Updates from stable to latest development version
 
@@ -410,7 +350,7 @@
       jobs:
         - testbed-update-stable-current-ubuntu-24.04
         - testbed-upgrade-stable-next-ubuntu-24.04
-        - testbed-upgrade-stable-rc-ubuntu-24.04
+        - testbed-upgrade-stable-ubuntu-24.04
 
     # -------------------------------------------------------------------------
     # Periodic Midnight Pipeline - Nightly tests
@@ -422,7 +362,7 @@
         - testbed-deploy-stable-in-a-nutshell-with-tempest-ubuntu-24.04
         - testbed-update-stable-current-ubuntu-24.04
         - testbed-upgrade-stable-next-ubuntu-24.04
-        - testbed-upgrade-stable-rc-ubuntu-24.04
+        - testbed-upgrade-stable-ubuntu-24.04
 
     # -------------------------------------------------------------------------
     # Periodic Daily Pipeline - Daily lint checks
