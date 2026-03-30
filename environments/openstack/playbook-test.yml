@@ -321,17 +321,21 @@
         volume: test
       when: test_state == "present"
 
-    - name: Create floating ip address
+    - name: Create floating ip addresses
       openstack.cloud.floating_ip:
         cloud: test
         state: present
-        server: test
+        server: "{{ item.name }}"
         network: public
         wait: true
-      register: result
+      register: result_fips
+      loop: "{{ test_instances }}"
       when: test_state == "present"
 
-    - name: Print floating ip address
+    - name: Print floating ip addresses
       ansible.builtin.debug:
-        msg: "{{ result.floating_ip.floating_ip_address }}"
-      when: test_state == "present"
+        msg: "{{ item.item.name }}: {{ item.floating_ip.floating_ip_address }}"
+      loop: "{{ result_fips.results }}"
+      loop_control:
+        label: "{{ item.item.name }}"
+      when: test_state == "present" and result_fips.results is defined
