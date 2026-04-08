@@ -93,7 +93,7 @@ sudo ln -sf /opt/configuration/scripts/upgrade/510-clusterapi.sh /usr/local/bin/
 
 # create symlinks for bootstrap scripts
 sudo ln -sf /opt/configuration/scripts/bootstrap/300-openstack.sh /usr/local/bin/bootstrap-openstack
-sudo ln -sf /opt/configuration/scripts/bootstrap/301-openstack-octavia-amhpora-image.sh /usr/local/bin/bootstrap-octavia
+sudo ln -sf /opt/configuration/scripts/bootstrap/301-openstack-octavia-amphora-image.sh /usr/local/bin/bootstrap-octavia
 sudo ln -sf /opt/configuration/scripts/bootstrap/302-openstack-k8s-clusterapi-images.sh /usr/local/bin/bootstrap-clusterapi
 
 # create symlinks for other scripts
