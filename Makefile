@@ -97,6 +97,8 @@ bootstrap: setup create ## Bootstrap everything.
 	    BASE_CONTENT=$$(curl -sf "$$BASE_URL") || { echo "ERROR: Failed to fetch $$BASE_URL - release $(VERSION_MANAGER) may not exist on osism/release"; exit 1; }; \
 	    RESOLVED_CEPH=$$(echo "$$BASE_CONTENT" | grep "^ceph_version:" | sed 's/ceph_version:[[:space:]]*//;s/"//g'); \
 	    RESOLVED_OS=$$(echo "$$BASE_CONTENT" | grep "^openstack_version:" | sed 's/openstack_version:[[:space:]]*//;s/"//g'); \
+	    RESOLVED_CEPH="$${RESOLVED_CEPH:-$(VERSION_CEPH)}"; \
+	    RESOLVED_OS="$${RESOLVED_OS:-$(VERSION_OPENSTACK)}"; \
 	else \
 	    RESOLVED_CEPH="$(VERSION_CEPH)"; \
 	    RESOLVED_OS="$(VERSION_OPENSTACK)"; \

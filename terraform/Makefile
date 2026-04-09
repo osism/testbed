@@ -76,8 +76,8 @@ init:
 	    BASE_CONTENT=$$(curl -sf "$$BASE_URL") || { echo "ERROR: Failed to fetch $$BASE_URL - release $(VERSION_MANAGER) may not exist on osism/release"; exit 1; }; \
 	    RELEASE_CEPH=$$(echo "$$BASE_CONTENT" | grep "^ceph_version:" | sed 's/ceph_version:[[:space:]]*//;s/"//g'); \
 	    RELEASE_OS=$$(echo "$$BASE_CONTENT" | grep "^openstack_version:" | sed 's/openstack_version:[[:space:]]*//;s/"//g'); \
-	    echo "ceph_version = \"$$RELEASE_CEPH\"" >> $(CLOUD).auto.tfvars; \
-	    echo "openstack_version = \"$$RELEASE_OS\"" >> $(CLOUD).auto.tfvars; \
+	    echo "ceph_version = \"$${RELEASE_CEPH:-$(VERSION_CEPH)}\"" >> $(CLOUD).auto.tfvars; \
+	    echo "openstack_version = \"$${RELEASE_OS:-$(VERSION_OPENSTACK)}\"" >> $(CLOUD).auto.tfvars; \
 	else \
 	    echo "ceph_version = \"$(VERSION_CEPH)\"" >> $(CLOUD).auto.tfvars; \
 	    echo "openstack_version = \"$(VERSION_OPENSTACK)\"" >> $(CLOUD).auto.tfvars; \

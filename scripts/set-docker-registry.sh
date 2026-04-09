@@ -13,10 +13,10 @@ sed -i "s#docker_registry_netbox: .*#docker_registry_netbox: ${DOCKER_REGISTRY}#
 
 if [[ "$DOCKER_REGISTRY" == "registry.osism.tech" ]]; then
     if [[ "$MANAGER_VERSION" == "latest" ]]; then
-        sed -i "s#docker_namespace: osism#docker_namespace: kolla#" /opt/configuration/inventory/group_vars/all/kolla.yml
+        /opt/configuration/scripts/set-kolla-namespace.sh kolla
     elif [[ $(semver $MANAGER_VERSION 10.0.0-0) -ge 0 ]]; then
-        sed -i "s#docker_namespace: osism#docker_namespace: kolla/release/$OPENSTACK_VERSION#" /opt/configuration/inventory/group_vars/all/kolla.yml
+        /opt/configuration/scripts/set-kolla-namespace.sh "kolla/release/$OPENSTACK_VERSION"
     else
-        sed -i "s#docker_namespace: osism#docker_namespace: kolla/release#" /opt/configuration/inventory/group_vars/all/kolla.yml
+        /opt/configuration/scripts/set-kolla-namespace.sh kolla/release
     fi
 fi
