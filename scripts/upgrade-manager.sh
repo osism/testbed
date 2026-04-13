@@ -47,13 +47,17 @@ if [[ $(semver $OLD_MANAGER_VERSION 6.0.0) -ge 0 ]]; then
     echo "enable_osism_kubernetes: true" >> /opt/configuration/environments/manager/configuration.yml
 fi
 
-if [[ $(semver $MANAGER_VERSION 10.0.0-0) -ge 0 || $(semver $OPENSTACK_VERSION 2025.1 ) -ge 0 ]]; then
+if [[ $MANAGER_VERSION == "latest" || $(semver $MANAGER_VERSION 10.0.0-0) -ge 0 || $(semver $OPENSTACK_VERSION 2025.1 ) -ge 0 ]]; then
     sed -i "/^om_enable_rabbitmq_high_availability:/d" /opt/configuration/environments/kolla/configuration.yml
     sed -i "/^om_enable_rabbitmq_quorum_queues:/d" /opt/configuration/environments/kolla/configuration.yml
 fi
 
 # Check if upgrade crosses the RabbitMQ vhost migration boundary
-MANAGER_UPGRADE_CROSSES_10=$([ $(semver "$OLD_MANAGER_VERSION" 9.5.0) -le 0 ] && [ $(semver "$MANAGER_VERSION" 10.0.0-0) -ge 0 ] && echo true || echo false)
+if [[ $(semver "$OLD_MANAGER_VERSION" 9.5.0) -le 0 && ( $MANAGER_VERSION == "latest" || $(semver "$MANAGER_VERSION" 10.0.0-0) -ge 0 ) ]]; then
+    MANAGER_UPGRADE_CROSSES_10=true
+else
+    MANAGER_UPGRADE_CROSSES_10=false
+fi
 OPENSTACK_UPGRADE_CROSSES_2025=$([ $(semver "$OLD_OPENSTACK_VERSION" 2024.2) -le 0 ] && [ $(semver "$OPENSTACK_VERSION" 2025.1) -ge 0 ] && echo true || echo false)
 
 if [[ $MANAGER_UPGRADE_CROSSES_10 == "true" || $OPENSTACK_UPGRADE_CROSSES_2025 == "true" ]]; then
@@ -83,7 +87,7 @@ fi
 # refresh facts
 osism apply facts
 
-if [[ $(semver $MANAGER_VERSION 10.0.0-0) -ge 0 ]]; then
+if [[ $MANAGER_VERSION != "latest" && $(semver $MANAGER_VERSION 10.0.0-0) -ge 0 ]]; then
     OPENSTACK_VERSION=$(docker inspect --format '{{ index .Config.Labels "de.osism.release.openstack"}}' kolla-ansible)
     /opt/configuration/scripts/set-kolla-namespace.sh "kolla/release/$OPENSTACK_VERSION"
 fi
