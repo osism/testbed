@@ -65,6 +65,9 @@ horizon_keystone_multidomain: true
 # manila
 enable_manila_backend_cephfs_native: "yes"
 
+# neutron
+enable_neutron_vpnaas: "yes"
+
 # ironic
 ironic_dnsmasq_interface: "vxlan0"
 ironic_tftp_interface: "vxlan0"
