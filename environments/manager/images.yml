@@ -4,7 +4,7 @@
 adminer_tag: "5.4.2"
 adminer_image: "{{ docker_registry|default('registry.osism.tech/dockerhub') }}/library/adminer:{{ adminer_tag }}"
 
-ara_server_tag: "1.7.3"
+ara_server_tag: "1.7.5"
 ara_server_image: "{{ docker_registry_ansible|default('registry.osism.tech') }}/osism/ara-server:{{ ara_server_tag }}"
 
 ara_server_mariadb_tag: "11.8.4"
