@@ -20,10 +20,12 @@ homer_traefik: true
 homer_host: homer.testbed.osism.xyz
 
 homer_url_ara: "https://ara.testbed.osism.xyz/"
+homer_url_cgit: "https://cgit.testbed.osism.xyz/"
 homer_url_ceph: "https://api-int.testbed.osism.xyz:8140"
 homer_url_flower: "https://flower.testbed.osism.xyz/"
 homer_url_grafana: "https://api-int.testbed.osism.xyz:3000"
 homer_url_horizon: "https://api.testbed.osism.xyz/"
+homer_url_skyline: "https://api.testbed.osism.xyz:9999"
 homer_url_kibana: "https://api-int.testbed.osism.xyz:5601"
 homer_url_netbox: "https://netbox.testbed.osism.xyz"
 homer_url_netdata: "http://testbed-manager:19999"
