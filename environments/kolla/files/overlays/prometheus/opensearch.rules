@@ -1,0 +1,60 @@
+groups:
+
+- name: OpensearchProjectOpensearchPrometheusExporter
+
+  
+  rules:
+
+    - alert: OpensearchIsUnhealthy
+      expr: 'opensearch_cluster_status != 0'
+      for: 0m
+      labels:
+        severity: critical
+      annotations:
+        summary: OpenSearch is unhealthy (instance {{ $labels.instance }})
+        description: "OpenSearch cluster {{ $labels.cluster }} is unhealthy\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+    - alert: OpensearchHighHeapUsage
+      expr: 'opensearch_jvm_mem_heap_used_percent > 90'
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: OpenSearch high heap usage (instance {{ $labels.instance }})
+        description: "OpenSearch heap usage on cluster {{ $labels.cluster }} is too high\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+    - alert: OpensearchCircuitbreakerTripped
+      expr: 'opensearch_circuitbreaker_tripped_count > 0'
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: OpenSearch circuitbreaker tripped (instance {{ $labels.instance }})
+        description: "The circuitbreaker on OpenSearch cluster {{ $labels.cluster }} has tripped to prevent Java OutOfMemoryError\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+    - alert: OpensearchHasPendingTasks
+      expr: 'opensearch_cluster_pending_tasks_number > 0'
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: OpenSearch has pending tasks (instance {{ $labels.instance }})
+        description: "OpenSearch cluster {{ $labels.cluster }} has pending tasks\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+    - alert: OpensearchIndexingIsThrottled
+      expr: 'opensearch_indices_indexing_is_throttled_bool > 0'
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: OpenSearch indexing is throttled (instance {{ $labels.instance }})
+        description: "Indexing on OpenSearch cluster {{ $labels.cluster }} is throttled\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+    - alert: OpensearchHasInactiveShards
+      expr: 'opensearch_cluster_shards_active_percent < 100.0'
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: OpenSearch has inactive shards (instance {{ $labels.instance }})
+        description: "OpenSearch cluster {{ $labels.cluster }} has inactive shards\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
