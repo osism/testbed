@@ -112,7 +112,7 @@ ceph_public_network: 192.168.16.0/20
 
 prometheus_external_labels:
   infrastructure: testbed
-
+enable_prometheus_openstack_exporter: "yes"
 ##########################################################
 # other
 
