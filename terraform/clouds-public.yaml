@@ -47,3 +47,11 @@ public-clouds:
     identity_api_version: 3
     image_format: qcow2
     block_storage_api_version: 3
+  teuto-ffm3:
+    auth:
+      auth_url: https://api.ffm3.teutostack.de:5000
+    regions:
+      - name: RegionOne
+    identity_api_version: 3
+    image_format: qcow2
+    block_storage_api_version: 3
