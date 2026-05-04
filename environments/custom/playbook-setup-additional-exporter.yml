@@ -26,7 +26,7 @@
   tasks:
     - name: Deploy service-container {{ service.name }}
       community.docker.docker_container:
-        log_driver: "json"
+        log_driver: "json-file"
         log_options:
           max-size: "10m"
           max-file: "3"
