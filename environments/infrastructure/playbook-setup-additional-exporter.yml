@@ -1,0 +1,35 @@
+---
+- name: Install additional hardware-exporter
+  hosts: all
+  gather_facts: false
+
+  vars:
+    node_service_container:
+
+      - name: ipmi_exporter
+        image: prometheuscommunity/ipmi-exporter:v1.10.1
+        network_mode: host
+        privileged: true
+        user: root # https://github.com/prometheus-community/ipmi_exporter/blob/master/docs/privileges.md
+        restart_policy: unless-stopped
+        pull: "{{ pull_image | default('missing') }}"
+
+      # Install exporter as a container and not using https://github.com/osism/ansible-collection-services/tree/main/roles/smartd
+      - name: smart_exporter
+        image: prometheuscommunity/smartctl-exporter
+        network_mode: host
+        privileged: true
+        user: root # https://github.com/prometheus-community/smartctl_exporter?tab=readme-ov-file#why-is-root-required-cant-i-add-a-user-to-the-disk-group
+        restart_policy: unless-stopped
+        pull: "{{ pull_image | default('missing') }}"
+
+  tasks:
+    - name: Deploy service-container {{ service.name }}
+      community.docker.docker_container:
+        log_options:
+          max-size: "10m"
+          max-file: "3"
+      args: "{{ service }}"
+      loop_control:
+        loop_var: service
+      loop: "{{ node_service_container }}"
