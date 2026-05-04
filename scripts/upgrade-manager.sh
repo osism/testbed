@@ -87,7 +87,11 @@ fi
 # refresh facts
 osism apply facts
 
-if [[ $MANAGER_VERSION != "latest" && $(semver $MANAGER_VERSION 10.0.0-0) -ge 0 ]]; then
-    OPENSTACK_VERSION=$(docker inspect --format '{{ index .Config.Labels "de.osism.release.openstack"}}' kolla-ansible)
-    /opt/configuration/scripts/set-kolla-namespace.sh --sync "kolla/release/$OPENSTACK_VERSION"
+if [[ $KOLLA_NAMESPACE == "kolla/release" ]]; then
+    if [[ $MANAGER_VERSION != "latest" || $OPENSTACK_VERSION == "skip" ]]; then
+        OPENSTACK_VERSION=$(docker inspect --format '{{ index .Config.Labels "de.osism.release.openstack"}}' kolla-ansible)
+    fi
+    if [[ $MANAGER_VERSION == "latest" || $(semver $MANAGER_VERSION 10.0.0-0) -ge 0 ]]; then
+        /opt/configuration/scripts/set-kolla-namespace.sh --sync "kolla/release/$OPENSTACK_VERSION"
+    fi
 fi
