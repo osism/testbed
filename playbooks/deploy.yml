@@ -217,9 +217,23 @@
         delay: 10
         timeout: 300
 
-    - name: Wait a little longer for the manager so that everything is ready
-      ansible.builtin.pause:
-        seconds: 60
+    - name: Wait until docker is available on the manager
+      ansible.builtin.command:
+        cmd: >-
+          ssh
+          -i {{ terraform_path }}/.id_rsa.{{ cloud }}
+          -o BatchMode=yes
+          -o ConnectTimeout=5
+          -o PreferredAuthentications=publickey
+          -o StrictHostKeyChecking=yes
+          -o UserKnownHostsFile={{ ansible_user_dir }}/.ssh/known_hosts
+          dragon@{{ manager_host }}
+          docker info
+      register: manager_ssh_auth
+      until: manager_ssh_auth.rc == 0
+      retries: 60
+      delay: 5
+      changed_when: false
 
     - name: Deploy manager + bootstrap nodes
       ansible.builtin.command:
