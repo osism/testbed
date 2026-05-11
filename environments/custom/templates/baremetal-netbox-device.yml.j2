@@ -11,6 +11,12 @@
         driver_info:
           ipmi_address: {{ oob_address }}
           ipmi_port: {{ oob_port }}
+        target_raid_config:
+          logical_disks:
+            - size_gb: MAX
+              raid_level: "1"
+              is_root_volume: true
+              controller: software
     tags:
       - managed-by-osism
       - managed-by-ironic

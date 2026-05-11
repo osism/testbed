@@ -8,12 +8,13 @@ node_types:
   # The type name.
   type0:
     # The amount of RAM, in mebibytes.
-    memory_mb: 4096
+    memory_mb: 8192
     # The number of virtual CPUs.
     vcpus: 2
     # A list of volumes, each with a capacity.
     volumes:
-      - capacity: 5GB
+      - capacity: 8GB
+      - capacity: 8GB
     # A list of physical network names to connect to. These physical network
     # names should be keyed in `physnet_mappings` in each hypervisor's host
     # vars.
