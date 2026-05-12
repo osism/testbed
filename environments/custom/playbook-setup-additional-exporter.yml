@@ -6,17 +6,17 @@
   vars:
     node_service_container:
 
-      - name: ipmi_exporter
-        image: prometheuscommunity/ipmi-exporter:v1.10.1
-        network_mode: host
-        privileged: true
-        user: root # https://github.com/prometheus-community/ipmi_exporter/blob/master/docs/privileges.md
-        restart_policy: unless-stopped
-        pull: "{{ pull_image | default('missing') }}"
+  #   - name: ipmi_exporter
+  #     image: prometheuscommunity/ipmi-exporter:v1.10.1
+  #     network_mode: host
+  #     privileged: true
+  #     user: root # https://github.com/prometheus-community/ipmi_exporter/blob/master/docs/privileges.md
+  #     restart_policy: unless-stopped
+  #     pull: "{{ pull_image | default('missing') }}"
 
       # Install exporter as a container and not using https://github.com/osism/ansible-collection-services/tree/main/roles/smartd
       - name: smart_exporter
-        image: prometheuscommunity/smartctl-exporter
+        image: prometheuscommunity/smartctl-exporter:v0.14.0
         network_mode: host
         privileged: true
         user: root # https://github.com/prometheus-community/smartctl_exporter?tab=readme-ov-file#why-is-root-required-cant-i-add-a-user-to-the-disk-group
