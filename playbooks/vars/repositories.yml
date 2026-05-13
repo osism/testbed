@@ -15,5 +15,5 @@ repositories:
     branch: main
   testbed:
     path: github.com/osism/testbed
-    repo: https://github.com/osism/testbed
+    repo: https://github.com/teutonet/testbed
     branch: main
