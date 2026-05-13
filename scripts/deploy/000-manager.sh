@@ -82,7 +82,8 @@ osism apply squid
 
 if [[ $MANAGER_VERSION != "latest" ]]; then
   if [[ $(semver $MANAGER_VERSION 10.0.0-0) -ge 0 ]]; then
-    /opt/configuration/scripts/set-kolla-namespace.sh "kolla/release/$OPENSTACK_VERSION"
+    KOLLA_OS_VERSION=$(docker inspect --format '{{ index .Config.Labels "de.osism.release.openstack"}}' kolla-ansible)
+    /opt/configuration/scripts/set-kolla-namespace.sh "kolla/release/$KOLLA_OS_VERSION"
   else
     /opt/configuration/scripts/set-kolla-namespace.sh kolla/release
   fi
