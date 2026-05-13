@@ -98,9 +98,13 @@ cilium_bgp_neighbors:
     peer_asn: 64512
 
 # kubevip -> frr
-kube_vip_bgp_peers:
-  - peer_address: "192.168.128.5"
-    peer_asn: 64512
+# osism-ansible < 9.0.0 uses bgppeers (old format); osism-kubernetes >= 9.0.0 uses bgp_peers.
+# Only pass the list for 9.0.0+; 8.x falls back to kube_vip_bgp_peeraddress/kube_vip_bgp_peeras.
+kube_vip_bgp_peers: >-
+  {{ [] if (manager_version is defined
+            and manager_version != 'latest'
+            and manager_version is version('9.0.0', '<'))
+     else [{'peer_address': '192.168.128.5', 'peer_asn': 64512}] }}
 
 ##########################################################
 # frr
