@@ -4,14 +4,7 @@ set -e
 
 source /opt/manager-vars.sh
 
-# Ubuntu
-source /etc/os-release
-if [[ "$ID" == "ubuntu" ]]; then
-    packages='libmonitoring-plugin-perl libwww-perl libjson-perl monitoring-plugins-basic mysql-client'
-# Debian
-elif [[ "$ID" == "debian" ]]; then
-    packages='libmonitoring-plugin-perl libwww-perl libjson-perl monitoring-plugins-basic mariadb-client'
-fi
+packages='libmonitoring-plugin-perl libwww-perl libjson-perl monitoring-plugins-basic mariadb-client'
 
 if ! dpkg -s $packages >/dev/null 2>&1; then
     sudo apt-get install -y $packages >/dev/null 2>&1
