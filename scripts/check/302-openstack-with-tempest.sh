@@ -5,6 +5,8 @@ set -o pipefail
 
 source /opt/manager-vars.sh
 
+CEPH_VERSION=$(docker inspect --format '{{ index .Config.Labels "de.osism.release.ceph" }}' ceph-ansible 2>/dev/null || true)
+
 echo
 echo "# Tempest"
 echo
@@ -17,6 +19,21 @@ if [[ ! -e /opt/tempest ]]; then
 
     if [[ "${OPENSTACK_MINIMAL:-false}" == "true" ]]; then
         sed -i 's/tempest_roles = creator,/tempest_roles = /' /opt/tempest/etc/tempest.conf
+    fi
+
+    # Ceph RGW before Reef does not fully implement Swift temp URL and
+    # container metadata removal semantics. Exclude those tests at setup
+    # time so they do not count as failures; Reef and later pass them.
+    if [[ $CEPH_VERSION == "octopus" || $CEPH_VERSION == "pacific" || $CEPH_VERSION == "quincy" ]]; then
+        cat >> /opt/tempest/exclude.lst << 'EOF'
+tempest.api.object_storage.test_container_services.ContainerTest.test_create_container_with_remove_metadata_key
+tempest.api.object_storage.test_container_services.ContainerTest.test_create_container_with_remove_metadata_value
+tempest.api.object_storage.test_object_temp_url.ObjectTempUrlTest.test_get_object_using_temp_url
+tempest.api.object_storage.test_object_temp_url.ObjectTempUrlTest.test_get_object_using_temp_url_key_2
+tempest.api.object_storage.test_object_temp_url.ObjectTempUrlTest.test_get_object_using_temp_url_with_inline_query_parameter
+tempest.api.object_storage.test_object_temp_url.ObjectTempUrlTest.test_head_object_using_temp_url
+tempest.api.object_storage.test_object_temp_url.ObjectTempUrlTest.test_put_object_using_temp_url
+EOF
     fi
 fi
 
