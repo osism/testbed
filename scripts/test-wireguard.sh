@@ -46,6 +46,7 @@ wireproxy_pid=$!
 
 # Wait for the SOCKS5 listener to be ready (up to 10 s)
 for _ in $(seq 1 20); do
+    kill -0 "${wireproxy_pid}" 2>/dev/null || { echo "ERROR: wireproxy exited unexpectedly" >&2; exit 1; }
     { true < /dev/tcp/127.0.0.1/"${SOCKS_PORT}"; } 2>/dev/null && break
     sleep 0.5
 done
