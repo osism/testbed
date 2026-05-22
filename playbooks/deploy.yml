@@ -198,6 +198,7 @@
             -e terraform_environment={{ _terraform_environment }} \
             -e repo_path={{ repo_path }} \
             -e manager_version={{ _manager_version }} \
+            {{ ('-e testbed_src=' + testbed_src) if testbed_src is defined and testbed_src else '' }} \
             manager-part-1.yml | tee -a ansible-manager-part-1.log
       args:
         executable: /bin/bash
@@ -268,6 +269,15 @@
     - name: Run checks
       ansible.builtin.command:
         cmd: "ssh -i {{ terraform_path }}/.id_rsa.{{ cloud }} dragon@{{ manager_host }} /opt/configuration/scripts/check.sh"
+      when:
+        - not manual_deploy | bool
+        - run_checks | bool
+      changed_when: true
+
+    - name: Test WireGuard connectivity
+      ansible.builtin.command:
+        chdir: "{{ terraform_path }}"
+        cmd: make CLOUD={{ cloud }} WIREPROXY={{ ansible_user_dir }}/wireproxy test-wireguard
       when:
         - not manual_deploy | bool
         - run_checks | bool
