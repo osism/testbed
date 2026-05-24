@@ -16,7 +16,11 @@
     - vars/repositories.yml
 
   vars:
-    basepath: "{{ ansible_user_dir }}/src/{{ repositories['testbed']['path'] }}"
+    basepath: "{{ playbook_dir | dirname }}"
+
+  pre_tasks:
+    - name: Verify basepath
+      ansible.builtin.import_tasks: tasks/_basepath_check.yml
 
   tasks:
     - name: Set cloud fact (Zuul deployment)
