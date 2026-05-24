@@ -201,6 +201,7 @@
             -e cloud={{ cloud }} \
             -e terraform_environment={{ _terraform_environment }} \
             -e repo_path={{ repo_path }} \
+            -e basepath={{ basepath | quote }} \
             -e manager_version={{ _manager_version }} \
             {{ ('-e testbed_src=' + testbed_src) if testbed_src is defined and testbed_src else '' }} \
             manager-part-1.yml | tee -a ansible-manager-part-1.log
