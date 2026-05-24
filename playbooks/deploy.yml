@@ -12,7 +12,10 @@
     ansible_playbook: ~/venv/bin/ansible-playbook
     basepath: "{{ playbook_dir | dirname }}"
     manager_address_file: "{{ terraform_path }}/.MANAGER_ADDRESS.{{ cloud }}"
-    repo_path: "{{ ansible_user_dir }}/src/{{ repository_server }}"
+    repo_path: >-
+      {{ (ansible_user_dir ~ '/src/' ~ repository_server)
+         if zuul is defined
+         else (basepath ~ '/.src/' ~ repository_server) }}
 
     manual_create: false
     manual_deploy: false
