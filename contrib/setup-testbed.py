@@ -7,7 +7,6 @@ import subprocess
 import sys
 import yaml
 import os
-import time
 
 
 def lookup(yaml_path: str, local_data: dict) -> None | str | dict:
@@ -47,14 +46,6 @@ def check_environment(name: str, cloud: str) -> None:
     except Exception as e:
         print(e)
         sys.exit(1)
-
-    # TODO: as discussed in https://github.com/osism/testbed/pull/1879 we add a app credential check later
-    # to make a smart distinction if that check is needed or not.
-    try:
-        _check_file("terraform/secure.yaml", cloud)
-    except Exception as e:
-        print(e)
-        time.sleep(2)
 
     sys.exit(0)
 
