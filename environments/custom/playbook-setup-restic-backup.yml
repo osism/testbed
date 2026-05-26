@@ -1,0 +1,98 @@
+---
+- name: Setup restic backups
+  hosts: manager
+  gather_facts: false
+  vars:
+    # ── Docker image ───────────────────────────────────────────────────────────────
+    restic_backup_docker_registry: "ghcr.io"
+    restic_backup_docker_image: "restic/restic"
+    restic_backup_docker_tag: "0.18.1"
+    restic_backup_docker_full_image: "{{ restic_backup_docker_registry }}/{{ restic_backup_docker_image }}:{{ restic_backup_docker_tag }}"
+
+    # ── S3 / Ceph RGW ──────────────────────────────────────────────────────────────
+    restic_backup_s3_hostname: "api.ffm3.teutostack.de"
+    restic_backup_s3_port: "6780"
+    restic_backup_s3_endpoint: "https://{{ restic_backup_s3_hostname}}:{{restic_backup_s3_port}}"
+    restic_backup_s3_bucket: "restic-backups"
+    restic_backup_s3_path: ""                               # Optional sub-path inside bucket
+    restic_backup_full_path: "s3:{{ restic_backup_s3_endpoint }}/{{ restic_backup_s3_bucket }}{% if restic_backup_s3_path %}/{{ restic_backup_s3_path }}{% endif %}"
+
+    # ── Credentials (override via vault or extra_vars) ─────────────────────────────
+    restic_backup_s3_access_key: "CHANGE_ME"
+    restic_backup_s3_secret_key: "CHANGE_ME"
+    restic_backup_password: "CHANGE_ME"
+  tasks:
+    - name: Check whether the restic repository is already initialized
+      community.docker.docker_container:
+        name: restic-check-repository
+        image: "{{restic_backup_docker_full_image}}"
+        pull: "{{ pull_image | default('missing') }}"
+        restart_policy: "no"
+        auto_remove: false
+        command: "snapshots --no-cache"
+        detach: false
+        env:
+          AWS_ACCESS_KEY_ID: "{{ restic_backup_s3_access_key }}"
+          AWS_SECRET_ACCESS_KEY: "{{ restic_backup_s3_secret_key }}"
+          RESTIC_PASSWORD: "{{ restic_backup_password }}"
+          RESTIC_REPOSITORY: "{{ restic_backup_full_path }}"
+      register: restic_snapshots_check
+      failed_when: false   # non-zero exit = not yet initialized → handled below
+      no_log: true
+
+    - name: Remove restic container
+      community.docker.docker_container:
+        name: restic-check-repository
+        state: absent
+
+    - name: Initialize the restic repository if not yet initialized
+      community.docker.docker_container:
+        name: restic-init-repository
+        image: "{{restic_backup_docker_full_image}}"
+        pull: "{{ pull_image | default('missing') }}"
+        restart_policy: "no"
+        auto_remove: false
+        command: "init"
+        detach: false
+        env:
+          AWS_ACCESS_KEY_ID: "{{ restic_backup_s3_access_key }}"
+          AWS_SECRET_ACCESS_KEY: "{{ restic_backup_s3_secret_key }}"
+          RESTIC_PASSWORD: "{{ restic_backup_password }}"
+          RESTIC_REPOSITORY: "{{ restic_backup_full_path }}"
+      when: "restic_snapshots_check.status != 0 or 'Is there a repository at the following location' in restic_snapshots_check.container.Output"
+      register: restic_init_result
+      no_log: true
+
+    - name: Remove restic container
+      community.docker.docker_container:
+        name: restic-init-repository
+        state: absent
+
+    - name: Show repository initialization result
+      ansible.builtin.debug:
+        msg: "{{ restic_init_result.container.Output | default(['Repository already initialized']) }}"
+
+    # - name: Deploy systemd service unit
+    #   ansible.builtin.template:
+    #     src: restic-backup.service.j2
+    #     dest: /etc/systemd/system/restic-backup.service
+    #     owner: root
+    #     group: root
+    #     mode: "0644"
+    #   notify: Reload systemd
+
+    # - name: Deploy systemd timer unit
+    #   ansible.builtin.template:
+    #     src: restic-backup.timer.j2
+    #     dest: /etc/systemd/system/restic-backup.timer
+    #     owner: root
+    #     group: root
+    #     mode: "0644"
+    #   notify: Reload systemd
+
+    # - name: Enable and start the restic backup timer
+    #   ansible.builtin.systemd:
+    #     name: restic-backup.timer
+    #     enabled: true
+    #     state: started
+    #     daemon_reload: true

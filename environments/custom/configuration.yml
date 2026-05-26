@@ -1,4 +1,7 @@
 ---
 # Dummy variable to avoid error because ansible does not recognize the
 # file as a good configuration file when no variable in it.
-dummy:
+#
+# ========== MariaDB Backup ============
+restic_backup_s3_bucket: backup-testbed
+restic_backup_docker_tag: "0.18.1@sha256:c1958a2a1c8614f5c317347c2aaddd9f426076f0521430b55509eba43d7516ee"
