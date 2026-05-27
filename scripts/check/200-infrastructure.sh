@@ -4,14 +4,7 @@ set -e
 
 source /opt/manager-vars.sh
 
-# Ubuntu
-source /etc/os-release
-if [[ "$ID" == "ubuntu" ]]; then
-    packages='libmonitoring-plugin-perl libwww-perl libjson-perl monitoring-plugins-basic mysql-client'
-# Debian
-elif [[ "$ID" == "debian" ]]; then
-    packages='libmonitoring-plugin-perl libwww-perl libjson-perl monitoring-plugins-basic mariadb-client'
-fi
+packages='libmonitoring-plugin-perl libwww-perl libjson-perl monitoring-plugins-basic mariadb-client'
 
 if ! dpkg -s $packages >/dev/null 2>&1; then
     sudo apt-get install -y $packages >/dev/null 2>&1
@@ -85,7 +78,14 @@ echo
 echo "# Create backup of MariaDB database"
 echo
 
-osism apply mariadb_backup -e mariadb_backup_type=full
+# mariabackup in the kolla mariadb-server:10.11.x image does not recognise
+# the server version string produced by MariaDB 10.11.10 builds
+# (e.g. '10.11.10-MariaDB-ubu2204-log'), causing the backup to fail with
+# "Unsupported server version". Skip the backup check for 8.x; it works
+# correctly on 9.0.0+ which uses MariaDB 11.x kolla images.
+if [[ $(semver $MANAGER_VERSION 9.0.0) -ge 0 || $MANAGER_VERSION == "latest" ]]; then
+    osism apply mariadb_backup -e mariadb_backup_type=full
+fi
 
 # Disabled because of https://bugs.launchpad.net/kolla/+bug/2111620
 # Can be re-enabled after backport of https://review.opendev.org/c/openstack/kolla/+/950948

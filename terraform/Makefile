@@ -9,6 +9,7 @@ IMAGE_USERNAME = ubuntu
 
 OPENSTACK = openstack
 TERRAFORM ?= tofu
+WIREPROXY ?= wireproxy
 export TF_CLI_ARGS ?= -no-color
 
 PARALLELISM = 10
@@ -209,6 +210,10 @@ vpn-wireguard: .MANAGER_ADDRESS.$(CLOUD) .id_rsa.$(CLOUD) vpn-wireguard-config
 	@$(OPEN_CMD) "https://osism.tech/docs/guides/other-guides/testbed#webinterfaces"
 	@read -p "STOP?" CONT
 	sudo wg-quick down $(PWD)/wg-$(CLOUD).conf
+
+.PHONY: test-wireguard
+test-wireguard: vpn-wireguard-config
+	@WIREPROXY=$(WIREPROXY) bash $(CURDIR)/../scripts/test-wireguard.sh $(PWD)/wg-$(CLOUD).conf
 
 .PHONY: scp
 scp: .MANAGER_ADDRESS.$(CLOUD) .id_rsa.$(CLOUD)

@@ -82,6 +82,13 @@ vpn-wireguard-config: setup ## Get the configuration for the wireguard vpn tunne
 	  ENVIRONMENT=$(ENVIRONMENT) \
 	  vpn-wireguard-config
 
+.PHONY: test-wireguard
+test-wireguard: setup ## Test WireGuard VPN connectivity to the testbed.
+	@make -C terraform \
+	  CLOUD=$(CLOUD) \
+	  ENVIRONMENT=$(ENVIRONMENT) \
+	  test-wireguard
+
 .PHONY: vpn-sshuttle
 vpn-sshuttle: setup ## Establish a sshuttle vpn tunnel.
 	@make -C terraform \
