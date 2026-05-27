@@ -1,0 +1,15 @@
+# restic-backup.timer – managed by OSISM. Do NOT edit manually.
+[Unit]
+Description=Hourly restic backup timer
+Documentation=https://restic.readthedocs.io/
+Requires=restic-backup.service
+
+[Timer]
+# Fire at the top of every hour, randomized within the first 5 minutes
+# to avoid thundering-herd problems on multiple hosts.
+OnCalendar={{ restic_backup_oncalendar }}
+RandomizedDelaySec=300
+Persistent=true          # catch up on a missed run after reboot/downtime
+
+[Install]
+WantedBy=timers.target

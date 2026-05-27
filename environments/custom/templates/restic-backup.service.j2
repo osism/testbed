@@ -1,0 +1,27 @@
+[Unit]
+Description=Trigger backup of MariaDB to S3
+Documentation=https://restic.readthedocs.io/
+After=docker.service network-online.target
+Requires=docker.service
+
+[Service]
+Type=oneshot
+
+User=dragon
+Group=dragon
+
+# Determine full vs incremental based on the current hour
+ExecStart=/usr/local/bin/restic-backup.sh
+TimeoutStartSec=14400
+
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=restic-db-backup
+
+# Security hardening
+PrivateTmp=true
+NoNewPrivileges=true
+ProtectSystem=strict
+
+[Install]
+WantedBy=multi-user.target

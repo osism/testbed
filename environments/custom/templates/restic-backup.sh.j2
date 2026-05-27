@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# restic-backup.sh – managed by Ansible. Do NOT edit manually.
+#
+# Usage:
+#   restic-backup.sh
+set -euo pipefail
+
+# ── Determine backup type ─────────────────────────────────────────────────────
+# When called by the systemd timer, BACKUP_TYPE is evaluated automatically:
+#   - "full"        every {{ restic_full_backup_interval_hours }} hours
+#   - "incremental" all other hourly runs
+HOUR=$(date +%-H)
+if (( HOUR % {{ restic_full_backup_interval_hours }} == 0 )); then
+    BACKUP_TYPE=full
+else
+    BACKUP_TYPE=incremental
+fi
+
+echo "Backup type: ${BACKUP_TYPE}"
+
+
+# --- Backup Maria DB -----------------------------------------------------------
+/usr/local/bin/osism apply mariadb_backup -e mariadb_backup_type=$BACKUP_TYPE
+
+# --- Upload --------------------------------------------------------------------
+# /usr/local/bin/osism apply upload-backup

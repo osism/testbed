@@ -17,6 +17,9 @@
     restic_backup_s3_path: ""                               # Optional sub-path inside bucket
     restic_backup_full_path: "s3:{{ restic_backup_s3_endpoint }}/{{ restic_backup_s3_bucket }}{% if restic_backup_s3_path %}/{{ restic_backup_s3_path }}{% endif %}"
 
+    restic_backup_oncalendar: "hourly"   # systemd calendar expression
+    restic_backup_full_interval_hours: 6 # full backup every N hours; else incremental
+
     # ── Credentials (override via vault or extra_vars) ─────────────────────────────
     restic_backup_s3_access_key: "CHANGE_ME"
     restic_backup_s3_secret_key: "CHANGE_ME"
@@ -72,27 +75,35 @@
       ansible.builtin.debug:
         msg: "{{ restic_init_result.container.Output | default(['Repository already initialized']) }}"
 
-    # - name: Deploy systemd service unit
-    #   ansible.builtin.template:
-    #     src: restic-backup.service.j2
-    #     dest: /etc/systemd/system/restic-backup.service
-    #     owner: root
-    #     group: root
-    #     mode: "0644"
-    #   notify: Reload systemd
+    - name: Deploy trigger script
+      ansible.builtin.template:
+        src: restic-backup.sh.j2
+        dest: /usr/local/bin/restic-backup.sh
+        owner: root
+        group: root
+        mode: "0644"
 
-    # - name: Deploy systemd timer unit
-    #   ansible.builtin.template:
-    #     src: restic-backup.timer.j2
-    #     dest: /etc/systemd/system/restic-backup.timer
-    #     owner: root
-    #     group: root
-    #     mode: "0644"
-    #   notify: Reload systemd
+    - name: Deploy systemd service unit
+      ansible.builtin.template:
+        src: restic-backup.service.j2
+        dest: /etc/systemd/system/restic-backup.service
+        owner: root
+        group: root
+        mode: "0644"
+      notify: Reload systemd
 
-    # - name: Enable and start the restic backup timer
-    #   ansible.builtin.systemd:
-    #     name: restic-backup.timer
-    #     enabled: true
-    #     state: started
-    #     daemon_reload: true
+    - name: Deploy systemd timer unit
+      ansible.builtin.template:
+        src: restic-backup.timer.j2
+        dest: /etc/systemd/system/restic-backup.timer
+        owner: root
+        group: root
+        mode: "0644"
+      notify: Reload systemd
+
+    - name: Enable and start the restic backup timer
+      ansible.builtin.systemd:
+        name: restic-backup.timer
+        enabled: true
+        state: started
+        daemon_reload: true
