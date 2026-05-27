@@ -1,6 +1,7 @@
 ---
 - name: Setup restic backups
   hosts: manager
+  become: true
   gather_facts: false
   vars:
     # ── Docker image ───────────────────────────────────────────────────────────────
@@ -81,7 +82,7 @@
         dest: /usr/local/bin/restic-backup.sh
         owner: root
         group: root
-        mode: "0644"
+        mode: "0755"
 
     - name: Deploy systemd service unit
       ansible.builtin.template:
@@ -89,7 +90,7 @@
         dest: /etc/systemd/system/restic-backup.service
         owner: root
         group: root
-        mode: "0755"
+        mode: "0644"
       notify: Reload systemd
 
     - name: Deploy systemd timer unit
