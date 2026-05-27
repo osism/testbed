@@ -48,7 +48,7 @@
         mode: '0755'
         owner: "{{ operator_user }}"
 
-    - name: Sync testbed checkout to /opt/configuration via ephemeral worktree
+    - name: Sync testbed checkout to /opt/configuration via ephemeral worktree  # noqa: osism-fqcn
       block:
         - name: Create temp dir for ephemeral worktree
           ansible.builtin.tempfile:
