@@ -7,10 +7,10 @@ set -euo pipefail
 
 # ── Determine backup type ─────────────────────────────────────────────────────
 # When called by the systemd timer, BACKUP_TYPE is evaluated automatically:
-#   - "full"        every {{ restic_full_backup_interval_hours }} hours
+#   - "full"        every {{ restic_backup_full_interval_hours }} hours
 #   - "incremental" all other hourly runs
 HOUR=$(date +%-H)
-if (( HOUR % {{ restic_full_backup_interval_hours }} == 0 )); then
+if (( HOUR % {{ restic_backup_full_interval_hours }} == 0 )); then
     BACKUP_TYPE=full
 else
     BACKUP_TYPE=incremental

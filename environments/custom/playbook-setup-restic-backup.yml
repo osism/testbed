@@ -51,7 +51,7 @@
     - name: Initialize the restic repository if not yet initialized
       community.docker.docker_container:
         name: restic-init-repository
-        image: "{{restic_backup_docker_full_image}}"
+        image: "{{ restic_backup_docker_full_image }}"
         pull: "{{ pull_image | default('missing') }}"
         restart_policy: "no"
         auto_remove: false
@@ -89,7 +89,7 @@
         dest: /etc/systemd/system/restic-backup.service
         owner: root
         group: root
-        mode: "0644"
+        mode: "0755"
       notify: Reload systemd
 
     - name: Deploy systemd timer unit
@@ -106,4 +106,9 @@
         name: restic-backup.timer
         enabled: true
         state: started
+      notify: Reload systemd
+
+  handlers:
+    - name: Reload systemd
+      ansible.builtin.systemd:
         daemon_reload: true

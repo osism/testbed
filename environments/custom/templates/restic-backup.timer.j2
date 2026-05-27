@@ -9,7 +9,8 @@ Requires=restic-backup.service
 # to avoid thundering-herd problems on multiple hosts.
 OnCalendar={{ restic_backup_oncalendar }}
 RandomizedDelaySec=300
-Persistent=true          # catch up on a missed run after reboot/downtime
+# catch up on a missed run after reboot/downtime
+Persistent=true
 
 [Install]
 WantedBy=timers.target
