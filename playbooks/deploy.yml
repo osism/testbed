@@ -10,7 +10,6 @@
     ansible_galaxy: ~/venv/bin/ansible-galaxy
     ansible_path: "{{ basepath }}/ansible"
     ansible_playbook: ~/venv/bin/ansible-playbook
-    basepath: "{{ playbook_dir | dirname }}"
     manager_address_file: "{{ terraform_path }}/.MANAGER_ADDRESS.{{ cloud }}"
     repo_path: >-
       {{ (ansible_user_dir ~ '/src/' ~ repository_server)
@@ -39,8 +38,8 @@
     _terraform_environment: "{{ terraform_environment | default('ci-ubuntu-24.04') }}"
 
   pre_tasks:
-    - name: Verify basepath
-      ansible.builtin.import_tasks: tasks/_basepath_check.yml
+    - name: Resolve and verify basepath
+      ansible.builtin.import_tasks: tasks/_basepath.yml
 
   tasks:
     - name: Print used ceph version

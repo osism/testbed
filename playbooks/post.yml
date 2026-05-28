@@ -15,12 +15,9 @@
     - vars/mappings.yml
     - vars/repositories.yml
 
-  vars:
-    basepath: "{{ playbook_dir | dirname }}"
-
   pre_tasks:
-    - name: Verify basepath
-      ansible.builtin.import_tasks: tasks/_basepath_check.yml
+    - name: Resolve and verify basepath
+      ansible.builtin.import_tasks: tasks/_basepath.yml
 
   tasks:
     - name: Set cloud fact (Zuul deployment)

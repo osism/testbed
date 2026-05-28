@@ -14,7 +14,6 @@
     - vars/repositories.yml
 
   vars:
-    basepath: "{{ playbook_dir | dirname }}"
     terraform_path: "{{ basepath }}/terraform"
     manager_address_file: "{{ terraform_path }}/.MANAGER_ADDRESS.{{ cloud }}"
 
@@ -28,8 +27,8 @@
     _openstack_version_next: "{{ openstack_version_next | default('2025.1') }}"
 
   pre_tasks:
-    - name: Verify basepath
-      ansible.builtin.import_tasks: tasks/_basepath_check.yml
+    - name: Resolve and verify basepath
+      ansible.builtin.import_tasks: tasks/_basepath.yml
 
   tasks:
     - name: Print next ceph version

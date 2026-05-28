@@ -7,7 +7,6 @@
     - vars/repositories.yml
 
   vars:
-    basepath: "{{ playbook_dir | dirname }}"
     terraformbase_path: "{{ ansible_user_dir }}/src/{{ repositories['terraform-base']['path'] }}"
     terraform_path: "{{ basepath }}/terraform"
     opentofu_version: v1.11.5  # renovate: datasource=github-releases depName=opentofu/opentofu
@@ -16,8 +15,8 @@
     wireproxy_download_url: "https://github.com/pufferffish/wireproxy/releases/download/{{ wireproxy_version }}/wireproxy_linux_amd64.tar.gz"
 
   pre_tasks:
-    - name: Verify basepath
-      ansible.builtin.import_tasks: tasks/_basepath_check.yml
+    - name: Resolve and verify basepath
+      ansible.builtin.import_tasks: tasks/_basepath.yml
 
   tasks:
     - name: Set cloud fact (Zuul deployment)
