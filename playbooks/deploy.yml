@@ -10,9 +10,11 @@
     ansible_galaxy: ~/venv/bin/ansible-galaxy
     ansible_path: "{{ basepath }}/ansible"
     ansible_playbook: ~/venv/bin/ansible-playbook
-    basepath: "{{ ansible_user_dir }}/src/{{ repositories['testbed']['path'] }}"
     manager_address_file: "{{ terraform_path }}/.MANAGER_ADDRESS.{{ cloud }}"
-    repo_path: "{{ ansible_user_dir }}/src/{{ repository_server }}"
+    repo_path: >-
+      {{ (ansible_user_dir ~ '/src/' ~ repository_server)
+         if zuul is defined
+         else (basepath ~ '/.src/' ~ repository_server) }}
 
     manual_create: false
     manual_deploy: false
@@ -34,6 +36,10 @@
     _ceph_stack: "{{ ceph_stack | default('ceph-ansible') }}"
 
     _terraform_environment: "{{ terraform_environment | default('ci-ubuntu-24.04') }}"
+
+  pre_tasks:
+    - name: Resolve and verify basepath
+      ansible.builtin.import_tasks: tasks/_basepath.yml
 
   tasks:
     - name: Print used ceph version
@@ -197,6 +203,7 @@
             -e cloud={{ cloud }} \
             -e terraform_environment={{ _terraform_environment }} \
             -e repo_path={{ repo_path }} \
+            -e basepath={{ basepath | quote }} \
             -e manager_version={{ _manager_version }} \
             {{ ('-e testbed_src=' + testbed_src) if testbed_src is defined and testbed_src else '' }} \
             manager-part-1.yml | tee -a ansible-manager-part-1.log

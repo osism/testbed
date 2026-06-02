@@ -5,7 +5,6 @@
   vars:
     ansible_ssh_user: dragon
     operator_user: dragon
-    repo: osism/testbed
     manager_version: latest
 
     venv_path: /opt/venv
@@ -25,20 +24,6 @@
     - name: Apply osism.commons.repository role
       ansible.builtin.import_role:
         name: osism.commons.repository
-
-    - name: Get home directory of ansible user
-      ansible.builtin.shell: |
-        set -o pipefail
-        getent passwd {{ ansible_user }} | cut -d: -f6
-      args:
-        executable: /bin/bash
-      changed_when: false
-      register: result_home
-
-    - name: Set repo_path fact
-      ansible.builtin.set_fact:
-        repo_path: "{{ result_home.stdout }}/src/github.com"
-      when: repo_path is not defined
 
     - name: Copy SSH public key
       ansible.builtin.copy:
@@ -63,13 +48,44 @@
         mode: '0755'
         owner: "{{ operator_user }}"
 
-    - name: Copy testbed repo
-      become: true
-      become_user: dragon
-      ansible.posix.synchronize:
-        src: "{{ repo_path }}/{{ repo }}/"
-        delete: true
-        dest: /opt/configuration
+    - name: Sync testbed checkout to /opt/configuration via ephemeral worktree  # noqa: osism-fqcn
+      block:
+        - name: Create temp dir for ephemeral worktree
+          ansible.builtin.tempfile:
+            state: directory
+            prefix: testbed-sync-
+          delegate_to: localhost
+          run_once: true
+          register: _worktree_tmp
+          changed_when: false
+
+        - name: Add ephemeral worktree at HEAD  # noqa: command-instead-of-module
+          ansible.builtin.command:
+            cmd: git worktree add --detach {{ _worktree_tmp.path }} HEAD
+            chdir: "{{ basepath }}"
+          delegate_to: localhost
+          run_once: true
+          changed_when: false
+
+        - name: Copy worktree to /opt/configuration
+          become: true
+          become_user: dragon
+          ansible.posix.synchronize:
+            src: "{{ _worktree_tmp.path }}/"
+            delete: true
+            dest: /opt/configuration
+            rsync_opts:
+              - "--exclude=/.git"
+      always:
+        - name: Remove ephemeral worktree  # noqa: command-instead-of-module
+          ansible.builtin.command:
+            cmd: git worktree remove --force {{ _worktree_tmp.path }}
+            chdir: "{{ basepath }}"
+          delegate_to: localhost
+          run_once: true
+          changed_when: false
+          failed_when: false
+          when: _worktree_tmp is defined and _worktree_tmp.path is defined
 
     - name: Install python requirements in venv
       ansible.builtin.pip:

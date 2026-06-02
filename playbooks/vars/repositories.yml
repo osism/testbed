@@ -13,7 +13,3 @@ repositories:
     path: github.com/osism/terraform-base
     repo: https://github.com/osism/terraform-base
     branch: main
-  testbed:
-    path: github.com/osism/testbed
-    repo: https://github.com/osism/testbed
-    branch: main

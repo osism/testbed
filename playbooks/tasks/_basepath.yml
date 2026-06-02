@@ -1,0 +1,24 @@
+---
+- name: Resolve testbed checkout root (basepath)
+  ansible.builtin.set_fact:
+    basepath: >-
+      {{ (ansible_user_dir ~ '/' ~ zuul.project.src_dir)
+         if zuul is defined
+         else lookup('pipe', 'git -C ' ~ (playbook_dir | quote) ~ ' rev-parse --show-toplevel') }}
+  # set_fact is stored where basepath is consumed (orchestrator node under
+  # Zuul, localhost locally) - no delegate_to/run_once. The git rev-parse
+  # lookup('pipe', ...) itself always runs on the controller, so the local
+  # branch is only correct when controller == target (true for local runs);
+  # under Zuul the zuul branch is taken and the lookup is never evaluated.
+
+- name: Verify basepath looks like a testbed checkout
+  ansible.builtin.stat:
+    path: "{{ basepath }}/ansible/manager-part-1.yml"
+  register: _basepath_check
+
+- name: Fail if basepath does not look like a testbed checkout
+  ansible.builtin.fail:
+    msg: |
+      basepath ({{ basepath }}) does not contain ansible/manager-part-1.yml.
+      Expected the testbed checkout root.
+  when: not _basepath_check.stat.exists

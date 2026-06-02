@@ -114,9 +114,7 @@ bootstrap: setup create ## Bootstrap everything.
 	  -i ansible/localhost_inventory.yaml \
 	  -e ansible_galaxy=ansible-galaxy \
 	  -e ansible_playbook=ansible-playbook \
-	  -e basepath="$(PWD)" \
 	  -e testbed_cloud=$(CLOUD) \
-	  -e repo_path="$(PWD)/.src/$$(contrib/setup-testbed.py --query "repository_server")" \
 	  -e manual_create=true \
 	  -e manual_deploy=true \
 	  -e ceph_version=$$RESOLVED_CEPH \
