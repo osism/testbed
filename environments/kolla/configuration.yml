@@ -118,3 +118,9 @@ enable_prometheus_openstack_exporter: "yes"
 
 om_enable_rabbitmq_high_availability: false
 om_enable_rabbitmq_quorum_queues: false
+
+##########################################################
+# mariadb backup
+
+mariadb_s3_backup_s3_bucket: backup-testbed
+mariadb_s3_backup_rclone_identifier: teuto

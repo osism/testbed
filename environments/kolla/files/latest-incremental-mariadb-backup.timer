@@ -1,0 +1,10 @@
+[Unit]
+Description=Create incremental mariadb backup every hour
+
+[Timer]
+# Fires every hour exept 5AM/PM and 11AM/PM, where there is a full backup
+OnCalendar=*-*-* 00,01,02,03,04,06,07,08,09,10,12,13,14,15,16,18,19,20,21,22:00:00
+Persistent=false
+
+[Install]
+WantedBy=timers.target
