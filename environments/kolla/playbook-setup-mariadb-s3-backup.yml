@@ -115,6 +115,28 @@
         - latest-incremental-mariadb-backup
       notify: Reload systemd
 
+    - name: Flush handlers to ensure daemon is reloaded
+      ansible.builtin.meta: flush_handlers
+
+    - name: Enable systemd units
+      ansible.builtin.template:
+        src: "files/{{ item }}.service"
+        dest: "/etc/systemd/system/{{ item }}.service"
+        enabled: true
+      loop:
+        - latest-full-mariadb-backup
+        - latest-incremental-mariadb-backup
+      notify: Reload systemd
+
+    - name: Enable systemd timers
+      ansible.builtin.systemd_service:
+        name: "{{ item }}.service"
+        enabled: true
+      loop:
+        - latest-full-mariadb-backup
+        - latest-incremental-mariadb-backup
+      notify: Reload systemd
+
   handlers:
     - name: Reload systemd
       ansible.builtin.systemd:
