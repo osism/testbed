@@ -123,6 +123,7 @@
         src: "files/{{ item }}.service"
         dest: "/etc/systemd/system/{{ item }}.service"
         enabled: true
+        state: started
       loop:
         - latest-full-mariadb-backup
         - latest-incremental-mariadb-backup
@@ -132,6 +133,7 @@
       ansible.builtin.systemd_service:
         name: "{{ item }}.service"
         enabled: true
+        state: started
       loop:
         - latest-full-mariadb-backup
         - latest-incremental-mariadb-backup
