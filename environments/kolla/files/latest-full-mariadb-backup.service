@@ -9,6 +9,7 @@ Type=oneshot
 User=dragon
 Group=dragon
 
+ExecPre=bash -lc "osism apply facts"
 ExecStart=bash -lc "osism apply mariadb_backup"
 TimeoutStartSec=14400
 
