@@ -191,7 +191,7 @@
       tempest: true
 
 # -----------------------------------------------------------------------------
-# 3.4 "In a Nutshell" Deploy Jobs - Current OpenStack Release (2024.2)
+# 3.4 "In a Nutshell" Deploy Jobs - Current OpenStack Release (2025.1)
 # -----------------------------------------------------------------------------
 
 - job:
@@ -199,7 +199,7 @@
     parent: testbed-deploy-in-a-nutshell-ubuntu-24.04
     vars:
       ceph_version: reef
-      openstack_version: "2024.2"
+      openstack_version: "2025.1"
 
 - job:
     name: testbed-deploy-current-in-a-nutshell-with-tempest-ubuntu-24.04
@@ -303,7 +303,7 @@
       manager_version: 9.5.0
       ceph_version_next: skip
       manager_version_next: latest
-      openstack_version_next: "2024.2"
+      openstack_version_next: "2025.1"
 
 - job:
     name: testbed-upgrade-stable-next-ubuntu-24.04
