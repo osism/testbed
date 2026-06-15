@@ -2,7 +2,7 @@ osism run mariadb_backup
 
 osism docker <mariadb_master> run \
   -v mariabdb_backup:/backup \
-  {{ galera_s3_backup_openssl_image_full }} \
+  {{ mariadb_s3_backup_openssl_image_full }} \
   enc -e -aes-256-cbc -salt -pbkdf2 \
   -in $(cat /backup/last_full_file) \
   -out $(cat /backup/last_full_file).enc \
@@ -11,7 +11,7 @@ osism docker <mariadb_master> run \
 osism docker <mariadb_master> run \
   -v /etc/kolla/mariadb-s3-backup/rclone.conf:/config/rclone.conf:ro \
   -v mariabdb_backup:/backup:ro \
-  {{ galera_s3_backup_openssl_image_full }} \
+  {{ mariadb_s3_backup_openssl_image_full }} \
   moveto $(cat /backup/last_full_file).enc mariadb-latest-full.mbz.gz.enc \
   --s3-object-lock-mode GOVERNANCE \
   --s3-object-lock-retain-until-date 2d

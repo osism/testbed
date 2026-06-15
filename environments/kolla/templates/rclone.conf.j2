@@ -1,13 +1,13 @@
-[{{ galera_s3_backup_rclone_identifier }}]
+[{{ mariadb_s3_backup_rclone_identifier }}]
 type = s3
-provider = {{ galera_s3_backup_rclone_s3_provider }}
-access_key_id = {{ galera_s3_backup_s3_access_key_id }}
-secret_access_key = {{ galera_s3_backup_s3_secret_access_key }}
-region = {{ galera_s3_backup_s3_region }}
-endpoint = {{ galera_s3_backup_s3_endpoint }}
+provider = {{ mariadb_s3_backup_rclone_s3_provider }}
+access_key_id = {{ mariadb_s3_backup_s3_access_key_id }}
+secret_access_key = {{ mariadb_s3_backup_s3_secret_access_key }}
+region = {{ mariadb_s3_backup_s3_region }}
+endpoint = {{ mariadb_s3_backup_s3_endpoint }}
 # Force list_objects_v2
 list_version = 2
 # Force path style to address bucket
-force_path_style = {{ (not galera_s3_backup_s3_virtual_hosted_style_bucket | bool) | str | lower }}
+force_path_style = {{ (not mariadb_s3_backup_s3_virtual_hosted_style_bucket | bool) | str | lower }}
 # Don't try to create a bucket
 no_check_bucket = true
