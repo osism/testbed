@@ -1,5 +1,5 @@
 ---
-- name: Setup restic backups
+- name: Setup s3 backups
   hosts: mariadb
   become: true
   gather_facts: false
@@ -63,9 +63,37 @@
       register: gpg_import_result
       changed_when: "'imported' in gpg_import_result.stderr"
 
+- name: Setup mariadb backups on manager
+  hosts: manager
+  become: true
+  gather_facts: false
+  vars_files:
+    - configuration.yml
+    - secrets.yml
+  vars:
+    mariadb_s3_backup_rclone_docker_registry: "ghcr.io"
+    mariadb_s3_backup_rclone_docker_image: "rclone/rclone"
+    mariadb_s3_backup_rclone_docker_tag: "1.74.3"
+    mariadb_s3_backup_rclone_image_full: "{{ mariadb_s3_backup_rclone_docker_registry }}/{{ mariadb_s3_backup_rclone_docker_image }}:{{ mariadb_s3_backup_rclone_docker_tag }}"
+
+    mariadb_s3_backup_rclone_config_volume: "rclone-config"
+    mariadb_s3_backup_rclone_s3_provider: "Ceph"
+    mariadb_s3_backup_rclone_identifier: "backup"
+
+    mariadb_s3_backup_s3_hostname: "api.bfe2.teutostack.de"
+    mariadb_s3_backup_s3_port: "6780"
+    mariadb_s3_backup_s3_endpoint: "https://{{ mariadb_s3_backup_s3_hostname}}:{{mariadb_s3_backup_s3_port}}"
+    mariadb_s3_backup_s3_provider: "ceph"
+    mariadb_s3_backup_s3_bucket: "mariadb-backups"
+    mariadb_s3_backup_s3_virtual_hosted_style_bucket: false
+    mariadb_s3_backup_s3_path: ""
+    mariadb_s3_backup_s3_region: ""
+    mariadb_s3_backup_s3_access_key_id: ""
+    mariadb_s3_backup_s3_secret_access_key: ""
+  tasks:
     - name: Deploy systemd timers
       ansible.builtin.template:
-        src: "{{ item }}.timer"
+        src: "files/{{ item }}.timer"
         dest: /etc/systemd/system/{{ item }}.timer
         owner: root
         group: root
@@ -77,7 +105,7 @@
 
     - name: Deploy systemd units
       ansible.builtin.template:
-        src: "{{ item }}.service"
+        src: "files/{{ item }}.service"
         dest: "/etc/systemd/system/{{ item }}.service"
         owner: root
         group: root
