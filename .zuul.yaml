@@ -96,7 +96,7 @@
     abstract: true
     parent: abstract-testbed-deploy
     vars:
-      manager_version: 10.0.0
+      manager_version: 10.1.0
       tempest: true
       prometheus_alert_status: false
 
@@ -105,7 +105,7 @@
     abstract: true
     parent: abstract-testbed-deploy-in-a-nutshell
     vars:
-      manager_version: 10.0.0
+      manager_version: 10.1.0
 
 # -----------------------------------------------------------------------------
 # 2.4 Abstract Jobs for Upgrade/Update Operations
@@ -120,7 +120,7 @@
     nodeset: testbed-orchestrator
     timeout: 30000
 
-# Upgrade: Major version upgrade (e.g., 9.5.0 -> 10.0.0)
+# Upgrade: Major version upgrade (e.g., 9.5.0 -> 10.1.0)
 - job:
     name: abstract-testbed-upgrade-stable
     abstract: true
@@ -268,7 +268,7 @@
       manager_version_next: 9.5.0
 
 # -----------------------------------------------------------------------------
-# 4.3 Upgrade Jobs (Major Version: 9.5.0 -> 10.0.0)
+# 4.3 Upgrade Jobs (Major Version: 9.5.0 -> 10.1.0)
 # -----------------------------------------------------------------------------
 
 - job:
@@ -277,7 +277,7 @@
     vars:
       terraform_environment: ci-ubuntu-24.04
       manager_version: 9.5.0
-      manager_version_next: 10.0.0
+      manager_version_next: 10.1.0
 
 # NOTE: The following upgrade jobs are currently disabled.
 # They can be enabled once the respective OS support is validated.
