@@ -111,7 +111,7 @@
 # 2.4 Abstract Jobs for Upgrade/Update Operations
 # -----------------------------------------------------------------------------
 
-# Update: Minor version update (e.g., 9.4.0 -> 9.5.0)
+# Update: Minor version update (e.g., X.1.0 -> X.2.0)
 - job:
     name: abstract-testbed-update-stable
     abstract: true
@@ -120,7 +120,7 @@
     nodeset: testbed-orchestrator
     timeout: 30000
 
-# Upgrade: Major version upgrade (e.g., 9.5.0 -> 10.1.0)
+# Upgrade: Major version upgrade (e.g., X.1.0 -> Y.1.0)
 - job:
     name: abstract-testbed-upgrade-stable
     abstract: true
@@ -256,7 +256,7 @@
     timeout: 30000
 
 # -----------------------------------------------------------------------------
-# 4.2 Update Jobs (Minor Version: 9.4.0 -> 9.5.0)
+# 4.2 Update Jobs (Minor Version: X.1.0 -> X.2.0)
 # -----------------------------------------------------------------------------
 
 - job:
@@ -264,11 +264,11 @@
     parent: abstract-testbed-update-stable
     vars:
       terraform_environment: ubuntu-24.04
-      manager_version: 9.4.0
-      manager_version_next: 9.5.0
+      manager_version: 10.1.0
+      manager_version_next: 10.2.0
 
 # -----------------------------------------------------------------------------
-# 4.3 Upgrade Jobs (Major Version: 9.5.0 -> 10.1.0)
+# 4.3 Upgrade Jobs (Major Version: X.1.0 -> Y.1.0)
 # -----------------------------------------------------------------------------
 
 - job:
@@ -300,7 +300,7 @@
     nodeset: testbed-orchestrator
     timeout: 30000
     vars:
-      manager_version: 9.5.0
+      manager_version: 10.1.0
       ceph_version_next: skip
       manager_version_next: latest
       openstack_version_next: "2025.1"
@@ -312,10 +312,10 @@
     nodeset: testbed-orchestrator
     timeout: 30000
     vars:
-      manager_version: 9.5.0
+      manager_version: 10.1.0
       ceph_version_next: skip
       manager_version_next: latest
-      openstack_version_next: "2025.1"
+      openstack_version_next: "2025.2"
 
 # =============================================================================
 # 5. PROJECT PIPELINE DEFINITION
