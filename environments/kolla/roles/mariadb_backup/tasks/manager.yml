@@ -1,0 +1,62 @@
+---
+- name: Pull the rclone container image
+  community.docker.docker_image_pull:
+    name: "{{ mariadb_backup_rclone_image_full }}"
+
+- name: Create directories on manager
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: "dragon"
+    group: "dragon"
+    mode: "0750"
+  loop:
+    - "{{ mariadb_backup_destination_dir_managers }}"
+    - "{{ mariadb_backup_config_dir }}"
+
+- name: Render rclone.conf
+  ansible.builtin.template:
+    src: rclone.conf.j2
+    dest: "{{ mariadb_backup_rclone_config_file }}"
+    owner: "dragon"
+    group: "dragon"
+    mode: "0600"
+  when: mariadb_backup_manage_rclone_config | bool
+
+- name: Deploy manager orchestrator script
+  ansible.builtin.template:
+    src: mariadb-backup.sh.j2
+    dest: "{{ mariadb_backup_orchestrate_script }}"
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Deploy systemd service units
+  ansible.builtin.template:
+    src: systemd-service.j2
+    dest: "/etc/systemd/system/mariadb-backup-{{ item.type }}.service"
+    owner: root
+    group: root
+    mode: "0644"
+  loop: "{{ mariadb_backup_jobs }}"
+  notify: Reload systemd
+
+- name: Deploy systemd timer units
+  ansible.builtin.template:
+    src: systemd-timer.j2
+    dest: "/etc/systemd/system/mariadb-backup-{{ item.type }}.timer"
+    owner: root
+    group: root
+    mode: "0644"
+  loop: "{{ mariadb_backup_jobs }}"
+  notify: Reload systemd
+
+- name: Reload systemd before toggling timers
+  ansible.builtin.meta: flush_handlers
+
+- name: Enable and start active timers
+  ansible.builtin.systemd:
+    name: "mariadb-backup-{{ item.type }}.timer"
+    enabled: true
+    state: started
+  loop: "{{ mariadb_backup_jobs }}"

@@ -1,0 +1,8 @@
+---
+- name: Configure mariadb-node backup tasks
+  ansible.builtin.include_tasks: mariadb.yml
+  when: mariadb_backup_component == 'mariadb'
+
+- name: Configure manager orchestration tasks
+  ansible.builtin.include_tasks: manager.yml
+  when: mariadb_backup_component == 'manager'

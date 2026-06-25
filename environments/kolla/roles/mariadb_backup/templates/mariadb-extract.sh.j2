@@ -1,0 +1,103 @@
+#!/usr/bin/env bash
+# Managed by Ansible (role: mariadb_backup).
+# Extract the current full / latest incremental from the kolla backup volume
+# (or promote the current full into the weekly/monthly tier), encrypt with GPG,
+# and place it into the structured staging tree. All config is rendered from
+# Ansible variables at deploy time.
+set -euo pipefail
+
+TYPE="${1:?usage: $(basename "$0") full|incremental|weekly|monthly}"
+read -r NOW_Y NOW_m NOW_d ISOY ISOW NOW_H <<<"$(date -u +'%Y %m %d %G %V %H')"
+
+[ -d "{{ mariadb_backup_destination_dir_mariadb }}" ] || mkdir -p "{{ mariadb_backup_destination_dir_mariadb }}"
+
+# --- locate the source backup directory in the volume ------------------------
+current_full_dir() {
+  # Prefer the kolla 'last_full_file' marker; fall back to newest full-* dir.
+  local marker="{{ mariadb_backup_backup_volume_dir }}/last_full_file" rel
+  if [[ -r "$marker" ]]; then
+    rel=$(sudo cat "$marker" | sed -E 's#^/backup/+##; s#/[^/]+$##')   # strip /backup/ prefix and trailing filename
+    printf '%s\n' "{{ mariadb_backup_backup_volume_dir }}/${rel}"; return 0
+  fi
+  sudo find {{ mariadb_backup_backup_volume_dir }} -mindepth 1 -maxdepth 1 -type d -name 'full-*' \
+   -printf '%T@\t%p\n' | sort -rn | head -1 | cut -f2-
+}
+
+latest_incr_dir() {
+  # Print the incremental backup directory whose *name* encodes the most recent
+  # timestamp. Name format: incr-<HH>-<MM>-<SS>-<DD>-<MM>-<YYYY>-since-...
+  # Sorting is on the name, not the filesystem mtime.
+  local volume="${1:-.}"
+  local path name h mi s d mo y key best_key="" best_dir=""
+
+  while IFS= read -r path; do
+    name=${path##*/}                       # basename
+    IFS='-' read -r h mi s d mo y _ <<<"${name#incr-}"
+    # skip anything that doesn't parse as a numeric timestamp
+    [[ "$y" =~ ^[0-9]{4}$ && "$mo$d$h$mi$s" =~ ^[0-9]{10}$ ]] || continue
+    key="${y}${mo}${d}${h}${mi}${s}"       # YYYYMMDDHHMMSS — fixed width, sorts correctly
+    if [[ "$key" > "$best_key" ]]; then
+      best_key=$key
+      best_dir=$path
+    fi
+  done < <(find "$volume" -mindepth 1 -maxdepth 1 -type d -name 'incr-*')
+
+  [[ -n "$best_dir" ]] && printf '%s\n' "$best_dir"
+}
+
+# Build the staging-relative path from the source directory name, so the
+# partition reflects the backup's own timestamp (not when this script runs).
+# full-DD-MM-YYYY-<epoch>                              -> daily/YYYY/MM/DD
+# incr-HH-MM-SS-DD-MM-YYYY-since-DD-MM-YYYY-<baseepoch> -> hourly/YYYY/MM/DD/HH
+parse_daily_rel() {
+  local name="$1" base k f1 f2 f3 f4 f5 f6 rest
+  IFS='-' read -r base k f1 f2 f3 f4 f5 rest <<<"$name"
+  f6=$(cut -d"." -f1 <<<"$rest")
+  echo "k: $k | f1: $f1 | f2: $f2 | f3: $f3 | f4: $f4 | f5: $f5 | f6: $f6 | rest: $rest"
+  if [[ "$k" == "full" && "$f3" =~ ^[0-9]{4}$ ]]; then
+    printf 'daily/%s/%s/%s' "$f3" "$f2" "$f1"
+  elif [[ "$k" == "incremental" && "$f6" =~ ^[0-9]{4}$ ]]; then
+    printf 'hourly/%s/%s/%s/%s' "$f6" "$f5" "$f4" "$f1"
+  else
+    # fall back to current UTC date/hour if the name is unexpected
+    if [[ "$k" == "incremental" ]]; then printf 'hourly/%s/%s/%s' "$NOW_Y" "$NOW_m" "$NOW_d"
+    else printf 'daily/%s/%s/%s' "$NOW_Y" "$NOW_m" "$NOW_d"; fi
+  fi
+}
+
+case "$TYPE" in
+  full)        srcdir=$(current_full_dir); rel=$(parse_daily_rel "$(basename "${srcdir:-x}")") ;;
+  incremental) srcdir=$(newest_incr_dir);  rel=$(parse_daily_rel "$(basename "${srcdir:-x}")") ;;
+  weekly)      srcdir=$(current_full_dir); rel="weekly/${ISOY}/${ISOW}" ;;
+  monthly)     srcdir=$(current_full_dir); rel="monthly/${NOW_Y}/${NOW_m}" ;;
+  *) echo "unknown type: $TYPE" >&2; exit 2 ;;
+esac
+
+if [[ -z "${srcdir:-}" || ! -d "$srcdir" ]]; then
+  echo "srcdir var empty. Couldn't determine source directory for backup" >&2; exit 1
+fi
+
+sudo ls $srcdir
+
+srcfile=$(sudo find "$srcdir" -maxdepth 1 -type f -name '*.mbs.gz' | head -1)
+if [[ -z "${srcfile:-}" ]]; then
+  echo "no .mbs.gz file found in ${srcdir}" >&2; exit 1
+fi
+
+# Output is named after the source directory: it encodes the timestamp and,
+# for incrementals, the 'since-<base>' linkage needed to restore the chain.
+name=$(basename "$srcdir")
+dst="{{ mariadb_backup_destination_dir_mariadb }}/${rel}"
+mkdir -p "$dst"
+
+sudo cat $srcfile | gpg --batch --yes --encrypt \
+    --recipient "{{ mariadb_backup_gpg_recipient }}" --trust-model always \
+    --compress-algo none \
+    --output "${dst}/${name}.mbs.gz.gpg"
+echo "mariadb-extract: ${TYPE} ${name} -> ${rel}"
+
+# --- garbage collection over the staging tree ------------------------------
+# Delete files older than 2 days in docker volume
+sudo find "{{ mariadb_backup_backup_volume_dir }}" -mindepth 1 -name "*.mbs.gz" -type f -mtime 2  -delete 2>/dev/null || true
+# Delete empty directories
+sudo find "{{ mariadb_backup_backup_volume_dir }}" -type d -empty -delete 2>/dev/null || true

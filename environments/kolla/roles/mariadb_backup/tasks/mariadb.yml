@@ -1,0 +1,34 @@
+---
+- name: Create directories on control node
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0750"
+  loop:
+    - "{{ mariadb_backup_destination_dir_managers }}"
+    - "{{ mariadb_backup_config_dir }}"
+
+- name: Deploy GPG public key (from controller file)
+  ansible.builtin.copy:
+    content: "{{ mariadb_backup_gpg_public_key }}"
+    dest: "{{ mariaidb_backup_config_dir }}/backup-pub.asc"
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Import GPG public key
+  ansible.builtin.command:
+    cmd: "gpg --import {{ mariaidb_backup_config_dir }}/backup-pub.asc"
+  register: _gpg_import
+  changed_when: "'imported' in _gpg_import.stderr"
+  failed_when: _gpg_import.rc != 0 and 'unchanged' not in _gpg_import.stderr
+
+- name: Deploy control-node extract/encrypt/promote script
+  ansible.builtin.template:
+    src: mariadb-extract.sh.j2
+    dest: "{{ mariadb_backup_extract_script }}"
+    owner: root
+    group: root
+    mode: "0750"
