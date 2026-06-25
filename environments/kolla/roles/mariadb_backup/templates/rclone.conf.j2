@@ -10,7 +10,7 @@ shell_type = unix
 
 [{{ mariadb_backup_s3_remote }}]
 type = s3
-provider = {{ mariadb_backup_rclone_s3_provider }}
+provider = {{ mariadb_backup_s3_rclone_provider }}
 access_key_id = {{ mariadb_backup_s3_access_key_id }}
 secret_access_key = {{ mariadb_backup_s3_secret_access_key }}
 region = {{ mariadb_backup_s3_region }}
