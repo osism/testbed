@@ -1,0 +1,16 @@
+---
+- name: MariaDB backup — control node
+  hosts: "{{ mariadb_backup_node | default('mariadb[0]') }}"
+  become: true
+  roles:
+    - role: mariadb_backup
+      vars:
+        mariadb_backup_component: control
+
+- name: MariaDB backup — manager
+  hosts: "manager"
+  become: true
+  roles:
+    - role: mariadb_backup
+      vars:
+        mariadb_backup_component: manager
