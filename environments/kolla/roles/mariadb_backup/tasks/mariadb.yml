@@ -1,14 +1,14 @@
 ---
 - name: Create directories on mariadb node
   ansible.builtin.file:
-    path: "{{ item }}"
+    path: "{{ item.path }}"
     state: directory
-    owner: root
-    group: root
+    owner: "{{ item.owner }}"
+    group: "{{ item.owner }}"
     mode: "0750"
   loop:
-    - "{{ mariadb_backup_destination_dir_mariadb }}"
-    - "{{ mariadb_backup_config_dir }}"
+    - { path: mariadb_backup_destination_dir_mariadb, owner: "dragon" }
+    - { path: mariadb_backup_config_dir, owner: "root" }
 
 - name: Deploy GPG public key (from controller file)
   ansible.builtin.copy:
@@ -31,4 +31,4 @@
     dest: "{{ mariadb_backup_extract_script }}"
     owner: root
     group: root
-    mode: "0750"
+    mode: "0755"

@@ -125,5 +125,5 @@ om_enable_rabbitmq_quorum_queues: false
 
 mariadb_s3_backup_s3_bucket: backup-testbed
 mariadb_backup_gpg_recipient: backup@testbed.osism.xyz
-mariadb_backup_node: "testbed-node-1"
+mariadb_backup_node: "testbed-node-0"
 mariadb_backup_s3_hostname: "api.bfe2.teutostack.de"

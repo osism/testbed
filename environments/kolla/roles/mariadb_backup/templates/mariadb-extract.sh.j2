@@ -9,8 +9,6 @@ set -euo pipefail
 TYPE="${1:?usage: $(basename "$0") full|incremental|weekly|monthly}"
 read -r NOW_Y NOW_m NOW_d ISOY ISOW NOW_H <<<"$(date -u +'%Y %m %d %G %V %H')"
 
-[ -d "{{ mariadb_backup_destination_dir_mariadb }}" ] || mkdir -p "{{ mariadb_backup_destination_dir_mariadb }}"
-
 # --- locate the source backup directory in the volume ------------------------
 current_full_dir() {
   # Prefer the kolla 'last_full_file' marker; fall back to newest full-* dir.
@@ -53,7 +51,6 @@ parse_daily_rel() {
   local name="$1" base k f1 f2 f3 f4 f5 f6 rest
   IFS='-' read -r base k f1 f2 f3 f4 f5 rest <<<"$name"
   f6=$(cut -d"." -f1 <<<"$rest")
-  echo "k: $k | f1: $f1 | f2: $f2 | f3: $f3 | f4: $f4 | f5: $f5 | f6: $f6 | rest: $rest"
   if [[ "$k" == "full" && "$f3" =~ ^[0-9]{4}$ ]]; then
     printf 'daily/%s/%s/%s' "$f3" "$f2" "$f1"
   elif [[ "$k" == "incremental" && "$f6" =~ ^[0-9]{4}$ ]]; then
@@ -73,7 +70,7 @@ case "$TYPE" in
   *) echo "unknown type: $TYPE" >&2; exit 2 ;;
 esac
 
-if [[ -z "${srcdir:-}" || ! -d "$srcdir" ]]; then
+if [[ -z "${srcdir:-}" ]]; then
   echo "srcdir var empty. Couldn't determine source directory for backup" >&2; exit 1
 fi
 
