@@ -4,9 +4,6 @@
 # Lowest precedence — override anything via group_vars / host_vars / -e.
 # =============================================================================
 
-# Which part of the role to run. Set per play by the playbook.
-mariadb_backup_component: "manager"          # control | manager
-
 # --- Inventory targeting (also referenced by the playbook's hosts:) ---------
 # backup_control_pattern: "control[0]"
 # backup_manager_pattern: "manager"
@@ -31,14 +28,14 @@ mariadb_backup_docker_volume_dir: "/var/lib/docker/volumes"
 mariadb_backup_backup_volume_dir: "/var/lib/docker/volumes/{{ mariadb_backup_volume }}/_data"
 # --- GPG (asymmetric; control node holds the PUBLIC key only) ---------------
 mariadb_backup_gpg_recipient: ""
-mariadb_backup_gpg_public_key_src: ""                # path to .asc on the Ansible controller
+mariadb_backup_gpg_public_key: ""                # path to .asc on the Ansible controller
 
 # --- rclone (runs as a container; config + disk are bind mounts) ------------
 mariadb_backup_rclone_docker_registry: "ghcr.io"
 mariadb_backup_rclone_docker_image: "rclone/rclone"
 mariadb_backup_rclone_docker_tag: "1.74.3"
 mariadb_backup_rclone_image_full: "{{ mariadb_backup_rclone_docker_registry }}/{{ mariadb_backup_rclone_docker_image }}:{{ mariadb_backup_rclone_docker_tag }}"
-mariadb_backup_rclone_config_file: "{{ mariadb_config_dir }}/rclone.conf"
+mariadb_backup_rclone_config_file: "{{ mariadb_backup_config_dir }}/rclone.conf"
 
 # --- rclone remotes ---------------------------------------------------------
 mariadb_backup_sftp_remote: "sftp-mariadb"
@@ -47,10 +44,10 @@ mariadb_backup_local_remote: "manager-local"
 mariadb_backup_local_s3_union_remote: "backup"
 
 # Off-site S3 remote
-mariadb_backup_s3_hostname: "api.bfe2.teutostack.de"
+mariadb_backup_s3_hostname: ""
 mariadb_backup_s3_port: "6780"
-mariadb_backup_s3_endpoint: "https://{{ mariadb_s3_backup_s3_hostname }}:{{ mariadb_s3_backup_s3_port }}"
-mariadb_backup_s3_provider: "ceph"
+mariadb_backup_s3_endpoint: "https://{{ mariadb_backup_s3_hostname }}:{{ mariadb_backup_s3_port }}"
+mariadb_backup_s3_rclone_provider: "Ceph"
 mariadb_backup_s3_bucket: "mariadb-backups"
 mariadb_backup_s3_virtual_hosted_style_bucket: false
 mariadb_backup_s3_path: ""
@@ -73,7 +70,7 @@ mariadb_backup_schedule_monthly: "*-*-01 04:00:00"
 mariadb_backup_timer_persistent: false
 
 mariadb_backup_jobs:
-  - { type: "full", schedule: "{{ backup_schedule_full }}" }
-  - { type: "incremental", schedule: "{{ backup_schedule_incremental }}" }
-  - { type: "weekly", schedule: "{{ backup_schedule_weekly }}" }
-  - { type: "monthly", schedule: "{{ backup_schedule_monthly }}" }
+  - { type: "full", schedule: "{{ mariadb_backup_schedule_full }}" }
+  - { type: "incremental", schedule: "{{ mariadb_backup_schedule_incremental }}" }
+  - { type: "weekly", schedule: "{{ mariadb_backup_schedule_weekly }}" }
+  - { type: "monthly", schedule: "{{ mariadb_backup_schedule_monthly }}" }

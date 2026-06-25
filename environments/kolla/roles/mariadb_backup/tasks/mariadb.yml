@@ -1,5 +1,5 @@
 ---
-- name: Create directories on control node
+- name: Create directories on mariadb node
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
@@ -7,7 +7,7 @@
     group: root
     mode: "0750"
   loop:
-    - "{{ mariadb_backup_destination_dir_managers }}"
+    - "{{ mariadb_backup_destination_dir_mariadb }}"
     - "{{ mariadb_backup_config_dir }}"
 
 - name: Deploy GPG public key (from controller file)

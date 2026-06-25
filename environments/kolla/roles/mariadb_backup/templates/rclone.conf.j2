@@ -2,7 +2,7 @@
 [{{ mariadb_backup_sftp_remote }}]
 type = sftp
 host = {{ mariadb_backup_node_address }}
-user = {{ mariadb_backup_node_user }}
+user = dragon
 {% if mariadb_backup_ssh_key %}
 key_file = {{ mariadb_backup_ssh_key }}
 {% endif %}
@@ -18,7 +18,7 @@ endpoint = {{ mariadb_backup_s3_endpoint }}
 # Force list_objects_v2
 list_version = 2
 # Force path style to address bucket
-force_path_style = {{ (not mariadb_backup_s3_virtual_hosted_style_bucket | bool) | str | lower }}
+force_path_style = {{ (not mariadb_backup_s3_virtual_hosted_style_bucket | bool) | lower }}
 # Don't try to create a bucket
 no_check_bucket = true
 
@@ -27,7 +27,7 @@ type = local
 
 [{{ mariadb_backup_local_s3_union_remote }}]
 type = union
-upstreams = {{ mariadb_backup_s3_remote }}:{{ mariadb_s3_backup_s3_bucket }}{% if mariadb_s3_backup_s3_path }}{{ mariadb_s3_backup_s3_path }}{% endif %} {{ mariadb_backup_local_remote }}:{{ mariadb_backup_destination_dir_manager }}
+upstreams = {{ mariadb_backup_s3_remote }}:{{ mariadb_backup_s3_bucket }}{% if mariadb_backup_s3_path %}{{ mariadb_backup_s3_path }}{% endif %} {{ mariadb_backup_local_remote }}:{{ mariadb_backup_destination_dir_manager }}
 action_policy = epall
 create_policy = epall
 search_policy = epall

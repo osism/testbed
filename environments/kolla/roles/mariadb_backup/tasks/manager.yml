@@ -11,17 +11,16 @@
     group: "dragon"
     mode: "0750"
   loop:
-    - "{{ mariadb_backup_destination_dir_managers }}"
+    - "{{ mariadb_backup_destination_dir_manager }}"
     - "{{ mariadb_backup_config_dir }}"
 
 - name: Render rclone.conf
   ansible.builtin.template:
     src: rclone.conf.j2
     dest: "{{ mariadb_backup_rclone_config_file }}"
-    owner: "dragon"
-    group: "dragon"
+    owner: "root"
+    group: "root"
     mode: "0600"
-  when: mariadb_backup_manage_rclone_config | bool
 
 - name: Deploy manager orchestrator script
   ansible.builtin.template:

@@ -5,7 +5,7 @@
   roles:
     - role: mariadb_backup
       vars:
-        mariadb_backup_component: control
+        mariadb_backup_component: mariadb
 
 - name: MariaDB backup — manager
   hosts: "manager"
