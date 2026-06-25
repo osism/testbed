@@ -27,7 +27,7 @@ type = local
 
 [{{ mariadb_backup_local_s3_union_remote }}]
 type = union
-upstreams = {{ mariadb_backup_s3_remote }}:{{ mariadb_backup_s3_bucket }}{% if mariadb_backup_s3_path %}{{ mariadb_backup_s3_path }}{% endif %} {{ mariadb_backup_local_remote }}:{{ mariadb_backup_destination_dir_manager }}
+upstreams = {{ mariadb_backup_local_remote }}:{{ mariadb_backup_destination_dir_manager }} {{ mariadb_backup_s3_remote }}:{{ mariadb_backup_s3_bucket }}{% if mariadb_backup_s3_path %}{{ mariadb_backup_s3_path }}{% endif %}
 action_policy = epall
 create_policy = epall
 search_policy = epall

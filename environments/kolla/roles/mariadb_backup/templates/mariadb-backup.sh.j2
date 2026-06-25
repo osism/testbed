@@ -13,10 +13,11 @@ TYPE="${1:?usage: $(basename "$0") full|incremental|weekly|monthly}"
 rclone_run() {            # usage: rclone_run <rclone-subcommand-and-args...>
   docker run --rm \
     --name mariadb_backup_rclone \
-    -v {{ mariadb_backup_rclone_config_file }}:/config/rclone.conf:ro \
-    -v { mariadb_backup_ssh_key }}:{{ mariadb_backup_ssh_key }}:ro \
+    -e RCLONE_CONFIG=/kolla/rclone.conf \
+    -v {{ mariadb_backup_rclone_config_file }}:/kolla/rclone.conf:ro \
+    -v {{ mariadb_backup_ssh_key }}:{{ mariadb_backup_ssh_key }}:ro \
     -v "{{ mariadb_backup_destination_dir_manager }}:{{ mariadb_backup_destination_dir_manager }}" \
-    {{ mariadb_backup_rclone_image_full }} --config /config/rclone.conf "$@"
+    {{ mariadb_backup_rclone_image_full }} $*
 }
 
 case "$TYPE" in
@@ -38,7 +39,7 @@ esac
 {{ mariadb_backup_remote_exec }} {{ mariadb_backup_extract_script }} "$TYPE"
 
 # 4. pull encrypted subtree from control node to manager disk (Copy 1)
-rclone_run copy
+rclone_run copy \
   "{{ mariadb_backup_sftp_remote }}:{{ mariadb_backup_destination_dir_mariadb }}/${sub}" \
   "{{ mariadb_backup_local_s3_union_remote }}:${sub}" \
   --s3-object-lock-mode {{ mariadb_backup_object_lock_mode }} \
