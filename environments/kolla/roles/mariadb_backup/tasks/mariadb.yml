@@ -13,14 +13,14 @@
 - name: Deploy GPG public key (from controller file)
   ansible.builtin.copy:
     content: "{{ mariadb_backup_gpg_public_key }}"
-    dest: "{{ mariaidb_backup_config_dir }}/backup-pub.asc"
+    dest: "{{ mariadb_backup_config_dir }}/backup-pub.asc"
     owner: root
     group: root
     mode: "0644"
 
 - name: Import GPG public key
   ansible.builtin.command:
-    cmd: "gpg --import {{ mariaidb_backup_config_dir }}/backup-pub.asc"
+    cmd: "gpg --import {{ mariadb_backup_config_dir }}/backup-pub.asc"
   register: _gpg_import
   changed_when: "'imported' in _gpg_import.stderr"
   failed_when: _gpg_import.rc != 0 and 'unchanged' not in _gpg_import.stderr
