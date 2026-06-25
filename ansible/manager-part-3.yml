@@ -130,7 +130,7 @@
 
   tasks:
     - name: Try to apply the manager role
-      block:  # noqa osism-fqcn
+      block:
         - name: Apply manager role
           ansible.builtin.include_role:
             name: osism.services.manager

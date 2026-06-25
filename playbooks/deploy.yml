@@ -12,6 +12,9 @@
     ansible_playbook: ~/venv/bin/ansible-playbook
     basepath: "{{ ansible_user_dir }}/src/{{ repositories['testbed']['path'] }}"
     manager_address_file: "{{ terraform_path }}/.MANAGER_ADDRESS.{{ cloud }}"
+    # Nova instance name of the manager; override if the terraform "prefix"
+    # var is changed from its "testbed" default.
+    manager_server_name: testbed-manager
     repo_path: "{{ ansible_user_dir }}/src/{{ repository_server }}"
 
     manual_create: false
@@ -117,40 +120,74 @@
         - services
       changed_when: true
 
-    - name: Wait up to 300 seconds for port 22 to become open and contain "OpenSSH"
-      ansible.builtin.wait_for:
-        port: 22
-        host: "{{ manager_host }}"
-        search_regex: OpenSSH
-        delay: 10
-        timeout: 300
+    - name: Ensure the manager is reachable and authenticates over SSH
+      block:
+        - name: Wait up to 300 seconds for port 22 to become open and contain "OpenSSH"
+          ansible.builtin.wait_for:
+            port: 22
+            host: "{{ manager_host }}"
+            search_regex: OpenSSH
+            delay: 10
+            timeout: 300
 
-    - name: Fetch manager ssh hostkey
-      ansible.builtin.shell: "ssh-keyscan {{ manager_host }} >> {{ ansible_user_dir }}/.ssh/known_hosts"
-      register: manager_ssh_hostkey
-      until: manager_ssh_hostkey.rc == 0
-      retries: 60
-      delay: 5
-      changed_when: true
-      no_log: true
+        - name: Fetch manager ssh hostkey
+          ansible.builtin.shell: "ssh-keyscan {{ manager_host }} >> {{ ansible_user_dir }}/.ssh/known_hosts"
+          register: manager_ssh_hostkey
+          until: manager_ssh_hostkey.rc == 0
+          retries: 60
+          delay: 5
+          changed_when: true
+          no_log: true
 
-    - name: Wait until ssh public key authentication to the manager works
-      ansible.builtin.command:
-        cmd: >-
-          ssh
-          -i {{ terraform_path }}/.id_rsa.{{ cloud }}
-          -o BatchMode=yes
-          -o ConnectTimeout=5
-          -o PreferredAuthentications=publickey
-          -o StrictHostKeyChecking=yes
-          -o UserKnownHostsFile={{ ansible_user_dir }}/.ssh/known_hosts
-          {{ image_username }}@{{ manager_host }}
-          true
-      register: manager_ssh_auth
-      until: manager_ssh_auth.rc == 0
-      retries: 60
-      delay: 5
-      changed_when: false
+        - name: Wait until ssh public key authentication to the manager works
+          ansible.builtin.command:
+            cmd: >-
+              ssh
+              -i {{ terraform_path }}/.id_rsa.{{ cloud }}
+              -o BatchMode=yes
+              -o ConnectTimeout=5
+              -o PreferredAuthentications=publickey
+              -o StrictHostKeyChecking=yes
+              -o UserKnownHostsFile={{ ansible_user_dir }}/.ssh/known_hosts
+              {{ image_username }}@{{ manager_host }}
+              true
+          register: manager_ssh_auth
+          until: manager_ssh_auth.rc == 0
+          retries: 60
+          delay: 5
+          changed_when: false
+      rescue:
+        # Manager bring-up failed (port 22, host-key scan, or the public-key
+        # probe). When SSH itself is what failed we cannot pull logs over SSH,
+        # but the serial console is reachable out-of-band with the
+        # orchestrator's cloud credentials, and cloud-init writes its
+        # boot/output there. Must run before post.yml's cleanup tears the
+        # manager down.
+        - name: Capture the manager serial console log (no manager SSH required)
+          ansible.builtin.command:
+            chdir: "{{ terraform_path }}"
+            cmd: "{{ ansible_user_dir }}/venv/bin/openstack console log show {{ manager_server_name }}"
+          environment:
+            OS_CLOUD: "{{ cloud }}"
+          register: manager_console_log
+          changed_when: false
+          failed_when: false
+
+        - name: Show the captured manager serial console log
+          ansible.builtin.debug:
+            msg: >-
+              {{ (manager_console_log.stdout_lines | default([]))
+                 + (manager_console_log.stderr_lines | default([])) }}
+
+        - name: Fail the deploy after capturing console diagnostics
+          ansible.builtin.fail:
+            msg: >-
+              Manager bring-up failed at task '{{ ansible_failed_task.name }}':
+              {{ ansible_failed_result.msg | default('see task result above') }}.
+              The serial console log was captured above (task "Show the
+              captured manager serial console log") for diagnosis. If this was
+              the public-key probe, the usual cause is cloud-init not having
+              written the image user's authorized_keys in time.
 
     - name: Get ssh keypair from terraform environment
       ansible.builtin.shell:

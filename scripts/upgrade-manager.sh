@@ -87,11 +87,19 @@ fi
 # refresh facts
 osism apply facts
 
-if [[ $KOLLA_NAMESPACE == "kolla/release" ]]; then
-    if [[ $MANAGER_VERSION != "latest" || $OPENSTACK_VERSION == "skip" ]]; then
-        OPENSTACK_VERSION=$(docker inspect --format '{{ index .Config.Labels "de.osism.release.openstack"}}' kolla-ansible)
-    fi
-    if [[ $MANAGER_VERSION == "latest" || $(semver $MANAGER_VERSION 10.0.0-0) -ge 0 ]]; then
-        /opt/configuration/scripts/set-kolla-namespace.sh --sync "kolla/release/$OPENSTACK_VERSION"
-    fi
+# Set the Kolla namespace to match the target version. The namespace must be
+# derived from the target manager version, not from the namespace that was used
+# before the upgrade/update:
+#   - current (latest): images live in kolla. When coming from a stable release
+#     the release/<openstack_version> part must be removed again.
+#   - stable >= 10.0.0: images live in kolla/release/<openstack_version>.
+#   - stable <  10.0.0: images live in kolla/release.
+# --sync makes the new namespace effective for the following service upgrade.
+if [[ $MANAGER_VERSION == "latest" ]]; then
+    /opt/configuration/scripts/set-kolla-namespace.sh --sync kolla
+elif [[ $(semver $MANAGER_VERSION 10.0.0-0) -ge 0 ]]; then
+    OPENSTACK_VERSION=$(docker inspect --format '{{ index .Config.Labels "de.osism.release.openstack"}}' kolla-ansible)
+    /opt/configuration/scripts/set-kolla-namespace.sh --sync "kolla/release/$OPENSTACK_VERSION"
+else
+    /opt/configuration/scripts/set-kolla-namespace.sh --sync kolla/release
 fi
