@@ -41,7 +41,7 @@
         repo_path: "{{ result_home.stdout }}/src/github.com"
       when: repo_path is not defined
 
-    - name: Debian/Ubuntu specific tasks  # noqa: osism-fqcn
+    - name: Debian/Ubuntu specific tasks
       when: ansible_os_family == "Debian"
       block:
         - name: Fail if Ubuntu version is lower than 24.04

@@ -15,7 +15,7 @@ VERSION_MANAGER ?= latest
 VERSION_OPENSTACK ?= 2024.2
 
 # renovate: datasource=github-releases depName=opentofu/opentofu
-TOFU_VERSION ?= 1.11.5
+TOFU_VERSION ?= 1.12.3
 TERRAFORM ?= tofu
 TERRAFORM_BLUEPRINT ?= testbed-default
 
@@ -81,6 +81,13 @@ vpn-wireguard-config: setup ## Get the configuration for the wireguard vpn tunne
 	  CLOUD=$(CLOUD) \
 	  ENVIRONMENT=$(ENVIRONMENT) \
 	  vpn-wireguard-config
+
+.PHONY: test-wireguard
+test-wireguard: setup ## Test WireGuard VPN connectivity to the testbed.
+	@make -C terraform \
+	  CLOUD=$(CLOUD) \
+	  ENVIRONMENT=$(ENVIRONMENT) \
+	  test-wireguard
 
 .PHONY: vpn-sshuttle
 vpn-sshuttle: setup ## Establish a sshuttle vpn tunnel.

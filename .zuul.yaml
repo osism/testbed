@@ -96,7 +96,7 @@
     abstract: true
     parent: abstract-testbed-deploy
     vars:
-      manager_version: 10.0.0
+      manager_version: 10.1.0
       tempest: true
       prometheus_alert_status: false
 
@@ -105,13 +105,13 @@
     abstract: true
     parent: abstract-testbed-deploy-in-a-nutshell
     vars:
-      manager_version: 10.0.0
+      manager_version: 10.1.0
 
 # -----------------------------------------------------------------------------
 # 2.4 Abstract Jobs for Upgrade/Update Operations
 # -----------------------------------------------------------------------------
 
-# Update: Minor version update (e.g., 9.4.0 -> 9.5.0)
+# Update: Minor version update (e.g., X.1.0 -> X.2.0)
 - job:
     name: abstract-testbed-update-stable
     abstract: true
@@ -120,7 +120,7 @@
     nodeset: testbed-orchestrator
     timeout: 30000
 
-# Upgrade: Major version upgrade (e.g., 9.5.0 -> 10.0.0)
+# Upgrade: Major version upgrade (e.g., X.1.0 -> Y.1.0)
 - job:
     name: abstract-testbed-upgrade-stable
     abstract: true
@@ -191,7 +191,7 @@
       tempest: true
 
 # -----------------------------------------------------------------------------
-# 3.4 "In a Nutshell" Deploy Jobs - Current OpenStack Release (2024.2)
+# 3.4 "In a Nutshell" Deploy Jobs - Current OpenStack Release (2025.1)
 # -----------------------------------------------------------------------------
 
 - job:
@@ -199,7 +199,7 @@
     parent: testbed-deploy-in-a-nutshell-ubuntu-24.04
     vars:
       ceph_version: reef
-      openstack_version: "2024.2"
+      openstack_version: "2025.1"
 
 - job:
     name: testbed-deploy-current-in-a-nutshell-with-tempest-ubuntu-24.04
@@ -256,7 +256,7 @@
     timeout: 30000
 
 # -----------------------------------------------------------------------------
-# 4.2 Update Jobs (Minor Version: 9.4.0 -> 9.5.0)
+# 4.2 Update Jobs (Minor Version: X.1.0 -> X.2.0)
 # -----------------------------------------------------------------------------
 
 - job:
@@ -264,11 +264,11 @@
     parent: abstract-testbed-update-stable
     vars:
       terraform_environment: ubuntu-24.04
-      manager_version: 9.4.0
-      manager_version_next: 9.5.0
+      manager_version: 10.1.0
+      manager_version_next: 10.2.0
 
 # -----------------------------------------------------------------------------
-# 4.3 Upgrade Jobs (Major Version: 9.5.0 -> 10.0.0)
+# 4.3 Upgrade Jobs (Major Version: X.1.0 -> Y.1.0)
 # -----------------------------------------------------------------------------
 
 - job:
@@ -277,7 +277,7 @@
     vars:
       terraform_environment: ci-ubuntu-24.04
       manager_version: 9.5.0
-      manager_version_next: 10.0.0
+      manager_version_next: 10.1.0
 
 # NOTE: The following upgrade jobs are currently disabled.
 # They can be enabled once the respective OS support is validated.
@@ -300,10 +300,10 @@
     nodeset: testbed-orchestrator
     timeout: 30000
     vars:
-      manager_version: 9.5.0
+      manager_version: 10.1.0
       ceph_version_next: skip
       manager_version_next: latest
-      openstack_version_next: "2024.2"
+      openstack_version_next: "2025.1"
 
 - job:
     name: testbed-upgrade-stable-next-ubuntu-24.04
@@ -312,10 +312,10 @@
     nodeset: testbed-orchestrator
     timeout: 30000
     vars:
-      manager_version: 9.5.0
+      manager_version: 10.1.0
       ceph_version_next: skip
       manager_version_next: latest
-      openstack_version_next: "2025.1"
+      openstack_version_next: "2025.2"
 
 # =============================================================================
 # 5. PROJECT PIPELINE DEFINITION
