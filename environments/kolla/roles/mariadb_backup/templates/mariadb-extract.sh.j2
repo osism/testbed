@@ -84,7 +84,7 @@ fi
 # for incrementals, the 'since-<base>' linkage needed to restore the chain.
 name=$(basename "$srcdir")
 dst="{{ mariadb_backup_destination_dir_mariadb }}/${rel}"
-[ -d "$dst"] || mkdir -p "$dst"
+[ -d "$dst" ] || mkdir -p "$dst"
 
 sudo cat $srcfile | gpg --batch --yes --encrypt \
     --recipient "{{ mariadb_backup_gpg_recipient }}" --trust-model always \

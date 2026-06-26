@@ -7,6 +7,8 @@ user = dragon
 key_file = {{ mariadb_backup_ssh_key }}
 {% endif %}
 shell_type = unix
+md5sum_command = md5sum
+sha1sum_command = sha1sum
 
 [{{ mariadb_backup_s3_remote }}]
 type = s3
