@@ -25,7 +25,6 @@ latest_incr_dir() {
   # Print the incremental backup directory whose *name* encodes the most recent
   # timestamp. Name format: incr-<HH>-<MM>-<SS>-<DD>-<MM>-<YYYY>-since-...
   # Sorting is on the name, not the filesystem mtime.
-  local volume="${1:-.}"
   local path name h mi s d mo y key best_key="" best_dir=""
 
   while IFS= read -r path; do
@@ -38,7 +37,7 @@ latest_incr_dir() {
       best_key=$key
       best_dir=$path
     fi
-  done < <(find "$volume" -mindepth 1 -maxdepth 1 -type d -name 'incr-*')
+  done < <(sudo find {{ mariadb_backup_backup_volume_dir }} -mindepth 1 -maxdepth 1 -type d -name 'incr-*')
 
   [[ -n "$best_dir" ]] && printf '%s\n' "$best_dir"
 }
@@ -53,8 +52,8 @@ parse_daily_rel() {
   f6=$(cut -d"." -f1 <<<"$rest")
   if [[ "$k" == "full" && "$f3" =~ ^[0-9]{4}$ ]]; then
     printf 'daily/%s/%s/%s' "$f3" "$f2" "$f1"
-  elif [[ "$k" == "incremental" && "$f6" =~ ^[0-9]{4}$ ]]; then
-    printf 'hourly/%s/%s/%s/%s' "$f6" "$f5" "$f4" "$f1"
+  elif [[ "$base" == "incr" && "$f5" =~ ^[0-9]{4}$ ]]; then
+    printf 'hourly/%s/%s/%s/%s' "$f5" "$f4" "$f3" "$fk"
   else
     # fall back to current UTC date/hour if the name is unexpected
     if [[ "$k" == "incremental" ]]; then printf 'hourly/%s/%s/%s' "$NOW_Y" "$NOW_m" "$NOW_d"
@@ -64,7 +63,7 @@ parse_daily_rel() {
 
 case "$TYPE" in
   full)        srcdir=$(current_full_dir); rel=$(parse_daily_rel "$(basename "${srcdir:-x}")") ;;
-  incremental) srcdir=$(newest_incr_dir);  rel=$(parse_daily_rel "$(basename "${srcdir:-x}")") ;;
+  incremental) srcdir=$(latest_incr_dir);  rel=$(parse_daily_rel "$(basename "${srcdir:-x}")") ;;
   weekly)      srcdir=$(current_full_dir); rel="weekly/${ISOY}/${ISOW}" ;;
   monthly)     srcdir=$(current_full_dir); rel="monthly/${NOW_Y}/${NOW_m}" ;;
   *) echo "unknown type: $TYPE" >&2; exit 2 ;;
@@ -85,7 +84,7 @@ fi
 # for incrementals, the 'since-<base>' linkage needed to restore the chain.
 name=$(basename "$srcdir")
 dst="{{ mariadb_backup_destination_dir_mariadb }}/${rel}"
-mkdir -p "$dst"
+[ -d "$dst"] || mkdir -p "$dst"
 
 sudo cat $srcfile | gpg --batch --yes --encrypt \
     --recipient "{{ mariadb_backup_gpg_recipient }}" --trust-model always \
