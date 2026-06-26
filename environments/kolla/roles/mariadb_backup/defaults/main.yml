@@ -40,8 +40,6 @@ mariadb_backup_rclone_config_file: "{{ mariadb_backup_config_dir }}/rclone.conf"
 # --- rclone remotes ---------------------------------------------------------
 mariadb_backup_sftp_remote: "sftp-mariadb"
 mariadb_backup_s3_remote: "s3offsite"
-mariadb_backup_local_remote: "manager-local"
-mariadb_backup_local_s3_union_remote: "backup"
 
 # Off-site S3 remote
 mariadb_backup_s3_hostname: ""

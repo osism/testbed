@@ -21,13 +21,3 @@ list_version = 2
 force_path_style = {{ (not mariadb_backup_s3_virtual_hosted_style_bucket | bool) | lower }}
 # Don't try to create a bucket
 no_check_bucket = true
-
-[{{ mariadb_backup_local_remote }}]
-type = local
-
-[{{ mariadb_backup_local_s3_union_remote }}]
-type = union
-upstreams = {{ mariadb_backup_local_remote }}:{{ mariadb_backup_destination_dir_manager }} {{ mariadb_backup_s3_remote }}:{{ mariadb_backup_s3_bucket }}{% if mariadb_backup_s3_path %}{{ mariadb_backup_s3_path }}{% endif %}
-action_policy = epall
-create_policy = epall
-search_policy = epall

@@ -41,7 +41,12 @@ esac
 # 4. pull encrypted subtree from control node to manager disk (Copy 1)
 rclone_run copy \
   "{{ mariadb_backup_sftp_remote }}:{{ mariadb_backup_destination_dir_mariadb }}/${sub}" \
-  "{{ mariadb_backup_local_s3_union_remote }}:${sub}" \
+  "{{ mariadb_backup_destination_dir_manager }}/${sub}"
+
+# 5. upload encrypted subtree from manager disk to offsite S3 (Copy 2)
+rclone_run copy \
+  "{{ mariadb_backup_local_remote }}:${sub}" \
+  "{{ mariadb_backup_s3_remote }}:{{ mariadb_backup_destination_dir_manager }} {{ mariadb_backup_s3_remote }}:{{ mariadb_backup_s3_bucket }}{% if mariadb_backup_s3_path %}{{ mariadb_backup_s3_path }}{% endif %}/${sub}" \
   --s3-object-lock-mode {{ mariadb_backup_object_lock_mode }} \
   --s3-object-lock-retain-until-date "${ret}d"
 
