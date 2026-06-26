@@ -53,7 +53,7 @@ parse_daily_rel() {
   if [[ "$k" == "full" && "$f3" =~ ^[0-9]{4}$ ]]; then
     printf 'daily/%s/%s/%s' "$f3" "$f2" "$f1"
   elif [[ "$base" == "incr" && "$f5" =~ ^[0-9]{4}$ ]]; then
-    printf 'hourly/%s/%s/%s/%s' "$f5" "$f4" "$f3" "$fk"
+    printf 'hourly/%s/%s/%s/%s' "$f5" "$f4" "$f3" "$k"
   else
     # fall back to current UTC date/hour if the name is unexpected
     if [[ "$k" == "incremental" ]]; then printf 'hourly/%s/%s/%s' "$NOW_Y" "$NOW_m" "$NOW_d"
