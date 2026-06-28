@@ -1,0 +1,86 @@
+---
+# Capture the tail of the Glance API log from every testbed host into the job
+# output, so a failing Octavia/Glance image import can be diagnosed.
+#
+# Glance writes its log to a file -- kolla-ansible sets
+# "log_file = /var/log/kolla/glance/glance-api.log" -- and not to the
+# container's stdout, so "docker logs glance_api" does not contain the
+# web-download import error. The image-import step ("osism manage image
+# octavia") only reports that the image is "stuck in queued"; the actual reason
+# (download / qcow2->raw conversion / Ceph write) lives only in the on-host
+# glance-api.log. Capturing it here lets zuul-analyzer (which only consumes the
+# job output) classify the failing stage. See the issue-tracker entry
+# "octavia-stuck-queued".
+#
+# This runs in post-run, before the cleanup play tears the environment down.
+# The orchestrator can only reach the manager directly (the nodes sit on a
+# private network), so we hop through the manager, which fans out to every
+# deployed host. The play is best-effort and must never fail the job.
+- name: Collect Glance API logs play
+  hosts: all
+
+  vars_files:
+    - vars/mappings.yml
+    - vars/repositories.yml
+
+  vars:
+    basepath: "{{ ansible_user_dir }}/src/{{ repositories['testbed']['path'] }}"
+    terraform_path: "{{ basepath }}/terraform"
+    glance_log_tail_lines: 2000
+
+  tasks:
+    - name: Set cloud fact (Zuul deployment)
+      ansible.builtin.set_fact:
+        cloud: "{{ cloud_envs[hostvars[groups['all'][0]]['nodepool']['label']] }}"
+      when: "'nodepool' in hostvars[groups['all'][0]]"
+
+    - name: Set cloud fact (local deployment)
+      ansible.builtin.set_fact:
+        cloud: "{{ testbed_cloud | default('ci') }}"
+      when: "'nodepool' not in hostvars[groups['all'][0]]"
+
+    - name: Read the manager address
+      ansible.builtin.slurp:
+        src: "{{ terraform_path }}/.MANAGER_ADDRESS.{{ cloud }}"
+      register: _glance_manager_address
+      failed_when: false
+
+    - name: Capture the Glance API log from all testbed hosts
+      when: _glance_manager_address.content is defined
+      vars:
+        manager_host: "{{ _glance_manager_address.content | b64decode | trim | split('=') | last | replace('\"', '') }}"
+      ansible.builtin.shell:
+        cmd: |
+          set -o pipefail
+          ssh \
+            -i {{ terraform_path }}/.id_rsa.{{ cloud }} \
+            -o BatchMode=yes \
+            -o ConnectTimeout=10 \
+            -o StrictHostKeyChecking=no \
+            -o UserKnownHostsFile=/dev/null \
+            -o LogLevel=ERROR \
+            dragon@{{ manager_host }} 'bash -s' <<'REMOTE'
+          set -uo pipefail
+          hosts=$(osism get hosts 2>/dev/null | awk -F'|' '/^\|/ {gsub(/^ +| +$/,"",$2); if ($2!="" && $2!="Host" && $2!~/^-+$/) print $2}')
+          for h in $hosts; do
+            echo "===== glance-api.log (tail -n {{ glance_log_tail_lines }}) @ ${h} ====="
+            ssh -o StrictHostKeyChecking=no -o LogLevel=ERROR "${h}" '(sudo -n tail -n {{ glance_log_tail_lines }} /var/log/kolla/glance/glance-api.log || tail -n {{ glance_log_tail_lines }} /var/log/kolla/glance/glance-api.log) 2>/dev/null || echo "(no readable glance-api.log on this host)"'
+            echo
+          done
+          REMOTE
+      args:
+        executable: /bin/bash
+      register: _glance_logs
+      changed_when: false
+      failed_when: false
+
+    # Surface stdout *and* stderr: when the SSH to the manager fails before
+    # producing output, the reason lives in stderr and stdout_lines is an empty
+    # (defined) list, so a plain `default` would not fire. `default(..., true)`
+    # also substitutes the falsy/empty result.
+    - name: Show the captured Glance API log
+      ansible.builtin.debug:
+        msg: >-
+          {{ ((_glance_logs.stdout_lines | default([]))
+              + (_glance_logs.stderr_lines | default([])))
+             | default(['(glance-api.log capture was skipped or produced no output)'], true) }}
