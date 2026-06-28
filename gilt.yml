@@ -2,6 +2,8 @@
 - git: https://github.com/osism/generics.git
   version: main
   files:
+    - src: environments/manager/ansible.cfg
+      dst: environments/manager/
     - src: environments/manager/images.yml
       dst: environments/manager/
     - src: src/render-images.py
