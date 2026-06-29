@@ -54,6 +54,14 @@ fi
 
 cp /home/dragon/.ssh/id_rsa.pub /opt/ansible/secrets/id_rsa.operator.pub
 
+# Make the operator private key reachable inside the osism/seed container.
+# osism update manager runs the keypair play inside the seed container, which
+# bind-mounts only /opt/configuration; the host-path lookups in secrets.yml do
+# not resolve there. Place a copy in the config dir so the lookup finds it.
+mkdir -p /opt/configuration/environments/secrets
+cp /home/dragon/.ssh/id_rsa /opt/configuration/environments/secrets/id_rsa.operator
+chmod 600 /opt/configuration/environments/secrets/id_rsa.operator
+
 # wait for manager service
 if [[ $CEPH_STACK == "ceph-ansible" ]]; then
     wait_for_container_healthy 60 ceph-ansible
