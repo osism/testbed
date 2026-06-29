@@ -53,11 +53,13 @@ osism apply wait-for-connection -l testbed-resource-nodes -e ireallymeanit=yes
 # pull images
 osism apply -r 2 -e custom baremetal-pull-images
 
+key_value_store=$(valkey_or_redis)
+
 osism apply common
 osism apply loadbalancer
 osism apply openstackclient
 osism apply memcached
-osism apply redis
+osism apply "$key_value_store"
 osism apply mariadb
 osism apply rabbitmq
 
