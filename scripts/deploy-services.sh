@@ -36,3 +36,6 @@ sh -c '/opt/configuration/scripts/deploy/400-monitoring.sh'
 
 # deploy clusterapi
 sh -c '/opt/configuration/scripts/deploy/510-clusterapi.sh'
+
+# configure OVSDB managers (TCP listener on port 6640) on all Open vSwitch nodes
+osism apply --environment custom ovs-manager

@@ -1,0 +1,53 @@
+---
+# Add an OVSDB TCP listener (manager) on port 6640 on all nodes running
+# Open vSwitch (the openvswitch_db container).
+#
+# This exposes the OVSDB on the loopback interface (127.0.0.1) and on the
+# node's internal management address so external clients can connect to it,
+# e.g. on testbed-node-0:
+#
+#   docker exec openvswitch_db ovs-vsctl set-manager \
+#     ptcp:6640:127.0.0.1 ptcp:6640:192.168.16.10
+#
+# This is required in preparation for the use of b42labs/northwatch to
+# demonstrate the OVS feature.
+#
+# Run with:
+#
+#   osism apply --environment custom ovs-manager
+
+- name: Configure OVSDB managers on Open vSwitch nodes
+  hosts: network:compute
+  gather_facts: false
+
+  vars:
+    ovs_managers:
+      - "ptcp:6640:127.0.0.1"
+      - "ptcp:6640:{{ internal_address }}"
+
+  tasks:
+    - name: Check whether the openvswitch_db container exists
+      become: true
+      ansible.builtin.command:
+        cmd: docker inspect openvswitch_db
+      register: ovs_db_container
+      changed_when: false
+      failed_when: false
+
+    - name: Get currently configured OVSDB managers
+      become: true
+      ansible.builtin.command:
+        cmd: docker exec openvswitch_db ovs-vsctl get-manager
+      register: ovs_current_managers
+      changed_when: false
+      when: ovs_db_container.rc == 0
+
+    - name: Set OVSDB managers (TCP listener on port 6640)
+      become: true
+      ansible.builtin.command:
+        cmd: "docker exec openvswitch_db ovs-vsctl set-manager {{ ovs_managers | join(' ') }}"
+      changed_when: true
+      when:
+        - ovs_db_container.rc == 0
+        - (ovs_current_managers.stdout_lines | default([]) | map('trim') | sort | list)
+          != (ovs_managers | sort | list)
