@@ -7,7 +7,6 @@ CLOUD ?= $(ENVIRONMENT)
 
 IMAGE_USERNAME ?= ubuntu
 
-CEPH_STACK ?= ceph-ansible
 DEPLOY_MODE ?= manager
 
 VERSION_CEPH ?= reef
@@ -50,7 +49,6 @@ create: prepare ## Create required infrastructure with OpenTofu.
 	  --environment $(ENVIRONMENT) \
 	  --cloud $(CLOUD)
 	make -C terraform \
-	  CEPH_STACK=$(CEPH_STACK) \
 	  CLOUD=$(CLOUD) \
 	  CONFIGURATION=$(CONFIGURATION) \
 	  ENVIRONMENT=$(ENVIRONMENT) \
@@ -122,7 +120,6 @@ bootstrap: setup create ## Bootstrap everything.
 	  -e ceph_version=$$RESOLVED_CEPH \
 	  -e manager_version=$(VERSION_MANAGER) \
 	  -e openstack_version=$$RESOLVED_OS \
-	  -e ceph_stack=$(CEPH_STACK) \
 	  -e deploy_mode=$(DEPLOY_MODE)
 
 .PHONY: manager

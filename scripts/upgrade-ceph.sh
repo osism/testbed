@@ -34,8 +34,4 @@ sync_inventory
 osism apply facts
 
 # upgrade services
-if [[ $CEPH_STACK == "ceph-ansible" ]]; then
-    sh -c '/opt/configuration/scripts/upgrade/100-ceph-with-ansible.sh'
-elif [[ $CEPH_STACK == "rook" ]]; then
-    sh -c '/opt/configuration/scripts/upgrade/100-ceph-with-rook.sh'
-fi
+sh -c '/opt/configuration/scripts/upgrade/100-ceph-with-ansible.sh'

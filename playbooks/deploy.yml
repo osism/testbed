@@ -34,8 +34,6 @@
     _tempest: "{{ tempest | default(false) | bool }}"
     _prometheus_alert_status: "{{ prometheus_alert_status | default(false) | bool }}"
 
-    _ceph_stack: "{{ ceph_stack | default('ceph-ansible') }}"
-
     _terraform_environment: "{{ terraform_environment | default('ci-ubuntu-24.04') }}"
 
   tasks:
@@ -76,7 +74,6 @@
             VERSION_MANAGER={{ _manager_version }}
             VERSION_OPENSTACK={{ _openstack_version }}
             TEMPEST={{ _tempest | lower }}
-            CEPH_STACK={{ _ceph_stack }}
             create
       when:
         - not manual_create | bool
@@ -94,7 +91,6 @@
             TERRAFORM={{ terraform_binary }}
             VERSION_MANAGER={{ _manager_version }}
             TEMPEST={{ _tempest | lower }}
-            CEPH_STACK={{ _ceph_stack }}
             create
       when:
         - not manual_create | bool

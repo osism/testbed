@@ -9,9 +9,9 @@
       register: result
       changed_when: true
 
-    # Rook sometimes leaves entries in /dev/mapper that cannot be removed with dmsetup.
+    # Ceph sometimes leaves entries in /dev/mapper that cannot be removed with dmsetup.
     # These are ignored.
-    - name: Remove all rook related logical devices
+    - name: Remove all ceph related logical devices owned by UID 167
       become: true
       ansible.builtin.shell:
         dmsetup remove -f {{ item }} || exit 0
@@ -26,8 +26,7 @@
         patterns: "ceph*"
       register: result
 
-    # https://github.com/rook/rook/issues/6865#issuecomment-756698522
-    # Rook sometimes leaves entries in /dev/mapper that cannot be removed with dmsetup.
+    # Ceph sometimes leaves entries in /dev/mapper that cannot be removed with dmsetup.
     # These are ignored.
     - name: Remove all ceph related logical devices
       become: true
