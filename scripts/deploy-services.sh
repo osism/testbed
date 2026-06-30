@@ -22,11 +22,7 @@ sh -c '/opt/configuration/scripts/deploy/500-kubernetes.sh'
 sh -c '/opt/configuration/scripts/deploy/200-infrastructure.sh'
 
 # deploy ceph services
-if [[ $CEPH_STACK == "ceph-ansible" ]]; then
-    sh -c '/opt/configuration/scripts/deploy/100-ceph-with-ansible.sh'
-elif [[ $CEPH_STACK == "rook" ]]; then
-    sh -c '/opt/configuration/scripts/deploy/100-ceph-with-rook.sh'
-fi
+sh -c '/opt/configuration/scripts/deploy/100-ceph-with-ansible.sh'
 
 # deploy openstack services
 sh -c '/opt/configuration/scripts/deploy/300-openstack.sh'

@@ -55,9 +55,7 @@ else
 fi
 
 # wait for manager service
-if [[ $CEPH_STACK == "ceph-ansible" ]]; then
-    wait_for_container_healthy 60 ceph-ansible
-fi
+wait_for_container_healthy 60 ceph-ansible
 wait_for_container_healthy 60 kolla-ansible
 wait_for_container_healthy 60 osism-ansible
 
@@ -72,7 +70,6 @@ osism apply gather-facts
 # create symlinks for deploy scripts
 sudo ln -sf /opt/configuration/scripts/deploy/001-helpers.sh /usr/local/bin/deploy-helper
 sudo ln -sf /opt/configuration/scripts/deploy/100-ceph-with-ansible.sh /usr/local/bin/deploy-ceph-with-ansible
-sudo ln -sf /opt/configuration/scripts/deploy/100-ceph-with-rook.sh /usr/local/bin/deploy-ceph-with-rook
 sudo ln -sf /opt/configuration/scripts/deploy/200-infrastructure.sh /usr/local/bin/deploy-infrastructure
 sudo ln -sf /opt/configuration/scripts/deploy/300-openstack.sh /usr/local/bin/deploy-openstack
 sudo ln -sf /opt/configuration/scripts/deploy/320-openstack-minimal.sh /usr/local/bin/deploy-openstack-minimal
@@ -83,7 +80,6 @@ sudo ln -sf /opt/configuration/scripts/deploy/510-clusterapi.sh /usr/local/bin/d
 # create symlinks for upgrade scripts
 sudo ln -sf /opt/configuration/scripts/upgrade-manager.sh /usr/local/bin/upgrade-manager
 sudo ln -sf /opt/configuration/scripts/upgrade/100-ceph-with-ansible.sh /usr/local/bin/upgrade-ceph-with-ansible
-sudo ln -sf /opt/configuration/scripts/upgrade/100-ceph-with-rook.sh /usr/local/bin/upgrade-ceph-with-rook
 sudo ln -sf /opt/configuration/scripts/upgrade/200-infrastructure.sh /usr/local/bin/upgrade-infrastructure
 sudo ln -sf /opt/configuration/scripts/upgrade/300-openstack.sh /usr/local/bin/upgrade-openstack
 sudo ln -sf /opt/configuration/scripts/upgrade/320-openstack-minimal.sh /usr/local/bin/upgrade-openstack-minimal
