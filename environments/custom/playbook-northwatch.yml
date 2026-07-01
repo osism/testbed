@@ -1,0 +1,217 @@
+---
+# Install and configure Northwatch (https://github.com/b42Labs/northwatch) on the
+# manager so it can browse, debug and monitor the testbed's OVN control plane.
+#
+# This is the config-file equivalent of Northwatch's `make testbed` target: instead
+# of launching the binary interactively with OS_* environment variables and CLI
+# flags, it installs the .deb package and drives everything from a JSON config file
+# (/etc/northwatch/clusters.json) plus the /etc/default/northwatch EnvironmentFile
+# that the shipped northwatch.service reads.
+#
+# Run it on the manager with:
+#   osism apply --environment custom northwatch
+#
+# Afterwards the dashboard/API is reachable on the manager on port 8080. Northwatch
+# has no built-in authentication, so reach it over the WireGuard/sshuttle VPN or an
+# SSH tunnel to the manager (see `make vpn-wireguard` / `make login`).
+
+- name: Install and configure Northwatch on the manager
+  hosts: manager
+  gather_facts: true
+
+  vars:
+    # renovate: datasource=github-releases depName=b42Labs/northwatch
+    northwatch_version: "0.5.0"
+    northwatch_deb_arch: "{{ 'arm64' if ansible_architecture == 'aarch64' else 'amd64' }}"
+    northwatch_deb_url: >-
+      https://github.com/B42Labs/northwatch/releases/download/v{{ northwatch_version }}/northwatch_{{ northwatch_version }}_{{ northwatch_deb_arch }}.deb
+
+    # OVN control plane hosts (Northbound/Southbound OVSDB). The testbed control
+    # nodes; the addresses are joined comma-separated for Raft failover, mirroring
+    # TESTBED_NB / TESTBED_SB in Northwatch's Makefile.
+    northwatch_ovn_hosts: "{{ groups['control'] }}"
+    northwatch_ovn_addresses: "{{ northwatch_ovn_hosts | map('extract', hostvars, 'internal_address') | list }}"
+    northwatch_ovn_nb_addr: "{{ northwatch_ovn_addresses | map('regex_replace', '^', 'tcp:') | map('regex_replace', '$', ':6641') | join(',') }}"
+    northwatch_ovn_sb_addr: "{{ northwatch_ovn_addresses | map('regex_replace', '^', 'tcp:') | map('regex_replace', '$', ':6642') | join(',') }}"
+
+    # OpenStack enrichment resolves OVN UUIDs to human-readable names. Mirrors the
+    # `admin` cloud in environments/openstack/clouds.yml used by `make testbed`.
+    northwatch_os_auth_url: "https://api.testbed.osism.xyz:5000/v3"
+    northwatch_os_username: "admin"
+    northwatch_os_password: "{{ keystone_admin_password | default('password') }}"
+    northwatch_os_project_name: "admin"
+    northwatch_os_domain_name: "default"
+    northwatch_os_region_name: "RegionOne"
+    northwatch_os_cacert: "/etc/ssl/certs/ca-certificates.crt"
+
+    # HTTP listen address for the dashboard/API. ":8080" binds all interfaces (same
+    # as `make testbed`); reach it over the VPN/SSH tunnel to the manager.
+    northwatch_listen: ":8080"
+
+    # Enable write operations to the OVN Northbound (matches `make testbed`).
+    northwatch_write_enabled: true
+
+    # Per-chassis Open_vSwitch visibility. The map keys are chassis system-ids
+    # (== node hostname) and the values are the OVSDB management address the node
+    # listens on (ptcp:6640:{{ internal_address }}, configured by the second play
+    # below). Set to false to disable OVS visibility entirely.
+    northwatch_ovs_enabled: true
+    northwatch_ovs_hosts: "{{ (groups['network'] + groups['compute']) | unique | list }}"
+    northwatch_ovs_targets: "{{ northwatch_ovs_hosts | map('extract', hostvars, 'internal_address') | map('regex_replace', '^', 'tcp:') | map('regex_replace', '$', ':6640') | list }}"
+    northwatch_ovs_map: "{{ dict(northwatch_ovs_hosts | zip(northwatch_ovs_targets)) }}"
+
+    northwatch_config_dir: /etc/northwatch
+    northwatch_config_file: "{{ northwatch_config_dir }}/clusters.json"
+    northwatch_ovs_map_file: "{{ northwatch_config_dir }}/ovs-mgmt-addr.json"
+
+    # Multi-cluster JSON config (--config-file / NORTHWATCH_CONFIG_FILE). Overrides
+    # the flat NB/SB env vars and carries the OpenStack enrichment credentials.
+    northwatch_clusters:
+      clusters:
+        - name: testbed
+          label: OSISM Testbed
+          ovn_nb_addr: "{{ northwatch_ovn_nb_addr }}"
+          ovn_sb_addr: "{{ northwatch_ovn_sb_addr }}"
+          enrichment:
+            type: openstack
+            os_auth_url: "{{ northwatch_os_auth_url }}"
+            os_username: "{{ northwatch_os_username }}"
+            os_password: "{{ northwatch_os_password }}"
+            os_project_name: "{{ northwatch_os_project_name }}"
+            os_domain_name: "{{ northwatch_os_domain_name }}"
+            os_region_name: "{{ northwatch_os_region_name }}"
+            os_cacert: "{{ northwatch_os_cacert }}"
+
+  handlers:
+    - name: Restart northwatch
+      become: true
+      ansible.builtin.systemd:
+        name: northwatch
+        state: restarted
+
+  tasks:
+    - name: Install the Northwatch package
+      become: true
+      ansible.builtin.apt:
+        deb: "{{ northwatch_deb_url }}"
+      notify: Restart northwatch
+
+    - name: Create the Northwatch configuration directory
+      become: true
+      ansible.builtin.file:
+        path: "{{ northwatch_config_dir }}"
+        state: directory
+        mode: "0750"
+        owner: root
+        group: northwatch
+
+    - name: Write the Northwatch multi-cluster configuration
+      become: true
+      ansible.builtin.copy:
+        content: "{{ northwatch_clusters | to_nice_json }}\n"
+        dest: "{{ northwatch_config_file }}"
+        mode: "0640"
+        owner: root
+        group: northwatch
+      notify: Restart northwatch
+
+    - name: Write the Open_vSwitch management-address mapping
+      become: true
+      ansible.builtin.copy:
+        content: "{{ northwatch_ovs_map | to_nice_json }}\n"
+        dest: "{{ northwatch_ovs_map_file }}"
+        mode: "0640"
+        owner: root
+        group: northwatch
+      when: northwatch_ovs_enabled | bool
+      notify: Restart northwatch
+
+    - name: Configure the Northwatch service environment
+      become: true
+      ansible.builtin.copy:
+        dest: /etc/default/northwatch
+        mode: "0640"
+        owner: root
+        group: northwatch
+        content: |
+          # Managed by environments/custom/playbook-northwatch.yml — do not edit by hand.
+          # Environment for northwatch.service (flags > env vars).
+
+          # Multi-cluster JSON config: carries the OVN NB/SB addresses and the
+          # OpenStack enrichment credentials for the testbed cluster.
+          NORTHWATCH_CONFIG_FILE={{ northwatch_config_file }}
+
+          # HTTP listen address for the dashboard/API (no built-in auth).
+          NORTHWATCH_LISTEN={{ northwatch_listen }}
+
+          # Enable write operations to the OVN Northbound.
+          NORTHWATCH_WRITE_ENABLED={{ northwatch_write_enabled | bool | ternary('true', 'false') }}
+
+          # SQLite history DB, persisted under the systemd StateDirectory.
+          NORTHWATCH_HISTORY_DB_PATH=/var/lib/northwatch/history.db
+          {% if northwatch_ovs_enabled | bool %}
+          # Per-chassis Open_vSwitch visibility (system-id -> OVSDB mgmt address).
+          NORTHWATCH_OVS_MGMT_ADDR_FILE={{ northwatch_ovs_map_file }}
+          {% endif %}
+      notify: Restart northwatch
+
+    - name: Enable and start the Northwatch service
+      become: true
+      ansible.builtin.systemd:
+        name: northwatch
+        enabled: true
+        state: started
+
+    - name: Show how to reach the Northwatch dashboard
+      ansible.builtin.debug:
+        msg: >-
+          Northwatch {{ northwatch_version }} is running on the manager. Open
+          http://{{ internal_address }}{{ northwatch_listen }} over the VPN/SSH
+          tunnel (NB {{ northwatch_ovn_nb_addr }}).
+
+# Configure the OVSDB managers (TCP listener on port 6640) on every node running
+# Open vSwitch (the openvswitch_db container), so Northwatch can pull per-chassis
+# OVS visibility. A listener is added on 127.0.0.1 and on the node's own internal
+# management address. Guarded by the presence of the openvswitch_db container and
+# made idempotent via a get-manager comparison. Skipped when OVS visibility is
+# disabled (northwatch_ovs_enabled=false).
+- name: Configure OVSDB managers on Open vSwitch nodes
+  hosts: network:compute
+  gather_facts: false
+
+  vars:
+    northwatch_ovs_enabled: true
+    ovs_managers:
+      - "ptcp:6640:127.0.0.1"
+      - "ptcp:6640:{{ internal_address }}"
+
+  tasks:
+    - name: Check whether the openvswitch_db container exists
+      become: true
+      ansible.builtin.command:
+        cmd: docker inspect openvswitch_db
+      register: ovs_db_container
+      changed_when: false
+      failed_when: false
+      when: northwatch_ovs_enabled | bool
+
+    - name: Get currently configured OVSDB managers
+      become: true
+      ansible.builtin.command:
+        cmd: docker exec openvswitch_db ovs-vsctl get-manager
+      register: ovs_current_managers
+      changed_when: false
+      when:
+        - northwatch_ovs_enabled | bool
+        - ovs_db_container.rc | default(1) == 0
+
+    - name: Set OVSDB managers (TCP listener on port 6640)
+      become: true
+      ansible.builtin.command:
+        cmd: "docker exec openvswitch_db ovs-vsctl set-manager {{ ovs_managers | join(' ') }}"
+      changed_when: true
+      when:
+        - northwatch_ovs_enabled | bool
+        - ovs_db_container.rc | default(1) == 0
+        - (ovs_current_managers.stdout_lines | default([]) | map('trim') | sort | list)
+          != (ovs_managers | sort | list)
