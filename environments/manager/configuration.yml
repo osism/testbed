@@ -45,6 +45,12 @@ flower_enable: true
 flower_traefik: true
 flower_host: flower.testbed.osism.xyz
 
+# NOTE: internal_interface is defined in inventory/group_vars/testbed-managers.yml,
+#       which is not loaded in the reduced manager environment used by the seed
+#       container (osism update manager). Define it here so osism_api_host
+#       resolves in that context. The referenced local fact is installed on the
+#       manager during bootstrap and is available whenever facts are gathered.
+internal_interface: "{{ ansible_local.testbed_network_devices.management }}"
 osism_api_host: "{{ hostvars[inventory_hostname]['ansible_' + internal_interface]['ipv4']['address'] }}"
 
 ##########################
