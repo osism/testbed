@@ -3,6 +3,7 @@ set -x
 set -e
 
 source /opt/manager-vars.sh
+source /opt/configuration/scripts/include.sh
 
 packages='libmonitoring-plugin-perl libwww-perl libjson-perl monitoring-plugins-basic mariadb-client'
 
@@ -60,11 +61,18 @@ else
     run_check "RabbitMQ" perl nagios-plugins/check_rabbitmq_cluster --ssl 1 -H api-int.testbed.osism.xyz -u openstack -p password
 fi
 
+# The key-value store switched from redis to valkey at OpenStack 2025.2. Select
+# the active service (same as deploy/upgrade) and read its master password from
+# secrets.yml so the check tracks the deployed service instead of a hardcoded
+# redis-era password.
+key_value_store=$(valkey_or_redis)
+key_value_store_password=$(awk -v k="${key_value_store}_master_password:" '$1 == k {print $2}' /opt/configuration/environments/kolla/secrets.yml)
+
 echo
-echo "# Status of Redis"
+echo "# Status of ${key_value_store^}"
 echo
 
-run_check "Redis" /usr/lib/nagios/plugins/check_tcp -H 192.168.16.10 -p 6379 -A -E -s 'AUTH QHNA1SZRlOKzLADhUd5ZDgpHfQe6dNfr3bwEdY24\r\nPING\r\nINFO replication\r\nQUIT\r\n' -e 'PONG' -e 'role:master' -e 'slave0:ip=192.168.16.1' -e',port=6379' -j
+run_check "${key_value_store^}" /usr/lib/nagios/plugins/check_tcp -H 192.168.16.10 -p 6379 -A -E -s "AUTH ${key_value_store_password}\r\nPING\r\nINFO replication\r\nQUIT\r\n" -e 'PONG' -e 'role:master' -e 'slave0:ip=192.168.16.1' -e',port=6379' -j
 
 popd > /dev/null
 
