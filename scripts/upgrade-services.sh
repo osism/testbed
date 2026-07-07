@@ -15,9 +15,6 @@ SKIP_CEPH_UPGRADE=${SKIP_CEPH_UPGRADE:-false}
 # pull images
 sh -c '/opt/configuration/scripts/pull-images.sh'
 
-# upgrade kubernetes
-sh -c '/opt/configuration/scripts/upgrade/500-kubernetes.sh'
-
 # upgrade infrastructure services
 if [[ $SKIP_OPENSTACK_UPGRADE == "false" ]]; then
     sh -c '/opt/configuration/scripts/upgrade/200-infrastructure.sh'
