@@ -15,9 +15,6 @@ sh -c '/opt/configuration/scripts/pull-images.sh'
 # deploy helper services
 sh -c '/opt/configuration/scripts/deploy/001-helpers.sh'
 
-# deploy kubernetes
-sh -c '/opt/configuration/scripts/deploy/500-kubernetes.sh'
-
 # deploy infrastructure services
 sh -c '/opt/configuration/scripts/deploy/200-infrastructure.sh'
 
