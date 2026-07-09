@@ -26,6 +26,3 @@ sh -c '/opt/configuration/scripts/deploy/300-openstack.sh'
 
 # deploy monitoring services
 sh -c '/opt/configuration/scripts/deploy/400-monitoring.sh'
-
-# deploy clusterapi
-sh -c '/opt/configuration/scripts/deploy/510-clusterapi.sh'
