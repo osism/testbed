@@ -34,6 +34,3 @@ fi
 if [[ $SKIP_OPENSTACK_UPGRADE == "false" ]]; then
     sh -c '/opt/configuration/scripts/upgrade/400-monitoring.sh'
 fi
-
-# upgrade clusterapi
-sh -c '/opt/configuration/scripts/upgrade/510-clusterapi.sh'
