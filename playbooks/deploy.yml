@@ -127,7 +127,14 @@
             timeout: 300
 
         - name: Fetch manager ssh hostkey
-          ansible.builtin.shell: "ssh-keyscan {{ manager_host }} >> {{ ansible_user_dir }}/.ssh/known_hosts"
+          # Purge any stale entry for this floating IP before scanning. The
+          # orchestrator's known_hosts is persistent and never cleaned, and
+          # ephemeral manager IPs are recycled across builds, so a prior
+          # build's host key can linger ("fossil") and make the strict-check
+          # probe below fail with REMOTE HOST IDENTIFICATION HAS CHANGED.
+          ansible.builtin.shell: >-
+            ssh-keygen -R {{ manager_host }} -f {{ ansible_user_dir }}/.ssh/known_hosts >/dev/null 2>&1;
+            ssh-keyscan {{ manager_host }} >> {{ ansible_user_dir }}/.ssh/known_hosts
           register: manager_ssh_hostkey
           until: manager_ssh_hostkey.rc == 0
           retries: 60
