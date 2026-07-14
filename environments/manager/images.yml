@@ -16,9 +16,6 @@ netbox_image: "{{ docker_registry_netbox|default('registry.osism.tech') }}/osism
 netbox_redis_tag: "7.4.7-alpine"
 netbox_redis_image: "{{ docker_registry|default('registry.osism.tech/dockerhub') }}/library/redis:{{ netbox_redis_tag }}"
 
-nginx_tag: "1.29.3-alpine"
-nginx_image: "{{ docker_registry|default('registry.osism.tech/dockerhub') }}/library/nginx:{{ nginx_tag }}"
-
 pgautoupgrade_tag: "16-alpine"
 pgautoupgrade_image: "{{ docker_registry|default('registry.osism.tech/dockerhub') }}/pgautoupgrade/pgautoupgrade:{{ pgautoupgrade_tag }}"
 
@@ -30,9 +27,6 @@ postgres_image: "{{ docker_registry|default('registry.osism.tech/dockerhub') }}/
 
 manager_redis_tag: "7.4.7-alpine"
 manager_redis_image: "{{ docker_registry|default('registry.osism.tech/dockerhub') }}/library/redis:{{ manager_redis_tag }}"
-
-registry_tag: "3.0"
-registry_image: "{{ docker_registry|default('registry.osism.tech/dockerhub') }}/library/registry:{{ registry_tag }}"
 
 osism_ansible_tag: "{{ osism_ansible_version|default('latest') }}"
 osism_ansible_image: "{{ docker_registry_ansible|default('registry.osism.tech') }}/osism/osism-ansible:{{ osism_ansible_tag }}"
@@ -48,9 +42,6 @@ osism_image: "{{ docker_registry_ansible|default('registry.osism.tech') }}/osism
 
 osism_frontend_tag: "{{ osism_version|default('latest') }}"
 osism_frontend_image: "{{ docker_registry_ansible|default('registry.osism.tech') }}/osism/osism-frontend:{{ osism_frontend_tag }}"
-
-osism_netbox_tag: "{{ osism_version|default('latest') }}"
-osism_netbox_image: "{{ docker_registry_ansible|default('registry.osism.tech') }}/osism/osism-netbox:{{ osism_netbox_tag }}"
 
 vault_tag: "1.21.4"
 vault_image: "{{ docker_registry|default('registry.osism.tech/dockerhub') }}/hashicorp/vault:{{ vault_tag }}"
