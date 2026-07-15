@@ -182,6 +182,75 @@
               {{ (manager_console_log.stdout_lines | default([]))
                  + (manager_console_log.stderr_lines | default([])) }}
 
+        # When manager bring-up fails, capture cloud-side state so the
+        # failure is diagnosable from the job log alone (CI credentials are
+        # not otherwise accessible). All queries are read-only, best-effort,
+        # and use the build's own cloud credentials:
+        #   - the floating IP's port_id shows whether it is associated to the
+        #     expected manager port (vs a foreign/absent one);
+        #   - the tenant server/port/FIP inventory surfaces leftover or
+        #     unexpected resources in the shared project;
+        #   - the live host-key fingerprint records which host actually
+        #     answers the manager address (e.g. when the ssh probe reports a
+        #     changed host key).
+        - name: Capture floating IP association for the manager address
+          ansible.builtin.command:
+            chdir: "{{ terraform_path }}"
+            cmd: >-
+              {{ ansible_user_dir }}/venv/bin/openstack
+              floating ip show {{ manager_host }} -f yaml
+          environment:
+            OS_CLOUD: "{{ cloud }}"
+          register: manager_fip_show
+          changed_when: false
+          failed_when: false
+
+        - name: Show the floating IP association
+          ansible.builtin.debug:
+            msg: >-
+              {{ (manager_fip_show.stdout_lines | default([]))
+                 + (manager_fip_show.stderr_lines | default([])) }}
+
+        - name: Capture tenant server, port and floating IP inventory
+          ansible.builtin.command:
+            chdir: "{{ terraform_path }}"
+            cmd: "{{ ansible_user_dir }}/venv/bin/openstack {{ item }}"
+          environment:
+            OS_CLOUD: "{{ cloud }}"
+          loop:
+            - server list --long -f yaml
+            - port list --long -f yaml
+            - floating ip list --long -f yaml
+          register: manager_tenant_inventory
+          changed_when: false
+          failed_when: false
+
+        - name: Show the tenant inventory
+          ansible.builtin.debug:
+            msg: >-
+              {{ (item.stdout_lines | default([]))
+                 + (item.stderr_lines | default([])) }}
+          loop: "{{ manager_tenant_inventory.results }}"
+          loop_control:
+            label: "{{ item.item }}"
+
+        - name: Fingerprint the host key now presented at the manager address
+          ansible.builtin.shell:
+            cmd: >-
+              set -o pipefail;
+              ssh-keyscan -T 5 {{ manager_host }} 2>/dev/null | ssh-keygen -lf -
+          args:
+            executable: /bin/bash
+          register: manager_hostkey_now
+          changed_when: false
+          failed_when: false
+
+        - name: Show the host key fingerprints now presented
+          ansible.builtin.debug:
+            msg: >-
+              {{ (manager_hostkey_now.stdout_lines | default([]))
+                 + (manager_hostkey_now.stderr_lines | default([])) }}
+
         - name: Fail the deploy after capturing console diagnostics
           ansible.builtin.fail:
             msg: >-
