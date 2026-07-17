@@ -118,6 +118,10 @@
       become: true
       ansible.builtin.apt:
         deb: https://github.com/osism/deb-packaging/raw/refs/heads/main/python3-docker/python3-docker_7.1.0-2_all.deb
+      register: result
+      until: result is succeeded
+      retries: 5
+      delay: 10
       when:
         - "ansible_distribution == 'Ubuntu'"
         - "ansible_distribution_version is version('24.04', '>=')"
