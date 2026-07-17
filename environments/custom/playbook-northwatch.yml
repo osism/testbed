@@ -94,6 +94,10 @@
       become: true
       ansible.builtin.apt:
         deb: "{{ northwatch_deb_url }}"
+      register: result
+      until: result is succeeded
+      retries: 5
+      delay: 10
       notify: Restart northwatch
 
     - name: Create the Northwatch configuration directory
