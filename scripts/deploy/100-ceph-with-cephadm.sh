@@ -397,31 +397,32 @@ echo
 echo "## Configure the orchestrator"
 echo
 
-# Use the operator user and the operator key of the OSISM deployment. The
-# public key is already present on all nodes, no key distribution is required.
-if [[ -e /opt/ansible/secrets/id_rsa.operator ]]; then
-    OPERATOR_KEY=/opt/ansible/secrets/id_rsa.operator
-else
-    OPERATOR_KEY=/home/dragon/.ssh/id_rsa
-fi
+# cephadm connects to the nodes as the operator user with the key pair that was
+# generated during the bootstrap. Its public key is only authorized on the
+# bootstrap node, it has to be authorized on the remaining nodes as well.
+#
+# NOTE: The key pair cannot be replaced with the OSISM operator key, although
+#       that one is already authorized everywhere. Private and public key are
+#       set with two separate commands and each of them validates the SSH
+#       connection immediately (_validate_and_set_ssh_val in the cephadm module).
+#       In between the two halves do not match, so the first command always
+#       fails. This differs from the ceph-ansible migration, where the key is
+#       imported before any host is known and the validation is skipped.
+CEPHADM_PUBLIC_KEY=$(ceph cephadm get-pub-key)
+
+for node in $CEPH_HOSTS; do
+    echo "+ authorize the cephadm ssh key on $node"
+    echo "$CEPHADM_PUBLIC_KEY" | ssh "$node" '
+      mkdir -p ~/.ssh
+      chmod 0700 ~/.ssh
+      touch ~/.ssh/authorized_keys
+      chmod 0600 ~/.ssh/authorized_keys
+      key=$(cat)
+      grep -qxF "$key" ~/.ssh/authorized_keys || echo "$key" >> ~/.ssh/authorized_keys
+    '
+done
 
 ceph cephadm set-user dragon
-
-# The key is imported through /opt/cephclient/data, which is mounted as /data in
-# the cephclient container. The container does not run as root, the files
-# therefore have to belong to the user inside the container.
-CEPHCLIENT_UID=$(docker exec cephclient id -u)
-CEPHCLIENT_GID=$(docker exec cephclient id -g)
-
-sudo install -m 0600 -o "$CEPHCLIENT_UID" -g "$CEPHCLIENT_GID" \
-  "$OPERATOR_KEY" /opt/cephclient/data/id_rsa.operator
-sudo install -m 0600 -o "$CEPHCLIENT_UID" -g "$CEPHCLIENT_GID" \
-  "$OPERATOR_KEY.pub" /opt/cephclient/data/id_rsa.operator.pub
-
-ceph cephadm set-priv-key -i /data/id_rsa.operator
-ceph cephadm set-pub-key -i /data/id_rsa.operator.pub
-
-sudo rm -f /opt/cephclient/data/id_rsa.operator /opt/cephclient/data/id_rsa.operator.pub
 
 ceph config set global container_image "$CEPH_IMAGE"
 ceph config set global public_network "$CEPH_PUBLIC_NETWORK"
