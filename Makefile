@@ -14,7 +14,7 @@ VERSION_MANAGER ?= latest
 VERSION_OPENSTACK ?= 2024.2
 
 # renovate: datasource=github-releases depName=opentofu/opentofu
-TOFU_VERSION ?= 1.12.4
+TOFU_VERSION ?= 1.12.5
 TERRAFORM ?= tofu
 TERRAFORM_BLUEPRINT ?= testbed-default
 
