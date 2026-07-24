@@ -70,6 +70,7 @@ osism apply gather-facts
 # create symlinks for deploy scripts
 sudo ln -sf /opt/configuration/scripts/deploy/001-helpers.sh /usr/local/bin/deploy-helper
 sudo ln -sf /opt/configuration/scripts/deploy/100-ceph-with-ansible.sh /usr/local/bin/deploy-ceph-with-ansible
+sudo ln -sf /opt/configuration/scripts/deploy/100-ceph-with-cephadm.sh /usr/local/bin/deploy-ceph-with-cephadm
 sudo ln -sf /opt/configuration/scripts/deploy/200-infrastructure.sh /usr/local/bin/deploy-infrastructure
 sudo ln -sf /opt/configuration/scripts/deploy/300-openstack.sh /usr/local/bin/deploy-openstack
 sudo ln -sf /opt/configuration/scripts/deploy/320-openstack-minimal.sh /usr/local/bin/deploy-openstack-minimal
