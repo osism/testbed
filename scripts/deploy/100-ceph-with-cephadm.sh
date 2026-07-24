@@ -407,11 +407,20 @@ fi
 
 ceph cephadm set-user dragon
 
-sudo cp "$OPERATOR_KEY" /opt/cephclient/data/id_rsa.operator
-sudo cp "$OPERATOR_KEY.pub" /opt/cephclient/data/id_rsa.operator.pub
-sudo chmod 0600 /opt/cephclient/data/id_rsa.operator
+# The key is imported through /opt/cephclient/data, which is mounted as /data in
+# the cephclient container. The container does not run as root, the files
+# therefore have to belong to the user inside the container.
+CEPHCLIENT_UID=$(docker exec cephclient id -u)
+CEPHCLIENT_GID=$(docker exec cephclient id -g)
+
+sudo install -m 0600 -o "$CEPHCLIENT_UID" -g "$CEPHCLIENT_GID" \
+  "$OPERATOR_KEY" /opt/cephclient/data/id_rsa.operator
+sudo install -m 0600 -o "$CEPHCLIENT_UID" -g "$CEPHCLIENT_GID" \
+  "$OPERATOR_KEY.pub" /opt/cephclient/data/id_rsa.operator.pub
+
 ceph cephadm set-priv-key -i /data/id_rsa.operator
 ceph cephadm set-pub-key -i /data/id_rsa.operator.pub
+
 sudo rm -f /opt/cephclient/data/id_rsa.operator /opt/cephclient/data/id_rsa.operator.pub
 
 ceph config set global container_image "$CEPH_IMAGE"
