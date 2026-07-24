@@ -69,13 +69,6 @@ fi
 
 docker compose --project-directory /opt/manager ps
 
-# use osism.commons.still_alive stdout callback
-if [[ $(semver $MANAGER_VERSION 7.0.0) -ge 0 || $MANAGER_VERSION == "latest" ]]; then
-    # The plugin is available in OSISM >= 7.0.0 and higher. In future, the callback
-    # plugin will be used by default.
-    sed -i "s/community.general.yaml/osism.commons.still_alive/" /opt/configuration/environments/ansible.cfg
-fi
-
 osism apply resolvconf -l testbed-manager
 osism apply sshconfig
 osism apply known-hosts
