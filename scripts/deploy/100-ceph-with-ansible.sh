@@ -8,13 +8,6 @@ CEPH_VERSION=$(docker inspect --format '{{ index .Config.Labels "de.osism.releas
 
 sh -c '/opt/configuration/scripts/prepare-ceph-configuration.sh'
 
-# The callback plugin is not included in the Pacific image. The plugin is no longer
-# added there because the builds for Pacific are disabled. This callback plugin will
-# therefore not be used during the deployment of Ceph.
-if [[ $MANAGER_VERSION == "latest" && $CEPH_VERSION == "pacific" ]]; then
-    sed -i "s/osism.commons.still_alive/community.general.yaml/" /opt/configuration/environments/ansible.cfg
-fi
-
 if [[ $CEPH_VERSION == "octopus" || $CEPH_VERSION == "pacific" || $CEPH_VERSION == "quincy" ]]; then
     # The rgw zone was added in ceph-ansible Reef
     sed -i '/  "client\.rgw\./{s#{{ rgw_zone }}\.##g}' /opt/configuration/environments/ceph/configuration.yml
@@ -38,9 +31,4 @@ else
     osism apply copy-ceph-keys
     osism apply cephclient
     osism apply ceph-bootstrap-dashboard
-fi
-
-# Once Ceph has been deployed, the callback plugin can be used again.
-if [[ $MANAGER_VERSION == "latest" && $CEPH_VERSION == "pacific" ]]; then
-    sed -i "s/community.general.yaml/osism.commons.still_alive/" /opt/configuration/environments/ansible.cfg
 fi
