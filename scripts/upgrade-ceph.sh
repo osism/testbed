@@ -26,7 +26,9 @@ fi
 sh -c '/opt/configuration/scripts/sync-configuration-repository.sh'
 
 # upgrade manager
-osism update manager
+# See the note in upgrade-manager.sh: the manager play is run from the
+# configuration repository instead of via `osism update manager`.
+/opt/configuration/environments/manager/run.sh manager
 docker compose --project-directory /opt/manager ps
 
 # refresh facts & sync the inventory
