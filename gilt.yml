@@ -6,6 +6,8 @@
       dst: environments/manager/
     - src: environments/manager/images.yml
       dst: environments/manager/
+    - src: environments/manager/run.sh
+      dst: environments/manager/
     - src: src/render-images.py
       dst: environments/manager/
       post_commands:
