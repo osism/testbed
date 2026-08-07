@@ -68,11 +68,7 @@ if [[ $MANAGER_UPGRADE_CROSSES_10 == "true" || $OPENSTACK_UPGRADE_CROSSES_2025 =
 fi
 
 # upgrade manager
-# Run the manager play from the configuration repository, as the upgrade guide
-# describes it for a manager without a local Ansible venv. This replaces
-# `osism update manager`, whose wrapper script is being removed in
-# ansible-collection-services#2154.
-/opt/configuration/environments/manager/run.sh manager
+update_manager
 
 # wait for manager service
 wait_for_container_healthy 60 ceph-ansible

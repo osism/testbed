@@ -25,6 +25,28 @@ sync_inventory() {
     fi
 }
 
+# Move the manager service to MANAGER_VERSION, picking the entry point the
+# target release actually ships.
+#
+# run.sh runs the manager play from the configuration repository and selects the
+# osism/seed container by itself, but only from osism/generics v0.20260627.0 on.
+# gilt.yml is pinned to the target release's generics_version by set-versions.py,
+# so a release pinning an older generics delivers a run.sh that knows no
+# container path and builds a local Ansible venv instead. Up to and including
+# 10.1.0 (generics v0.20260615.0) that is every release, and all of them still
+# ship the osism-update-manager wrapper, so use it there.
+#
+# ansible-collection-services#2154 removes that wrapper; the removal is in the
+# collection from v0.20260806.0 on and no release pins it yet. Releases cut from
+# here on carry both changes, so the newer branch is the one that stays.
+update_manager() {
+    if [[ $(semver $MANAGER_VERSION 10.1.0) -gt 0 || $MANAGER_VERSION == "latest" ]]; then
+        /opt/configuration/environments/manager/run.sh manager
+    else
+        osism update manager
+    fi
+}
+
 # Select the key-value store service for the active OpenStack release. Upstream
 # kolla-ansible replaced redis with valkey at 2025.2; older releases still ship
 # redis. The release is read from the kolla-ansible image label.
