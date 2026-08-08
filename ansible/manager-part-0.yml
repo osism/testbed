@@ -154,6 +154,24 @@
         virtualenv: "{{ venv_path }}"
         virtualenv_command: "{{ venv_command }}"
 
+    - name: Create /usr/share/ansible directory
+      become: true
+      ansible.builtin.file:
+        state: directory
+        path: /usr/share/ansible
+        mode: 0755
+
+    - name: Install collections from Ansible galaxy
+      become: true
+      ansible.builtin.command: |
+        {{ ansible_galaxy }} collection install --force --collections-path /usr/share/ansible/collections {{ item }}
+      register: result
+      changed_when: "'was installed successfully' in result.stdout"
+      loop:
+        - ansible.netcommon
+        - ansible.posix
+        - "community.docker>=3.10.2"
+
     - name: Create directories in /opt/src
       become: true
       ansible.builtin.file:
@@ -174,24 +192,6 @@
       with_items:
         - osism/ansible-collection-commons
         - osism/ansible-collection-services
-
-    - name: Create /usr/share/ansible directory
-      become: true
-      ansible.builtin.file:
-        state: directory
-        path: /usr/share/ansible
-        mode: 0755
-
-    - name: Install collections from Ansible galaxy
-      become: true
-      ansible.builtin.command: |
-        {{ ansible_galaxy }} collection install --force --collections-path /usr/share/ansible/collections {{ item }}
-      register: result
-      changed_when: "'was installed successfully' in result.stdout"
-      loop:
-        - ansible.netcommon
-        - ansible.posix
-        - "community.docker>=3.10.2"
 
     - name: Install local collections
       become: true
