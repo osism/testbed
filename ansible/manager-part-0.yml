@@ -172,36 +172,81 @@
         - ansible.posix
         - "community.docker>=3.10.2"
 
-    - name: Create directories in /opt/src
-      become: true
-      ansible.builtin.file:
-        state: directory
-        path: "/opt/src/{{ item }}"
-        recurse: true
-        mode: 0755
-        owner: "{{ ansible_user }}"
-      with_items:
-        - osism/ansible-collection-commons
-        - osism/ansible-collection-services
+    - name: Install OSISM collections from the Zuul checkout
+      when: manager_version == "latest"
+      block:
+        - name: Create directories in /opt/src
+          become: true
+          ansible.builtin.file:
+            state: directory
+            path: "/opt/src/{{ item }}"
+            recurse: true
+            mode: 0755
+            owner: "{{ ansible_user }}"
+          with_items:
+            - osism/ansible-collection-commons
+            - osism/ansible-collection-services
 
-    - name: Sync sources in /opt/src
-      ansible.posix.synchronize:
-        src: "{{ repo_path }}/{{ item }}"
-        delete: true
-        dest: "/opt/src/{{ item }}"
-      with_items:
-        - osism/ansible-collection-commons
-        - osism/ansible-collection-services
+        - name: Sync sources in /opt/src
+          ansible.posix.synchronize:
+            src: "{{ repo_path }}/{{ item }}"
+            delete: true
+            dest: "/opt/src/{{ item }}"
+          with_items:
+            - osism/ansible-collection-commons
+            - osism/ansible-collection-services
 
-    - name: Install local collections
-      become: true
-      ansible.builtin.command: |
-        {{ ansible_galaxy }} collection install --force --collections-path /usr/share/ansible/collections /opt/src/osism/{{ item }}
-      register: result
-      changed_when: "'was installed successfully' in result.stdout"
-      loop:
-        - ansible-collection-commons
-        - ansible-collection-services
+        - name: Install local collections
+          become: true
+          ansible.builtin.command: |
+            {{ ansible_galaxy }} collection install --force --collections-path /usr/share/ansible/collections /opt/src/osism/{{ item }}
+          register: result
+          changed_when: "'was installed successfully' in result.stdout"
+          loop:
+            - ansible-collection-commons
+            - ansible-collection-services
+
+    - name: Install OSISM collections at the release pin
+      when: manager_version != "latest"
+      block:
+        # The orchestrator's ansible-core 2.15.2 passes cert_file to
+        # HTTPSConnection, a parameter Python 3.12 (manager image, Ubuntu
+        # 24.04) removed -- uri/get_url both die here with "unexpected
+        # keyword argument 'cert_file'" before any request is made.
+        # delegate_to: localhost does not help (same ansible-core). Do not
+        # revert to uri/get_url; use curl.
+        - name: Fetch release pins  # noqa: command-instead-of-module
+          ansible.builtin.command: |
+            curl --silent --show-error --fail --location https://raw.githubusercontent.com/osism/release/main/{{ manager_version }}/base.yml
+          register: _release_base
+          changed_when: false
+          retries: 3
+          delay: 5
+          until: _release_base.rc == 0
+
+        - name: Resolve collection pins
+          ansible.builtin.set_fact:
+            _collection_pins:
+              ansible-collection-commons: "{{ _c if _c == 'main' else 'v' + _c }}"
+              ansible-collection-services: "{{ _s if _s == 'main' else 'v' + _s }}"
+          vars:
+            _c: "{{ (_release_base.stdout | from_yaml).ansible_collections['osism.commons'] }}"
+            _s: "{{ (_release_base.stdout | from_yaml).ansible_collections['osism.services'] }}"
+
+        - name: Print resolved collection pins
+          ansible.builtin.debug:
+            var: _collection_pins
+
+        - name: Install pinned OSISM collections
+          become: true
+          ansible.builtin.command: |
+            {{ ansible_galaxy }} collection install --force --collections-path /usr/share/ansible/collections git+https://github.com/osism/{{ item.key }},{{ item.value }}
+          register: result
+          changed_when: "'was installed successfully' in result.stdout"
+          retries: 3
+          delay: 5
+          until: result is succeeded
+          loop: "{{ _collection_pins | dict2items }}"
 
 - name: Create operator user
   hosts: testbed-manager
