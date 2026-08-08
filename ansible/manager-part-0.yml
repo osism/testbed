@@ -27,6 +27,14 @@
     ansible_galaxy: "{{ venv_path }}/bin/ansible-galaxy"
 
   tasks:
+    - name: Require manager_version
+      ansible.builtin.assert:
+        that: manager_version is defined
+        fail_msg: >-
+          manager_version must be passed to manager-part-0.yml; pass 'latest'
+          explicitly for a dev-tip deploy. Defaulting it would let a stable
+          lane silently install branch-tip collections.
+
     - name: Get home directory of ansible user
       ansible.builtin.shell: |
         set -o pipefail
