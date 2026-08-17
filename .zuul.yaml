@@ -97,7 +97,7 @@
     abstract: true
     parent: abstract-testbed-deploy
     vars:
-      manager_version: 10.1.0
+      manager_version: 10.2.0
       tempest: true
       prometheus_alert_status: false
 
@@ -106,7 +106,7 @@
     abstract: true
     parent: abstract-testbed-deploy-in-a-nutshell
     vars:
-      manager_version: 10.1.0
+      manager_version: 10.2.0
 
 # -----------------------------------------------------------------------------
 # 2.4 Abstract Jobs for Upgrade/Update Operations
@@ -264,7 +264,7 @@
     name: testbed-update-stable-ubuntu-24.04
     parent: abstract-testbed-update-stable
     vars:
-      terraform_environment: ubuntu-24.04
+      terraform_environment: ci-ubuntu-24.04
       manager_version: 10.1.0
       manager_version_next: 10.2.0
 
@@ -278,7 +278,7 @@
     vars:
       terraform_environment: ci-ubuntu-24.04
       manager_version: 9.5.0
-      manager_version_next: 10.1.0
+      manager_version_next: 10.2.0
 
 # NOTE: The following upgrade jobs are currently disabled.
 # They can be enabled once the respective OS support is validated.
@@ -301,7 +301,7 @@
     nodeset: testbed-orchestrator
     timeout: 30000
     vars:
-      manager_version: 10.1.0
+      manager_version: 10.2.0
       ceph_version_next: skip
       manager_version_next: latest
       openstack_version_next: "2025.1"
@@ -313,7 +313,7 @@
     nodeset: testbed-orchestrator
     timeout: 30000
     vars:
-      manager_version: 10.1.0
+      manager_version: 10.2.0
       ceph_version_next: skip
       manager_version_next: latest
       openstack_version_next: "2025.2"
@@ -350,6 +350,7 @@
     label-additional:
       jobs:
         - testbed-update-stable-current-ubuntu-24.04
+        - testbed-update-stable-ubuntu-24.04
         - testbed-upgrade-stable-next-ubuntu-24.04
         - testbed-upgrade-stable-ubuntu-24.04
 
@@ -362,6 +363,7 @@
         - testbed-deploy-next-in-a-nutshell-with-tempest-ubuntu-24.04
         - testbed-deploy-stable-in-a-nutshell-with-tempest-ubuntu-24.04
         - testbed-update-stable-current-ubuntu-24.04
+        - testbed-update-stable-ubuntu-24.04
         - testbed-upgrade-stable-next-ubuntu-24.04
         - testbed-upgrade-stable-ubuntu-24.04
 
