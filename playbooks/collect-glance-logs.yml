@@ -16,6 +16,13 @@
 # The orchestrator can only reach the manager directly (the nodes sit on a
 # private network), so we hop through the manager, which fans out to every
 # deployed host. The play is best-effort and must never fail the job.
+#
+# Host discovery is deliberately noisy about its own failure. "osism get hosts"
+# is the natural source, but when it prints nothing the loop below has nothing
+# to iterate and the play used to report success with no output at all -- which
+# is what happened on build 326907e2, the one build that most needed the log.
+# So its stderr is kept, the host list is echoed, and the inventory the testbed
+# writes on the manager serves as a fallback.
 - name: Collect Glance API logs play
   hosts: all
 
@@ -27,6 +34,9 @@
     basepath: "{{ ansible_user_dir }}/src/{{ repositories['testbed']['path'] }}"
     terraform_path: "{{ basepath }}/terraform"
     glance_log_tail_lines: 2000
+    # INI inventory the testbed writes on the manager; used to name the hosts
+    # when "osism get hosts" cannot.
+    manager_inventory: /opt/configuration/inventory/10-custom
 
   tasks:
     - name: Set cloud fact (Zuul deployment)
@@ -61,8 +71,21 @@
             -o LogLevel=ERROR \
             dragon@{{ manager_host }} 'bash -s' <<'REMOTE'
           set -uo pipefail
-          hosts=$(osism get hosts 2>/dev/null | awk -F'|' '/^\|/ {gsub(/^ +| +$/,"",$2); if ($2!="" && $2!="Host" && $2!~/^-+$/) print $2}')
-          for h in $hosts; do
+          errfile=$(mktemp)
+          trap 'rm -f "${errfile}"' EXIT
+          hosts=$(osism get hosts 2>"${errfile}" | awk -F'|' '/^\|/ {gsub(/^ +| +$/,"",$2); if ($2!="" && $2!="Host" && $2!~/^-+$/) print $2}')
+          if [ -z "${hosts}" ]; then
+            echo "===== 'osism get hosts' yielded no hosts; its stderr follows ====="
+            cat "${errfile}" 2>/dev/null
+            if [ -r {{ manager_inventory }} ]; then
+              echo "===== falling back to {{ manager_inventory }} ====="
+              hosts=$(awk '/^\[/ {skip = ($0 ~ /:(children|vars)\]/); next} /^[[:space:]]*[#;]/ {next} /^[[:space:]]*$/ {next} !skip {print $1}' {{ manager_inventory }} | sort -u)
+            else
+              echo "===== no readable {{ manager_inventory }} on the manager ====="
+            fi
+          fi
+          echo "===== glance-api.log capture: hosts = ${hosts:-(none found)} ====="
+          for h in ${hosts}; do
             echo "===== glance-api.log (tail -n {{ glance_log_tail_lines }}) @ ${h} ====="
             ssh -o StrictHostKeyChecking=no -o LogLevel=ERROR "${h}" '(sudo -n tail -n {{ glance_log_tail_lines }} /var/log/kolla/glance/glance-api.log || tail -n {{ glance_log_tail_lines }} /var/log/kolla/glance/glance-api.log) 2>/dev/null || echo "(no readable glance-api.log on this host)"'
             echo
