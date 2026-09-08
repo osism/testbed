@@ -231,20 +231,49 @@ def get_terraform_counts():
     return counts, messages
 
 
+def _flavor_field(flavor, name):
+    """Read one field of a server's flavor, however the SDK shaped it."""
+    if flavor is None:
+        return None
+    try:
+        return flavor[name]
+    except (KeyError, TypeError):
+        return getattr(flavor, name, None)
+
+
 def _flavor_totals(conn, servers):
-    """Return the vCPUs and GB of RAM of the given servers."""
+    """Return the vCPUs, GB of RAM and the flavors that stayed unknown.
+
+    Since compute microversion 2.47 the flavor is embedded in the server
+    and carries the figures but no id, while an older one only refers to
+    the flavor. Take what the server states and look the flavor up only
+    when it says nothing.
+    """
     vcpus = 0
     ram_mb = 0
+    unreadable = set()
     seen = {}
     for server in servers:
-        flavor_id = server.flavor["id"]
-        if flavor_id not in seen:
-            seen[flavor_id] = conn.compute.find_flavor(flavor_id)
-        flavor = seen[flavor_id]
-        if flavor:
-            vcpus += flavor.vcpus
-            ram_mb += flavor.ram
-    return vcpus, ram_mb // 1024
+        flavor = server.flavor
+        name = _flavor_field(flavor, "original_name") or _flavor_field(flavor, "id")
+        server_vcpus = _flavor_field(flavor, "vcpus")
+        server_ram = _flavor_field(flavor, "ram")
+
+        if server_vcpus is None or server_ram is None:
+            if name not in seen:
+                seen[name] = conn.compute.find_flavor(name) if name else None
+            looked_up = seen[name]
+            server_vcpus = getattr(looked_up, "vcpus", None)
+            server_ram = getattr(looked_up, "ram", None)
+
+        if server_vcpus is None or server_ram is None:
+            unreadable.add(str(name or "<unknown>"))
+            continue
+
+        vcpus += server_vcpus
+        ram_mb += server_ram
+
+    return vcpus, ram_mb // 1024, sorted(unreadable)
 
 
 def get_openstack_counts(conn, prefix):
@@ -301,12 +330,13 @@ def get_openstack_counts(conn, prefix):
         routers_,
         floating_ips_,
     ):
-        vcpus, ram = _flavor_totals(conn, servers_)
+        vcpus, ram, unreadable = _flavor_totals(conn, servers_)
         return {
             "Instances": len(servers_),
             "Nodes": sum(1 for s in servers_ if "-node" in (s.name or "")),
-            "vCPUs": vcpus,
-            "RAM (GB)": ram,
+            "Unreadable flavors": unreadable,
+            "vCPUs": None if unreadable else vcpus,
+            "RAM (GB)": None if unreadable else ram,
             "Volumes": len(volumes_),
             "Volume storage (GB)": sum(v.size for v in volumes_),
             "Floating IPs": len(floating_ips_),
@@ -403,6 +433,13 @@ def collect_warnings(tf_counts, os_counts, other_counts, prefix):
                 "[WARN] Terraform and OpenStack disagree on: " + ", ".join(differing)
             )
 
+    if os_counts.get("Unreadable flavors"):
+        messages.append(
+            "[WARN] vCPUs and RAM are left blank in the OpenStack column, the "
+            "size of these flavors could not be determined: "
+            + ", ".join(os_counts["Unreadable flavors"])
+        )
+
     if any(other_counts[row] for row in RESOURCES):
         messages.append(
             f"[NOTE] the project holds resources not named after {prefix!r}, "
@@ -421,9 +458,12 @@ def print_prereqs_table(os_counts):
     instances = os_counts["Instances"]
     nodes = os_counts["Nodes"]
     managers = instances - nodes
-    note = f"{os_counts['vCPUs']} VCPUs + {os_counts['RAM (GB)']} GByte RAM"
-    if nodes and managers:
-        note += f" ({nodes} nodes, {managers} manager)"
+    shape = f"({nodes} nodes, {managers} manager)" if nodes and managers else ""
+    if os_counts["vCPUs"] is None or os_counts["RAM (GB)"] is None:
+        note = shape
+    else:
+        note = f"{os_counts['vCPUs']} VCPUs + {os_counts['RAM (GB)']} GByte RAM"
+        note = f"{note} {shape}".strip()
 
     rows = [
         ("Instances", str(instances), note),
