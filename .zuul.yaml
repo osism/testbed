@@ -59,6 +59,7 @@
     run: playbooks/deploy.yml
     post-run:
       - playbooks/collect-glance-logs.yml
+      - playbooks/collect-resource-usage.yml
       - playbooks/post.yml
       - name: playbooks/cleanup.yml
         cleanup: true
