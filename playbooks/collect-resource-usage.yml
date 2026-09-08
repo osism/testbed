@@ -1,0 +1,66 @@
+---
+# Report the cloud resources the testbed occupied into the job output, so the
+# quota documented as a prerequisite has a source that a green lane refreshes
+# instead of being counted by hand on a cloud once a year.
+#
+# This runs in post-run, before the cleanup play tears the environment down:
+# the figures are read from the live project and are gone a play later.
+#
+# Only after a successful lane. What the project holds is settled once "make
+# create" returns, as every stage after it works inside the instances over ssh,
+# so a lane failing later holds the resources a green one holds. Waiting for
+# the end is what makes the figures evidence that this much was enough to bring
+# a testbed up, rather than possibly the set a run failed over.
+#
+# Every lane gets a project of its own -- pre.yml deletes each "testbed*"
+# resource in it before deploying, which would take a concurrent lane with it
+# otherwise -- so what the prefix matches here is this job's testbed and
+# nothing else. The play is best-effort and must never fail the job.
+- name: Collect resource usage play
+  hosts: all
+
+  vars_files:
+    - vars/mappings.yml
+    - vars/repositories.yml
+
+  vars:
+    basepath: "{{ ansible_user_dir }}/src/{{ repositories['testbed']['path'] }}"
+
+  tasks:
+    - name: Set cloud fact (Zuul deployment)
+      ansible.builtin.set_fact:
+        cloud: "{{ cloud_envs[hostvars[groups['all'][0]]['nodepool']['label']] }}"
+      when: "'nodepool' in hostvars[groups['all'][0]]"
+
+    - name: Set cloud fact (local deployment)
+      ansible.builtin.set_fact:
+        cloud: "{{ testbed_cloud | default('ci') }}"
+      when: "'nodepool' not in hostvars[groups['all'][0]]"
+
+    - name: Report the resources of the deployed testbed
+      when: zuul_success | default(true) | bool
+      block:
+        # The credentials are the ones openstacksdk finds on its own, as
+        # cleanup.py uses them; there is no terraform/clouds.yaml here. tofu
+        # was unpacked into the home directory by pre.yml, and the script
+        # falls back to looking for it on PATH.
+        - name: Run the resource usage report
+          ansible.builtin.command:
+            cmd: "{{ ansible_user_dir }}/venv/bin/python3 contrib/resource_usage.py {{ cloud }}"
+            chdir: "{{ basepath }}"
+          environment:
+            OS_CLOUD: "{{ cloud }}"
+            PATH: "{{ ansible_user_dir }}:{{ ansible_env.PATH }}"
+          register: _resource_usage
+          changed_when: false
+          failed_when: false
+
+        # Surface stdout *and* stderr: when the script exits before producing
+        # output the reason lives in stderr, and stdout_lines is an empty but
+        # defined list, so a plain `default` would not fire.
+        - name: Show the resource usage report
+          ansible.builtin.debug:
+            msg: >-
+              {{ ((_resource_usage.stdout_lines | default([]))
+                  + (_resource_usage.stderr_lines | default([])))
+                 | default(['(resource usage report produced no output)'], true) }}
