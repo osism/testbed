@@ -91,12 +91,15 @@ echo
 # (e.g. '10.11.10-MariaDB-ubu2204-log'), causing the backup to fail with
 # "Unsupported server version". Skip the backup check for 8.x; it works
 # correctly on 9.0.0+ which uses MariaDB 11.x kolla images.
+#
+# kolla-ansible renamed the play to mariadb-backup in 2026.1; the
+# underscored spelling is deprecated and gone there.
 if [[ $(semver $MANAGER_VERSION 9.0.0) -ge 0 || $MANAGER_VERSION == "latest" ]]; then
-    osism apply mariadb_backup -e mariadb_backup_type=full
+    osism apply mariadb-backup -e mariadb_backup_type=full
 fi
 
 # Disabled because of https://bugs.launchpad.net/kolla/+bug/2111620
 # Can be re-enabled after backport of https://review.opendev.org/c/openstack/kolla/+/950948
 # and the release of OSISM 9.1.1.
 #
-# osism apply mariadb_backup -e mariadb_backup_type=incremental
+# osism apply mariadb-backup -e mariadb_backup_type=incremental
