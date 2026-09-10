@@ -209,7 +209,7 @@
       tempest: true
 
 # -----------------------------------------------------------------------------
-# 3.5 "In a Nutshell" Deploy Jobs - Next OpenStack Release (2025.1)
+# 3.5 "In a Nutshell" Deploy Jobs - Next OpenStack Release (2026.1)
 # -----------------------------------------------------------------------------
 
 - job:
@@ -217,7 +217,7 @@
     parent: testbed-deploy-in-a-nutshell-ubuntu-24.04
     vars:
       ceph_version: reef
-      openstack_version: "2025.1"
+      openstack_version: "2026.1"
 
 - job:
     name: testbed-deploy-next-in-a-nutshell-with-tempest-ubuntu-24.04
@@ -316,7 +316,7 @@
       manager_version: 10.2.0
       ceph_version_next: skip
       manager_version_next: latest
-      openstack_version_next: "2025.2"
+      openstack_version_next: "2026.1"
 
 # =============================================================================
 # 5. PROJECT PIPELINE DEFINITION
@@ -340,9 +340,9 @@
     # -------------------------------------------------------------------------
     label:
       jobs:
-        - testbed-deploy-current-in-a-nutshell-ubuntu-24.04
         - testbed-deploy-next-in-a-nutshell-ubuntu-24.04
-        - testbed-deploy-stable-in-a-nutshell-ubuntu-24.04
+        - testbed-deploy-stable-in-a-nutshell-with-tempest-ubuntu-24.04
+        - testbed-upgrade-stable-next-ubuntu-24.04
 
     # -------------------------------------------------------------------------
     # Label-Additional Pipeline - For additional testing on patches
