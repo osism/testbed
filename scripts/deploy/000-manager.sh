@@ -34,6 +34,23 @@ fi
 # enable resource nodes
 /opt/configuration/scripts/enable-resource-nodes.sh
 
+# cephadm authenticates to the Ceph hosts with a dedicated key of its own,
+# not with the fleet-wide operator key: cephadm stores the key it is given in
+# the Ceph configuration store, from where anyone with Ceph admin access reads
+# it back with "ceph config-key get mgr/cephadm/ssh_identity_key". There is no
+# existing key to copy for this one, so it is generated here. The public half
+# is authorized on the ceph group only, see inventory/group_vars/ceph.yml.
+#
+# This runs before the manager role, which writes the private keys listed in
+# private_keys to /opt/ansible/secrets. ceph_ssh_private_key is looked up from
+# the file created here (environments/secrets.yml).
+mkdir -p /opt/configuration/environments/secrets
+if [[ ! -e /opt/configuration/environments/secrets/id_rsa.ceph ]]; then
+    ssh-keygen -t rsa -b 4096 -N "" -C "" -m PEM \
+      -f /opt/configuration/environments/secrets/id_rsa.ceph
+fi
+chmod 600 /opt/configuration/environments/secrets/id_rsa.ceph
+
 if [[ -e /opt/venv/bin/activate ]]; then
     source /opt/venv/bin/activate
 fi
@@ -48,6 +65,11 @@ if [[ -e /opt/venv/bin/activate ]]; then
 fi
 
 cp /home/dragon/.ssh/id_rsa.pub /opt/ansible/secrets/id_rsa.operator.pub
+
+# The manager role only writes the private keys, the public half is staged
+# here. inventory/group_vars/ceph.yml reads it from the osism-ansible container,
+# where /opt/ansible/secrets is mounted as /ansible/secrets.
+cp /opt/configuration/environments/secrets/id_rsa.ceph.pub /opt/ansible/secrets/id_rsa.ceph.pub
 
 # Make the operator private key reachable inside the osism/seed container.
 # run.sh runs the keypair play inside the seed container, which bind-mounts
