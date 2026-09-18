@@ -1,0 +1,13 @@
+---
+# The public half of the dedicated SSH key cephadm authenticates with, staged
+# by scripts/deploy/000-manager.sh. Placed in the group_vars of the ceph group
+# (ceph-control plus ceph-resource, see inventory/20-roles) so that the key is
+# authorized on the Ceph hosts and nowhere else.
+#
+# operator_additional_authorized_keys, not operator_authorized_keys: the
+# deployment-wide keys come from environments/configuration.yml and have to
+# keep applying here. Redefining operator_authorized_keys for this group would
+# not break a running host, because the operator role only ever adds keys, but
+# the next freshly provisioned Ceph host would come up without them.
+operator_additional_authorized_keys:
+  - "{{ lookup('file', '/ansible/secrets/id_rsa.ceph.pub') }}"
