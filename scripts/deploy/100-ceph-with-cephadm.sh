@@ -2,41 +2,41 @@
 #
 # Deploy Ceph with cephadm instead of ceph-ansible.
 #
+# The core cluster -- bootstrap, host registration, configuration, the MON, MGR
+# and crash daemons, the OSDs, the OpenStack pools and their keys -- is deployed
+# by the cephadm plays, this script only sequences them.
+#
 # The preparation of the OSD devices is still done with
 # scripts/prepare-ceph-configuration.sh, i.e. with the ceph-configure-lvm-volumes
 # and ceph-create-lvm-devices plays. The LVM volumes created there are handed
 # over to cephadm as explicit LVM paths, cephadm does not touch the raw block
 # devices itself.
 #
-# The used container image is the OSISM Ceph image
-# (registry.osism.tech/osism/ceph-daemon). The release follows ceph_version from
-# environments/manager/configuration.yml, i.e. the same image ceph-ansible would
-# use. Both can be overwritten:
+# The dashboard is applied by the cephadm-dashboard play in the sequence
+# below. One part of the deployment still has no play and is therefore done in
+# shell below: the MDS and RGW daemons together with the pools and the key
+# that belong to them. That section is marked and is removed once the
+# corresponding plays are available.
 #
-#   CEPH_IMAGE=registry.osism.tech/osism/ceph-daemon:squid \
-#     /opt/configuration/scripts/deploy/100-ceph-with-cephadm.sh
-#
-# NOTE: The cephclient container on the manager is deployed with the release
-#       from environments/manager/configuration.yml. When CEPH_IMAGE is set to
-#       another release, set ceph_version there as well (or use
-#       scripts/set-ceph-version.sh).
-#
+# The Ceph image and release are no longer selected here, the plays take them
+# from the inventory (ceph_docker_registry, ceph_docker_image and
+# ceph_docker_image_tag), i.e. from the same values ceph-ansible would use.
 set -e
 set -o pipefail
 
 source /opt/configuration/scripts/include.sh
-source /opt/configuration/scripts/manager-version.sh
 
 CONFIGURATION_DIRECTORY=/opt/configuration
 CEPH_ENVIRONMENT=${CEPH_ENVIRONMENT:-ceph}
 CEPH_CONFIGURATION_FILE=$CONFIGURATION_DIRECTORY/environments/$CEPH_ENVIRONMENT/configuration.yml
-CEPH_SECRETS_FILE=$CONFIGURATION_DIRECTORY/environments/$CEPH_ENVIRONMENT/secrets.yml
 
 PYTHON=/opt/venv/bin/python3
 [[ -x $PYTHON ]] || PYTHON=$(command -v python3)
 
 ##########################################################
 # helpers
+#
+# All helpers below are used by the retained MDS/RGW section only.
 
 # Read a single parameter from the Ceph environment configuration. Booleans are
 # normalised to true/false so that they can be used in shell comparisons.
@@ -54,71 +54,8 @@ print(value)
 ' "$1" "$2" "$CEPH_CONFIGURATION_FILE"
 }
 
-# Convert ceph_conf_overrides from the ceph-ansible configuration into
-# "section<TAB>key<TAB>value" lines for the central configuration store.
-ceph_conf_overrides() {
-    "$PYTHON" -c '
-import sys, yaml
-
-with open(sys.argv[1]) as fp:
-    configuration = yaml.safe_load(fp) or {}
-
-secrets = {}
-try:
-    with open(sys.argv[2]) as fp:
-        content = fp.read()
-    if not content.lstrip().startswith("$ANSIBLE_VAULT"):
-        secrets = yaml.safe_load(content) or {}
-except OSError:
-    pass
-
-def resolve(value):
-    if isinstance(value, bool):
-        return str(value).lower()
-    value = str(value)
-    for name, secret in secrets.items():
-        value = value.replace("{{ %s }}" % name, str(secret))
-    return value
-
-for section, parameters in (configuration.get("ceph_conf_overrides") or {}).items():
-    # ceph-ansible templates one section per RGW daemon. cephadm keeps the
-    # configuration centrally, a single client.rgw section covers all daemons.
-    if section.startswith("client.rgw"):
-        section = "client.rgw"
-    for key, value in (parameters or {}).items():
-        print("\t".join([section, key.replace(" ", "_"), resolve(value)]))
-' "$CEPH_CONFIGURATION_FILE" "$CEPH_SECRETS_FILE"
-}
-
-# Convert the lvm_volumes prepared by ceph-configure-lvm-volumes into device
-# specifications for "ceph orch daemon add osd".
-osd_specifications() {
-    "$PYTHON" -c '
-import sys, yaml
-
-with open(sys.argv[1]) as fp:
-    data = yaml.safe_load(fp) or {}
-
-encrypted = sys.argv[2] == "true"
-
-for volume in data.get("lvm_volumes") or []:
-    specification = ["data_devices=/dev/%s/%s" % (volume["data_vg"], volume["data"])]
-    if volume.get("db") and volume.get("db_vg"):
-        specification.append("db_devices=/dev/%s/%s" % (volume["db_vg"], volume["db"]))
-    if volume.get("wal") and volume.get("wal_vg"):
-        specification.append("wal_devices=/dev/%s/%s" % (volume["wal_vg"], volume["wal"]))
-    if encrypted:
-        specification.append("encrypted=true")
-    print(",".join(specification))
-' "$1" "$2"
-}
-
 get_hosts() {
     osism get hosts -l "$1" | awk 'NR>3 && /\|/ { print $2 }'
-}
-
-get_address() {
-    getent hosts "$1" | awk 'NR == 1 { print $1 }'
 }
 
 join_hosts() {
@@ -131,6 +68,15 @@ count_hosts() {
 
 # A replica count larger than the number of OSD hosts can never become
 # active+clean with the default host failure domain.
+#
+# This clamp is testbed-only and deliberate, not drift. Neither ceph-ansible
+# nor the cephadm-pools play lowers a configured size -- doing so silently
+# would change the durability the operator asked for. It applies here only to
+# the CephFS and RGW pools created below, which cephadm-pools does not manage
+# (it loops osism/defaults' openstack_pools), so the two policies never meet on
+# the same pool. It exists so a testbed with fewer OSD hosts than the default
+# size of 3 still reaches HEALTH_OK. When the CephFS/RGW plays land, that play
+# owns the policy and this goes with the bash around it.
 limit_size() {
     local size="$1"
     local maximum="$2"
@@ -166,18 +112,6 @@ wait_for_daemons() {
             return 1
         fi
         sleep 10
-    done
-}
-
-wait_for_orchestrator() {
-    local attempt=0
-
-    until ceph orch status --format json > /dev/null 2>&1; do
-        if (( ++attempt > 60 )); then
-            echo "Timeout while waiting for the orchestrator."
-            return 1
-        fi
-        sleep 5
     done
 }
 
@@ -220,64 +154,8 @@ export_key() {
     done
 }
 
-##########################################################
-# parameters
-
-CEPH_RELEASE=$(docker inspect --format '{{ index .Config.Labels "de.osism.release.ceph" }}' ceph-ansible)
-
-if [[ -z ${CEPH_IMAGE:-} ]]; then
-    CEPH_DOCKER_REGISTRY=$(awk -F': ' '/^ceph_docker_registry:/ { print $2 }' \
-      "$CONFIGURATION_DIRECTORY/inventory/group_vars/all/registries.yml")
-    CEPH_IMAGE_VERSION=$(docker exec ceph-ansible \
-      awk -F': ' '/^ceph_image_version:/ { gsub(/"/, "", $2); print $2 }' \
-      /ansible/group_vars/all/versions.yml 2>/dev/null || true)
-    CEPH_IMAGE="${CEPH_DOCKER_REGISTRY:-registry.osism.tech}/osism/ceph-daemon:${CEPH_IMAGE_VERSION:-$CEPH_RELEASE}"
-fi
-
-CEPH_FSID=$(ceph_config fsid "")
-CEPH_PUBLIC_NETWORK=$(ceph_config public_network "")
-CEPH_CLUSTER_NETWORK=$(ceph_config cluster_network "$CEPH_PUBLIC_NETWORK")
-CEPH_DMCRYPT=$(ceph_config dmcrypt false)
-CEPH_FS_NAME=$(ceph_config cephfs cephfs)
-
-ENABLE_CEPH_CRASH=$(ceph_config enable_ceph_crash true)
-ENABLE_CEPH_MDS=$(ceph_config enable_ceph_mds false)
-ENABLE_CEPH_RGW=$(ceph_config enable_ceph_rgw false)
-
-RGW_ZONE=$(ceph_config rgw_zone default)
-RGW_FRONTEND_PORT=$(ceph_config radosgw_frontend_port 8081)
-RGW_SERVICE_ID="${RGW_ZONE}.${RGW_ZONE}"
-
-DASHBOARD_PASSWORD=$(awk -F': ' '/^ceph_dashboard_password:/ { print $2 }' "$CEPH_SECRETS_FILE")
-
-# Defaults of the ceph-ansible based deployment, see osism/defaults.
-OPENSTACK_POOL_PG_NUM=$(ceph_config openstack_pool_default_pg_num 64)
-OPENSTACK_POOL_SIZE=$(ceph_config openstack_pool_default_size 3)
-OPENSTACK_POOL_MIN_SIZE=$(ceph_config openstack_pool_default_min_size 0)
-OPENSTACK_POOL_RULE=$(ceph_config openstack_pool_default_rule_name replicated_rule)
-
-CEPHFS_POOL_PG_NUM=$(ceph_config cephfs_pool_default_pg_num 16)
-CEPHFS_POOL_SIZE=$(ceph_config cephfs_pool_default_size 3)
-CEPHFS_POOL_MIN_SIZE=$(ceph_config cephfs_pool_default_min_size 0)
-CEPHFS_POOL_RULE=$(ceph_config cephfs_pool_default_rule_name replicated_rule)
-
-RGW_POOL_PG_NUM=$(ceph_config rgw_pool_default_pg_num 8)
-RGW_POOL_SIZE=$(ceph_config rgw_pool_default_size 3)
-
-if [[ $(ceph_config openstack_pool_default_pg_autoscale_mode false) == "true" ]]; then
-    POOL_PG_AUTOSCALE_MODE=on
-else
-    POOL_PG_AUTOSCALE_MODE=off
-fi
-
 echo
 echo "# DEPLOY CEPH SERVICES WITH CEPHADM"
-echo
-echo "Ceph release:     $CEPH_RELEASE"
-echo "Ceph image:       $CEPH_IMAGE"
-echo "Ceph clusterID:   $CEPH_FSID"
-echo "Public network:   $CEPH_PUBLIC_NETWORK"
-echo "Cluster network:  $CEPH_CLUSTER_NETWORK"
 echo
 
 ##########################################################
@@ -290,237 +168,76 @@ echo
 sh -c '/opt/configuration/scripts/prepare-ceph-configuration.sh'
 
 ##########################################################
-# collect the inventory
+# deploy the core cluster
 
 echo
-echo "## Collect the inventory"
+echo "## Deploy the core cluster"
 echo
 
-CEPH_HOSTS=$(get_hosts ceph)
-CEPH_MON_HOSTS=$(get_hosts ceph-mon)
-CEPH_MGR_HOSTS=$(get_hosts ceph-mgr)
-CEPH_OSD_HOSTS=$(get_hosts ceph-osd)
-CEPH_MDS_HOSTS=$(get_hosts ceph-mds)
-CEPH_RGW_HOSTS=$(get_hosts ceph-rgw)
-
-if [[ -z $CEPH_MON_HOSTS ]]; then
-    echo "No hosts in the ceph-mon group, nothing to do."
-    exit 1
-fi
-
-if [[ -z $CEPH_OSD_HOSTS ]]; then
-    echo "No hosts in the ceph-osd group, nothing to do."
-    exit 1
-fi
-
-BOOTSTRAP_HOST=${CEPH_MON_HOSTS%%$'\n'*}
-BOOTSTRAP_ADDRESS=$(get_address "$BOOTSTRAP_HOST")
-
-OSD_HOST_COUNT=$(count_hosts "$CEPH_OSD_HOSTS")
-
-OPENSTACK_POOL_SIZE=$(limit_size "$OPENSTACK_POOL_SIZE" "$OSD_HOST_COUNT")
-CEPHFS_POOL_SIZE=$(limit_size "$CEPHFS_POOL_SIZE" "$OSD_HOST_COUNT")
-RGW_POOL_SIZE=$(limit_size "$RGW_POOL_SIZE" "$OSD_HOST_COUNT")
-
-echo "MON hosts: $(join_hosts "$CEPH_MON_HOSTS")"
-echo "MGR hosts: $(join_hosts "$CEPH_MGR_HOSTS")"
-echo "OSD hosts: $(join_hosts "$CEPH_OSD_HOSTS")"
-echo "MDS hosts: $(join_hosts "$CEPH_MDS_HOSTS")"
-echo "RGW hosts: $(join_hosts "$CEPH_RGW_HOSTS")"
-echo "Bootstrap: $BOOTSTRAP_HOST ($BOOTSTRAP_ADDRESS)"
-
-##########################################################
-# install cephadm
-
-echo
-echo "## Install cephadm"
-echo
-
-# cephadm is taken out of the OSISM Ceph image. That way the cephadm version
-# always matches the deployed Ceph release and no additional package source is
-# required on the nodes. As a side effect the image is already present on all
-# nodes when the daemons are deployed later on.
-for node in $CEPH_HOSTS; do
-    echo "+ install cephadm on $node"
-    ssh "$node" "docker run --rm --entrypoint /usr/bin/cat $CEPH_IMAGE /usr/sbin/cephadm > /tmp/cephadm"
-    ssh "$node" "sudo install -m 0755 -o root -g root /tmp/cephadm /usr/sbin/cephadm && rm -f /tmp/cephadm"
-    ssh "$node" "sudo cephadm prepare-host"
-done
-
-##########################################################
-# bootstrap the cluster
-
-echo
-echo "## Bootstrap the cluster"
-echo
-
-if [[ -n $DASHBOARD_PASSWORD ]]; then
-    DASHBOARD_ARGUMENTS="--initial-dashboard-user admin --initial-dashboard-password $DASHBOARD_PASSWORD --dashboard-password-noupdate"
-else
-    DASHBOARD_ARGUMENTS="--skip-dashboard"
-fi
-
-if ssh "$BOOTSTRAP_HOST" "test -d /var/lib/ceph/$CEPH_FSID"; then
-    echo "Cluster $CEPH_FSID is already bootstrapped on $BOOTSTRAP_HOST."
-else
-    # The monitoring stack is skipped, its images are not mirrored by OSISM.
-    ssh "$BOOTSTRAP_HOST" "sudo cephadm --image $CEPH_IMAGE bootstrap \
-      --fsid $CEPH_FSID \
-      --mon-ip $BOOTSTRAP_ADDRESS \
-      --cluster-network $CEPH_CLUSTER_NETWORK \
-      --ssh-user dragon \
-      $DASHBOARD_ARGUMENTS \
-      --skip-monitoring-stack \
-      --skip-firewalld \
-      --allow-overwrite"
-fi
-
-##########################################################
-# make the ceph command available on the manager
-
-echo
-echo "## Deploy cephclient on the manager"
-echo
-
-mkdir -p "$CONFIGURATION_DIRECTORY/environments/infrastructure/files/ceph"
-ssh "$BOOTSTRAP_HOST" "sudo cat /etc/ceph/ceph.client.admin.keyring" \
-  > "$CONFIGURATION_DIRECTORY/environments/infrastructure/files/ceph/ceph.client.admin.keyring"
-
+# cephadm-bootstrap installs cephadm on the Ceph hosts and bootstraps the
+# cluster with the dedicated Ceph key from /opt/ansible/secrets/id_rsa.ceph
+# (environments/secrets.yml, inventory/group_vars/ceph.yml). cephclient follows
+# immediately, the remaining plays drive the orchestrator through it.
+osism apply cephadm-bootstrap
 osism apply cephclient
-
-wait_for_orchestrator
+osism apply cephadm-hosts
+osism apply cephadm-config
+osism apply cephadm-mons
+osism apply cephadm-osds
+osism apply cephadm-pools
+osism apply copy-ceph-keys
+osism apply cephadm-dashboard
 
 ##########################################################
-# configure the orchestrator
-
-echo
-echo "## Configure the orchestrator"
-echo
-
-# cephadm connects to the nodes as the operator user with the key pair that was
-# generated during the bootstrap. Its public key is only authorized on the
-# bootstrap node, it has to be authorized on the remaining nodes as well.
+# deploy the MDS and RGW daemons
 #
-# NOTE: The key pair cannot be replaced with the OSISM operator key, although
-#       that one is already authorized everywhere. Private and public key are
-#       set with two separate commands and each of them validates the SSH
-#       connection immediately (_validate_and_set_ssh_val in the cephadm module).
-#       In between the two halves do not match, so the first command always
-#       fails. This differs from the ceph-ansible migration, where the key is
-#       imported before any host is known and the validation is skipped.
-CEPHADM_PUBLIC_KEY=$(ceph cephadm get-pub-key)
+# RETAINED: the cephadm plays deploy the core cluster only. The CephFS and RGW
+# pools, the manila key and the two daemon types below are not covered by them
+# and are therefore still created here. This section goes away with the plays
+# that take them over.
 
-for node in $CEPH_HOSTS; do
-    echo "+ authorize the cephadm ssh key on $node"
-    echo "$CEPHADM_PUBLIC_KEY" | ssh "$node" '
-      mkdir -p ~/.ssh
-      chmod 0700 ~/.ssh
-      touch ~/.ssh/authorized_keys
-      chmod 0600 ~/.ssh/authorized_keys
-      key=$(cat)
-      grep -qxF "$key" ~/.ssh/authorized_keys || echo "$key" >> ~/.ssh/authorized_keys
-    '
-done
+ENABLE_CEPH_MDS=$(ceph_config enable_ceph_mds false)
+ENABLE_CEPH_RGW=$(ceph_config enable_ceph_rgw false)
 
-ceph cephadm set-user dragon
+if [[ $ENABLE_CEPH_MDS == "true" || $ENABLE_CEPH_RGW == "true" ]]; then
+    CEPH_FS_NAME=$(ceph_config cephfs cephfs)
 
-ceph config set global container_image "$CEPH_IMAGE"
-ceph config set global public_network "$CEPH_PUBLIC_NETWORK"
-ceph config set global cluster_network "$CEPH_CLUSTER_NETWORK"
+    RGW_ZONE=$(ceph_config rgw_zone default)
+    RGW_FRONTEND_PORT=$(ceph_config radosgw_frontend_port 8081)
+    RGW_SERVICE_ID="${RGW_ZONE}.${RGW_ZONE}"
 
-# Take over the parameters from ceph_conf_overrides of the ceph-ansible
-# configuration into the central configuration store.
-while IFS=$'\t' read -r section key value; do
-    [[ -n $section ]] || continue
-    # The values are not logged, some of them are secrets.
-    echo "+ ceph config set $section $key"
-    ceph config set "$section" "$key" "$value" < /dev/null
-done < <(ceph_conf_overrides)
+    # Defaults of the ceph-ansible based deployment, see osism/defaults.
+    CEPHFS_POOL_PG_NUM=$(ceph_config cephfs_pool_default_pg_num 16)
+    CEPHFS_POOL_SIZE=$(ceph_config cephfs_pool_default_size 3)
+    CEPHFS_POOL_MIN_SIZE=$(ceph_config cephfs_pool_default_min_size 0)
+    CEPHFS_POOL_RULE=$(ceph_config cephfs_pool_default_rule_name replicated_rule)
 
-ceph config set mgr mgr/dashboard/standby_behaviour "$(ceph_config ceph_dashboard_standby_behaviour error)"
-ceph config set mgr mgr/dashboard/standby_error_status_code "$(ceph_config ceph_dashboard_standby_error_status_code 404)"
+    RGW_POOL_PG_NUM=$(ceph_config rgw_pool_default_pg_num 8)
+    RGW_POOL_SIZE=$(ceph_config rgw_pool_default_size 3)
+    RGW_POOL_RULE=$(ceph_config openstack_pool_default_rule_name replicated_rule)
 
-##########################################################
-# register the hosts
-
-echo
-echo "## Register the hosts"
-echo
-
-for node in $CEPH_HOSTS; do
-    echo "+ ceph orch host add $node $(get_address "$node")"
-    ceph orch host add "$node" "$(get_address "$node")" || true
-done
-
-for node in $CEPH_MON_HOSTS; do
-    # _admin makes cephadm maintain ceph.conf and the admin keyring in
-    # /etc/ceph on the node. Both are used by the copy-ceph-keys play.
-    ceph orch host label add "$node" _admin
-done
-
-ceph orch host ls
-
-for node in $CEPH_HOSTS; do
-    ceph cephadm check-host "$node"
-done
-
-##########################################################
-# deploy the MON, MGR and crash daemons
-
-echo
-echo "## Deploy the MON, MGR and crash daemons"
-echo
-
-ceph orch apply mon --placement="$(join_hosts "$CEPH_MON_HOSTS")"
-ceph orch apply mgr --placement="$(join_hosts "$CEPH_MGR_HOSTS")"
-
-wait_for_daemons mon "$(count_hosts "$CEPH_MON_HOSTS")"
-wait_for_daemons mgr "$(count_hosts "$CEPH_MGR_HOSTS")"
-
-if [[ $ENABLE_CEPH_CRASH == "true" ]]; then
-    ceph orch apply crash --placement="$(join_hosts "$CEPH_HOSTS")"
-fi
-
-##########################################################
-# deploy the OSD daemons
-
-echo
-echo "## Deploy the OSD daemons"
-echo
-
-# The LVM volumes have been created by the ceph-create-lvm-devices play. They
-# are passed to cephadm as explicit paths, cephadm therefore neither has to
-# discover nor to partition the block devices itself.
-for node in $CEPH_OSD_HOSTS; do
-    lvm_configuration=$CONFIGURATION_DIRECTORY/inventory/host_vars/$node/ceph-lvm-configuration.yml
-
-    if [[ ! -e $lvm_configuration ]]; then
-        echo "No LVM configuration available for $node, no OSDs are created there."
-        continue
+    if [[ $(ceph_config openstack_pool_default_pg_autoscale_mode false) == "true" ]]; then
+        POOL_PG_AUTOSCALE_MODE=on
+    else
+        POOL_PG_AUTOSCALE_MODE=off
     fi
 
-    while read -r specification; do
-        [[ -n $specification ]] || continue
-        echo "+ ceph orch daemon add osd $node:$specification"
-        ceph orch daemon add osd "$node:$specification" < /dev/null
-    done < <(osd_specifications "$lvm_configuration" "$CEPH_DMCRYPT")
-done
+    CEPH_MON_HOSTS=$(get_hosts ceph-mon)
+    CEPH_OSD_HOSTS=$(get_hosts ceph-osd)
+    CEPH_MDS_HOSTS=$(get_hosts ceph-mds)
+    CEPH_RGW_HOSTS=$(get_hosts ceph-rgw)
 
-ceph osd tree
+    OSD_HOST_COUNT=$(count_hosts "$CEPH_OSD_HOSTS")
 
-##########################################################
-# create the pools
-
-echo
-echo "## Create the pools"
-echo
-
-for pool in backups volumes images metrics vms; do
-    create_pool "$pool" "$OPENSTACK_POOL_PG_NUM" "$OPENSTACK_POOL_SIZE" \
-      "$OPENSTACK_POOL_MIN_SIZE" "$OPENSTACK_POOL_RULE" rbd
-done
+    CEPHFS_POOL_SIZE=$(limit_size "$CEPHFS_POOL_SIZE" "$OSD_HOST_COUNT")
+    RGW_POOL_SIZE=$(limit_size "$RGW_POOL_SIZE" "$OSD_HOST_COUNT")
+fi
 
 if [[ $ENABLE_CEPH_MDS == "true" ]]; then
+    echo
+    echo "## Create the CephFS pools and the manila key"
+    echo
+
     create_pool cephfs_data "$CEPHFS_POOL_PG_NUM" "$CEPHFS_POOL_SIZE" \
       "$CEPHFS_POOL_MIN_SIZE" "$CEPHFS_POOL_RULE" cephfs
     create_pool cephfs_metadata "$CEPHFS_POOL_PG_NUM" "$CEPHFS_POOL_SIZE" \
@@ -530,64 +247,26 @@ if [[ $ENABLE_CEPH_MDS == "true" ]]; then
     if [[ $filesystems != *"\"$CEPH_FS_NAME\""* ]]; then
         ceph fs new "$CEPH_FS_NAME" cephfs_metadata cephfs_data
     fi
-fi
 
-if [[ $ENABLE_CEPH_RGW == "true" ]]; then
-    for pool in buckets.data buckets.index meta log control; do
-        create_pool "${RGW_ZONE}.rgw.${pool}" "$RGW_POOL_PG_NUM" "$RGW_POOL_SIZE" \
-          0 "$OPENSTACK_POOL_RULE" rgw
-    done
-fi
-
-ceph osd pool ls detail
-
-##########################################################
-# create the keys
-
-echo
-echo "## Create the keys"
-echo
-
-# The keys and capabilities match openstack_keys from osism/defaults.
-ceph auth get-or-create client.cinder-backup \
-  mon "profile rbd" \
-  osd "profile rbd pool=backups" > /dev/null
-
-ceph auth get-or-create client.cinder \
-  mon "profile rbd" \
-  osd "profile rbd pool=volumes, profile rbd pool=vms, profile rbd pool=images" > /dev/null
-
-ceph auth get-or-create client.glance \
-  mon "profile rbd" \
-  osd "profile rbd pool=volumes, profile rbd pool=images" > /dev/null
-
-ceph auth get-or-create client.gnocchi \
-  mon "profile rbd" \
-  osd "profile rbd pool=metrics" > /dev/null
-
-ceph auth get-or-create client.nova \
-  mon "profile rbd" \
-  osd "profile rbd pool=images, profile rbd pool=vms, profile rbd pool=volumes, profile rbd pool=backups" > /dev/null
-
-if [[ $ENABLE_CEPH_MDS == "true" ]]; then
+    # The key and its capabilities match openstack_keys from osism/defaults.
     ceph auth get-or-create client.manila \
       mon "allow r" \
       mgr "allow rw" \
       osd "allow rw pool=cephfs_data" > /dev/null
-fi
 
-# cephadm maintains the admin keyring on all hosts with the _admin label, it is
-# written explicitly as well to not depend on the next orchestrator run.
-for entity in client.admin client.cinder-backup client.cinder client.glance client.gnocchi client.nova; do
-    export_key "$entity"
-done
-
-if [[ $ENABLE_CEPH_MDS == "true" ]]; then
     export_key client.manila
 fi
 
-##########################################################
-# deploy the MDS and RGW daemons
+if [[ $ENABLE_CEPH_RGW == "true" ]]; then
+    echo
+    echo "## Create the RGW pools"
+    echo
+
+    for pool in buckets.data buckets.index meta log control; do
+        create_pool "${RGW_ZONE}.rgw.${pool}" "$RGW_POOL_PG_NUM" "$RGW_POOL_SIZE" \
+          0 "$RGW_POOL_RULE" rgw
+    done
+fi
 
 if [[ $ENABLE_CEPH_MDS == "true" && -n $CEPH_MDS_HOSTS ]]; then
     echo
@@ -608,15 +287,6 @@ if [[ $ENABLE_CEPH_RGW == "true" && -n $CEPH_RGW_HOSTS ]]; then
       --port="$RGW_FRONTEND_PORT"
     wait_for_daemons rgw "$(count_hosts "$CEPH_RGW_HOSTS")"
 fi
-
-##########################################################
-# distribute the keys
-
-echo
-echo "## Distribute the keys"
-echo
-
-osism apply copy-ceph-keys
 
 ##########################################################
 # summary
