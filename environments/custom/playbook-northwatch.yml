@@ -11,9 +11,12 @@
 # Run it on the manager with:
 #   osism apply --environment custom northwatch
 #
-# Afterwards the dashboard/API is reachable on the manager on port 8080. Northwatch
-# has no built-in authentication, so reach it over the WireGuard/sshuttle VPN or an
-# SSH tunnel to the manager (see `make vpn-wireguard` / `make login`).
+# Afterwards the dashboard/API is reachable on the manager on port 8080. Read
+# endpoints are open, so reach it over the WireGuard/sshuttle VPN or an SSH tunnel
+# to the manager (see `make vpn-wireguard` / `make login`). Mutating requests need
+# a bearer token: since 0.6.0 Northwatch refuses to bind a non-loopback address
+# without --api-tokens, so the play generates one once into
+# /etc/northwatch/tokens.json (or takes northwatch_api_token) and prints it.
 
 - name: Install and configure Northwatch on the manager
   hosts: manager
@@ -21,7 +24,7 @@
 
   vars:
     # renovate: datasource=github-releases depName=b42Labs/northwatch
-    northwatch_version: "0.5.0"
+    northwatch_version: "0.12.0"
     northwatch_deb_arch: "{{ 'arm64' if ansible_architecture == 'aarch64' else 'amd64' }}"
     northwatch_deb_url: >-
       https://github.com/B42Labs/northwatch/releases/download/v{{ northwatch_version }}/northwatch_{{ northwatch_version }}_{{ northwatch_deb_arch }}.deb
@@ -48,6 +51,13 @@
     # as `make testbed`); reach it over the VPN/SSH tunnel to the manager.
     northwatch_listen: ":8080"
 
+    # Bearer token authorizing mutating API requests (the name becomes the
+    # write-audit actor). Binding a non-loopback address requires one. Leave
+    # northwatch_api_token empty to generate a random token once and keep it in
+    # the tokens file across runs; set it to force a specific value.
+    northwatch_api_token_name: "ops"
+    northwatch_api_token: ""
+
     # Enable write operations to the OVN Northbound (matches `make testbed`).
     northwatch_write_enabled: true
 
@@ -63,6 +73,7 @@
     northwatch_config_dir: /etc/northwatch
     northwatch_config_file: "{{ northwatch_config_dir }}/clusters.json"
     northwatch_ovs_map_file: "{{ northwatch_config_dir }}/ovs-mgmt-addr.json"
+    northwatch_api_tokens_file: "{{ northwatch_config_dir }}/tokens.json"
 
     # Multi-cluster JSON config (--config-file / NORTHWATCH_CONFIG_FILE). Overrides
     # the flat NB/SB env vars and carries the OpenStack enrichment credentials.
@@ -130,6 +141,25 @@
       when: northwatch_ovs_enabled | bool
       notify: Restart northwatch
 
+    - name: Write the Northwatch API tokens file
+      become: true
+      ansible.builtin.copy:
+        content: "{{ {northwatch_api_token_name: (northwatch_api_token | default('', true) or lookup('password', '/dev/null length=64 chars=hexdigits'))} | to_nice_json }}\n"
+        dest: "{{ northwatch_api_tokens_file }}"
+        # Only (re)write when a token is given explicitly; otherwise keep the one
+        # generated on the first run so clients stay valid across replays.
+        force: "{{ northwatch_api_token | default('', true) | length > 0 }}"
+        mode: "0640"
+        owner: root
+        group: northwatch
+      notify: Restart northwatch
+
+    - name: Read the Northwatch API tokens file
+      become: true
+      ansible.builtin.slurp:
+        src: "{{ northwatch_api_tokens_file }}"
+      register: northwatch_api_tokens_content
+
     - name: Configure the Northwatch service environment
       become: true
       ansible.builtin.copy:
@@ -145,8 +175,10 @@
           # OpenStack enrichment credentials for the testbed cluster.
           NORTHWATCH_CONFIG_FILE={{ northwatch_config_file }}
 
-          # HTTP listen address for the dashboard/API (no built-in auth).
+          # HTTP listen address for the dashboard/API. Read endpoints are open;
+          # mutating requests require a bearer token from the tokens file.
           NORTHWATCH_LISTEN={{ northwatch_listen }}
+          NORTHWATCH_API_TOKENS_FILE={{ northwatch_api_tokens_file }}
 
           # Enable write operations to the OVN Northbound.
           NORTHWATCH_WRITE_ENABLED={{ northwatch_write_enabled | bool | ternary('true', 'false') }}
@@ -171,7 +203,9 @@
         msg: >-
           Northwatch {{ northwatch_version }} is running on the manager. Open
           http://{{ internal_address }}{{ northwatch_listen }} over the VPN/SSH
-          tunnel (NB {{ northwatch_ovn_nb_addr }}).
+          tunnel (NB {{ northwatch_ovn_nb_addr }}). API token for write
+          operations ({{ northwatch_api_token_name }}):
+          {{ (northwatch_api_tokens_content.content | b64decode | from_json)[northwatch_api_token_name] }}
 
 # Configure the OVSDB managers (TCP listener on port 6640) on every node running
 # Open vSwitch (the openvswitch_db container), so Northwatch can pull per-chassis
