@@ -23,6 +23,12 @@
 # is what happened on build 326907e2, the one build that most needed the log.
 # So its stderr is kept, the host list is echoed, and the inventory the testbed
 # writes on the manager serves as a fallback.
+#
+# The script reaches the manager on stdin ("bash -s"), so every command in it
+# that reads stdin must be kept off it. "osism" on the manager is a wrapper
+# around "docker exec -i", which drains stdin and with it the rest of the
+# script: the capture printed nothing at all, not even the host list echo.
+# Hence "</dev/null" on "osism get hosts" and "-n" on the per-host ssh.
 - name: Collect Glance API logs play
   hosts: all
 
@@ -73,7 +79,7 @@
           set -uo pipefail
           errfile=$(mktemp)
           trap 'rm -f "${errfile}"' EXIT
-          hosts=$(osism get hosts 2>"${errfile}" | awk -F'|' '/^\|/ {gsub(/^ +| +$/,"",$2); if ($2!="" && $2!="Host" && $2!~/^-+$/) print $2}')
+          hosts=$(osism get hosts </dev/null 2>"${errfile}" | awk -F'|' '/^\|/ {gsub(/^ +| +$/,"",$2); if ($2!="" && $2!="Host" && $2!~/^-+$/) print $2}')
           if [ -z "${hosts}" ]; then
             echo "===== 'osism get hosts' yielded no hosts; its stderr follows ====="
             cat "${errfile}" 2>/dev/null
@@ -87,7 +93,7 @@
           echo "===== glance-api.log capture: hosts = ${hosts:-(none found)} ====="
           for h in ${hosts}; do
             echo "===== glance-api.log (tail -n {{ glance_log_tail_lines }}) @ ${h} ====="
-            ssh -o StrictHostKeyChecking=no -o LogLevel=ERROR "${h}" '(sudo -n tail -n {{ glance_log_tail_lines }} /var/log/kolla/glance/glance-api.log || tail -n {{ glance_log_tail_lines }} /var/log/kolla/glance/glance-api.log) 2>/dev/null || echo "(no readable glance-api.log on this host)"'
+            ssh -n -o StrictHostKeyChecking=no -o LogLevel=ERROR "${h}" '(sudo -n tail -n {{ glance_log_tail_lines }} /var/log/kolla/glance/glance-api.log || tail -n {{ glance_log_tail_lines }} /var/log/kolla/glance/glance-api.log) 2>/dev/null || echo "(no readable glance-api.log on this host)"'
             echo
           done
           REMOTE
