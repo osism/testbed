@@ -17,6 +17,39 @@ server_list() {
     openstack --os-cloud test server show test-4
 }
 
+# Listing the services and the hypervisors proves nothing on its own: both
+# commands exit 0 whatever they print. Two failures seen in practice are
+# invisible that way -- a compute_id that disagrees with the database leaves
+# every nova-compute down (osism/issues#1447), and a broken Ceph client leaves
+# the services up while the resource tracker never registers a hypervisor, so
+# the cloud cannot place an instance on any of them.
+nova_compute_consistent() {
+    local services down n_services n_hypervisors
+    services=$(openstack compute service list --service nova-compute -f value -c Host -c State)
+
+    if [[ -z "${services//[[:space:]]/}" ]]; then
+        echo "FAIL: no nova-compute service is registered"
+        return 1
+    fi
+
+    down=$(awk '$2 != "up" { printf "%s ", $1 }' <<<"$services")
+    if [[ -n "$down" ]]; then
+        echo "FAIL: nova-compute is not up on: ${down}"
+        return 1
+    fi
+
+    # Counting rather than matching names: a hypervisor's name is the one
+    # libvirt reports, which need not equal the service host.
+    n_services=$(awk 'NF { c++ } END { print c+0 }' <<<"$services")
+    n_hypervisors=$(openstack hypervisor list -f value -c ID | awk 'NF { c++ } END { print c+0 }')
+    if [[ "$n_services" -ne "$n_hypervisors" ]]; then
+        echo "FAIL: ${n_services} nova-compute services but ${n_hypervisors} hypervisors"
+        return 1
+    fi
+
+    echo "OK: ${n_services} nova-compute services up, ${n_hypervisors} hypervisors"
+}
+
 compute_list() {
     osism manage compute list testbed-node-3
     osism manage compute list testbed-node-4
@@ -53,6 +86,8 @@ echo
 
 openstack compute service list
 openstack hypervisor list
+
+nova_compute_consistent
 
 echo
 echo "# Run OpenStack test play"
