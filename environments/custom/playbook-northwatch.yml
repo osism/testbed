@@ -23,7 +23,7 @@
   gather_facts: true
 
   vars:
-    # renovate: datasource=github-releases depName=b42Labs/northwatch
+    # renovate: datasource=github-releases depName=B42Labs/northwatch
     northwatch_version: "0.12.0"
     northwatch_deb_arch: "{{ 'arm64' if ansible_architecture == 'aarch64' else 'amd64' }}"
     northwatch_deb_url: >-
