@@ -20,6 +20,16 @@
       "matchStrings":[
         "opentofu_version: (?<currentValue>.*?) # renovate: datasource=(?<datasource>.*?) depName=(?<depName>.*?)?\\s"
       ]
+    },
+    {
+      "description": "Bare *_version vars in the environments playbooks, annotated with a '# renovate:' comment on the line above. The upstream tags carry a leading 'v' that the pinned value omits, so strip it.",
+      "fileMatch":[
+        "^environments\\/.*\\.ya?ml$"
+      ],
+      "matchStrings":[
+        "# renovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)\\n\\s*\\w+_version: \"(?<currentValue>[^\"]+)\"\\n"
+      ],
+      "extractVersionTemplate": "^v(?<version>.*)$"
     }
   ]
 }
