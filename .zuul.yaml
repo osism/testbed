@@ -217,7 +217,7 @@
     name: testbed-deploy-next-in-a-nutshell-ubuntu-24.04
     parent: testbed-deploy-in-a-nutshell-ubuntu-24.04
     vars:
-      ceph_version: reef
+      ceph_version: tentacle
       openstack_version: "2026.1"
 
 - job:
