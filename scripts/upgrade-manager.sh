@@ -85,6 +85,23 @@ fi
 # refresh facts
 osism apply facts
 
+# Re-run the operator role on the nodes. An upgrade brings new collections with
+# it, so a key distribution the previous release's operator role did not know
+# about -- operator_additional_authorized_keys, which puts the dedicated Ceph
+# key on the ceph group -- only reaches the nodes once the role runs again.
+# Nothing else in the upgrade path does that: `osism apply operator` otherwise
+# appears only in scripts/deploy-manager.sh, on the deploy path.
+#
+# Without this the upgrade leaves a deployment holding a role that could
+# authorize the key and a manager that materialised it, with the key authorized
+# nowhere -- and nothing fails at the time, which is what makes it worth doing
+# here rather than leaving it to be discovered. This is the same step an
+# operator has to perform by hand after upgrading a real deployment.
+#
+# No -u: unlike the deploy path the operator user already exists on the nodes,
+# so the connection does not need the image's default user.
+osism apply operator -l testbed-nodes
+
 # Set the Kolla namespace to match the target version. The namespace must be
 # derived from the target manager version, not from the namespace that was used
 # before the upgrade/update:
