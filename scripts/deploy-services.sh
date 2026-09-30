@@ -19,7 +19,7 @@ sh -c '/opt/configuration/scripts/deploy/001-helpers.sh'
 sh -c '/opt/configuration/scripts/deploy/200-infrastructure.sh'
 
 # deploy ceph services
-sh -c '/opt/configuration/scripts/deploy/100-ceph-with-ansible.sh'
+deploy_ceph
 
 # deploy openstack services
 sh -c '/opt/configuration/scripts/deploy/300-openstack.sh'
