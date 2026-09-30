@@ -9,6 +9,14 @@ echo
 source /opt/configuration/scripts/include.sh
 source /opt/manager-vars.sh
 
+# Ceph upgrades under cephadm run through "ceph orch upgrade", which the
+# testbed does not drive. Only the ceph-ansible upgrade below exists, and it
+# cannot upgrade a cephadm cluster, so refuse rather than run it.
+if [[ ${CEPH_STACK:-ceph-ansible} == "cephadm" ]]; then
+    echo "Upgrading Ceph with cephadm is not supported by the testbed."
+    exit 1
+fi
+
 export MANAGER_VERSION=${1:-latest}
 CEPH_VERSION=${2:-pacific}
 

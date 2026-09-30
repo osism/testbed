@@ -58,3 +58,28 @@ valkey_or_redis() {
         *) echo valkey ;;
     esac
 }
+
+# Run the Ceph deployment for the backend this testbed was created with.
+#
+# CEPH_STACK comes from /opt/manager-vars.sh, which cloud-init writes from the
+# ceph_stack terraform variable. It is therefore fixed for the life of a
+# testbed: a deployed cluster cannot be moved to the other backend by changing
+# the variable.
+#
+# The two backends are separate scripts rather than branches within one script
+# because they share no steps. deploy-manager.sh links both of them into
+# /usr/local/bin, so either can still be run by hand regardless of CEPH_STACK.
+deploy_ceph() {
+    case ${CEPH_STACK:-ceph-ansible} in
+        ceph-ansible)
+            sh -c '/opt/configuration/scripts/deploy/100-ceph-with-ansible.sh'
+            ;;
+        cephadm)
+            sh -c '/opt/configuration/scripts/deploy/100-ceph-with-cephadm.sh'
+            ;;
+        *)
+            echo "Unknown CEPH_STACK '$CEPH_STACK'." >&2
+            return 1
+            ;;
+    esac
+}
