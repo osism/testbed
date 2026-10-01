@@ -31,6 +31,15 @@ if [[ $MANAGER_VERSION == "latest" || $(semver $MANAGER_VERSION 10.0.0-0) -ge 0 
     sed -i "/^om_enable_rabbitmq_quorum_queues:/d" /opt/configuration/environments/kolla/configuration.yml
 fi
 
+# A cephadm testbed runs no ceph-ansible container. ceph-ansible cannot deploy
+# the Ceph releases cephadm is used for -- on the latest track its image tag
+# follows ceph_version, and there is no ceph-ansible:tentacle -- and nothing on
+# the cephadm path needs it: the Ceph version pins come from osism-ansible and
+# osism/defaults, the OSD LVM plays from osism-ansible.
+if [[ ${CEPH_STACK:-ceph-ansible} == "cephadm" ]] && ! grep -q '^ceph_ansible_enable:' /opt/configuration/environments/manager/configuration.yml; then
+    echo "ceph_ansible_enable: false" >> /opt/configuration/environments/manager/configuration.yml
+fi
+
 # enable resource nodes
 /opt/configuration/scripts/enable-resource-nodes.sh
 
@@ -80,7 +89,9 @@ cp /home/dragon/.ssh/id_rsa /opt/configuration/environments/secrets/id_rsa.opera
 chmod 600 /opt/configuration/environments/secrets/id_rsa.operator
 
 # wait for manager service
-wait_for_container_healthy 60 ceph-ansible
+if ceph_ansible_enabled; then
+    wait_for_container_healthy 60 ceph-ansible
+fi
 wait_for_container_healthy 60 kolla-ansible
 wait_for_container_healthy 60 osism-ansible
 

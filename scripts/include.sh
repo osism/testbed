@@ -15,6 +15,12 @@ wait_for_container_healthy() {
     done
 }
 
+# The manager runs a ceph-ansible container unless the manager configuration
+# disables it (cephadm testbeds, and Ceph releases ceph-ansible cannot deploy).
+ceph_ansible_enabled() {
+    ! grep -q '^ceph_ansible_enable: false' /opt/configuration/environments/manager/configuration.yml
+}
+
 sync_inventory() {
     # avoid overlaps with run_on_change
     sleep 10
