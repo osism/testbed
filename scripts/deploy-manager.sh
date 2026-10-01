@@ -55,7 +55,9 @@ else
 fi
 
 # wait for manager service
-wait_for_container_healthy 60 ceph-ansible
+if ceph_ansible_enabled; then
+    wait_for_container_healthy 60 ceph-ansible
+fi
 wait_for_container_healthy 60 kolla-ansible
 wait_for_container_healthy 60 osism-ansible
 
