@@ -19,3 +19,22 @@ if [[ "$(grep '^ceph_version:' /opt/configuration/environments/configuration.yml
 else
     sed -i -e '/^ceph_cluster_fsid: .*/a\' -e "ceph_version: ${VERSION}" /opt/configuration/environments/configuration.yml
 fi
+
+# ceph-ansible has no branch past squid. For any later Ceph release the manager
+# runs no ceph-ansible container -- there is no image for it -- and options the
+# release removed are dropped from the Ceph configuration: Tentacle removed
+# "rgw keystone api version" together with Keystone v2.0 support, and writing a
+# removed option fails the cephadm configuration play. Earlier releases still
+# default it to 2, so it stays for them.
+case $VERSION in
+    quincy|reef|squid)
+        ;;
+    *)
+        if ! grep -q '^ceph_ansible_enable:' /opt/configuration/environments/manager/configuration.yml; then
+            echo "ceph_ansible_enable: false" >> /opt/configuration/environments/manager/configuration.yml
+        fi
+        for file in /opt/configuration/environments/ceph*/configuration.yml; do
+            sed -i '/"rgw keystone api version":/d' "$file"
+        done
+        ;;
+esac
