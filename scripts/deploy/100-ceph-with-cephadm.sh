@@ -8,8 +8,8 @@
 # only sequences them.
 #
 # The preparation of the OSD devices is done with
-# scripts/prepare-ceph-configuration.sh, i.e. with the ceph-configure-lvm-volumes
-# and ceph-create-lvm-devices plays. The LVM volumes created there are handed over to
+# scripts/prepare-ceph-configuration.sh, i.e. with the configure-lvm-volumes and
+# create-lvm-devices plays. The LVM volumes created there are handed over to
 # cephadm as explicit LVM paths, cephadm does not touch the raw block devices
 # itself.
 #

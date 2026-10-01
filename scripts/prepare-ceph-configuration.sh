@@ -4,7 +4,18 @@ set -e
 source /opt/configuration/scripts/include.sh
 source /opt/configuration/scripts/manager-version.sh
 
-if [[ $(docker exec ceph-ansible sh -c "test -f /ansible/ceph-configure-lvm-volumes.yml && echo OK") != "OK" ]]; then
+# The OSD LVM plays run in osism-ansible as configure-lvm-volumes and
+# create-lvm-devices where it carries them (OSISM 11 onwards, needed on
+# cephadm testbeds, which run no ceph-ansible container). Older managers
+# have them only as the ceph-ansible roles ceph-configure-lvm-volumes and
+# ceph-create-lvm-devices.
+if docker exec osism-ansible python3 -c "import sys, yaml; sys.exit('create-lvm-devices' not in yaml.safe_load(open('/ansible/playbooks.yml')))"; then
+    LVM_PLAY_PREFIX=
+else
+    LVM_PLAY_PREFIX=ceph-
+fi
+
+if [[ -n $LVM_PLAY_PREFIX && $(docker exec ceph-ansible sh -c "test -f /ansible/ceph-configure-lvm-volumes.yml && echo OK") != "OK" ]]; then
     mkdir -p /opt/configuration/environments/custom/tasks /opt/configuration/environments/custom/templates
     curl -o /opt/configuration/environments/custom/playbook-ceph-configure-lvm-volumes.yml https://raw.githubusercontent.com/osism/container-image-ceph-ansible/main/files/playbooks/ceph-configure-lvm-volumes.yml
     curl -o /opt/configuration/environments/custom/playbook-ceph-create-lvm-devices.yml https://raw.githubusercontent.com/osism/container-image-ceph-ansible/main/files/playbooks/ceph-create-lvm-devices.yml
@@ -21,7 +32,7 @@ osism apply facts
 if [[ $(semver $MANAGER_VERSION 7.0.0) -ge 0 || $MANAGER_VERSION == "latest" ]]; then
     # The pre-built LVM2 volumes are always used from OSISM 7 onwards.
     sed -i "/^devices:/d" /opt/configuration/inventory/group_vars/testbed-nodes.yml
-    osism apply ceph-configure-lvm-volumes
+    osism apply ${LVM_PLAY_PREFIX}configure-lvm-volumes
     for node in $(find /opt/configuration/inventory/host_vars -mindepth 1 -type d); do
         if [[ -e /tmp/$(basename $node)-ceph-lvm-configuration.yml ]]; then
             cp /tmp/$(basename $node)-ceph-lvm-configuration.yml /opt/configuration/inventory/host_vars/$(basename $node)/ceph-lvm-configuration.yml
@@ -31,7 +42,7 @@ if [[ $(semver $MANAGER_VERSION 7.0.0) -ge 0 || $MANAGER_VERSION == "latest" ]];
     # sync the inventory
     sync_inventory
 
-    osism apply ceph-create-lvm-devices
+    osism apply ${LVM_PLAY_PREFIX}create-lvm-devices
     osism apply facts
 
     # With OSISM 7 we have introduced a play to manage the Ceph pools independently
