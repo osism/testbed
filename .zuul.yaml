@@ -341,19 +341,8 @@
     # -------------------------------------------------------------------------
     label:
       jobs:
-        - testbed-deploy-current-in-a-nutshell-ubuntu-24.04
-        - testbed-deploy-next-in-a-nutshell-ubuntu-24.04
-        - testbed-deploy-stable-in-a-nutshell-ubuntu-24.04
-
-    # -------------------------------------------------------------------------
-    # Label-Additional Pipeline - For additional testing on patches
-    # -------------------------------------------------------------------------
-    label-additional:
-      jobs:
+        - testbed-deploy-current-in-a-nutshell-with-tempest-ubuntu-24.04
         - testbed-update-stable-current-ubuntu-24.04
-        - testbed-update-stable-ubuntu-24.04
-        - testbed-upgrade-stable-next-ubuntu-24.04
-        - testbed-upgrade-stable-ubuntu-24.04
 
     # -------------------------------------------------------------------------
     # Periodic Midnight Pipeline - Nightly tests
