@@ -226,6 +226,23 @@
     vars:
       tempest: true
 
+# The next release deploys Ceph with cephadm. This pair keeps a ceph-ansible
+# cluster under the same manager covered; reef is the Ceph release ceph-ansible
+# has run with on 2026.1.
+
+- job:
+    name: testbed-deploy-next-in-a-nutshell-ceph-ansible-ubuntu-24.04
+    parent: testbed-deploy-next-in-a-nutshell-ubuntu-24.04
+    vars:
+      ceph_stack: ceph-ansible
+      ceph_version: reef
+
+- job:
+    name: testbed-deploy-next-in-a-nutshell-ceph-ansible-with-tempest-ubuntu-24.04
+    parent: testbed-deploy-next-in-a-nutshell-ceph-ansible-ubuntu-24.04
+    vars:
+      tempest: true
+
 # -----------------------------------------------------------------------------
 # 3.6 Full Stable Deploy Jobs
 # -----------------------------------------------------------------------------
@@ -343,6 +360,7 @@
       jobs:
         - testbed-deploy-current-in-a-nutshell-ubuntu-24.04
         - testbed-deploy-next-in-a-nutshell-ubuntu-24.04
+        - testbed-deploy-next-in-a-nutshell-ceph-ansible-ubuntu-24.04
         - testbed-deploy-stable-in-a-nutshell-ubuntu-24.04
 
     # -------------------------------------------------------------------------
@@ -362,6 +380,7 @@
       jobs:
         - testbed-deploy-current-in-a-nutshell-with-tempest-ubuntu-24.04
         - testbed-deploy-next-in-a-nutshell-with-tempest-ubuntu-24.04
+        - testbed-deploy-next-in-a-nutshell-ceph-ansible-with-tempest-ubuntu-24.04
         - testbed-deploy-stable-in-a-nutshell-with-tempest-ubuntu-24.04
         - testbed-update-stable-current-ubuntu-24.04
         - testbed-update-stable-ubuntu-24.04
