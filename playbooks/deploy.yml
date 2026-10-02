@@ -26,7 +26,12 @@
     terraform_binary: "{{ ansible_user_dir }}/tofu"
     terraform_path: "{{ basepath }}/terraform"
 
-    _ceph_stack: "{{ ceph_stack | default('ceph-ansible') }}"
+    # The Ceph backend follows the manager release unless the job sets one:
+    # cephadm from OSISM 11 on and on latest, ceph-ansible before.
+    _ceph_stack: >-
+      {{ ceph_stack | default('cephadm'
+         if _manager_version == 'latest' or _manager_version is version('11.0.0', '>=')
+         else 'ceph-ansible') }}
     _ceph_version: "{{ ceph_version | default('reef') }}"
     _manager_version: "{{ manager_version | default('latest') }}"
     _openstack_version: "{{ openstack_version | default('2025.1') }}"

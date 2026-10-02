@@ -56,8 +56,7 @@ fi
 # placed for them. A service running fewer daemons than its placement asks
 # for -- down to none at all -- is the failure a healthy-looking "ceph -s"
 # hides, so it fails the check. The backend is read from the cluster rather
-# than from CEPH_STACK: a nutshell testbed selects cephadm in python-osism and
-# leaves CEPH_STACK unset.
+# than from CEPH_STACK.
 if [[ $(< /dev/null ceph orch status --format json 2>/dev/null | jq -r '.backend // empty') == "cephadm" ]]; then
     echo
     echo "# Ceph orchestrator services"
