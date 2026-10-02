@@ -16,7 +16,6 @@ PARALLELISM = 10
 RESOURCE = openstack_networking_floatingip_v2.manager_floating_ip
 STATE = errored.tfstate
 
-CEPH_STACK ?= ceph-ansible
 DEPLOY_MODE ?= manager
 KOLLA_NAMESPACE ?= kolla
 TEMPEST ?= false
@@ -24,6 +23,14 @@ TEMPEST ?= false
 VERSION_CEPH ?= reef
 VERSION_MANAGER ?= latest
 VERSION_OPENSTACK ?= 2024.2
+
+# The Ceph backend follows the manager release, as python-osism's own
+# selection does: cephadm from OSISM 11 on and on latest, ceph-ansible before.
+ifeq ($(shell [ "$(VERSION_MANAGER)" = latest ] || [ "$$(../contrib/semver2.sh $(VERSION_MANAGER) 11.0.0-0)" -ge 0 ] && echo cephadm),cephadm)
+CEPH_STACK ?= cephadm
+else
+CEPH_STACK ?= ceph-ansible
+endif
 
 APPLY_PARAMS = -auto-approve -parallelism=$(PARALLELISM)
 
