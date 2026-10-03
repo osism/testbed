@@ -40,6 +40,14 @@ if [[ ${CEPH_STACK:-ceph-ansible} == "cephadm" ]] && ! grep -q '^ceph_ansible_en
     echo "ceph_ansible_enable: false" >> /opt/configuration/environments/manager/configuration.yml
 fi
 
+# ceph-ansible, as OSISM runs it, writes no "rgw frontends" line, so radosgw
+# listens on Ceph's built-in 7480 instead of radosgw_frontend_port (8081), the
+# port the kolla haproxy backend defaults to. Point the backend at 7480 there.
+# cephadm starts radosgw on radosgw_frontend_port, so both sides already agree.
+if [[ ${CEPH_STACK:-ceph-ansible} == "ceph-ansible" ]] && ! grep -q '^ceph_rgw_default_port:' /opt/configuration/environments/kolla/configuration.yml; then
+    echo "ceph_rgw_default_port: 7480" >> /opt/configuration/environments/kolla/configuration.yml
+fi
+
 # enable resource nodes
 /opt/configuration/scripts/enable-resource-nodes.sh
 
