@@ -12,11 +12,11 @@ export MYSQL_TCP_PORT=3306
 
 VERSION_mysql_random_data_load=0.1.12
 
-if [[ ! -e /usr/bin/mysql ]]; then
-    sudo apt-get -y install mariadb-client-core-10.1
+if ! command -v mariadb >/dev/null; then
+    sudo apt-get -y install mariadb-client
 fi
 
-mysql -u root < mysql_random_data_load.sql
+mariadb -u root < mysql_random_data_load.sql
 
 if [[ ! -e mysql_random_data_load ]]; then
     wget https://github.com/Percona-Lab/mysql_random_data_load/releases/download/v${VERSION_mysql_random_data_load}/mysql_random_data_load_${VERSION_mysql_random_data_load}_Linux_x86_64.tar.gz
