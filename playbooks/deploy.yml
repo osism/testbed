@@ -101,6 +101,7 @@
             CLOUD={{ cloud }}
             IMAGE_USERNAME={{ image_username }}
             TERRAFORM={{ terraform_binary }}
+            VERSION_CEPH={{ _ceph_version }}
             VERSION_MANAGER={{ _manager_version }}
             TEMPEST={{ _tempest | lower }}
             create
