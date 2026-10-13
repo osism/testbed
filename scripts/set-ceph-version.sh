@@ -4,10 +4,14 @@ set -e
 
 VERSION=${1:-reef}
 
-if [[ "$(grep '^ceph_version:' /opt/configuration/environments/manager/configuration.yml)" ]]; then
-    sed -i "s/ceph_version: .*/ceph_version: ${VERSION}/g" /opt/configuration/environments/manager/configuration.yml
-else
-    sed -i -e '/manager_version: .*/a\' -e "ceph_version: ${VERSION}" /opt/configuration/environments/manager/configuration.yml
+# A numbered release keeps release names out of the manager configuration
+# (see set-manager-version.sh), so only the latest track gets one there.
+if grep -q '^manager_version: latest' /opt/configuration/environments/manager/configuration.yml; then
+    if [[ "$(grep '^ceph_version:' /opt/configuration/environments/manager/configuration.yml)" ]]; then
+        sed -i "s/ceph_version: .*/ceph_version: ${VERSION}/g" /opt/configuration/environments/manager/configuration.yml
+    else
+        sed -i -e '/manager_version: .*/a\' -e "ceph_version: ${VERSION}" /opt/configuration/environments/manager/configuration.yml
+    fi
 fi
 
 # Every environment needs the selected release, not only the manager: without
