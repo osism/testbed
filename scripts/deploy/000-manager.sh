@@ -21,6 +21,16 @@ if [[ $MANAGER_VERSION == "latest" ]]; then
     /opt/configuration/scripts/set-openstack-version.sh $OPENSTACK_VERSION
 fi
 
+# From OSISM 11 on, a numbered release carries the Ceph pins of several Ceph
+# releases and selects one by the cluster's ceph_version, which the release
+# itself does not set. The configuration also has to match that Ceph release.
+# set-ceph-version.sh does both, the way a configuration repository generated
+# by cfg-cookiecutter has them, and leaves the manager configuration of a
+# numbered release alone.
+if [[ $MANAGER_VERSION != "latest" && $(semver $MANAGER_VERSION 11.0.0-0) -ge 0 ]]; then
+    /opt/configuration/scripts/set-ceph-version.sh $CEPH_VERSION
+fi
+
 # enable new kubernetes service
 if [[ $(semver $MANAGER_VERSION 7.0.0) -ge 0 || $MANAGER_VERSION == "latest" ]]; then
     echo "enable_osism_kubernetes: true" >> /opt/configuration/environments/manager/configuration.yml
