@@ -310,6 +310,10 @@
       manager_version_next: latest
       openstack_version_next: "2026.1"
 
+# NOTE: testbed-upgrade-stable-next is in no pipeline until the 2026.2 images
+# exist. Until then it fails at the same missing image as
+# testbed-deploy-next-in-a-nutshell, only after a full stable deployment.
+
 - job:
     name: testbed-upgrade-stable-next-ubuntu-24.04
     parent: abstract-testbed-deploy
@@ -356,7 +360,6 @@
       jobs:
         - testbed-update-stable-current-ubuntu-24.04
         - testbed-update-stable-ubuntu-24.04
-        - testbed-upgrade-stable-next-ubuntu-24.04
         - testbed-upgrade-stable-ubuntu-24.04
 
     # -------------------------------------------------------------------------
@@ -369,7 +372,6 @@
         - testbed-deploy-stable-in-a-nutshell-with-tempest-ubuntu-24.04
         - testbed-update-stable-current-ubuntu-24.04
         - testbed-update-stable-ubuntu-24.04
-        - testbed-upgrade-stable-next-ubuntu-24.04
         - testbed-upgrade-stable-ubuntu-24.04
 
     # -------------------------------------------------------------------------
