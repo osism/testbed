@@ -34,7 +34,7 @@
          else 'ceph-ansible') }}
     _ceph_version: "{{ ceph_version | default('reef') }}"
     _manager_version: "{{ manager_version | default('latest') }}"
-    _openstack_version: "{{ openstack_version | default('2025.1') }}"
+    _openstack_version: "{{ openstack_version | default('2026.1') }}"
 
     _nutshell: "{{ nutshell | default(false) | bool }}"
     _tempest: "{{ tempest | default(false) | bool }}"
