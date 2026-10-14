@@ -23,7 +23,6 @@
           - "DNS:keycloak.testbed.osism.xyz"
           - "DNS:netbox.testbed.osism.xyz"
           - "DNS:netdata.testbed.osism.xyz"
-          - "DNS:nexus.testbed.osism.xyz"
           - "DNS:phpmyadmin.testbed.osism.xyz"
           - "DNS:testbed-manager.testbed.osism.xyz"
           - "IP:192.168.16.5"
