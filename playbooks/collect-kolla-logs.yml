@@ -30,8 +30,8 @@
 # best-effort and must never fail the job.
 #
 # Each ssh gets "-n": "osism" on the manager is a wrapper around
-# "docker exec -i", which drains whatever stdin it inherits (see
-# collect-glance-logs.yml).
+# "docker exec -i", which drains whatever stdin it inherits. Fed a script on
+# stdin, it swallows the rest of that script without an error.
 - name: Collect kolla logs play
   hosts: all
 
