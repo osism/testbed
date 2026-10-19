@@ -1,0 +1,115 @@
+---
+# Upload /var/log/kolla from every testbed host with the job's logs, so a
+# failure inside an OpenStack service can be traced to that service's own log
+# instead of only to the symptom the deploy or tempest step reports.
+#
+# kolla services log to files under /var/log/kolla, not to the container's
+# stdout, so nothing in the job output carries them. The directory is copied
+# whole, rotated files included, which keeps the next failing service covered
+# without having to name it here first.
+#
+# Every file is gzipped on its own, keeping its name with ".gz" appended:
+# nova-compute.log becomes kolla/<host>/nova/nova-compute.log.gz. A tempest
+# run at DEBUG writes tens of MB per service log, and gzip shrinks them 8-25x;
+# single-file gzip, unlike one archive, stays readable with zless/zgrep.
+#
+# Only failed builds are collected. A green build needs none of this, and
+# skipping it keeps the log server's volume to the builds someone will read.
+#
+# This runs in post-run, before the cleanup play tears the environment down.
+# The orchestrator can only reach the manager directly (the nodes sit on a
+# private network), so every host is read through the manager. The play is
+# best-effort and must never fail the job.
+#
+# Each ssh gets "-n": "osism" on the manager is a wrapper around
+# "docker exec -i", which drains whatever stdin it inherits (see
+# collect-glance-logs.yml).
+- name: Collect kolla logs play
+  hosts: all
+
+  vars_files:
+    - vars/mappings.yml
+    - vars/repositories.yml
+
+  vars:
+    basepath: "{{ ansible_user_dir }}/src/{{ repositories['testbed']['path'] }}"
+    terraform_path: "{{ basepath }}/terraform"
+    kolla_logs_dir: "{{ ansible_user_dir }}/zuul-output/logs/kolla"
+    # INI inventory the testbed writes on the manager; used to name the hosts
+    # when "osism get hosts" cannot.
+    manager_inventory: /opt/configuration/inventory/10-custom
+
+  tasks:
+    - name: Set cloud fact (Zuul deployment)
+      ansible.builtin.set_fact:
+        cloud: "{{ cloud_envs[hostvars[groups['all'][0]]['nodepool']['label']] }}"
+      when: "'nodepool' in hostvars[groups['all'][0]]"
+
+    - name: Set cloud fact (local deployment)
+      ansible.builtin.set_fact:
+        cloud: "{{ testbed_cloud | default('ci') }}"
+      when: "'nodepool' not in hostvars[groups['all'][0]]"
+
+    # Every task below depends on the manager address, so skipping this
+    # one skips the play. Outside Zuul zuul_success is unset, and a
+    # local deployment is still up to be inspected directly.
+    - name: Read the manager address
+      when: not (zuul_success | default(true) | bool)
+      ansible.builtin.slurp:
+        src: "{{ terraform_path }}/.MANAGER_ADDRESS.{{ cloud }}"
+      register: _kolla_manager_address
+      failed_when: false
+
+    - name: Copy the kolla logs of all testbed hosts
+      when: _kolla_manager_address.content is defined
+      vars:
+        manager_host: "{{ _kolla_manager_address.content | b64decode | trim | split('=') | last | replace('\"', '') }}"
+      ansible.builtin.shell:
+        cmd: |
+          set -uo pipefail
+          manager() {
+            ssh -n \
+              -i {{ terraform_path }}/.id_rsa.{{ cloud }} \
+              -o BatchMode=yes \
+              -o ConnectTimeout=10 \
+              -o StrictHostKeyChecking=no \
+              -o UserKnownHostsFile=/dev/null \
+              -o LogLevel=ERROR \
+              dragon@{{ manager_host }} "$@"
+          }
+          hosts=$(manager 'osism get hosts </dev/null 2>/dev/null' | awk -F'|' '/^\|/ {gsub(/^ +| +$/,"",$2); if ($2!="" && $2!="Host" && $2!~/^-+$/) print $2}')
+          if [ -z "${hosts}" ]; then
+            echo "'osism get hosts' yielded no hosts, falling back to {{ manager_inventory }}"
+            hosts=$(manager "awk '/^\[/ {skip = (\$0 ~ /:(children|vars)\]/); next} /^[[:space:]]*[#;]/ {next} /^[[:space:]]*\$/ {next} !skip {print \$1}' {{ manager_inventory }}" | sort -u)
+          fi
+          echo "hosts: ${hosts:-(none found)}"
+          for h in ${hosts}; do
+            mkdir -p "{{ kolla_logs_dir }}/${h}"
+            manager "ssh -n -o StrictHostKeyChecking=no -o LogLevel=ERROR ${h} 'sudo -n test -d /var/log/kolla && sudo -n tar --warning=no-file-changed -C /var/log/kolla -czf - .'" \
+              | tar -xzf - -C "{{ kolla_logs_dir }}/${h}" 2>/dev/null
+            if [ -z "$(ls -A "{{ kolla_logs_dir }}/${h}")" ]; then
+              echo "${h}: no /var/log/kolla copied"
+              rmdir "{{ kolla_logs_dir }}/${h}"
+            fi
+          done
+          if [ -d "{{ kolla_logs_dir }}" ]; then
+            find "{{ kolla_logs_dir }}" -type f ! -name '*.gz' -exec gzip -f {} +
+            chmod -R u+rwX,go+rX "{{ kolla_logs_dir }}"
+            for d in "{{ kolla_logs_dir }}"/*/; do
+              [ -d "${d}" ] || continue
+              echo "$(basename "${d}"): $(find "${d}" -type f | wc -l) files, $(du -sh "${d}" | cut -f1) gzipped"
+            done
+          fi
+      args:
+        executable: /bin/bash
+      register: _kolla_logs
+      changed_when: false
+      failed_when: false
+
+    - name: Show what was copied
+      when: _kolla_manager_address.content is defined
+      ansible.builtin.debug:
+        msg: >-
+          {{ ((_kolla_logs.stdout_lines | default([]))
+              + (_kolla_logs.stderr_lines | default([])))
+             | default(['(kolla log copy was skipped or produced no output)'], true) }}
