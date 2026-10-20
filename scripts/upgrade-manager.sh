@@ -37,6 +37,15 @@ if [[ $MANAGER_VERSION == "latest" ]]; then
     fi
 fi
 
+# A stable release brings its own Ceph pin, so nothing above decides whether
+# Ceph moves. Under cephadm a move means "ceph orch upgrade", which OSISM does
+# not provide yet and upgrade-services.sh refuses to fake with the ceph-ansible
+# upgrade. Leave Ceph as it is and upgrade everything else.
+CEPH_STACK=$(source /opt/manager-vars.sh && echo "${CEPH_STACK:-ceph-ansible}")
+if [[ $MANAGER_VERSION != "latest" && $CEPH_STACK == "cephadm" ]]; then
+    echo "export SKIP_CEPH_UPGRADE=true" | sudo tee -a /opt/manager-vars.sh
+fi
+
 /opt/configuration/scripts/set-kolla-namespace.sh $KOLLA_NAMESPACE
 
 # Sync configuration repository
