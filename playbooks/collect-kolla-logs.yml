@@ -47,6 +47,11 @@
     # INI inventory the testbed writes on the manager; used to name the hosts
     # when "osism get hosts" cannot.
     manager_inventory: /opt/configuration/inventory/10-custom
+    # The host list is passed between tasks in this file, not in a task's
+    # stdout: Zuul's command module merges stderr into stdout, so stdout
+    # also carries notices and ssh errors.
+    kolla_hosts_file: "{{ ansible_user_dir }}/kolla-hosts.txt"
+    kolla_hosts: "{{ (_kolla_hosts_list.content | default('') | b64decode).splitlines() | select | list }}"
     # Runs ssh to the manager with the remaining arguments as the command.
     manager_ssh: >-
       ssh -n
@@ -87,18 +92,25 @@
           set -uo pipefail
           hosts=$({{ manager_ssh }} 'osism get hosts </dev/null 2>/dev/null' | awk -F'|' '/^\|/ {gsub(/^ +| +$/,"",$2); if ($2!="" && $2!="Host" && $2!~/^-+$/) print $2}')
           if [ -z "${hosts}" ]; then
-            echo "'osism get hosts' yielded no hosts, falling back to {{ manager_inventory }}" >&2
+            echo "'osism get hosts' yielded no hosts, falling back to {{ manager_inventory }}"
             hosts=$({{ manager_ssh }} "awk '/^\[/ {skip = (\$0 ~ /:(children|vars)\]/); next} /^[[:space:]]*[#;]/ {next} /^[[:space:]]*\$/ {next} !skip {print \$1}' {{ manager_inventory }}" | sort -u)
           fi
-          echo "${hosts}"
+          printf '%s\n' "${hosts}" > "{{ kolla_hosts_file }}"
       args:
         executable: /bin/bash
       register: _kolla_hosts
       changed_when: false
       failed_when: false
 
+    - name: Read the host list
+      when: _kolla_manager_address.content is defined
+      ansible.builtin.slurp:
+        src: "{{ kolla_hosts_file }}"
+      register: _kolla_hosts_list
+      failed_when: false
+
     - name: Record the container health state of all testbed hosts
-      when: _kolla_hosts.stdout_lines | default([]) | length > 0
+      when: kolla_hosts | length > 0
       ansible.builtin.shell:
         cmd: |
           set -uo pipefail
@@ -133,7 +145,7 @@
           print("%s: %d containers, unhealthy: %s" % (host, len(keep), ", ".join(bad) or "none"))
           '
           mkdir -p "{{ container_health_dir }}"
-          for h in {{ _kolla_hosts.stdout_lines | join(' ') }}; do
+          for h in {{ kolla_hosts | join(' ') }}; do
             {{ manager_ssh }} "ssh -n -o StrictHostKeyChecking=no -o LogLevel=ERROR ${h} 'sudo -n docker ps -aq | xargs -r sudo -n docker inspect'" \
               | python3 -c "${reduce}" "${h}" "{{ container_health_dir }}/${h}.json"
           done
@@ -144,7 +156,7 @@
       failed_when: false
 
     - name: Show the container health summary
-      when: _kolla_hosts.stdout_lines | default([]) | length > 0
+      when: kolla_hosts | length > 0
       ansible.builtin.debug:
         msg: >-
           {{ ((_container_health.stdout_lines | default([]))
@@ -152,11 +164,11 @@
              | default(['(container health capture produced no output)'], true) }}
 
     - name: Copy the kolla logs of all testbed hosts
-      when: _kolla_hosts.stdout_lines | default([]) | length > 0
+      when: kolla_hosts | length > 0
       ansible.builtin.shell:
         cmd: |
           set -uo pipefail
-          for h in {{ _kolla_hosts.stdout_lines | join(' ') }}; do
+          for h in {{ kolla_hosts | join(' ') }}; do
             mkdir -p "{{ kolla_logs_dir }}/${h}"
             {{ manager_ssh }} "ssh -n -o StrictHostKeyChecking=no -o LogLevel=ERROR ${h} 'sudo -n test -d /var/log/kolla && sudo -n tar --warning=no-file-changed -C /var/log/kolla -czf - .'" \
               | tar -xzf - -C "{{ kolla_logs_dir }}/${h}" 2>/dev/null
@@ -180,10 +192,11 @@
       failed_when: false
 
     - name: Show what was copied
-      when: _kolla_hosts.stdout_lines | default([]) | length > 0
+      when: _kolla_hosts.stdout_lines is defined
       ansible.builtin.debug:
         msg: >-
-          {{ ((_kolla_hosts.stderr_lines | default([]))
+          {{ ((_kolla_hosts.stdout_lines | default([]))
+              + (_kolla_hosts.stderr_lines | default([]))
               + (_kolla_logs.stdout_lines | default([]))
               + (_kolla_logs.stderr_lines | default([])))
              | default(['(kolla log copy was skipped or produced no output)'], true) }}
