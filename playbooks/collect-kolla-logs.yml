@@ -65,6 +65,22 @@
     manager_host: "{{ _kolla_manager_address.content | b64decode | trim | split('=') | last | replace('\"', '') }}"
 
   tasks:
+    # The orchestrator is a static node, and each build slot is a user
+    # whose home outlives the build: nothing empties zuul-output between
+    # builds. Without this, every build, green ones included, would upload
+    # whatever earlier builds in the slot collected. This play runs before
+    # the base job fetches zuul-output, so it runs for every build, before
+    # the zuul_success gate. Outside Zuul it deletes nothing.
+    - name: Remove what earlier builds left behind
+      when: zuul is defined
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: absent
+      loop:
+        - "{{ kolla_logs_dir }}"
+        - "{{ container_health_dir }}"
+        - "{{ kolla_hosts_file }}"
+
     - name: Set cloud fact (Zuul deployment)
       ansible.builtin.set_fact:
         cloud: "{{ cloud_envs[hostvars[groups['all'][0]]['nodepool']['label']] }}"
