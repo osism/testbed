@@ -21,6 +21,11 @@
 # one entry per container, and the unhealthy ones are also printed into the
 # job output.
 #
+# The manager's validator reports are copied as well, to validator-reports/.
+# "osism validate" names only the report file when a check fails; the
+# per-host data that says why (which OSD IDs, which mons) is in the report
+# and nowhere in the job output.
+#
 # Only failed builds are collected. A green build needs none of this, and
 # skipping it keeps the log server's volume to the builds someone will read.
 #
@@ -44,6 +49,7 @@
     terraform_path: "{{ basepath }}/terraform"
     kolla_logs_dir: "{{ ansible_user_dir }}/zuul-output/logs/kolla"
     container_health_dir: "{{ ansible_user_dir }}/zuul-output/logs/container-health"
+    validator_reports_dir: "{{ ansible_user_dir }}/zuul-output/logs/validator-reports"
     # INI inventory the testbed writes on the manager; used to name the hosts
     # when "osism get hosts" cannot.
     manager_inventory: /opt/configuration/inventory/10-custom
@@ -79,6 +85,7 @@
       loop:
         - "{{ kolla_logs_dir }}"
         - "{{ container_health_dir }}"
+        - "{{ validator_reports_dir }}"
         - "{{ kolla_hosts_file }}"
 
     - name: Set cloud fact (Zuul deployment)
@@ -179,6 +186,29 @@
               + (_container_health.stderr_lines | default([])))
              | default(['(container health capture produced no output)'], true) }}
 
+    # The validators write their reports on the manager itself, into a
+    # directory owned by the operator user, so no sudo is needed.
+    - name: Copy the validator reports from the manager
+      when: _kolla_manager_address.content is defined
+      ansible.builtin.shell:
+        cmd: |
+          set -uo pipefail
+          mkdir -p "{{ validator_reports_dir }}"
+          {{ manager_ssh }} 'test -d /opt/reports/validator && tar -C /opt/reports/validator -czf - .' \
+            | tar -xzf - -C "{{ validator_reports_dir }}" 2>/dev/null
+          if [ -z "$(ls -A "{{ validator_reports_dir }}")" ]; then
+            echo "no validator reports copied"
+            rmdir "{{ validator_reports_dir }}"
+          else
+            chmod -R u+rwX,go+rX "{{ validator_reports_dir }}"
+            echo "validator reports: $(find "{{ validator_reports_dir }}" -type f | wc -l) files"
+          fi
+      args:
+        executable: /bin/bash
+      register: _validator_reports
+      changed_when: false
+      failed_when: false
+
     - name: Copy the kolla logs of all testbed hosts
       when: kolla_hosts | length > 0
       ansible.builtin.shell:
@@ -213,6 +243,8 @@
         msg: >-
           {{ ((_kolla_hosts.stdout_lines | default([]))
               + (_kolla_hosts.stderr_lines | default([]))
+              + (_validator_reports.stdout_lines | default([]))
+              + (_validator_reports.stderr_lines | default([]))
               + (_kolla_logs.stdout_lines | default([]))
               + (_kolla_logs.stderr_lines | default([])))
              | default(['(kolla log copy was skipped or produced no output)'], true) }}
