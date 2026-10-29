@@ -26,6 +26,14 @@
 # per-host data that says why (which OSD IDs, which mons) is in the report
 # and nowhere in the job output.
 #
+# The manager's own services (mariadb, ara-server, the *-ansible containers,
+# the inventory reconciler, ...) are not kolla services: they log to the
+# container's stdout, which neither /var/log/kolla nor the health record
+# carries. "docker logs" of every container on the manager is copied to
+# manager-containers/<container>.log.gz. manager.service stops its containers
+# rather than removing them, so a log spans every restart since the
+# container was created.
+#
 # Only failed builds are collected. A green build needs none of this, and
 # skipping it keeps the log server's volume to the builds someone will read.
 #
@@ -50,6 +58,7 @@
     kolla_logs_dir: "{{ ansible_user_dir }}/zuul-output/logs/kolla"
     container_health_dir: "{{ ansible_user_dir }}/zuul-output/logs/container-health"
     validator_reports_dir: "{{ ansible_user_dir }}/zuul-output/logs/validator-reports"
+    manager_containers_dir: "{{ ansible_user_dir }}/zuul-output/logs/manager-containers"
     # INI inventory the testbed writes on the manager; used to name the hosts
     # when "osism get hosts" cannot.
     manager_inventory: /opt/configuration/inventory/10-custom
@@ -86,6 +95,7 @@
         - "{{ kolla_logs_dir }}"
         - "{{ container_health_dir }}"
         - "{{ validator_reports_dir }}"
+        - "{{ manager_containers_dir }}"
         - "{{ kolla_hosts_file }}"
 
     - name: Set cloud fact (Zuul deployment)
@@ -209,6 +219,32 @@
       changed_when: false
       failed_when: false
 
+    # Each log is gzipped on the manager and streamed back, stdout and
+    # stderr together as "docker logs" interleaves them, with docker's
+    # timestamps so the lines can be lined up with the job output.
+    - name: Copy the container logs of the manager
+      when: _kolla_manager_address.content is defined
+      ansible.builtin.shell:
+        cmd: |
+          set -uo pipefail
+          mkdir -p "{{ manager_containers_dir }}"
+          for c in $({{ manager_ssh }} 'sudo -n docker ps -a --format "{{ '{{' }}.Names{{ '}}' }}"'); do
+            {{ manager_ssh }} "sudo -n docker logs --timestamps ${c} 2>&1 | gzip" \
+              > "{{ manager_containers_dir }}/${c}.log.gz"
+          done
+          if [ -z "$(ls -A "{{ manager_containers_dir }}")" ]; then
+            echo "no manager container logs copied"
+            rmdir "{{ manager_containers_dir }}"
+          else
+            chmod -R u+rwX,go+rX "{{ manager_containers_dir }}"
+            echo "manager container logs: $(ls "{{ manager_containers_dir }}" | wc -l) files, $(du -sh "{{ manager_containers_dir }}" | cut -f1) gzipped"
+          fi
+      args:
+        executable: /bin/bash
+      register: _manager_containers
+      changed_when: false
+      failed_when: false
+
     - name: Copy the kolla logs of all testbed hosts
       when: kolla_hosts | length > 0
       ansible.builtin.shell:
@@ -245,6 +281,8 @@
               + (_kolla_hosts.stderr_lines | default([]))
               + (_validator_reports.stdout_lines | default([]))
               + (_validator_reports.stderr_lines | default([]))
+              + (_manager_containers.stdout_lines | default([]))
+              + (_manager_containers.stderr_lines | default([]))
               + (_kolla_logs.stdout_lines | default([]))
               + (_kolla_logs.stderr_lines | default([])))
              | default(['(kolla log copy was skipped or produced no output)'], true) }}
