@@ -93,6 +93,7 @@
 # -----------------------------------------------------------------------------
 # Deployments using a specific stable release version
 
+# DNM: test run of the stable lanes on OSISM 11.0.3, do not merge
 - job:
     name: abstract-testbed-deploy-stable
     abstract: true
