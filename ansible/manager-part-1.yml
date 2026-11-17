@@ -22,10 +22,6 @@
         venv_command: python3 -m venv
       when: ansible_os_family == "Debian"
 
-    - name: Apply osism.commons.repository role
-      ansible.builtin.import_role:
-        name: osism.commons.repository
-
     - name: Get home directory of ansible user
       ansible.builtin.shell: |
         set -o pipefail

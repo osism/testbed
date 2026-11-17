@@ -49,6 +49,12 @@
         repo_path: "{{ result_home.stdout }}/src/github.com"
       when: repo_path is not defined
 
+    # Before any package work: until this role runs, apt uses the mirror
+    # cloud-init picked from the availability zone, not the OSISM one.
+    - name: Apply osism.commons.repository role
+      ansible.builtin.import_role:
+        name: osism.commons.repository
+
     - name: Debian/Ubuntu specific tasks
       when: ansible_os_family == "Debian"
       block:
