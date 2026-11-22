@@ -14,6 +14,13 @@
 # run at DEBUG writes tens of MB per service log, and gzip shrinks them 8-25x;
 # single-file gzip, unlike one archive, stays readable with zless/zgrep.
 #
+# The per-instance QEMU logs are the exception: virtlogd runs inside the
+# nova_libvirt container and writes them to /var/log/libvirt/qemu, which no
+# volume covers. They are read out of the container and stored beside
+# libvirtd.log, as kolla/<host>/libvirt/qemu/instance-<id>.log.gz. They hold
+# the QEMU command line, including -incoming on a migration target, and why
+# QEMU exited, which libvirtd.log does not.
+#
 # The container health state is taken first, as close to the failure as
 # post-run gets: docker keeps only the last five probe results per container,
 # so a container that recovers loses the failing ones within a few probes.
@@ -254,6 +261,12 @@
             mkdir -p "{{ kolla_logs_dir }}/${h}"
             {{ manager_ssh }} "ssh -n -o StrictHostKeyChecking=no -o LogLevel=ERROR ${h} 'sudo -n test -d /var/log/kolla && sudo -n tar --warning=no-file-changed -C /var/log/kolla -czf - .'" \
               | tar -xzf - -C "{{ kolla_logs_dir }}/${h}" 2>/dev/null
+            # Only compute nodes run nova_libvirt; elsewhere nothing arrives.
+            # The "docker cp" archive is rooted at "qemu/".
+            mkdir -p "{{ kolla_logs_dir }}/${h}/libvirt"
+            {{ manager_ssh }} "ssh -n -o StrictHostKeyChecking=no -o LogLevel=ERROR ${h} 'sudo -n docker cp nova_libvirt:/var/log/libvirt/qemu - 2>/dev/null | gzip'" \
+              | tar -xzf - -C "{{ kolla_logs_dir }}/${h}/libvirt" 2>/dev/null
+            rmdir "{{ kolla_logs_dir }}/${h}/libvirt/qemu" "{{ kolla_logs_dir }}/${h}/libvirt" 2>/dev/null
             if [ -z "$(ls -A "{{ kolla_logs_dir }}/${h}")" ]; then
               echo "${h}: no /var/log/kolla copied"
               rmdir "{{ kolla_logs_dir }}/${h}"
