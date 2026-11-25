@@ -2,6 +2,8 @@
 - name: Deploy testbed
   ansible.builtin.import_playbook: deploy.yml
   vars:
+    # Rotate after the upgrade, not before it.
+    _ceph_key_rotation: false
     _manager_version: "{{ manager_version | default('latest') }}"
 
 - name: Upgrade testbed
@@ -18,6 +20,7 @@
 
     run_bootstrap: false
     run_checks: true
+    _ceph_key_rotation: "{{ ceph_key_rotation | default(false) | bool }}"
 
     _manager_version_next: "{{ manager_version_next | default('latest') }}"
     _ceph_version_next: "{{ ceph_version_next | default('reef') }}"
@@ -71,4 +74,10 @@
       ansible.builtin.command:
         cmd: "ssh -i {{ terraform_path }}/.id_rsa.{{ cloud }} dragon@{{ manager_host }} /opt/configuration/scripts/check.sh"
       when: run_checks | bool
+      changed_when: true
+
+    - name: Rotate cephx keys
+      ansible.builtin.command:
+        cmd: "ssh -i {{ terraform_path }}/.id_rsa.{{ cloud }} dragon@{{ manager_host }} /opt/configuration/scripts/rotate-ceph-keys.sh"
+      when: _ceph_key_rotation | bool
       changed_when: true
