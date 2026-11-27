@@ -204,6 +204,7 @@
     vars:
       ceph_version: tentacle
       openstack_version: "2026.1"
+      ceph_key_rotation: true
 
 - job:
     name: testbed-deploy-current-in-a-nutshell-with-tempest-ubuntu-24.04
